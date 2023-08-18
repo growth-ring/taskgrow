@@ -12,9 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
 public class Tasks extends BaseTimeEntity {
     @Id
@@ -27,14 +29,14 @@ public class Tasks extends BaseTimeEntity {
             referencedColumnName = "user_id",
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT)
     )
-    private Users userId;
+    private Users user;
     @Column(name = "task_date", nullable = false)
     private LocalDateTime taskDate;
 
     @Builder
-    public Tasks(long taskId, Users userId, LocalDateTime taskDate) {
+    public Tasks(long taskId, Users user, LocalDateTime taskDate) {
         this.taskId = taskId;
-        this.userId = userId;
+        this.user = user;
         this.taskDate = taskDate;
     }
 

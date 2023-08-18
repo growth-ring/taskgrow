@@ -1,6 +1,7 @@
 package com.growth.task.todo.domain;
 
 import com.growth.task.commons.domain.BaseTimeEntity;
+import com.growth.task.task.domain.Tasks;
 import com.growth.task.todo.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -11,7 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class Todos extends BaseTimeEntity {
     @Id
@@ -23,7 +26,7 @@ public class Todos extends BaseTimeEntity {
             referencedColumnName = "task_id",
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT)
     )
-    private String taskId;
+    private Tasks task;
 
     @Column(name = "todo", nullable = false)
     private String todo;
@@ -32,13 +35,13 @@ public class Todos extends BaseTimeEntity {
     private Status status;
 
     @Builder
-    public Todos(Long todoId, String taskId, String todo, Status status) {
+    public Todos(Long todoId, Tasks task, String todo, Status status) {
         this.todoId = todoId;
-        this.taskId = taskId;
+        this.task = task;
         this.todo = todo;
         this.status = status;
     }
 
-    public Todos() {
+    protected Todos() {
     }
 }
