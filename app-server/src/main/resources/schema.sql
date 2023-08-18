@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS tasks (
     task_id int NOT NULL AUTO_INCREMENT,
     user_id int NOT NULL,
+    task_date timestamp NOT NULL,
     created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
     primary key (task_id)
