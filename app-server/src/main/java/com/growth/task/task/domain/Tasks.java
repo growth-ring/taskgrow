@@ -1,5 +1,6 @@
 package com.growth.task.task.domain;
 
+import com.growth.task.commons.domain.BaseTimeEntity;
 import com.growth.task.user.domain.Users;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -11,13 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class Tasks {
+public class Tasks extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
@@ -32,21 +31,11 @@ public class Tasks {
     @Column(name = "task_date", nullable = false)
     private LocalDateTime taskDate;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
     @Builder
-    public Tasks(long taskId, Users userId, LocalDateTime taskDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Tasks(long taskId, Users userId, LocalDateTime taskDate) {
         this.taskId = taskId;
         this.userId = userId;
         this.taskDate = taskDate;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     protected Tasks() {

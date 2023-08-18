@@ -1,21 +1,18 @@
 package com.growth.task.user.domain;
 
+import com.growth.task.commons.domain.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Entity
-public class Users {
+public class Users extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "user_id")
@@ -27,21 +24,11 @@ public class Users {
     @Column(nullable = false, columnDefinition = "varchar(32)")
     private String password;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
     @Builder
-    public Users(Long userId, String name, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Users(Long userId, String name, String password) {
         this.userId = userId;
         this.name = name;
         this.password = password;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     protected Users() {
