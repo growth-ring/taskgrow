@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,6 +23,7 @@ public class Todos extends BaseTimeEntity {
     @Column(name = "todo_id")
     private Long todoId;
 
+    @ManyToOne
     @JoinColumn(name = "task_id",
             referencedColumnName = "task_id",
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT)
@@ -31,7 +33,7 @@ public class Todos extends BaseTimeEntity {
     @Column(name = "todo", nullable = false)
     private String todo;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", columnDefinition = "varchar(20) default 'READY'", nullable = false)
     private Status status;
 
     @Builder
