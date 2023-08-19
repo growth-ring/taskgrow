@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,12 +21,17 @@ public class Pomodoros extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pomodoro_id")
     private long pomodoroId;
+
+    @OneToOne
     @JoinColumn(name = "todo_id",
             referencedColumnName = "todo_id",
-            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT))
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT)
+    )
     private Todos todo;
+
     @Column(name = "perform_count", nullable = false)
     private int performCount;
+
     @Column(name = "plan_count", nullable = false)
     private int planCount;
 
