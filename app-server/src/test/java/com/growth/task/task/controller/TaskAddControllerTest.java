@@ -82,9 +82,9 @@ class TaskAddControllerTest {
         @Nested
         @DisplayName("존재하는 사용자 id와 Task 생성 요청 정보가 주어지면")
         class Context_with_task_request_and_existed_user {
-            private Users givenUser = getUser("test user", "password");
-            private String taskDate = "2023-08-22T10:10:30";
-            private TaskAddRequest taskAddRequest = TaskAddRequest.builder()
+            private final Users givenUser = getUser("test user", "password");
+            private final String taskDate = "2023-08-22T10:10:30";
+            private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(givenUser.getUserId())
                     .taskDate(LocalDateTime.parse(taskDate))
                     .build();
@@ -103,9 +103,9 @@ class TaskAddControllerTest {
         @Nested
         @DisplayName("존재하지않은 사용자 id와 Task 생성 요청 정보가 주어지면")
         class Context_with_task_request_and_not_exist_user {
-            private Long invalidId = 0L;
-            private String taskDate = "2023-08-22T10:10:30";
-            private TaskAddRequest taskAddRequest = TaskAddRequest.builder()
+            private final Long invalidId = 0L;
+            private final String taskDate = "2023-08-22T10:10:30";
+            private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(invalidId)
                     .taskDate(LocalDateTime.parse(taskDate))
                     .build();
@@ -123,8 +123,8 @@ class TaskAddControllerTest {
         @Nested
         @DisplayName("user 정보가 없다면")
         class Context_without_user_in_task_request {
-            private String taskDate = "2023-08-22T10:10:30";
-            private TaskAddRequest taskAddRequest = TaskAddRequest.builder()
+            private final String taskDate = "2023-08-22T10:10:30";
+            private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(null)
                     .taskDate(LocalDateTime.parse(taskDate))
                     .build();

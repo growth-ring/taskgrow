@@ -42,17 +42,17 @@ class TaskAddServiceTest {
         @DisplayName("Task 생성 정보가 주어지면")
         class Context_wiht_task_info {
             String taskDate = "2023-08-22T10:10:30";
-            private Users givenUser = Users.builder()
+            private final Users givenUser = Users.builder()
                     .userId(1L)
                     .name("test")
                     .password("password")
                     .build();
-            private Tasks givenTask = Tasks.builder()
+            private final Tasks givenTask = Tasks.builder()
                     .taskId(1L)
                     .taskDate(LocalDateTime.parse(taskDate))
                     .user(givenUser)
                     .build();
-            private TaskAddRequest taskAddRequest = TaskAddRequest.builder()
+            private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(givenUser.getUserId())
                     .taskDate(givenTask.getTaskDate())
                     .build();
