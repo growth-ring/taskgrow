@@ -1,7 +1,9 @@
 spring:
   jpa:
     show_sql: true
-    format_sql: true
+    properties:
+      hibernate:
+        format_sql: true
 logging:
   level:
     org:
