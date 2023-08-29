@@ -19,7 +19,7 @@ public class ControllerErrorAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFoundException(UserNotFoundException exception) {
-        log.error("MethodArgumentNotValidException", exception);
+        log.error("UserNotFoundException", exception);
         return exception.getMessage();
     }
 }
