@@ -3,7 +3,7 @@ package com.growth.task.task.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.growth.task.task.domain.TasksRepository;
+import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.task.dto.TaskAddRequest;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
