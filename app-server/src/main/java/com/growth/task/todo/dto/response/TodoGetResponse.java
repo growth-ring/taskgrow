@@ -8,13 +8,15 @@ import lombok.Data;
 @Data
 public class TodoGetResponse {
     private Long todoId;
+    private Long taskId;
     private String todo;
     private Status status;
     private Integer performCount;
     private Integer planCount;
 
-    public TodoGetResponse(Long todoId, String todo, Status status, Integer performCount, Integer planCount) {
+    public TodoGetResponse(Long todoId, Long taskId, String todo, Status status, Integer performCount, Integer planCount) {
         this.todoId = todoId;
+        this.taskId = taskId;
         this.todo = todo;
         this.status = status;
         this.performCount = performCount;
@@ -23,6 +25,7 @@ public class TodoGetResponse {
 
     public TodoGetResponse(Todos todos, Pomodoros pomodoros) {
         this.todoId = todos.getTodoId();
+        this.taskId = todos.getTask().getTaskId();
         this.todo = todos.getTodo();
         this.status = todos.getStatus();
         this.performCount = pomodoros.getPerformCount();
