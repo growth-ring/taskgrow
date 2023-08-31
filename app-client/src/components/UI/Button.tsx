@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 interface ButtonProps {
   children: ReactNode;
   onClick?: () => void;
-  showTodo: boolean;
+  showTodo?: boolean;
 }
 
 const Button = ({ children, onClick, showTodo }: ButtonProps) => {

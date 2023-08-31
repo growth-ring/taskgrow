@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-interface PomodoroProps {
-  time: number;
-  isRunning: boolean;
-  isTimer: boolean;
-}
+import { TimerState } from '../../store/timer';
 
 const CenteredBox = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
 
 const DefaultPomodoro = styled.div`
   width: 300px;
@@ -24,7 +19,10 @@ const Container = styled.div<{ percentage: number }>`
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: conic-gradient(var(--main-color) ${(props) => props.percentage}%, transparent ${(props) => props.percentage}%);
+  background: conic-gradient(
+    var(--main-color) ${(props) => props.percentage}%,
+    transparent ${(props) => props.percentage}%
+  );
 `;
 
 const BackContainer = styled.div`
@@ -33,50 +31,44 @@ const BackContainer = styled.div`
   border-radius: 50%;
   background: var(--sub-yellow-color);
   margin: 30px;
-`
+`;
 
-function Pomodoro({ time, isRunning, isTimer }: PomodoroProps) {
+interface PomodoroProps {
+  time: number;
+  startTime: number;
+  timerState: TimerState;
+}
+
+function Pomodoro({ timerState, time, startTime }: PomodoroProps) {
   const [percentage, setPercentage] = useState<number>(0);
-  const [animationStartTime, setAnimationStartTime] = useState<number | null>(null);
+  const [animationFrameId, setAnimationFrameId] = useState<number | null>(null);
 
   useEffect(() => {
-    let animationFrameId: number | null = null;
-
-    if(!isTimer) {
-      //TODO: 무한루프 해결
-      // setAnimationStartTime(null);
-    }
-
-    if (isRunning) {
-      if (animationStartTime === null) {
-        setAnimationStartTime(Date.now() - (percentage / 100) * (time * 60 * 1000));
-      }
-
-      const animationDuration: number = time * 60 * 1000;
-
-      const animate = () => {
-        const currentTime = Date.now();
-        const elapsedTime = currentTime - (animationStartTime || currentTime);
-
-        if (elapsedTime < animationDuration) {
-          setPercentage((elapsedTime / animationDuration) * 100);
-          animationFrameId = requestAnimationFrame(animate);
-        } else {
-          setPercentage(100);
-        }
-      };
-
-      if (animationFrameId === null) {
-        animationFrameId = requestAnimationFrame(animate);
-      }
-    } else {
+    if (timerState !== 'RUNNING') {
       if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
+        setAnimationFrameId(null);
+        setPercentage(0);
       }
-      if (animationStartTime !== null) {
-        setAnimationStartTime(null);
+      return;
+    }
+    
+    const animationDuration: number = time * 60 * 1000;
+    
+    const animate = () => {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - startTime;
+      
+      if (elapsedTime < animationDuration) {
+        setPercentage((elapsedTime / animationDuration) * 100);
+        setAnimationFrameId(requestAnimationFrame(animate));
+      } else {
+        setPercentage(100);
       }
+    };
+
+    if (animationFrameId === null) {
+      setAnimationFrameId(requestAnimationFrame(animate));
     }
 
     return () => {
@@ -84,16 +76,25 @@ function Pomodoro({ time, isRunning, isTimer }: PomodoroProps) {
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [isTimer, time, isRunning, percentage, animationStartTime]);
+
+  }, [timerState, animationFrameId]);
+
 
   return (
     <>
-    {!isTimer && <CenteredBox>
-      <DefaultPomodoro /></CenteredBox>}
-    {isTimer &&
-    <CenteredBox><BackContainer><Container percentage={percentage} /></BackContainer></CenteredBox>
-    }
-  </>
+      {timerState === 'INITIAL' && (
+        <CenteredBox>
+          <DefaultPomodoro />
+        </CenteredBox>
+      )}
+      {timerState === 'RUNNING'  && (
+        <CenteredBox>
+          <BackContainer>
+            <Container percentage={percentage} />
+          </BackContainer>
+        </CenteredBox>
+      )}
+    </>
   );
 }
 

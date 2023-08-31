@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { TimerState } from '../../store/timer';
 
 const Time = styled.div`
   color: var(--main-color);
@@ -10,11 +11,10 @@ const Time = styled.div`
 
 interface TimerProps {
   time: number;
-  isRunning: boolean;
-  isTimer: boolean;
+  timerState: TimerState;
 }
 
-const Timer = ({ time, isRunning, isTimer }: TimerProps) => {
+const Timer = ({ time, timerState }: TimerProps) => {
   const USER_TIME = time * 60 * 1000;
   const INTERVAL = 1000;
   const [timerTime, setTimerTime] = useState<number>(USER_TIME);
@@ -26,11 +26,11 @@ const Timer = ({ time, isRunning, isTimer }: TimerProps) => {
   const second = String(Math.floor((timerTime / 1000) % 60)).padStart(2, '0');
 
   useEffect(() => {
-    if (!isTimer) {
+    if (timerState === 'INITIAL') {
       setTimerTime(USER_TIME);
     }
     
-    if (isRunning) {
+    if (timerState === 'RUNNING') {
       const timer = setInterval(() => {
         setTimerTime((prevTime) => prevTime - INTERVAL);
       }, INTERVAL);
@@ -43,13 +43,15 @@ const Timer = ({ time, isRunning, isTimer }: TimerProps) => {
         clearInterval(timer);
       };
     }
-  }, [isTimer, timerTime, isRunning]);
+  }, [timerState, timerTime]);
 
 
   return (
     <>
-      {!isTimer && <Time> 00 : 00</Time>}
-      {isTimer && (
+      {timerState === 'INITIAL' && (
+      <Time> 00 : 00</Time>
+      )}
+      {timerState === 'RUNNING' && (
         <Time>
           {minute} : {second}
         </Time>
