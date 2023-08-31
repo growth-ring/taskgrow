@@ -19,7 +19,8 @@ public class TodoController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<TodoGetResponse>> getTodos(@RequestParam Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<TodoGetResponse>> getTodos(@RequestParam(required = true) Long id) {
         List<TodoGetResponse> todos = todosService.getTodosByTaskId(id);
         return new ResponseEntity<>(todos, HttpStatus.OK);
     }
