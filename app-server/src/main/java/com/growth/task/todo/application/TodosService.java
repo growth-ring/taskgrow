@@ -1,5 +1,7 @@
 package com.growth.task.todo.application;
 
+import com.growth.task.pomodoro.domain.Pomodoros;
+import com.growth.task.pomodoro.domain.PomodorosRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.domain.TodosRepository;
 import com.growth.task.todo.dto.response.TodoGetResponse;
@@ -12,16 +14,21 @@ import java.util.stream.Collectors;
 public class TodosService {
 
     private TodosRepository todosRepository;
+    private PomodorosRepository pomodorosRepository;
 
-    public TodosService(TodosRepository todosRepository) {
+    public TodosService(TodosRepository todosRepository, PomodorosRepository pomodorosRepository) {
         this.todosRepository = todosRepository;
+        this.pomodorosRepository = pomodorosRepository;
     }
 
     public List<TodoGetResponse> getTodosByTaskId(Long taskId) {
         List<Todos> todosEntities = todosRepository.findByTask_TaskId(taskId);
 
         return todosEntities.stream()
-                .map(entity -> new TodoGetResponse(entity.getTodoId(), entity.getTodo(), entity.getStatus()))
+                .map(todo -> {
+                    Pomodoros pomodoro = pomodorosRepository.findByTodo_TodoId(todo.getTodoId()).orElse(null);
+                    return new TodoGetResponse(todo, pomodoro);
+                })
                 .collect(Collectors.toList());
     }
 }
