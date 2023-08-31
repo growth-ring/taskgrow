@@ -5,6 +5,7 @@ import com.growth.task.pomodoro.domain.PomodorosRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.domain.TodosRepository;
 import com.growth.task.todo.dto.response.TodoGetResponse;
+import com.growth.task.todo.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class TodosService {
 
     public List<TodoGetResponse> getTodosByTaskId(Long taskId) {
         List<Todos> todosEntities = todosRepository.findByTask_TaskId(taskId);
+        if (todosEntities.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
 
         return todosEntities.stream()
                 .map(todo -> {
