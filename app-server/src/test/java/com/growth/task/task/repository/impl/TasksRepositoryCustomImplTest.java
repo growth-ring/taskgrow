@@ -1,5 +1,6 @@
 package com.growth.task.task.repository.impl;
 
+import com.growth.task.config.TestQueryDslConfig;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskListWithTodoStatusResponse;
 import com.growth.task.task.repository.TasksRepository;
@@ -13,7 +14,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +24,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(TestQueryDslConfig.class)
+@DataJpaTest
 class TasksRepositoryCustomImplTest {
     @Autowired
     private UsersRepository usersRepository;
@@ -69,6 +74,7 @@ class TasksRepositoryCustomImplTest {
     @DisplayName("findRemainedTodosByUserBetweenTimeRange")
     class Describe_findRemainedTodosByUserBetweenTimeRange {
         Users user = getUser("test1", "password");
+        Tasks task0 = getTask(user, LocalDate.parse("2023-08-28"));
         Tasks task1 = getTask(user, LocalDate.parse("2023-08-29"));
         Tasks task2 = getTask(user, LocalDate.parse("2023-08-30"));
         Tasks task3 = getTask(user, LocalDate.parse("2023-08-31"));
@@ -91,20 +97,20 @@ class TasksRepositoryCustomImplTest {
             void it_return_task_info_and_todo_count() {
                 List<TaskListWithTodoStatusResponse> result = tasksRepository.findRemainedTodosByUserBetweenTimeRange(
                         user.getUserId(),
-                        task1.getTaskDate(),
+                        task0.getTaskDate(),
                         task2.getTaskDate()
                 );
 
                 assertAll(
-                        () -> assertThat(result).hasSize(9),
+                        () -> assertThat(result).hasSize(10),
                         () -> assertThat(result)
-                                .filteredOn(task -> task.getTodoStatus().equals(Status.READY))
+                                .filteredOn(task -> Status.READY.equals(task.getTodoStatus()))
                                 .hasSize(3),
                         () -> assertThat(result)
-                                .filteredOn(task -> task.getTodoStatus().equals(Status.PROGRESS))
+                                .filteredOn(task -> Status.PROGRESS.equals(task.getTodoStatus()))
                                 .hasSize(2),
                         () -> assertThat(result)
-                                .filteredOn(task -> task.getTodoStatus().equals(Status.DONE))
+                                .filteredOn(task -> Status.DONE.equals(task.getTodoStatus()))
                                 .hasSize(4)
 
                 );
