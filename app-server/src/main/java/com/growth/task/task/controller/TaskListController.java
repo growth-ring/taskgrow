@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.OK;
 
 @CrossOrigin
@@ -25,7 +27,8 @@ public class TaskListController {
 
     @GetMapping
     @ResponseStatus(OK)
-    public TaskListResponse getList(@ModelAttribute @Valid TaskListRequest taskListRequest) {
-        return null;
+    public List<TaskListResponse> getList(@ModelAttribute @Valid TaskListRequest taskListRequest) {
+
+        return taskListService.getTasks(taskListRequest);
     }
 }
