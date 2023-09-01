@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Service
 public class TodosService {
 
-    private TodosRepository todosRepository;
-    private PomodorosRepository pomodorosRepository;
-    private TasksRepository tasksRepository;
+    private final TodosRepository todosRepository;
+    private final PomodorosRepository pomodorosRepository;
+    private final TasksRepository tasksRepository;
 
     public TodosService(
             TodosRepository todosRepository,
