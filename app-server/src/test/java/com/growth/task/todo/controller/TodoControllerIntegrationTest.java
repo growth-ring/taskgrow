@@ -35,7 +35,7 @@ class TodoControllerIntegrationTest {
         List<TodoGetResponse> todoList = Arrays.asList(todo1, todo2);
         when(todosService.getTodosByTaskId(1L)).thenReturn(todoList);
 
-        mockMvc.perform(get("/api/v1/todos/").param("id", "1"))
+        mockMvc.perform(get("/api/v1/todos").param("id", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].todoId").value(1L))
                 .andExpect(jsonPath("$[0].taskId").value(1L))

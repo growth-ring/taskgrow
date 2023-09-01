@@ -18,7 +18,7 @@ public class TodoController {
         this.todosService = todosService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TodoGetResponse>> getTodos(@RequestParam(required = true) Long id) {
         List<TodoGetResponse> todos = todosService.getTodosByTaskId(id);
