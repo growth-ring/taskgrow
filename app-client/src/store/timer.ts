@@ -3,6 +3,8 @@ import { create } from 'zustand';
 export type TimerState = 'INITIAL' | 'RUNNING' | 'FINISHED' ;
 
 interface TimerStore {
+    onTimer: boolean;
+    setOnTimer: (timer: boolean) => void;
     timerState: TimerState;
     startTime: number;
     timerMinute: number;
@@ -13,6 +15,8 @@ interface TimerStore {
 }
 
 export const useTimerStore = create<TimerStore>((set) => ({
+    onTimer: false,
+    setOnTimer: (timer) => set({ onTimer: timer}),
     timerState: 'INITIAL',
     startTime: 0,
     start: () => {

@@ -4,6 +4,7 @@ import Timer from '../../components/Pomodoro/Timer';
 import Pomodoro from '../../components/Pomodoro/Pomodoro';
 import PomodoroBtn from '../../components/Pomodoro/PomodoroBtn';
 import TodoList from '../../components/Todos/TodoList';
+import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import styled from 'styled-components';
 
@@ -31,7 +32,8 @@ const Time = styled.div`
 `;
 
 const Todos = () => {
-  const { timerState, startTime, timerMinute } = useTimerStore();
+  const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
+  const { selectedTodo } = useTodosStore();
 
   return (
     <>
@@ -40,16 +42,17 @@ const Todos = () => {
       <Container>
         <Time>
           <StateBtn />
-          <Todo>밥먹기</Todo>
+          <Todo>{selectedTodo}</Todo>
           <Pomodoro
             startTime={startTime}
             timerState={timerState}
             time={timerMinute}
           />
+          {onTimer && <>
           <Timer time={timerMinute} timerState={timerState}/>
-          <PomodoroBtn />
+          <PomodoroBtn /></>}
         </Time>
-        <div style={{ width: '50%' }}>
+        <div style={{ width: '50%', height: '100%' }}>
           <TodoList />
         </div>
       </Container>
