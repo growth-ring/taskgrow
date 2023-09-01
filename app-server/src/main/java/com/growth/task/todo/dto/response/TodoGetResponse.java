@@ -3,9 +3,9 @@ package com.growth.task.todo.dto.response;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.enums.Status;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class TodoGetResponse {
     private Long todoId;
     private Long taskId;
