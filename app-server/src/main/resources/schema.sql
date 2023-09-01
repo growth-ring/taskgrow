@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS pomodoros (
     todo_id int NOT NULL,
     perform_count int NOT NULL,
     plan_count int NOT NULL,
-    crated_at timestamp NOT NULL,
+    created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
     primary key (pomodoro_id)
 );
