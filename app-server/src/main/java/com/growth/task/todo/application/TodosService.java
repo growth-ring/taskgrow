@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,9 +39,21 @@ public class TodosService {
             return Collections.emptyList();
         }
 
+        List<Long> todoIds = todosEntities.stream()
+                .map(Todos::getTodoId)
+                .collect(Collectors.toList());
+
+        List<Pomodoros> pomodorosEntities = pomodorosRepository.findAllByTodo_TodoIdIn(todoIds);
+
+        Map<Long, Pomodoros> pomodorosMap = pomodorosEntities.stream()
+                .collect(Collectors.toMap(
+                        pomodoro -> pomodoro.getTodo().getTodoId(),
+                        pomodoro -> pomodoro
+                ));
+
         return todosEntities.stream()
                 .map(todo -> {
-                    Pomodoros pomodoro = pomodorosRepository.findByTodo_TodoId(todo.getTodoId()).orElse(null);
+                    Pomodoros pomodoro = pomodorosMap.get(todo.getTodoId());
                     return new TodoGetResponse(todo, pomodoro);
                 })
                 .collect(Collectors.toList());

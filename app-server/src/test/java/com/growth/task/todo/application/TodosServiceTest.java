@@ -20,12 +20,9 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TodosServiceTest {
@@ -110,44 +107,19 @@ public class TodosServiceTest {
     }
 
     private void setUpMocks() {
-        Tasks tasks = Tasks.builder()
-                .taskId(TASK_ID)
-                .build();
+        Tasks tasks = Tasks.builder().taskId(TASK_ID).build();
+        Todos todo1 = Todos.builder().todoId(TODO_ID1).task(tasks).todo("디자인패턴의 아름다움 스터디").status(Status.READY).build();
+        Todos todo2 = Todos.builder().todoId(TODO_ID2).task(tasks).todo("프로젝트 진행하기").status(Status.PROGRESS).build();
+        Pomodoros pomodoro1 = Pomodoros.builder().pomodoroId(POMODORO_ID1).todo(todo1).performCount(0).planCount(1).build();
+        Pomodoros pomodoro2 = Pomodoros.builder().pomodoroId(POMODORO_ID2).todo(todo2).performCount(1).planCount(2).build();
 
-        Todos todo1 = Todos.builder()
-                .todoId(TODO_ID1)
-                .task(tasks)
-                .todo("디자인패턴의 아름다움 스터디")
-                .status(Status.READY)
-                .build();
-
-        Todos todo2 = Todos.builder()
-                .todoId(TODO_ID2)
-                .task(tasks)
-                .todo("프로젝트 진행하기")
-                .status(Status.PROGRESS)
-                .build();
-
-        Pomodoros pomodoro1 = Pomodoros.builder()
-                .pomodoroId(POMODORO_ID1)
-                .todo(todo1)
-                .performCount(0)
-                .planCount(1)
-                .build();
-
-        Pomodoros pomodoro2 = Pomodoros.builder()
-                .pomodoroId(POMODORO_ID2)
-                .todo(todo2)
-                .performCount(1)
-                .planCount(2)
-                .build();
-
-        List<Todos> todosList = Arrays.asList(todo1, todo2);
+        List<Todos> mockedTodos = Arrays.asList(todo1, todo2);
+        List<Pomodoros> mockedPomodoros = Arrays.asList(pomodoro1, pomodoro2);
+        List<Long> todoIds = Arrays.asList(TODO_ID1, TODO_ID2);
 
         when(tasksRepository.existsById(TASK_ID)).thenReturn(true);
-        when(todosRepository.findByTask_TaskId(TASK_ID)).thenReturn(todosList);
-        when(pomodorosRepository.findByTodo_TodoId(TODO_ID1)).thenReturn(Optional.of(pomodoro1));
-        when(pomodorosRepository.findByTodo_TodoId(TODO_ID2)).thenReturn(Optional.of(pomodoro2));
+        when(todosRepository.findByTask_TaskId(TASK_ID)).thenReturn(mockedTodos);
+        when(pomodorosRepository.findAllByTodo_TodoIdIn(todoIds)).thenReturn(mockedPomodoros);
     }
 
     private void verifyTodoGetResponseList(List<TodoGetResponse> result, Long taskId) {
