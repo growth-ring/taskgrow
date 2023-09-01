@@ -1,7 +1,7 @@
 package com.growth.task.task.service;
 
 import com.growth.task.task.domain.Tasks;
-import com.growth.task.task.domain.TasksRepository;
+import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.task.dto.TaskAddRequest;
 import com.growth.task.task.dto.TaskAddResponse;
 import com.growth.task.task.exception.UserNotFoundException;
