@@ -3,6 +3,7 @@ package com.growth.task.todo.application;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.domain.PomodorosRepository;
 import com.growth.task.task.domain.Tasks;
+import com.growth.task.task.domain.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.domain.TodosRepository;
 import com.growth.task.todo.dto.response.TodoGetResponse;
@@ -35,6 +36,9 @@ public class TodosServiceTest {
     @Mock
     private PomodorosRepository pomodorosRepository;
 
+    @Mock
+    private TasksRepository tasksRepository;
+
     @InjectMocks
     private TodosService todosService;
 
@@ -53,22 +57,43 @@ public class TodosServiceTest {
     @Nested
     class Describe_getTodosByTaskId {
 
-        @Test
-        @DisplayName("Task 가 없을 경우 TaskNotFoundException 오류를 던진다.")
-        void shouldThrowTaskNotFoundExceptionWhenTaskIsNotFound() {
-            Long taskId = 1L;
-            when(todosRepository.findByTask_TaskId(taskId)).thenReturn(Collections.emptyList());
+        @Nested
+        @DisplayName("taskId 로 Tasks 가 확인되지 않는 경우")
+        class Context_whenTaskIdDoesNotExist {
 
-            assertThrows(TaskNotFoundException.class, () -> {
-                todosService.getTodosByTaskId(taskId);
-            });
+            @BeforeEach
+            void setup() {
+                when(tasksRepository.existsById(TASK_ID)).thenReturn(false);
+            }
 
-            verify(todosRepository).findByTask_TaskId(taskId);
+            @Test
+            @DisplayName("TaskNotFoundException 오류를 던진다.")
+            void It_throws_TaskNotFoundException() {
+                assertThrows(TaskNotFoundException.class, () -> todosService.getTodosByTaskId(TASK_ID));
+            }
         }
 
         @Nested
-        @DisplayName("유효한 Task ID가 주어진 경우에는")
-        class Context_withValidTaskId {
+        @DisplayName("taskId 가 존재하지만 Todos 가 없는 경우")
+        class Context_whenTaskIdExistsButNoTodos {
+
+            @BeforeEach
+            void setup() {
+                when(tasksRepository.existsById(TASK_ID)).thenReturn(true);
+                when(todosRepository.findByTask_TaskId(TASK_ID)).thenReturn(Collections.emptyList());
+            }
+
+            @Test
+            @DisplayName("빈 리스트를 반환한다.")
+            void It_returns_emptyList() {
+                List<TodoGetResponse> result = todosService.getTodosByTaskId(TASK_ID);
+                assertThat(result).isEmpty();
+            }
+        }
+
+        @Nested
+        @DisplayName("유효한 taskId 와 Todos 가 있는 경우")
+        class Context_withValidTaskIdAndTodos {
 
             @BeforeEach
             void setUp() {
@@ -78,41 +103,40 @@ public class TodosServiceTest {
             @Test
             @DisplayName("TodoGetResponse 리스트를 반환한다.")
             void It_shouldReturnTodoGetResponseList() {
-                Long taskId = 1L;
-                List<TodoGetResponse> result = todosService.getTodosByTaskId(1L);
-                verifyTodoGetResponseList(result, taskId);
+                List<TodoGetResponse> result = todosService.getTodosByTaskId(TASK_ID);
+                verifyTodoGetResponseList(result, TASK_ID);
             }
         }
     }
 
     private void setUpMocks() {
         Tasks tasks = Tasks.builder()
-                .taskId(1L)
+                .taskId(TASK_ID)
                 .build();
 
         Todos todo1 = Todos.builder()
-                .todoId(1L)
+                .todoId(TODO_ID1)
                 .task(tasks)
                 .todo("디자인패턴의 아름다움 스터디")
                 .status(Status.READY)
                 .build();
 
         Todos todo2 = Todos.builder()
-                .todoId(2L)
+                .todoId(TODO_ID2)
                 .task(tasks)
                 .todo("프로젝트 진행하기")
                 .status(Status.PROGRESS)
                 .build();
 
         Pomodoros pomodoro1 = Pomodoros.builder()
-                .pomodoroId(1L)
+                .pomodoroId(POMODORO_ID1)
                 .todo(todo1)
                 .performCount(0)
                 .planCount(1)
                 .build();
 
         Pomodoros pomodoro2 = Pomodoros.builder()
-                .pomodoroId(2L)
+                .pomodoroId(POMODORO_ID2)
                 .todo(todo2)
                 .performCount(1)
                 .planCount(2)
@@ -120,16 +144,17 @@ public class TodosServiceTest {
 
         List<Todos> todosList = Arrays.asList(todo1, todo2);
 
-        when(todosRepository.findByTask_TaskId(anyLong())).thenReturn(todosList);
-        when(pomodorosRepository.findByTodo_TodoId(1L)).thenReturn(Optional.of(pomodoro1));
-        when(pomodorosRepository.findByTodo_TodoId(2L)).thenReturn(Optional.of(pomodoro2));
+        when(tasksRepository.existsById(TASK_ID)).thenReturn(true);
+        when(todosRepository.findByTask_TaskId(TASK_ID)).thenReturn(todosList);
+        when(pomodorosRepository.findByTodo_TodoId(TODO_ID1)).thenReturn(Optional.of(pomodoro1));
+        when(pomodorosRepository.findByTodo_TodoId(TODO_ID2)).thenReturn(Optional.of(pomodoro2));
     }
 
     private void verifyTodoGetResponseList(List<TodoGetResponse> result, Long taskId) {
         assertThat(result.size()).isEqualTo(2);
 
         TodoGetResponse firstResponse = result.get(0);
-        assertThat(firstResponse.getTodoId()).isEqualTo(1L);
+        assertThat(firstResponse.getTodoId()).isEqualTo(TODO_ID1);
         assertThat(firstResponse.getTaskId()).isEqualTo(taskId);
         assertThat(firstResponse.getTodo()).isEqualTo("디자인패턴의 아름다움 스터디");
         assertThat(firstResponse.getStatus()).isEqualTo(Status.READY);
@@ -137,7 +162,7 @@ public class TodosServiceTest {
         assertThat(firstResponse.getPlanCount()).isEqualTo(1);
 
         TodoGetResponse secondResponse = result.get(1);
-        assertThat(secondResponse.getTodoId()).isEqualTo(2L);
+        assertThat(secondResponse.getTodoId()).isEqualTo(TODO_ID2);
         assertThat(secondResponse.getTaskId()).isEqualTo(taskId);
         assertThat(secondResponse.getTodo()).isEqualTo("프로젝트 진행하기");
         assertThat(secondResponse.getStatus()).isEqualTo(Status.PROGRESS);
