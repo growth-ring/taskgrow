@@ -17,6 +17,7 @@ import static com.growth.task.todo.enums.Status.isRemain;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 @Transactional
@@ -37,12 +38,31 @@ public class TaskListService {
 
         Map<Long, TaskTodoResponse> groupingByTask = groupingByTask(taskList);
 
+        return collectToTask(taskList, groupingByTask);
+    }
+
+    /**
+     * TaskList와 Todos 진행률 Map을 TaskId로 매핑하고 중복을 제거합니다.
+     *
+     * @param taskList 테스크 리스트
+     * @param groupingByTask todos 진행률 Map
+     * @return
+     */
+    public static List<TaskListResponse> collectToTask(
+            List<TaskListWithTodoStatusResponse> taskList,
+            Map<Long, TaskTodoResponse> groupingByTask
+    ) {
         return taskList.stream()
-                .map(task -> {
+                .collect(toMap(
+                        TaskListWithTodoStatusResponse::getTaskId,
+                        task -> {
                             TaskTodoResponse todos = groupingByTask.getOrDefault(task.getTaskId(), new TaskTodoResponse(0, 0));
                             return new TaskListResponse(task, todos);
-                        }
-                )
+                        },
+                        (existing, replacement) -> existing
+                ))
+                .values()
+                .stream()
                 .toList();
     }
 

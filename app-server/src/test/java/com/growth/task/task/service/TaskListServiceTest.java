@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.growth.task.task.service.TaskListService.calculateTodoStatus;
+import static com.growth.task.task.service.TaskListService.collectToTask;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
@@ -98,7 +99,7 @@ class TaskListServiceTest {
             void it_return_task_list() {
                 List<TaskListResponse> result = taskListService.getTasks(request);
                 assertAll(
-                        () -> assertThat(result).hasSize(3),
+                        () -> assertThat(result).hasSize(1),
                         () -> assertThat(result.get(0).getTodos())
                 );
             }
@@ -253,6 +254,44 @@ class TaskListServiceTest {
                             () -> assertThat(result.getDone()).isEqualTo(0)
                     );
                 }
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("collectToTask")
+    class Describe_collectToTask {
+        @Nested
+        @DisplayName("테스크 리스트와 todos 진행률 Map이 주어지면")
+        class Context_wiht_task_list_and_todos_status_map {
+            List<TaskListWithTodoStatusResponse> taskList = List.of(
+                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.READY),
+                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.READY),
+                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.PROGRESS),
+                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.PROGRESS),
+                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.DONE),
+                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.READY),
+                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.READY),
+                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.READY),
+                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.DONE),
+                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), Status.DONE),
+                    new TaskListWithTodoStatusResponse(4L, 1L, LocalDateTime.parse("2023-08-28T00:00:00"), null)
+
+            );
+            Map<Long, TaskTodoResponse> groupingByTask = Map.of(
+                    1L, new TaskTodoResponse(4, 1),
+                    2L, new TaskTodoResponse(3, 0),
+                    3L, new TaskTodoResponse(0, 2),
+                    4L, new TaskTodoResponse(0, 0)
+            );
+
+            @Test
+            @DisplayName("중복을 제거하고 매핑한 리스트를 리턴한다")
+            void it_return_task_list() {
+                List<TaskListResponse> result = collectToTask(taskList, groupingByTask);
+                assertAll(
+                        () ->assertThat(result).hasSize(4)
+                );
             }
         }
     }
