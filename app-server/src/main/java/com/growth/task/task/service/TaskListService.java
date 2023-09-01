@@ -36,7 +36,7 @@ public class TaskListService {
                 request.getEndDate().atStartOfDay()
         );
 
-        Map<Long, TaskTodoResponse> groupingByTask = groupingByTask(taskList);
+        Map<Long, TaskTodoResponse> groupingByTask = calculateTaskTodoStatusMap(taskList);
 
         return collectToTask(taskList, groupingByTask);
     }
@@ -44,9 +44,9 @@ public class TaskListService {
     /**
      * TaskList와 Todos 진행률 Map을 TaskId로 매핑하고 중복을 제거합니다.
      *
-     * @param taskList 테스크 리스트
+     * @param taskList       테스크 리스트
      * @param groupingByTask todos 진행률 Map
-     * @return
+     * @return todos 진행률이 매핑된 Task List
      */
     public static List<TaskListResponse> collectToTask(
             List<TaskListWithTodoStatusResponse> taskList,
@@ -79,12 +79,12 @@ public class TaskListService {
      * @param taskList Task 리스트
      * @return 테스크의 진행률 Map
      */
-    public static Map<Long, TaskTodoResponse> groupingByTask(List<TaskListWithTodoStatusResponse> taskList) {
+    public Map<Long, TaskTodoResponse> calculateTaskTodoStatusMap(List<TaskListWithTodoStatusResponse> taskList) {
         return taskList.stream()
                 .collect(groupingBy(
                                 TaskListWithTodoStatusResponse::getTaskId,
                                 collectingAndThen(toList(),
-                                        TaskListService::calculateTodoStatus
+                                        tasks -> calculateTodoStatus(tasks)
                                 )
                         )
                 );
@@ -99,7 +99,7 @@ public class TaskListService {
      * @param tasks Task 리스트
      * @return Todos 진행률
      */
-    public static TaskTodoResponse calculateTodoStatus(List<TaskListWithTodoStatusResponse> tasks) {
+    public TaskTodoResponse calculateTodoStatus(List<TaskListWithTodoStatusResponse> tasks) {
         int doneCount = 0;
         int remainCount = 0;
         for (TaskListWithTodoStatusResponse task : tasks) {

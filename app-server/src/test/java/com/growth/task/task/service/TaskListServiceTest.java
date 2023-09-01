@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.growth.task.task.service.TaskListService.calculateTodoStatus;
 import static com.growth.task.task.service.TaskListService.collectToTask;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -134,7 +133,7 @@ class TaskListServiceTest {
             @Test
             @DisplayName("task id로 status 별 개수를 카운팅한 map을 리턴한다")
             void it_return_map_grouping_by_task() {
-                Map<Long, TaskTodoResponse> result = taskListService.groupingByTask(taskList);
+                Map<Long, TaskTodoResponse> result = taskListService.calculateTaskTodoStatusMap(taskList);
                 System.out.println(result);
 
                 assertAll(
@@ -142,13 +141,12 @@ class TaskListServiceTest {
                         () -> assertThat(result.get(1L).getRemain()).isEqualTo(4),
                         () -> assertThat(result.get(1L).getDone()).isEqualTo(1),
                         () -> assertThat(result.get(2L).getRemain()).isEqualTo(3),
-                        () -> assertThat(result.get(2L).getDone()).isEqualTo(0),
-                        () -> assertThat(result.get(3L).getRemain()).isEqualTo(0),
+                        () -> assertThat(result.get(2L).getDone()).isZero(),
+                        () -> assertThat(result.get(3L).getRemain()).isZero(),
                         () -> assertThat(result.get(3L).getDone()).isEqualTo(5),
-                        () -> assertThat(result.get(4L).getRemain()).isEqualTo(0),
-                        () -> assertThat(result.get(4L).getDone()).isEqualTo(0)
+                        () -> assertThat(result.get(4L).getRemain()).isZero(),
+                        () -> assertThat(result.get(4L).getDone()).isZero()
                 );
-
             }
         }
     }
@@ -173,7 +171,7 @@ class TaskListServiceTest {
                 @Test
                 @DisplayName("remain 4, done 1이 나온다")
                 void it_return_remain_4_and_done_1() {
-                    TaskTodoResponse result = calculateTodoStatus(taskList);
+                    TaskTodoResponse result = taskListService.calculateTodoStatus(taskList);
                     assertAll(
                             () -> assertThat(result.getRemain()).isEqualTo(4),
                             () -> assertThat(result.getDone()).isEqualTo(1)
@@ -192,10 +190,10 @@ class TaskListServiceTest {
                 @Test
                 @DisplayName("remain 2, done 0이 나온다")
                 void it_return_remain_2_and_done_0() {
-                    TaskTodoResponse result = calculateTodoStatus(taskList);
+                    TaskTodoResponse result = taskListService.calculateTodoStatus(taskList);
                     assertAll(
                             () -> assertThat(result.getRemain()).isEqualTo(2),
-                            () -> assertThat(result.getDone()).isEqualTo(0)
+                            () -> assertThat(result.getDone()).isZero()
                     );
                 }
             }
@@ -211,10 +209,10 @@ class TaskListServiceTest {
                 @Test
                 @DisplayName("remain 2, done 0이 나온다")
                 void it_return_remain_2_and_done_0() {
-                    TaskTodoResponse result = calculateTodoStatus(taskList);
+                    TaskTodoResponse result = taskListService.calculateTodoStatus(taskList);
                     assertAll(
                             () -> assertThat(result.getRemain()).isEqualTo(2),
-                            () -> assertThat(result.getDone()).isEqualTo(0)
+                            () -> assertThat(result.getDone()).isZero()
                     );
                 }
             }
@@ -230,9 +228,9 @@ class TaskListServiceTest {
                 @Test
                 @DisplayName("remain 0, done 2이 나온다")
                 void it_return_remain_0_and_done_2() {
-                    TaskTodoResponse result = calculateTodoStatus(taskList);
+                    TaskTodoResponse result = taskListService.calculateTodoStatus(taskList);
                     assertAll(
-                            () -> assertThat(result.getRemain()).isEqualTo(0),
+                            () -> assertThat(result.getRemain()).isZero(),
                             () -> assertThat(result.getDone()).isEqualTo(2)
                     );
                 }
@@ -248,10 +246,10 @@ class TaskListServiceTest {
                 @Test
                 @DisplayName("remain 0, done 0이 나온다")
                 void it_return_remain_0_and_done_0() {
-                    TaskTodoResponse result = calculateTodoStatus(taskList);
+                    TaskTodoResponse result = taskListService.calculateTodoStatus(taskList);
                     assertAll(
-                            () -> assertThat(result.getRemain()).isEqualTo(0),
-                            () -> assertThat(result.getDone()).isEqualTo(0)
+                            () -> assertThat(result.getRemain()).isZero(),
+                            () -> assertThat(result.getDone()).isZero()
                     );
                 }
             }
