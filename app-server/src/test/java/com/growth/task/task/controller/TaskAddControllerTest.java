@@ -3,8 +3,8 @@ package com.growth.task.task.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.task.dto.TaskAddRequest;
+import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -83,10 +83,10 @@ class TaskAddControllerTest {
         @DisplayName("존재하는 사용자 id와 Task 생성 요청 정보가 주어지면")
         class Context_with_task_request_and_existed_user {
             private final Users givenUser = getUser("test user", "password");
-            private final String taskDate = "2023-08-22T10:10:30";
+            private final String taskDate = "2023-08-22";
             private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(givenUser.getUserId())
-                    .taskDate(LocalDateTime.parse(taskDate))
+                    .taskDate(LocalDate.parse(taskDate))
                     .build();
 
             @DisplayName("Task를 생성하고, 201을 응답한다")
@@ -95,7 +95,7 @@ class TaskAddControllerTest {
                 final ResultActions resultActions = subject(taskAddRequest);
 
                 resultActions.andExpect(status().isCreated())
-                        .andExpect(jsonPath("task_date").value(taskDate))
+                        .andExpect(jsonPath("task_date").value("2023-08-22T00:00:00"))
                 ;
             }
         }
@@ -104,10 +104,10 @@ class TaskAddControllerTest {
         @DisplayName("존재하지않은 사용자 id와 Task 생성 요청 정보가 주어지면")
         class Context_with_task_request_and_not_exist_user {
             private final Long invalidId = 0L;
-            private final String taskDate = "2023-08-22T10:10:30";
+            private final String taskDate = "2023-08-22";
             private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(invalidId)
-                    .taskDate(LocalDateTime.parse(taskDate))
+                    .taskDate(LocalDate.parse(taskDate))
                     .build();
 
             @DisplayName("404를 응답한다")
@@ -123,10 +123,10 @@ class TaskAddControllerTest {
         @Nested
         @DisplayName("user 정보가 없다면")
         class Context_without_user_in_task_request {
-            private final String taskDate = "2023-08-22T10:10:30";
+            private final String taskDate = "2023-08-22";
             private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(null)
-                    .taskDate(LocalDateTime.parse(taskDate))
+                    .taskDate(LocalDate.parse(taskDate))
                     .build();
 
             @DisplayName("400를 응답한다")

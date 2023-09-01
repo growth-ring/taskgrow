@@ -1,9 +1,9 @@
 package com.growth.task.task.service;
 
 import com.growth.task.task.domain.Tasks;
-import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.task.dto.TaskAddRequest;
 import com.growth.task.task.dto.TaskAddResponse;
+import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +54,7 @@ class TaskAddServiceTest {
                     .build();
             private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(givenUser.getUserId())
-                    .taskDate(givenTask.getTaskDate())
+                    .taskDate(givenTask.getTaskDate().toLocalDate())
                     .build();
 
             @BeforeEach
