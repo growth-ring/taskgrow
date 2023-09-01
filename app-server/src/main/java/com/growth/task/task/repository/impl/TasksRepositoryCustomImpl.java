@@ -35,7 +35,6 @@ public class TasksRepositoryCustomImpl implements TasksRepositoryCustom {
                         tasks.user.userId.eq(userId)
                                 .and(tasks.taskDate.between(startDate, endDate))
                 )
-                .groupBy(tasks.taskId)
                 .fetch()
                 ;
     }
