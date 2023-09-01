@@ -8,9 +8,19 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('');
 
-  const handleToggleModal = () => {
-    getShowAddTodos(false);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (+planCount > 0) {
+      getShowAddTodos(false);
+    } else {
+      alert('1 이상의 숫자를 넣어주세요');
+    }
   };
+
+  const handleClose = () => {
+    getShowAddTodos(false);
+  }
 
   const handleTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
@@ -30,19 +40,17 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
       >
         <div className="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
           <div
-            onClick={handleToggleModal}
+            onClick={handleClose}
             className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40"
             aria-hidden="true"
           ></div>
 
           <div className="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
             <div className="flex items-center justify-between space-x-4">
-              <h1 className="text-xl font-medium text-gray-800 ">
-                할 일 추가
-              </h1>
+              <h1 className="text-xl font-medium text-gray-800 ">할 일 추가</h1>
 
               <button
-                onClick={handleToggleModal}
+                onClick={handleClose}
                 className="text-gray-600 focus:outline-none hover:text-gray-700"
               >
                 <svg
@@ -66,7 +74,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
               <hr />
             </p>
 
-            <form className="mt-5">
+            <form className="mt-5" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="todo"
@@ -78,6 +86,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
                   id="todo"
                   name="todo"
                   type="text"
+                  required
                   placeholder=""
                   value={todo}
                   onChange={handleTodoChange}
@@ -96,6 +105,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
                   id="teammateEmail"
                   name="teammateEmail"
                   type="number"
+                  required
                   placeholder="25분 기본"
                   value={planCount}
                   onChange={handlePlanCountChange}
@@ -104,10 +114,13 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
               </div>
 
               <div className="flex justify-end mt-6">
-                <button type="submit" className="px-3 py-2 text-sm tracking-wide bg-main-color text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50">
-                    추가하기
+                <button
+                  type="submit"
+                  className="px-3 py-2 text-sm tracking-wide bg-main-color text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50"
+                >
+                  추가하기
                 </button>
-            </div>
+              </div>
             </form>
           </div>
         </div>
