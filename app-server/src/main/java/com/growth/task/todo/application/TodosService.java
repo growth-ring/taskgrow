@@ -48,7 +48,7 @@ public class TodosService {
 
     private List<Todos> validateTaskAndFetchTodos(Long taskId) {
         if(!tasksRepository.existsById(taskId)) {
-            throw new TaskNotFoundException();
+            throw new TaskNotFoundException(taskId);
         }
         return todosRepository.findByTask_TaskId(taskId);
     }

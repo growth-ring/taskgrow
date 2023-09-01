@@ -47,7 +47,7 @@ public class ControllerErrorAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(TaskNotFoundException.class)
     public String handleTaskNotFoundException(TaskNotFoundException exception) {
-        log.error("TaskNotFoundException", exception);
+        log.error("TaskNotFoundException: taskId={}", exception.getTaskId());
         return exception.getMessage();
     }
 }
