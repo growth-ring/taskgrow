@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Task 생성 POST 요청은" tests="0" skipped="0" failures="0" errors="0" timestamp="1970-01-01T00:00:00" hostname="caoyus-MacBook-Pro.local" time="0.0">
+  <properties/>
+  <system-out><![CDATA[2023-09-01T17:51:38.354+09:00  INFO 69150 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.growth.task.task.controller.TaskAddControllerTest$Describe_POST]: Describe_POST does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2023-09-01T17:51:38.361+09:00  INFO 69150 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.growth.task.TaskApplication for test class com.growth.task.task.controller.TaskAddControllerTest$Describe_POST
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Task 생성 정보가 주어지면" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-09-01T08:51:40" hostname="caoyus-MacBook-Pro.local" time="0.464">
+  <properties/>
+  <testcase name="테스트를 생성하고 응답객체를 리턴한다" classname="com.growth.task.task.service.TaskAddServiceTest$Describe_save$Context_wiht_task_info" time="0.464"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

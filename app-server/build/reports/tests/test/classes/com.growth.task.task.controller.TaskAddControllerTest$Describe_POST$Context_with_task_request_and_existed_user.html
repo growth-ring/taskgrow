@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - 존재하는 사용자 id와 Task 생성 요청 정보가 주어지면</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>존재하는 사용자 id와 Task 생성 요청 정보가 주어지면</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.growth.task.task.controller.html">com.growth.task.task.controller</a> &gt; TaskAddControllerTest$Describe_POST$Context_with_task_request_and_existed_user</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.079s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">Task를 생성하고, 201을 응답한다</td>
+<td class="success">it_response_201()</td>
+<td class="success">0.079s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2023-09-01T17:51:40.511+09:00  INFO 69150 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.growth.task.task.controller.TaskAddControllerTest$Describe_POST$Context_with_task_request_and_existed_user]: Context_with_task_request_and_existed_user does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2023-09-01T17:51:40.518+09:00  INFO 69150 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.growth.task.TaskApplication for test class com.growth.task.task.controller.TaskAddControllerTest$Describe_POST$Context_with_task_request_and_existed_user
+Hibernate: 
+    insert 
+    into
+        users
+        (created_at,name,password,updated_at,user_id) 
+    values
+        (?,?,?,?,default)
+2023-09-01T17:51:40.557+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [TIMESTAMP] - [2023-09-01T17:51:40.543019]
+2023-09-01T17:51:40.559+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [2] as [VARCHAR] - [test user]
+2023-09-01T17:51:40.559+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [3] as [VARCHAR] - [password]
+2023-09-01T17:51:40.559+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [4] as [TIMESTAMP] - [2023-09-01T17:51:40.543130]
+2023-09-01T17:51:40.583+09:00  INFO 69150 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2023-09-01T17:51:40.583+09:00  INFO 69150 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2023-09-01T17:51:40.584+09:00  INFO 69150 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.user_id=?
+2023-09-01T17:51:40.588+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [BIGINT] - [1]
+Hibernate: 
+    select
+        t1_0.task_id,
+        t1_0.created_at,
+        t1_0.task_date,
+        t1_0.updated_at,
+        t1_0.user_id 
+    from
+        tasks t1_0 
+    where
+        t1_0.task_id=?
+2023-09-01T17:51:40.597+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [BIGINT] - [0]
+Hibernate: 
+    insert 
+    into
+        tasks
+        (created_at,task_date,updated_at,user_id,task_id) 
+    values
+        (?,?,?,?,default)
+2023-09-01T17:51:40.599+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [TIMESTAMP] - [2023-09-01T17:51:40.599095]
+2023-09-01T17:51:40.599+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [2] as [TIMESTAMP] - [2023-08-22T10:10:30]
+2023-09-01T17:51:40.599+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [3] as [TIMESTAMP] - [2023-09-01T17:51:40.599114]
+2023-09-01T17:51:40.599+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [4] as [BIGINT] - [1]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/v1/tasks
+       Parameters = {}
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;, Accept:&quot;application/json&quot;, Content-Length:&quot;46&quot;]
+             Body = {&quot;user_id&quot;:1,&quot;task_date&quot;:[2023,8,22,10,10,30]}
+    Session Attrs = {}
+
+Handler:
+             Type = com.growth.task.task.controller.TaskAddController
+           Method = com.growth.task.task.controller.TaskAddController#create(TaskAddRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Content-Type:&quot;application/json;charset=UTF-8&quot;]
+     Content type = application/json;charset=UTF-8
+             Body = {&quot;task_id&quot;:1,&quot;user_id&quot;:1,&quot;task_date&quot;:&quot;2023-08-22T10:10:30&quot;,&quot;created_at&quot;:&quot;2023-09-01T17:51:40.599095&quot;}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+Hibernate: 
+    select
+        t1_0.task_id,
+        t1_0.created_at,
+        t1_0.task_date,
+        t1_0.updated_at,
+        t1_0.user_id 
+    from
+        tasks t1_0
+Hibernate: 
+    delete 
+    from
+        tasks 
+    where
+        task_id=?
+2023-09-01T17:51:40.637+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [BIGINT] - [1]
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.updated_at 
+    from
+        users u1_0
+Hibernate: 
+    delete 
+    from
+        users 
+    where
+        user_id=?
+2023-09-01T17:51:40.650+09:00 TRACE 69150 --- [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter [1] as [BIGINT] - [1]
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.2.1</a> at 2023. 9. 1. 오후 5:51:42</p>
+</div>
+</div>
+</body>
+</html>
