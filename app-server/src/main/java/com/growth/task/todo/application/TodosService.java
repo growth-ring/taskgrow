@@ -2,7 +2,7 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.domain.PomodorosRepository;
-import com.growth.task.task.domain.TasksRepository;
+import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.domain.TodosRepository;
 import com.growth.task.todo.dto.response.TodoGetResponse;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class TodosService {
 
-    private TodosRepository todosRepository;
-    private PomodorosRepository pomodorosRepository;
-    private TasksRepository tasksRepository;
+    private final TodosRepository todosRepository;
+    private final PomodorosRepository pomodorosRepository;
+    private final TasksRepository tasksRepository;
 
     public TodosService(
-            TodosRepository todosRepository, 
-            PomodorosRepository pomodorosRepository, 
+            TodosRepository todosRepository,
+            PomodorosRepository pomodorosRepository,
             TasksRepository tasksRepository
     ) {
         this.todosRepository = todosRepository;
@@ -60,7 +60,7 @@ public class TodosService {
     }
 
     private List<Todos> validateTaskAndFetchTodos(Long taskId) {
-        if(!tasksRepository.existsById(taskId)) {
+        if (!tasksRepository.existsById(taskId)) {
             throw new TaskNotFoundException(taskId);
         }
         return todosRepository.findByTask_TaskId(taskId);

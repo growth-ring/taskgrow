@@ -60,7 +60,7 @@ public class ControllerErrorAdvice {
         log.error("TaskNotFoundException: taskId={}", exception.getTaskId());
         return exception.getMessage();
     }
-}
+
     /**
      * javax.validation.Valid or @Validated으로 binding error 발생 시 발생한다.
      */
