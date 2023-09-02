@@ -95,10 +95,10 @@ class TaskDetailControllerTest {
     }
 
     @Nested
-    @DisplayName("GET /api/v1/tasks/{taskId} 요청은")
+    @DisplayName("GET /api/v1/tasks/{taskId}/todos 요청은")
     class Describe_GET {
         private ResultActions subject(Long taskId) throws Exception {
-            return mockMvc.perform(get("/api/v1/tasks/{taskId}", taskId));
+            return mockMvc.perform(get("/api/v1/tasks/{taskId}/todos", taskId));
         }
 
         private Users user;
