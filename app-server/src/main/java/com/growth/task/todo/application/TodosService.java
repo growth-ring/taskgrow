@@ -34,7 +34,7 @@ public class TodosService {
     public List<TodoGetResponse> getTodosByTaskId(Long taskId) {
         List<Todos> todosEntities = validateTaskAndFetchTodos(taskId);
 
-        // Todo 가 없으면 빈 리스트 반환
+        // Todo가 없으면 빈 리스트 반환
         if (todosEntities.isEmpty()) {
             return Collections.emptyList();
         }
@@ -64,5 +64,19 @@ public class TodosService {
             throw new TaskNotFoundException(taskId);
         }
         return todosRepository.findByTask_TaskId(taskId);
+    }
+
+    /**
+     * Task Id에 해당하는 투두 내용을 최대 3개 가져와 리턴합니다
+     *
+     * @param taskId 테스크 아이디
+     * @return 투두 내용 리스트
+     */
+    public List<String> getTodosTop3ByTaskId(Long taskId) {
+        List<String> todos = todosRepository.findTop3ByTask_TaskId(taskId)
+                .stream()
+                .map(Todos::getTodo)
+                .toList();
+        return todos;
     }
 }
