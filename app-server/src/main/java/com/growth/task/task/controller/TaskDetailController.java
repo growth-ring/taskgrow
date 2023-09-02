@@ -21,7 +21,7 @@ public class TaskDetailController {
         this.taskDetailService = taskDetailService;
     }
 
-    @GetMapping("/{taskId}")
+    @GetMapping("/{taskId}/todos")
     @ResponseStatus(OK)
     public TaskDetailResponse getTask(@PathVariable("taskId") Long taskId) {
         return taskDetailService.getTask(taskId);
