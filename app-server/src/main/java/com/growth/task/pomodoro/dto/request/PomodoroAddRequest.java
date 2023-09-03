@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PomodoroAddRequest {
 
-    private int performCount;
+    private int performCount = 0;
     @NotNull(message = "계획 횟수는 필수 입력 값입니다.")
     private int planCount;
 
