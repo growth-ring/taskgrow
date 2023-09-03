@@ -8,7 +8,7 @@ import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
-import com.growth.task.todo.dto.composite.CompositeAddResponse;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
 import com.growth.task.todo.dto.request.TodoAddRequest;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.dto.response.TodoListResponse;
@@ -220,7 +220,7 @@ public class TodosServiceTest {
             @Test
             @DisplayName("정상적으로 저장하고 CompositeAddResponse 를 반환한다.")
             void It_shouldSaveAndReturnCompositeResponse() {
-                CompositeAddResponse response = todosService.save(todoAndPomodoroAddRequest);
+                TodoAndPomodoroAddResponse response = todosService.save(todoAndPomodoroAddRequest);
 
                 assertAll(
                         () -> assertThat(response.getTodoAddResponse().getTodoId()).isEqualTo(TODO_ID1),

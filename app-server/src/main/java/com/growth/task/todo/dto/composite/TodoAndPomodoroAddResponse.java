@@ -9,12 +9,12 @@ import lombok.Getter;
 
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CompositeAddResponse {
+public class TodoAndPomodoroAddResponse {
     private TodoAddResponse todoAddResponse;
     private PomodoroAddResponse pomodoroAddResponse;
 
     @Builder
-    public CompositeAddResponse(TodoAddResponse todoAddResponse, PomodoroAddResponse pomodoroAddResponse) {
+    public TodoAndPomodoroAddResponse(TodoAddResponse todoAddResponse, PomodoroAddResponse pomodoroAddResponse) {
         this.todoAddResponse = todoAddResponse;
         this.pomodoroAddResponse = pomodoroAddResponse;
     }

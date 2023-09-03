@@ -7,7 +7,7 @@ import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
-import com.growth.task.todo.dto.composite.CompositeAddResponse;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
 import com.growth.task.todo.dto.response.TodoAddResponse;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.dto.response.TodoListResponse;
@@ -91,12 +91,12 @@ public class TodosService {
         return todos;
     }
 
-    public CompositeAddResponse save(TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
+    public TodoAndPomodoroAddResponse save(TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
         Todos todos = todoService.save(todoAndPomodoroAddRequest.getTodoAddRequest());
         Pomodoros pomodoros = pomodoroService.save(todoAndPomodoroAddRequest.getPomodoroAddRequest(), todos);
 
         TodoAddResponse todoAddResponse = new TodoAddResponse(todos);
         PomodoroAddResponse pomodoroAddResponse = new PomodoroAddResponse(pomodoros);
-        return new CompositeAddResponse(todoAddResponse, pomodoroAddResponse);
+        return new TodoAndPomodoroAddResponse(todoAddResponse, pomodoroAddResponse);
     }
 }

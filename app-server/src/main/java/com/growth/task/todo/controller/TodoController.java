@@ -2,7 +2,7 @@ package com.growth.task.todo.controller;
 
 import com.growth.task.todo.application.TodosService;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
-import com.growth.task.todo.dto.composite.CompositeAddResponse;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
 import com.growth.task.todo.dto.response.TodoListResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class TodoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompositeAddResponse create(@RequestBody @Valid TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
+    public TodoAndPomodoroAddResponse create(@RequestBody @Valid TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
         return todosService.save(todoAndPomodoroAddRequest);
     }
 }
