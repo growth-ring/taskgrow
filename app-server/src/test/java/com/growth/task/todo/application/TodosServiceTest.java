@@ -2,10 +2,15 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.domain.PomodorosRepository;
+import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
+import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.domain.TodosRepository;
+import com.growth.task.todo.dto.composite.CompositeAddRequest;
+import com.growth.task.todo.dto.composite.CompositeAddResponse;
+import com.growth.task.todo.dto.request.TodoAddRequest;
+import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.dto.response.TodoGetResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -13,18 +18,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TodosServiceTest {
 
     @Mock
@@ -36,23 +47,38 @@ public class TodosServiceTest {
     @Mock
     private TasksRepository tasksRepository;
 
-    @InjectMocks
+    private TodoService todoService;
+
+    private PomodoroService pomodoroService;
+
     private TodosService todosService;
 
-    private static final Long TASK_ID = 1L;
-    private static final Long TODO_ID1 = 1L;
-    private static final Long TODO_ID2 = 2L;
-    private static final Long POMODORO_ID1 = 1L;
-    private static final Long POMODORO_ID2 = 2L;
+    private final Long TASK_ID = 1L;
+    private final Long TODO_ID1 = 1L;
+    private final Long TODO_ID2 = 2L;
+    private final Long POMODORO_ID1 = 1L;
+    private final Long POMODORO_ID2 = 2L;
+    private final String WHAT_TO_DO1 = "디자인패턴의 아름다움 스터디";
+    private final String WHAT_TO_DO2 = "프로젝트 진행하기";
+    private final int POMODORO_PERFORM_COUNT1 = 0;
+    private final int POMODORO_PERFORM_COUNT2 = 1;
+    private final int POMODORO_PLAN_COUNT1 = 1;
+    private final int POMODORO_PLAN_COUNT2 = 2;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        todoService = mock(TodoService.class);
+        pomodoroService = mock(PomodoroService.class);
+        todosService = new TodosService(todosRepository, pomodorosRepository, tasksRepository, todoService, pomodoroService);
     }
+
 
     @DisplayName("getTodosByTaskId 메서드는")
     @Nested
     class Describe_getTodosByTaskId {
+        private final Tasks tasks = Tasks.builder()
+                .taskId(1L)
+                .build();
 
         @Nested
         @DisplayName("taskId 로 Tasks 가 확인되지 않는 경우")
@@ -60,7 +86,7 @@ public class TodosServiceTest {
 
             @BeforeEach
             void setup() {
-                when(tasksRepository.existsById(TASK_ID)).thenReturn(false);
+                given(tasksRepository.existsById(TASK_ID)).willReturn(false);
             }
 
             @Test
@@ -76,8 +102,8 @@ public class TodosServiceTest {
 
             @BeforeEach
             void setup() {
-                when(tasksRepository.existsById(TASK_ID)).thenReturn(true);
-                when(todosRepository.findByTask_TaskId(TASK_ID)).thenReturn(Collections.emptyList());
+                given(tasksRepository.existsById(TASK_ID)).willReturn(true);
+                given(todosRepository.findByTask_TaskId(TASK_ID)).willReturn(Collections.emptyList());
             }
 
             @Test
@@ -91,54 +117,123 @@ public class TodosServiceTest {
         @Nested
         @DisplayName("유효한 taskId 와 Todos 가 있는 경우")
         class Context_withValidTaskIdAndTodos {
+            private final Todos todos1 = Todos.builder()
+                    .todoId(TODO_ID1)
+                    .task(tasks)
+                    .todo(WHAT_TO_DO1)
+                    .status(Status.READY)
+                    .build();
+            private final Todos todos2 = Todos.builder()
+                    .todoId(TODO_ID2)
+                    .task(tasks)
+                    .todo(WHAT_TO_DO2)
+                    .status(Status.PROGRESS)
+                    .build();
+            private final Pomodoros pomodoro1 = Pomodoros.builder()
+                    .pomodoroId(POMODORO_ID1)
+                    .todo(todos1)
+                    .performCount(POMODORO_PERFORM_COUNT1)
+                    .planCount(POMODORO_PLAN_COUNT1)
+                    .build();
+            private final Pomodoros pomodoro2 = Pomodoros.builder()
+                    .pomodoroId(POMODORO_ID2)
+                    .todo(todos2)
+                    .performCount(POMODORO_PERFORM_COUNT2)
+                    .planCount(POMODORO_PLAN_COUNT2)
+                    .build();
 
             @BeforeEach
             void setUp() {
-                setUpMocks();
+                List<Todos> mockedTodos = Arrays.asList(todos1, todos2);
+                List<Pomodoros> mockedPomodoros = Arrays.asList(pomodoro1, pomodoro2);
+                List<Long> todoIds = Arrays.asList(TODO_ID1, TODO_ID2);
+
+                given(tasksRepository.existsById(TASK_ID)).willReturn(true);
+                given(todosRepository.findByTask_TaskId(TASK_ID)).willReturn(mockedTodos);
+                given(pomodorosRepository.findAllByTodo_TodoIdIn(todoIds)).willReturn(mockedPomodoros);
             }
 
             @Test
             @DisplayName("TodoGetResponse 리스트를 반환한다.")
             void It_shouldReturnTodoGetResponseList() {
                 List<TodoGetResponse> result = todosService.getTodosByTaskId(TASK_ID);
-                verifyTodoGetResponseList(result, TASK_ID);
+
+                assertThat(result.size()).isEqualTo(2);
+
+                TodoGetResponse firstResponse = result.get(0);
+                assertThat(firstResponse.getTodoId()).isEqualTo(TODO_ID1);
+                assertThat(firstResponse.getTaskId()).isEqualTo(TASK_ID);
+                assertThat(firstResponse.getTodo()).isEqualTo(WHAT_TO_DO1);
+                assertThat(firstResponse.getStatus()).isEqualTo(Status.READY);
+                assertThat(firstResponse.getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT1);
+                assertThat(firstResponse.getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT1);
+
+                TodoGetResponse secondResponse = result.get(1);
+                assertThat(secondResponse.getTodoId()).isEqualTo(TODO_ID2);
+                assertThat(secondResponse.getTaskId()).isEqualTo(TASK_ID);
+                assertThat(secondResponse.getTodo()).isEqualTo(WHAT_TO_DO2);
+                assertThat(secondResponse.getStatus()).isEqualTo(Status.PROGRESS);
+                assertThat(secondResponse.getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT2);
+                assertThat(secondResponse.getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT2);
             }
         }
     }
 
-    private void setUpMocks() {
-        Tasks tasks = Tasks.builder().taskId(TASK_ID).build();
-        Todos todo1 = Todos.builder().todoId(TODO_ID1).task(tasks).todo("디자인패턴의 아름다움 스터디").status(Status.READY).build();
-        Todos todo2 = Todos.builder().todoId(TODO_ID2).task(tasks).todo("프로젝트 진행하기").status(Status.PROGRESS).build();
-        Pomodoros pomodoro1 = Pomodoros.builder().pomodoroId(POMODORO_ID1).todo(todo1).performCount(0).planCount(1).build();
-        Pomodoros pomodoro2 = Pomodoros.builder().pomodoroId(POMODORO_ID2).todo(todo2).performCount(1).planCount(2).build();
+    @Nested
+    @DisplayName("save 메서드는")
+    class Describe_save {
 
-        List<Todos> mockedTodos = Arrays.asList(todo1, todo2);
-        List<Pomodoros> mockedPomodoros = Arrays.asList(pomodoro1, pomodoro2);
-        List<Long> todoIds = Arrays.asList(TODO_ID1, TODO_ID2);
+        @Nested
+        @DisplayName("Todo 및 Pomodoro 정보가 주어지면")
+        class Context_whenTaskAndPomodoroExists {
+            private final Tasks tasks = Tasks.builder()
+                    .taskId(TASK_ID)
+                    .build();
+            private final Todos todos1 = Todos.builder()
+                    .todoId(TODO_ID1)
+                    .task(tasks)
+                    .todo(WHAT_TO_DO1)
+                    .status(Status.READY)
+                    .build();
+            private final Pomodoros pomodoro1 = Pomodoros.builder()
+                    .todo(todos1)
+                    .performCount(POMODORO_PERFORM_COUNT1)
+                    .planCount(POMODORO_PLAN_COUNT1)
+                    .build();
+            private final TodoAddRequest todoAddRequest = TodoAddRequest.builder()
+                    .taskId(tasks.getTaskId())
+                    .todo(WHAT_TO_DO1)
+                    .build();
+            private final PomodoroAddRequest pomodoroAddRequest = PomodoroAddRequest.builder()
+                    .performCount(POMODORO_PERFORM_COUNT1)
+                    .planCount(POMODORO_PLAN_COUNT1)
+                    .build();
+            private final CompositeAddRequest compositeAddRequest = CompositeAddRequest.builder()
+                    .todoAddRequest(todoAddRequest)
+                    .pomodoroAddRequest(pomodoroAddRequest)
+                    .build();
 
-        when(tasksRepository.existsById(TASK_ID)).thenReturn(true);
-        when(todosRepository.findByTask_TaskId(TASK_ID)).thenReturn(mockedTodos);
-        when(pomodorosRepository.findAllByTodo_TodoIdIn(todoIds)).thenReturn(mockedPomodoros);
-    }
+            @BeforeEach
+            void setUp() {
+                lenient().when(tasksRepository.findById(TASK_ID)).thenReturn(Optional.of(tasks));
+                lenient().when(todoService.save(compositeAddRequest.getTodoAddRequest())).thenReturn(todos1);
+                lenient().when(pomodoroService.save(compositeAddRequest.getPomodoroAddRequest(), todos1)).thenReturn(pomodoro1);
+            }
 
-    private void verifyTodoGetResponseList(List<TodoGetResponse> result, Long taskId) {
-        assertThat(result.size()).isEqualTo(2);
+            @Test
+            @DisplayName("정상적으로 저장하고 CompositeAddResponse 를 반환한다.")
+            void It_shouldSaveAndReturnCompositeResponse() {
+                CompositeAddResponse response = todosService.save(compositeAddRequest);
 
-        TodoGetResponse firstResponse = result.get(0);
-        assertThat(firstResponse.getTodoId()).isEqualTo(TODO_ID1);
-        assertThat(firstResponse.getTaskId()).isEqualTo(taskId);
-        assertThat(firstResponse.getTodo()).isEqualTo("디자인패턴의 아름다움 스터디");
-        assertThat(firstResponse.getStatus()).isEqualTo(Status.READY);
-        assertThat(firstResponse.getPerformCount()).isEqualTo(0);
-        assertThat(firstResponse.getPlanCount()).isEqualTo(1);
-
-        TodoGetResponse secondResponse = result.get(1);
-        assertThat(secondResponse.getTodoId()).isEqualTo(TODO_ID2);
-        assertThat(secondResponse.getTaskId()).isEqualTo(taskId);
-        assertThat(secondResponse.getTodo()).isEqualTo("프로젝트 진행하기");
-        assertThat(secondResponse.getStatus()).isEqualTo(Status.PROGRESS);
-        assertThat(secondResponse.getPerformCount()).isEqualTo(1);
-        assertThat(secondResponse.getPlanCount()).isEqualTo(2);
+                assertAll(
+                        () -> assertThat(response.getTodoAddResponse().getTodoId()).isEqualTo(TODO_ID1),
+                        () -> assertThat(response.getTodoAddResponse().getTaskId()).isEqualTo(TASK_ID),
+                        () -> assertThat(response.getTodoAddResponse().getTodo()).isEqualTo(WHAT_TO_DO1),
+                        () -> assertThat(response.getTodoAddResponse().getStatus()).isEqualTo(Status.READY),
+                        () -> assertThat(response.getPomodoroAddResponse().getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT1),
+                        () -> assertThat(response.getPomodoroAddResponse().getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT1)
+                );
+            }
+        }
     }
 }
