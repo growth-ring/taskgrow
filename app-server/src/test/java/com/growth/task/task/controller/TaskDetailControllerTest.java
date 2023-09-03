@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.domain.TodosRepository;
+import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
