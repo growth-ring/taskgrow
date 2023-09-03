@@ -1,7 +1,7 @@
 package com.growth.task.todo.controller;
 
 import com.growth.task.todo.application.TodosService;
-import com.growth.task.todo.dto.response.TodoGetResponse;
+import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.enums.Status;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ class TodoControllerIntegrationTest {
 
     @Test
     public void getTodosTest() throws Exception {
-        TodoGetResponse todo1 = new TodoGetResponse(1L, 1L, "디자인패턴의 아름다움 스터디", Status.READY, 1, 2);
-        TodoGetResponse todo2 = new TodoGetResponse(2L, 1L, "프로젝트 진행하기", Status.PROGRESS, 1, 2);
-        List<TodoGetResponse> todoList = Arrays.asList(todo1, todo2);
+        TodoListResponse todo1 = new TodoListResponse(1L, 1L, "디자인패턴의 아름다움 스터디", Status.READY, 1, 2);
+        TodoListResponse todo2 = new TodoListResponse(2L, 1L, "프로젝트 진행하기", Status.PROGRESS, 1, 2);
+        List<TodoListResponse> todoList = Arrays.asList(todo1, todo2);
         when(todosService.getTodosByTaskId(1L)).thenReturn(todoList);
 
         mockMvc.perform(get("/api/v1/todos").param("id", "1"))

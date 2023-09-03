@@ -11,7 +11,7 @@ import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.CompositeAddResponse;
 import com.growth.task.todo.dto.request.TodoAddRequest;
 import com.growth.task.todo.repository.TodosRepository;
-import com.growth.task.todo.dto.response.TodoGetResponse;
+import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,7 +106,7 @@ public class TodosServiceTest {
             @Test
             @DisplayName("빈 리스트를 반환한다.")
             void It_returns_emptyList() {
-                List<TodoGetResponse> result = todosService.getTodosByTaskId(TASK_ID);
+                List<TodoListResponse> result = todosService.getTodosByTaskId(TASK_ID);
                 assertThat(result).isEmpty();
             }
         }
@@ -153,11 +153,11 @@ public class TodosServiceTest {
             @Test
             @DisplayName("TodoGetResponse 리스트를 반환한다.")
             void It_shouldReturnTodoGetResponseList() {
-                List<TodoGetResponse> result = todosService.getTodosByTaskId(TASK_ID);
+                List<TodoListResponse> result = todosService.getTodosByTaskId(TASK_ID);
 
                 assertThat(result.size()).isEqualTo(2);
 
-                TodoGetResponse firstResponse = result.get(0);
+                TodoListResponse firstResponse = result.get(0);
                 assertThat(firstResponse.getTodoId()).isEqualTo(TODO_ID1);
                 assertThat(firstResponse.getTaskId()).isEqualTo(TASK_ID);
                 assertThat(firstResponse.getTodo()).isEqualTo(WHAT_TO_DO1);
@@ -165,7 +165,7 @@ public class TodosServiceTest {
                 assertThat(firstResponse.getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT1);
                 assertThat(firstResponse.getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT1);
 
-                TodoGetResponse secondResponse = result.get(1);
+                TodoListResponse secondResponse = result.get(1);
                 assertThat(secondResponse.getTodoId()).isEqualTo(TODO_ID2);
                 assertThat(secondResponse.getTaskId()).isEqualTo(TASK_ID);
                 assertThat(secondResponse.getTodo()).isEqualTo(WHAT_TO_DO2);

@@ -10,7 +10,7 @@ import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.CompositeAddResponse;
 import com.growth.task.todo.dto.response.TodoAddResponse;
 import com.growth.task.todo.repository.TodosRepository;
-import com.growth.task.todo.dto.response.TodoGetResponse;
+import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,7 @@ public class TodosService {
         this.pomodoroService = pomodoroService;
     }
 
-    public List<TodoGetResponse> getTodosByTaskId(Long taskId) {
+    public List<TodoListResponse> getTodosByTaskId(Long taskId) {
         List<Todos> todosEntities = validateTaskAndFetchTodos(taskId);
 
         // Todo가 없으면 빈 리스트 반환
@@ -65,7 +65,7 @@ public class TodosService {
         return todosEntities.stream()
                 .map(todo -> {
                     Pomodoros pomodoro = pomodorosMap.get(todo.getTodoId());
-                    return new TodoGetResponse(todo, pomodoro);
+                    return new TodoListResponse(todo, pomodoro);
                 })
                 .collect(Collectors.toList());
     }
