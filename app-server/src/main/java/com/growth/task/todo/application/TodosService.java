@@ -2,9 +2,14 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.domain.PomodorosRepository;
+import com.growth.task.pomodoro.dto.response.PomodoroAddResponse;
+import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.domain.TodosRepository;
+import com.growth.task.todo.dto.composite.CompositeAddRequest;
+import com.growth.task.todo.dto.composite.CompositeAddResponse;
+import com.growth.task.todo.dto.response.TodoAddResponse;
+import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.dto.response.TodoGetResponse;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
@@ -20,15 +25,21 @@ public class TodosService {
     private final TodosRepository todosRepository;
     private final PomodorosRepository pomodorosRepository;
     private final TasksRepository tasksRepository;
+    private final TodoService todoService;
+    private final PomodoroService pomodoroService;
 
     public TodosService(
             TodosRepository todosRepository,
             PomodorosRepository pomodorosRepository,
-            TasksRepository tasksRepository
+            TasksRepository tasksRepository,
+            TodoService todoService,
+            PomodoroService pomodoroService
     ) {
         this.todosRepository = todosRepository;
         this.pomodorosRepository = pomodorosRepository;
         this.tasksRepository = tasksRepository;
+        this.todoService = todoService;
+        this.pomodoroService = pomodoroService;
     }
 
     public List<TodoGetResponse> getTodosByTaskId(Long taskId) {
@@ -78,5 +89,14 @@ public class TodosService {
                 .map(Todos::getTodo)
                 .toList();
         return todos;
+    }
+
+    public CompositeAddResponse save(CompositeAddRequest compositeAddRequest) {
+        Todos todos = todoService.save(compositeAddRequest.getTodoAddRequest());
+        Pomodoros pomodoros = pomodoroService.save(compositeAddRequest.getPomodoroAddRequest(), todos);
+
+        TodoAddResponse todoAddResponse = new TodoAddResponse(todos);
+        PomodoroAddResponse pomodoroAddResponse = new PomodoroAddResponse(pomodoros);
+        return new CompositeAddResponse(todoAddResponse, pomodoroAddResponse);
     }
 }
