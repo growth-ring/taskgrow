@@ -1,5 +1,6 @@
-package com.growth.task.todo.domain;
+package com.growth.task.todo.repository;
 
+import com.growth.task.todo.domain.Todos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
