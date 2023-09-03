@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class TodoAddRequest {
     @NotNull(message = "task 아이디는 필수 입력 값입니다.")
     private Long taskId;
-    @NotNull(message = "테스크 날짜는 필수 입력 값입니다.")
+    @NotNull(message = "할 일은 필수 입력 값입니다.")
     private String todo;
 
     @Builder
