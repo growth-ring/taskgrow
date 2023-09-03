@@ -22,8 +22,8 @@ public class TodoController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TodoGetResponse> getTodos(@RequestParam(required = true) Long id) {
-        return todosService.getTodosByTaskId(id);
+    public List<TodoGetResponse> getTodos(@RequestParam(required = true) Long taskId) {
+        return todosService.getTodosByTaskId(taskId);
     }
 
     @PostMapping
