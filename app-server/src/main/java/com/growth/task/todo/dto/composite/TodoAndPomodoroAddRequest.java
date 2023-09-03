@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class CompositeAddRequest {
+public class TodoAndPomodoroAddRequest {
     @Valid
     private TodoAddRequest todoAddRequest;
 
@@ -18,7 +18,7 @@ public class CompositeAddRequest {
     private PomodoroAddRequest pomodoroAddRequest;
 
     @Builder
-    public CompositeAddRequest(TodoAddRequest todoAddRequest, PomodoroAddRequest pomodoroAddRequest) {
+    public TodoAndPomodoroAddRequest(TodoAddRequest todoAddRequest, PomodoroAddRequest pomodoroAddRequest) {
         this.todoAddRequest = todoAddRequest;
         this.pomodoroAddRequest = pomodoroAddRequest;
     }

@@ -7,7 +7,7 @@ import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.dto.composite.CompositeAddRequest;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.CompositeAddResponse;
 import com.growth.task.todo.dto.request.TodoAddRequest;
 import com.growth.task.todo.repository.TodosRepository;
@@ -205,7 +205,7 @@ public class TodosServiceTest {
                     .performCount(POMODORO_PERFORM_COUNT1)
                     .planCount(POMODORO_PLAN_COUNT1)
                     .build();
-            private final CompositeAddRequest compositeAddRequest = CompositeAddRequest.builder()
+            private final TodoAndPomodoroAddRequest todoAndPomodoroAddRequest = TodoAndPomodoroAddRequest.builder()
                     .todoAddRequest(todoAddRequest)
                     .pomodoroAddRequest(pomodoroAddRequest)
                     .build();
@@ -213,14 +213,14 @@ public class TodosServiceTest {
             @BeforeEach
             void setUp() {
                 lenient().when(tasksRepository.findById(TASK_ID)).thenReturn(Optional.of(tasks));
-                lenient().when(todoService.save(compositeAddRequest.getTodoAddRequest())).thenReturn(todos1);
-                lenient().when(pomodoroService.save(compositeAddRequest.getPomodoroAddRequest(), todos1)).thenReturn(pomodoro1);
+                lenient().when(todoService.save(todoAndPomodoroAddRequest.getTodoAddRequest())).thenReturn(todos1);
+                lenient().when(pomodoroService.save(todoAndPomodoroAddRequest.getPomodoroAddRequest(), todos1)).thenReturn(pomodoro1);
             }
 
             @Test
             @DisplayName("정상적으로 저장하고 CompositeAddResponse 를 반환한다.")
             void It_shouldSaveAndReturnCompositeResponse() {
-                CompositeAddResponse response = todosService.save(compositeAddRequest);
+                CompositeAddResponse response = todosService.save(todoAndPomodoroAddRequest);
 
                 assertAll(
                         () -> assertThat(response.getTodoAddResponse().getTodoId()).isEqualTo(TODO_ID1),
