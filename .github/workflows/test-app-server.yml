@@ -36,4 +36,4 @@ jobs:
         run: cd app-server && chmod +x gradlew
 
       - name: Spring Test
-        run: ./gradlew test
+        run: cd app-server && ./gradlew test
