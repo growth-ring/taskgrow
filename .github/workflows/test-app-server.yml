@@ -40,7 +40,7 @@ jobs:
 
       - name: Compress all report files
         if: ${{ failure() }}
-        run: cat /home/runner/work/maf/maf/app-server/build/reports/tests/test/index.html
+        run: cat /home/runner/work/taskgrow/taskgrow/app-server/build/reports/tests/test/index.html
 
       - name: Upload Error Report Files To Artifacts
         if: ${{ failure() }}
