@@ -33,18 +33,7 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: cd app-server && chmod +x gradlew
 
       - name: Spring Test
-        run: ./gradlew app-server:test
-
-      - name: Compress all report files
-        if: ${{ failure() }}
-        run: cat /home/runner/work/maf/maf/app-server/build/reports/tests/test/index.html
-
-      - name: Upload Error Report Files To Artifacts
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: report_files
-          path: '*/build/reports/tests/test/'
+        run: cd app-server && ./gradlew test
