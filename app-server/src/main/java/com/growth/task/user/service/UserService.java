@@ -7,7 +7,6 @@ import com.growth.task.user.dto.UserSignUpResponse;
 import com.growth.task.user.exception.UserNameDuplicationException;
 import org.springframework.stereotype.Service;
 
-import static java.lang.Boolean.TRUE;
 
 @Service
 public class UserService {
@@ -19,10 +18,14 @@ public class UserService {
 
     public UserSignUpResponse save(UserSignUpRequest request) {
         String name = request.getName();
-        if (TRUE.equals(usersRepository.existsByName(name))) {
+        if (isExistedName(name)) {
             throw new UserNameDuplicationException(name);
         }
         Users user = usersRepository.save(request.toEntity());
         return UserSignUpResponse.of(user);
+    }
+
+    private boolean isExistedName(String name) {
+        return usersRepository.existsByName(name);
     }
 }
