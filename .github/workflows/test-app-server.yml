@@ -37,14 +37,3 @@ jobs:
 
       - name: Spring Test
         run: ./gradlew app-server:test
-
-      - name: Compress all report files
-        if: ${{ failure() }}
-        run: cat /home/runner/work/taskgrow/taskgrow/app-server/build/reports/tests/test/index.html
-
-      - name: Upload Error Report Files To Artifacts
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: report_files
-          path: '*/build/reports/tests/test/'
