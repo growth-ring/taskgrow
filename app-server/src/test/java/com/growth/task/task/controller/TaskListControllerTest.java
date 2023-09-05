@@ -7,8 +7,8 @@ import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskListRequest;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.enums.Status;
+import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -105,6 +105,7 @@ class TaskListControllerTest {
             params.add("userId", String.valueOf(request.getUserId()));
             params.add("startDate", String.valueOf(request.getStartDate()));
             params.add("endDate", String.valueOf(request.getEndDate()));
+            params.add("sort", "taskDate");
 
             return mockMvc.perform(get("/api/v1/tasks")
                     .params(params)
