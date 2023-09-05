@@ -33,7 +33,7 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: cd app-server && chmod +x gradlew
 
       - name: Spring Test
-        run: ./gradlew app-server:test
+        run: ./gradlew test
