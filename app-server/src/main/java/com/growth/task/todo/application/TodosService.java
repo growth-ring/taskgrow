@@ -2,10 +2,15 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.domain.PomodorosRepository;
+import com.growth.task.pomodoro.dto.response.PomodoroAddResponse;
+import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.domain.TodosRepository;
-import com.growth.task.todo.dto.response.TodoGetResponse;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
+import com.growth.task.todo.dto.response.TodoAddResponse;
+import com.growth.task.todo.repository.TodosRepository;
+import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +25,24 @@ public class TodosService {
     private final TodosRepository todosRepository;
     private final PomodorosRepository pomodorosRepository;
     private final TasksRepository tasksRepository;
+    private final TodoService todoService;
+    private final PomodoroService pomodoroService;
 
     public TodosService(
             TodosRepository todosRepository,
             PomodorosRepository pomodorosRepository,
-            TasksRepository tasksRepository
+            TasksRepository tasksRepository,
+            TodoService todoService,
+            PomodoroService pomodoroService
     ) {
         this.todosRepository = todosRepository;
         this.pomodorosRepository = pomodorosRepository;
         this.tasksRepository = tasksRepository;
+        this.todoService = todoService;
+        this.pomodoroService = pomodoroService;
     }
 
-    public List<TodoGetResponse> getTodosByTaskId(Long taskId) {
+    public List<TodoListResponse> getTodosByTaskId(Long taskId) {
         List<Todos> todosEntities = validateTaskAndFetchTodos(taskId);
 
         // Todo가 없으면 빈 리스트 반환
@@ -54,7 +65,7 @@ public class TodosService {
         return todosEntities.stream()
                 .map(todo -> {
                     Pomodoros pomodoro = pomodorosMap.get(todo.getTodoId());
-                    return new TodoGetResponse(todo, pomodoro);
+                    return new TodoListResponse(todo, pomodoro);
                 })
                 .collect(Collectors.toList());
     }
@@ -78,5 +89,14 @@ public class TodosService {
                 .map(Todos::getTodo)
                 .toList();
         return todos;
+    }
+
+    public TodoAndPomodoroAddResponse save(TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
+        Todos todos = todoService.save(todoAndPomodoroAddRequest.getTodoAddRequest());
+        Pomodoros pomodoros = pomodoroService.save(todoAndPomodoroAddRequest.getPomodoroAddRequest(), todos);
+
+        TodoAddResponse todoAddResponse = new TodoAddResponse(todos);
+        PomodoroAddResponse pomodoroAddResponse = new PomodoroAddResponse(pomodoros);
+        return new TodoAndPomodoroAddResponse(todoAddResponse, pomodoroAddResponse);
     }
 }

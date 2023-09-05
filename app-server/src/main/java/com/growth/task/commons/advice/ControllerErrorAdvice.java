@@ -3,6 +3,7 @@ package com.growth.task.commons.advice;
 import com.growth.task.task.exception.UserNotFoundException;
 import com.growth.task.todo.exception.BadInputParameterException;
 import com.growth.task.todo.exception.TaskNotFoundException;
+import com.growth.task.todo.exception.TodoNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -78,5 +79,18 @@ public class ControllerErrorAdvice {
             errors.put(((FieldError) error).getField(), error.getDefaultMessage());
         }
         return errors;
+    }
+
+    /**
+     * TodoId 가 없는 경우, NOT_FOUND(404) 와 Error 메세지를 응답한다.
+     *
+     * @param exception TodoId 를 찾을 수 없다는 예외
+     * @return 에러 메세지
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(TodoNotFoundException.class)
+    public String handleTodoNotFoundException(TodoNotFoundException exception) {
+        log.error("TodoNotFoundException", exception);
+        return exception.getMessage();
     }
 }

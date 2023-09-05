@@ -6,7 +6,7 @@ import com.growth.task.todo.enums.Status;
 import lombok.Getter;
 
 @Getter
-public class TodoGetResponse {
+public class TodoListResponse {
     private Long todoId;
     private Long taskId;
     private String todo;
@@ -14,7 +14,7 @@ public class TodoGetResponse {
     private Integer performCount;
     private Integer planCount;
 
-    public TodoGetResponse(Long todoId, Long taskId, String todo, Status status, Integer performCount, Integer planCount) {
+    public TodoListResponse(Long todoId, Long taskId, String todo, Status status, Integer performCount, Integer planCount) {
         this.todoId = todoId;
         this.taskId = taskId;
         this.todo = todo;
@@ -23,7 +23,7 @@ public class TodoGetResponse {
         this.planCount = planCount;
     }
 
-    public TodoGetResponse(Todos todos, Pomodoros pomodoros) {
+    public TodoListResponse(Todos todos, Pomodoros pomodoros) {
         this.todoId = todos.getTodoId();
         this.taskId = todos.getTask().getTaskId();
         this.todo = todos.getTodo();

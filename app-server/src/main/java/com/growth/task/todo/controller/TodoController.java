@@ -1,9 +1,11 @@
 package com.growth.task.todo.controller;
 
 import com.growth.task.todo.application.TodosService;
-import com.growth.task.todo.dto.response.TodoGetResponse;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
+import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
+import com.growth.task.todo.dto.response.TodoListResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,13 @@ public class TodoController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<TodoGetResponse>> getTodos(@RequestParam(required = true) Long id) {
-        List<TodoGetResponse> todos = todosService.getTodosByTaskId(id);
-        return new ResponseEntity<>(todos, HttpStatus.OK);
+    public List<TodoListResponse> getTodos(@RequestParam(required = true) Long taskId) {
+        return todosService.getTodosByTaskId(taskId);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TodoAndPomodoroAddResponse create(@RequestBody @Valid TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
+        return todosService.save(todoAndPomodoroAddRequest);
     }
 }
