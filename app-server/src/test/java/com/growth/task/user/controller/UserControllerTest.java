@@ -83,7 +83,7 @@ class UserControllerTest {
         }
 
         @Nested
-        @DisplayName("name과 password가 주어지면")
+        @DisplayName("이미 존재하는 name과 password가 주어지면")
         class Context_with_exist_name_and_password {
             @BeforeEach
             void setUp() {
@@ -97,7 +97,7 @@ class UserControllerTest {
 
             @Test
             @DisplayName("Conflict 409을 응답한다")
-            void it_response_201() throws Exception {
+            void it_response_409() throws Exception {
                 final ResultActions resultActions = subject(request);
 
                 resultActions.andExpect(status().isConflict())
