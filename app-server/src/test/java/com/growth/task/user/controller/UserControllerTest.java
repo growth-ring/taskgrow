@@ -20,7 +20,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -101,6 +103,63 @@ class UserControllerTest {
                 final ResultActions resultActions = subject(request);
 
                 resultActions.andExpect(status().isConflict())
+                ;
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /api/v1/users/{name} 요청은")
+    class Describe_GET {
+        private ResultActions subject(String name) throws Exception {
+            return mockMvc.perform(get("/api/v1/users/{name}", name));
+        }
+
+        @Nested
+        @DisplayName("존재하는 사용자의 name이 주어지면")
+        class Context_with_exist_user_name {
+            private Users user;
+
+            @BeforeEach
+            void setUp() {
+                user = usersRepository.save(Users.builder()
+                        .name("grow")
+                        .password("password")
+                        .build());
+            }
+
+            @Test
+            @DisplayName("200을 응답하고, 사용자의 id와 name을 리턴한다")
+            void it_response_200_and_user_id_and_name() throws Exception {
+                final ResultActions resultActions = subject(user.getName());
+
+                resultActions.andExpect(status().isOk())
+                        .andExpect(jsonPath("user_id").exists())
+                        .andExpect(jsonPath("name").value(equalTo(user.getName())))
+                ;
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지않는 사용자의 name이 주어지면")
+        class Context_with_not_exist_user_name {
+            private Users user;
+
+            @BeforeEach
+            void setUp() {
+                user = usersRepository.save(Users.builder()
+                        .name("grow")
+                        .password("password")
+                        .build());
+                usersRepository.delete(user);
+            }
+
+            @Test
+            @DisplayName("404를 응답한다")
+            void it_response_404() throws Exception {
+                final ResultActions resultActions = subject(user.getName());
+
+                resultActions.andExpect(status().isNotFound())
                 ;
             }
         }
