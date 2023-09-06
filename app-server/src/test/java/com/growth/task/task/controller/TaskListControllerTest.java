@@ -105,7 +105,6 @@ class TaskListControllerTest {
             params.add("userId", String.valueOf(request.getUserId()));
             params.add("startDate", String.valueOf(request.getStartDate()));
             params.add("endDate", String.valueOf(request.getEndDate()));
-            params.add("sort", "taskDate");
 
             return mockMvc.perform(get("/api/v1/tasks")
                     .params(params)

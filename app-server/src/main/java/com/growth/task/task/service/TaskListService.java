@@ -9,6 +9,7 @@ import com.growth.task.todo.enums.Status;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,11 @@ public class TaskListService {
 
         Map<Long, TaskTodoResponse> groupingByTask = calculateTaskTodoStatusMap(taskList);
 
-        return collectToTask(taskList, groupingByTask);
+        List<TaskListResponse> taskListResponses = collectToTask(taskList, groupingByTask);
+
+        return taskListResponses.stream()
+                .sorted(byTaskDate())
+                .collect(toList());
     }
 
     /**
@@ -111,5 +116,9 @@ public class TaskListService {
             }
         }
         return new TaskTodoResponse(remainCount, doneCount);
+    }
+
+    private static Comparator<TaskListResponse> byTaskDate() {
+        return Comparator.comparing(TaskListResponse::getTaskDate);
     }
 }
