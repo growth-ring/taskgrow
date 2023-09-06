@@ -31,11 +31,7 @@ public class TaskListService {
 
     @Transactional(readOnly = true)
     public List<TaskListResponse> getTasks(TaskListRequest request) {
-        List<TaskListWithTodoStatusResponse> taskList = tasksRepository.findRemainedTodosByUserBetweenTimeRange(
-                request.getUserId(),
-                request.getStartDate().atStartOfDay(),
-                request.getEndDate().atStartOfDay()
-        );
+        List<TaskListWithTodoStatusResponse> taskList = tasksRepository.findRemainedTodosByUserBetweenTimeRange(request);
 
         Map<Long, TaskTodoResponse> groupingByTask = calculateTaskTodoStatusMap(taskList);
 
