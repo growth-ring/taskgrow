@@ -2,13 +2,8 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.domain.PomodorosRepository;
-import com.growth.task.pomodoro.dto.response.PomodoroAddResponse;
-import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
-import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
-import com.growth.task.todo.dto.response.TodoAddResponse;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -20,26 +15,20 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class TodosService {
+public class TodoListService {
 
     private final TodosRepository todosRepository;
     private final PomodorosRepository pomodorosRepository;
     private final TasksRepository tasksRepository;
-    private final TodoService todoService;
-    private final PomodoroService pomodoroService;
 
-    public TodosService(
+    public TodoListService(
             TodosRepository todosRepository,
             PomodorosRepository pomodorosRepository,
-            TasksRepository tasksRepository,
-            TodoService todoService,
-            PomodoroService pomodoroService
+            TasksRepository tasksRepository
     ) {
         this.todosRepository = todosRepository;
         this.pomodorosRepository = pomodorosRepository;
         this.tasksRepository = tasksRepository;
-        this.todoService = todoService;
-        this.pomodoroService = pomodoroService;
     }
 
     public List<TodoListResponse> getTodosByTaskId(Long taskId) {
@@ -89,14 +78,5 @@ public class TodosService {
                 .map(Todos::getTodo)
                 .toList();
         return todos;
-    }
-
-    public TodoAndPomodoroAddResponse save(TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
-        Todos todos = todoService.save(todoAndPomodoroAddRequest.getTodoAddRequest());
-        Pomodoros pomodoros = pomodoroService.save(todoAndPomodoroAddRequest.getPomodoroAddRequest(), todos);
-
-        TodoAddResponse todoAddResponse = new TodoAddResponse(todos);
-        PomodoroAddResponse pomodoroAddResponse = new PomodoroAddResponse(pomodoros);
-        return new TodoAndPomodoroAddResponse(todoAddResponse, pomodoroAddResponse);
     }
 }

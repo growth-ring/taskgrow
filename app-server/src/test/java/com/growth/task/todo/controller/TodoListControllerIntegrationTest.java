@@ -1,6 +1,6 @@
 package com.growth.task.todo.controller;
 
-import com.growth.task.todo.application.TodosService;
+import com.growth.task.todo.application.TodoListService;
 import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.enums.Status;
 import org.junit.jupiter.api.Test;
@@ -20,20 +20,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TodoControllerIntegrationTest {
+class TodoListControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private TodosService todosService;
+    private TodoListService todoListService;
 
     @Test
     public void getTodosTest() throws Exception {
         TodoListResponse todo1 = new TodoListResponse(1L, 1L, "디자인패턴의 아름다움 스터디", Status.READY, 1, 2);
         TodoListResponse todo2 = new TodoListResponse(2L, 1L, "프로젝트 진행하기", Status.PROGRESS, 1, 2);
         List<TodoListResponse> todoList = Arrays.asList(todo1, todo2);
-        when(todosService.getTodosByTaskId(1L)).thenReturn(todoList);
+        when(todoListService.getTodosByTaskId(1L)).thenReturn(todoList);
 
         mockMvc.perform(get("/api/v1/todos").param("taskId", "1"))
                 .andExpect(status().isOk())
