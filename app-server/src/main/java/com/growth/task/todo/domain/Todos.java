@@ -6,6 +6,7 @@ import com.growth.task.todo.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Entity
@@ -23,7 +28,8 @@ public class Todos extends BaseTimeEntity {
     @Column(name = "todo_id")
     private Long todoId;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "task_id",
             referencedColumnName = "task_id",
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT)
