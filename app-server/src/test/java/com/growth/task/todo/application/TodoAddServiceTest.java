@@ -1,7 +1,6 @@
 package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
-import com.growth.task.pomodoro.domain.PomodorosRepository;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.domain.Tasks;
@@ -11,7 +10,6 @@ import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
 import com.growth.task.todo.dto.request.TodoAddRequest;
 import com.growth.task.todo.enums.Status;
-import com.growth.task.todo.repository.TodosRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
