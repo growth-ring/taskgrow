@@ -4,9 +4,7 @@ import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.domain.PomodorosRepository;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.exception.TodoNotFoundException;
-import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
 
 @Service
