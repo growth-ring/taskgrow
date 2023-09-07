@@ -59,7 +59,6 @@ class TodoServiceTest {
                     .taskId(TASK_ID1)
                     .build();
 
-            private final
             @BeforeEach
             void setUp() {
                 given(tasksRepository.findById(TASK_ID1)).willReturn(Optional.of(tasks));
