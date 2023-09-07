@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class PomodoroService {
     private final PomodorosRepository pomodorosRepository;
 
-    public PomodoroService(PomodorosRepository pomodorosRepository, TodosRepository todosRepository) {
+    public PomodoroService(PomodorosRepository pomodorosRepository) {
         this.pomodorosRepository = pomodorosRepository;
     }
 
