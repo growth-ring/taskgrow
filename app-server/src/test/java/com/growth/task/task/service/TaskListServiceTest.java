@@ -81,16 +81,12 @@ class TaskListServiceTest {
 
             @BeforeEach
             void prepare() {
-                given(tasksRepository.findRemainedTodosByUserBetweenTimeRange(
-                                request.getUserId(),
-                                request.getStartDate().atStartOfDay(),
-                                request.getEndDate().atStartOfDay()
-                        )
-                ).willReturn(List.of(
-                        new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo1.getStatus()),
-                        new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo2.getStatus()),
-                        new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo3.getStatus())
-                ));
+                given(tasksRepository.findRemainedTodosByUserBetweenTimeRange(request))
+                        .willReturn(List.of(
+                                new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo1.getStatus()),
+                                new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo2.getStatus()),
+                                new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo3.getStatus())
+                        ));
             }
 
             @Test
@@ -288,7 +284,7 @@ class TaskListServiceTest {
             void it_return_task_list() {
                 List<TaskListResponse> result = collectToTask(taskList, groupingByTask);
                 assertAll(
-                        () ->assertThat(result).hasSize(4)
+                        () -> assertThat(result).hasSize(4)
                 );
             }
         }

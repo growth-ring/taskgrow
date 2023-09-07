@@ -1,5 +1,6 @@
 package com.growth.task.task.repository.impl;
 
+import com.growth.task.task.dto.TaskListRequest;
 import com.growth.task.task.dto.TaskListWithTodoStatusResponse;
 import com.growth.task.task.repository.TasksRepositoryCustom;
 import com.querydsl.core.types.Projections;
@@ -21,7 +22,11 @@ public class TasksRepositoryCustomImpl implements TasksRepositoryCustom {
     }
 
     @Override
-    public List<TaskListWithTodoStatusResponse> findRemainedTodosByUserBetweenTimeRange(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<TaskListWithTodoStatusResponse> findRemainedTodosByUserBetweenTimeRange(TaskListRequest request) {
+        Long userId = request.getUserId();
+        LocalDateTime startDate = request.getStartDate().atStartOfDay();
+        LocalDateTime endDate = request.getEndDate().atStartOfDay();
+
         return queryFactory.select(Projections.fields(TaskListWithTodoStatusResponse.class,
                         tasks.taskId,
                         tasks.user.userId.as("userId"),

@@ -2,11 +2,12 @@ package com.growth.task.task.repository.impl;
 
 import com.growth.task.config.TestQueryDslConfig;
 import com.growth.task.task.domain.Tasks;
+import com.growth.task.task.dto.TaskListRequest;
 import com.growth.task.task.dto.TaskListWithTodoStatusResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.enums.Status;
+import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -92,6 +93,8 @@ class TasksRepositoryCustomImplTest {
         @Nested
         @DisplayName("user id와 task_date 날짜 범위가 주어지면")
         class Context_with_user_id_and_task_date_range {
+            private TaskListRequest request;
+
             @BeforeEach
             void setContext() {
                 getTodo(task1, "디자인 패턴의 아름다움 읽기", Status.READY);
@@ -104,16 +107,17 @@ class TasksRepositoryCustomImplTest {
                 getTodo(task2, "파이썬 코딩의 기술 읽기", Status.DONE);
                 getTodo(task2, "Two Scoops of Django 읽기", Status.DONE);
                 getTodo(task3, "운동하기", Status.DONE);
+
+                request = TaskListRequest.builder().userId(user.getUserId())
+                        .startDate(LocalDate.from(task0.getTaskDate()))
+                        .endDate(LocalDate.from(task2.getTaskDate()))
+                        .build();
             }
 
             @Test
             @DisplayName("task 정보와 todo status를 반환한다")
             void it_return_task_info_and_todo_count() {
-                List<TaskListWithTodoStatusResponse> result = tasksRepository.findRemainedTodosByUserBetweenTimeRange(
-                        user.getUserId(),
-                        task0.getTaskDate(),
-                        task2.getTaskDate()
-                );
+                List<TaskListWithTodoStatusResponse> result = tasksRepository.findRemainedTodosByUserBetweenTimeRange(request);
 
                 assertAll(
                         () -> assertThat(result).hasSize(10),
