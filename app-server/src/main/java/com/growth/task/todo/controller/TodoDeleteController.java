@@ -17,7 +17,7 @@ public class TodoDeleteController {
 
     @PostMapping("/{todoId}")
     @ResponseStatus(NO_CONTENT)
-    public void create(@PathVariable("todoId") Long todoId) {
+    public void delete(@PathVariable("todoId") Long todoId) {
         todoDeleteService.deleteByTodoId(todoId);
     }
 }
