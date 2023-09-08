@@ -4,10 +4,11 @@ import { useTimerStore } from '../../store/timer';
 
 const TodoList = () => {
   const { setSelectedTodo } = useTodosStore();
-  const { setOnTimer, stop } = useTimerStore();
+  const { setShowTodoBtn, setOnTimer, stop } = useTimerStore();
 
   const handleTodoClick = (title: string) => {
     setOnTimer(true);
+    setShowTodoBtn(true);
     setSelectedTodo(title);
     stop();
   };
