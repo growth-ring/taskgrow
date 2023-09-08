@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface PomodorosRepository extends JpaRepository<Pomodoros, Long> {
     List<Pomodoros> findAllByTodo_TodoIdIn(List<Long> todoIds);
+    Pomodoros findByTodo_TodoId(Long todoId);
 }
