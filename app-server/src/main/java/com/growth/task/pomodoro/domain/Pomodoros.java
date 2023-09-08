@@ -45,4 +45,12 @@ public class Pomodoros extends BaseTimeEntity {
 
     protected Pomodoros() {
     }
+
+    public void updatePerformCount(int performCount) {
+        this.performCount = performCount;
+    }
+
+    public void updatePlanCount(int planCount) {
+        this.planCount = planCount;
+    }
 }
