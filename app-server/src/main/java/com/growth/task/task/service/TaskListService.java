@@ -9,6 +9,7 @@ import com.growth.task.todo.enums.Status;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,15 +31,15 @@ public class TaskListService {
 
     @Transactional(readOnly = true)
     public List<TaskListResponse> getTasks(TaskListRequest request) {
-        List<TaskListWithTodoStatusResponse> taskList = tasksRepository.findRemainedTodosByUserBetweenTimeRange(
-                request.getUserId(),
-                request.getStartDate().atStartOfDay(),
-                request.getEndDate().atStartOfDay()
-        );
+        List<TaskListWithTodoStatusResponse> taskList = tasksRepository.findRemainedTodosByUserBetweenTimeRange(request);
 
         Map<Long, TaskTodoResponse> groupingByTask = calculateTaskTodoStatusMap(taskList);
 
-        return collectToTask(taskList, groupingByTask);
+        List<TaskListResponse> taskListResponses = collectToTask(taskList, groupingByTask);
+
+        return taskListResponses.stream()
+                .sorted(byTaskDate())
+                .collect(toList());
     }
 
     /**
@@ -111,5 +112,9 @@ public class TaskListService {
             }
         }
         return new TaskTodoResponse(remainCount, doneCount);
+    }
+
+    private static Comparator<TaskListResponse> byTaskDate() {
+        return Comparator.comparing(TaskListResponse::getTaskDate);
     }
 }
