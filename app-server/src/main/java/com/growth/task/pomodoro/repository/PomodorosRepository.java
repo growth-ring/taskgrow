@@ -1,5 +1,6 @@
-package com.growth.task.pomodoro.domain;
+package com.growth.task.pomodoro.repository;
 
+import com.growth.task.pomodoro.domain.Pomodoros;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

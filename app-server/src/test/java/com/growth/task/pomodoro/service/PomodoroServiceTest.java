@@ -1,7 +1,7 @@
 package com.growth.task.pomodoro.service;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
-import com.growth.task.pomodoro.domain.PomodorosRepository;
+import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.exception.TodoNotFoundException;
