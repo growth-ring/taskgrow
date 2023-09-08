@@ -11,23 +11,17 @@ const HeaderDate = () => {
   const { today, setToday } = useTodosStore();
   const [years, month, day] = today.split("-");
 
-  const handleShowPrevDate = () => {
+  const handleShowDate = (date:string) => {
     const todayDate = new Date(today);
-    const currentDate = todayDate.getDate() - 1;
-    setToday(moment(todayDate.setDate(currentDate)).format('YYYY-MM-DD'));
-  }
-
-  const handleShowNextDate = () => {
-    const todayDate = new Date(today);
-    const currentDate = todayDate.getDate() + 1;
+    const currentDate = date === 'previous' ? todayDate.getDate() - 1 : todayDate.getDate() + 1;
     setToday(moment(todayDate.setDate(currentDate)).format('YYYY-MM-DD'));
   }
 
   return (
     <>
-      <Arrow onClick={handleShowPrevDate}><SlArrowLeft /></Arrow>
+      <Arrow onClick={() => handleShowDate('previous')}><SlArrowLeft /></Arrow>
       <div>{`${years}년 ${month}월 ${day}일`}</div>
-      <Arrow onClick={handleShowNextDate}><SlArrowRight /></Arrow>
+      <Arrow onClick={() => handleShowDate('next')}><SlArrowRight /></Arrow>
     </>
   );
 };
