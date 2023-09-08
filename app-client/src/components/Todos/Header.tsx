@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { SlArrowLeft, SlArrowRight, SlPlus } from "react-icons/sl";
-import { useTodosStore } from '../../store/todos';
+import { SlPlus } from "react-icons/sl";
 import AddTodos from './AddTodos';
+import HeaderDate from './HeaderDate';
 
 const Container = styled.div`
     padding: 0 40px;
     height: 64px;
     display: flex;
     justify-content: space-between;
-`;
-
-const Arrow = styled.button`
-    margin: 0 100px;
 `;
 
 const Date = styled.div`
@@ -27,8 +23,6 @@ const AddTodo = styled.button`
 `;
 
 const Header = () => {
-    const { today } = useTodosStore();
-    const [years, month, day] = today.split("-");
     const [showAddTodos, setShowAddTodos] = useState(false);
 
     const handleShowAddTodos = () => {
@@ -37,15 +31,13 @@ const Header = () => {
 
     const getShowAddTodos = (todos: boolean) => {
         setShowAddTodos(todos);
-    };  
+    };
 
     return (
         <>
         <Container>
             <Date>
-                <Arrow><SlArrowLeft /></Arrow>
-                <div>{`${years}년 ${month}월 ${day}일`}</div>
-                <Arrow><SlArrowRight /></Arrow>
+                <HeaderDate />
             </Date>
             <AddTodo onClick={handleShowAddTodos}><SlPlus /></AddTodo>
         </Container>
