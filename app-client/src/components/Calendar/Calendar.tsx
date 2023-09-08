@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import moment from 'moment';
@@ -25,21 +26,24 @@ const Todo = styled.div`
 const TaskCalendar = () => {
   const navigate = useNavigate();
   const { setToday } = useTodosStore();
-  
+
   //TODO: task요청시 현재 날짜의 +7 , -7 task 요청
-// const today = new Date();
-// const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const handleViewChange = (value) => {
+    const today = value.activeStartDate;
 
-// const sevenDaysAgo = new Date(firstDayOfMonth);
-// sevenDaysAgo.setDate(firstDayOfMonth.getDate() - 7);
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
-// const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const sevenDaysAgo = new Date(firstDayOfMonth);
+    sevenDaysAgo.setDate(firstDayOfMonth.getDate() - 7);
 
-// const sevenDaysLater = new Date(lastDayOfMonth);
-// sevenDaysLater.setDate(lastDayOfMonth.getDate() + 7);
+    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-// console.log('7일 이전 날짜:', sevenDaysAgo.toLocaleDateString());
-// console.log('7일 이후 날짜:', sevenDaysLater.toLocaleDateString());
+    const sevenDaysLater = new Date(lastDayOfMonth);
+    sevenDaysLater.setDate(lastDayOfMonth.getDate() + 7);
+
+    console.log('7일 이전 날짜:', sevenDaysAgo.toLocaleDateString());
+    console.log('7일 이후 날짜:', sevenDaysLater.toLocaleDateString());
+  };
 
   const mark = ['2023-08-25', '2023-08-31', '2022-11-22', '2022-11-10'];
 
@@ -55,6 +59,7 @@ const TaskCalendar = () => {
       next2Label={null}
       prev2Label={null}
       formatDay={(locale, date) => moment(date).format('D')}
+      onActiveStartDateChange={handleViewChange}
       tileContent={({ date }) => {
         const html: JSX.Element[] = [];
 
