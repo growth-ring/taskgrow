@@ -4,14 +4,14 @@ interface LoginProps {
   getIsShow: () => void;
 }
 
-const Login = ({ getIsShow }: LoginProps) => {
+const Join = ({ getIsShow }: LoginProps) => {
   return (
     <>
       <div>
         <div className="mb-8 flex flex-col items-center text-white">
           <img src={logo} width={150} alt="로고" />
-          <h1 className="mb-2 text-2xl">Task grow</h1>
-          <span className="text-gray-300">Pomodoro & Todo App</span>
+          <h1 className="mb-2 text-2xl">회원가입</h1>
+          <span className="text-gray-300">이름과 비밀번호를 입력해 주세요</span>
         </div>
         <form action="#">
           <div className="mb-4 text-lg">
@@ -27,7 +27,7 @@ const Login = ({ getIsShow }: LoginProps) => {
 
           <div className="mb-4 text-lg">
             <input
-              type="password"
+              type="text"
               name="password"
               placeholder="비밀번호"
               className={
@@ -41,7 +41,7 @@ const Login = ({ getIsShow }: LoginProps) => {
               style={{ marginTop: '20px' }}
               className="rounded-3xl bg-opacity-80 px-10 py-2 shadow-xl backdrop-blur-md transition-colors duration-300 text-gray hover:bg-main-color hover:text-white"
             >
-              로그인
+              가입하기
             </button>
           </div>
         </form>
@@ -55,11 +55,11 @@ const Login = ({ getIsShow }: LoginProps) => {
         }}
       >
         <button onClick={getIsShow} className="text-gray hover:underline">
-          회원가입
+          돌아가기
         </button>
       </div>
     </>
   );
 };
 
-export default Login;
+export default Join;
