@@ -7,6 +7,11 @@ const Arrow = styled.button`
     margin: 0 100px;
 `;
 
+const Today = styled.div`
+    width: 180px;
+    text-align: center;
+`;
+
 const HeaderDate = () => {
   const { today, setToday } = useTodosStore();
   const [years, month, day] = today.split("-");
@@ -20,7 +25,7 @@ const HeaderDate = () => {
   return (
     <>
       <Arrow onClick={() => handleShowDate('previous')}><SlArrowLeft /></Arrow>
-      <div>{`${years}년 ${month}월 ${day}일`}</div>
+      <Today>{`${years}년 ${month}월 ${day}일`}</Today>
       <Arrow onClick={() => handleShowDate('next')}><SlArrowRight /></Arrow>
     </>
   );

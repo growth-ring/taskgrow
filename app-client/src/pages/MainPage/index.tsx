@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import Calendar from '../../components/Calendar/Calendar';
 
-import axios from 'axios';
-
 const Main = styled.div`
     display: flex;
     justify-content: center;
