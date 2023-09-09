@@ -19,8 +19,8 @@ const Login = () => {
             <div className="mb-4 text-lg">
               <input
                 type="text"
-                name="id"
-                placeholder="아이디"
+                name="name"
+                placeholder="이름"
                 className={
                   'rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md'
                 }
