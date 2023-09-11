@@ -12,6 +12,7 @@ export const signUp = async (
   try {
     await axios.post('/httpClient/api/v1/users', formData);
     setIsShowLogin(true);
+    alert('회원가입이 완료되었습니다.');
   } catch (error) {
     alert(error.response.data.message);
   }
@@ -20,10 +21,9 @@ export const signUp = async (
 export const login = async (formData: UserFormData) => {
   const name = formData.name;
   try {
-    const data = await axios.get(`/httpClient/api/v1/users/${name}`);
-    console.log('data: ', data.data);
+    return await axios.get(`/httpClient/api/v1/users/${name}`);
   } catch (error) {
-    if (error.response && error.response.status === 404) {
+    if (error.response.status === 404) {
       alert('오류입니다');
     }
   }
