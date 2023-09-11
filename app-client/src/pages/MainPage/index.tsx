@@ -1,14 +1,10 @@
-import { useState } from 'react';
+import { useLogin } from '../../store/login';
 
 import Login from '../../components/User/Login/Login';
-import Join from '../../components/User/Join/Join';
+import SignUp from '../../components/User/SignUp/SignUp';
 
 const MainPage = () => {
-  const [isShow, setIsShow] = useState<boolean>(true);
-
-  const getIsShow = () => {
-    setIsShow(!isShow);
-  };
+  const { isShowLogin } = useLogin();
 
   return (
     <div
@@ -18,8 +14,8 @@ const MainPage = () => {
       }}
     >
       <div className="rounded-xl bg-white bg-opacity-50 px-16 pt-10 shadow-lg backdrop-blur-md max-sm:px-8">
-        {isShow && <Login getIsShow={getIsShow} />}
-        {!isShow && <Join getIsShow={getIsShow} />}
+        {isShowLogin && <Login />}
+        {!isShowLogin && <SignUp />}
       </div>
     </div>
   );
