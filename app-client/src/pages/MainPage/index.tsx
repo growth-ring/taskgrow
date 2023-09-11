@@ -1,20 +1,27 @@
-import styled from 'styled-components';
-import Calendar from '../../components/Calendar/Calendar';
+import { useState } from 'react';
 
-const Main = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-`;
+import Login from '../../components/User/Login/Login';
+import Join from '../../components/User/Join/Join';
 
 const MainPage = () => {
+  const [isShow, setIsShow] = useState<boolean>(true);
+
+  const getIsShow = () => {
+    setIsShow(!isShow);
+  };
 
   return (
-    <Main>
-      <Calendar />
-    </Main>
+    <div
+      className="flex h-screen w-full items-center justify-center bg-gray-900 bg-no-repeat"
+      style={{
+        backgroundColor: 'var(--main-color)',
+      }}
+    >
+      <div className="rounded-xl bg-white bg-opacity-50 px-16 pt-10 shadow-lg backdrop-blur-md max-sm:px-8">
+        {isShow && <Login getIsShow={getIsShow} />}
+        {!isShow && <Join getIsShow={getIsShow} />}
+      </div>
+    </div>
   );
 };
 
