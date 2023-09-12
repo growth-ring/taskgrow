@@ -5,7 +5,6 @@ import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.dto.composite.TodoAndPomodoroUpdateRequest;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +24,11 @@ public class PomodoroService {
         return pomodorosRepository.save(pomodoros);
     }
 
-    public Pomodoros update(Long todoId, TodoAndPomodoroUpdateRequest todoAndPomodoroUpdateRequest) {
+    public Pomodoros update(Long todoId, PomodoroUpdateRequest pomodoroUpdateRequest) {
         Pomodoros pomodoros = pomodorosRepository.findByTodo_TodoId(todoId);
-        PomodoroUpdateRequest pomodoroUpdateReq = todoAndPomodoroUpdateRequest.getPomodoroUpdateRequest();
-        if(pomodoroUpdateReq != null) {
-            pomodoros.updatePerformCount(pomodoroUpdateReq.getPerformCount());
-            pomodoros.updatePlanCount(pomodoroUpdateReq.getPlanCount());
+        if(pomodoroUpdateRequest != null) {
+            pomodoros.updatePerformCount(pomodoroUpdateRequest.getPerformCount());
+            pomodoros.updatePlanCount(pomodoroUpdateRequest.getPlanCount());
         }
         pomodorosRepository.save(pomodoros);
         return pomodoros;
