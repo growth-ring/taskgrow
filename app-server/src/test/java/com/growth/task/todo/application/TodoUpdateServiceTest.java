@@ -56,7 +56,7 @@ class TodoUpdateServiceTest {
 
             @BeforeEach
             void setUp() {
-                when(todoService.update(TODO_ID1, todoAndPomodoroUpdateRequest))
+                when(todoService.update(TODO_ID1, todoAndPomodoroUpdateRequest.getTodoUpdateRequest()))
                         .thenThrow(TodoNotFoundException.class);
             }
 
@@ -108,8 +108,8 @@ class TodoUpdateServiceTest {
             @BeforeEach
             void setUp() {
                 lenient().when(tasksRepository.findById(TASK_ID)).thenReturn(Optional.of(tasks));
-                lenient().when(todoService.update(TODO_ID1, todoAndPomodoroUpdateRequest)).thenReturn(todos);
-                lenient().when(pomodoroService.update(TODO_ID1, todoAndPomodoroUpdateRequest)).thenReturn(pomodoro);
+                lenient().when(todoService.update(TODO_ID1, todoAndPomodoroUpdateRequest.getTodoUpdateRequest())).thenReturn(todos);
+                lenient().when(pomodoroService.update(TODO_ID1, todoAndPomodoroUpdateRequest.getPomodoroUpdateRequest())).thenReturn(pomodoro);
             }
 
             @Test
