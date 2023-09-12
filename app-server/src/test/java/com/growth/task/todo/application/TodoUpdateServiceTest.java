@@ -97,7 +97,6 @@ class TodoUpdateServiceTest {
                     .todo(NEW_WHAT_TO_DO)
                     .build();
             private final PomodoroUpdateRequest pomodoroUpdateRequest = PomodoroUpdateRequest.builder()
-                    .performCount(NEW_POMODORO_PERFORM_COUNT)
                     .planCount(NEW_POMODORO_PLAN_COUNT)
                     .build();
             private final TodoAndPomodoroUpdateRequest todoAndPomodoroUpdateRequest = TodoAndPomodoroUpdateRequest.builder()
