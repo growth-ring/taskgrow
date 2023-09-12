@@ -31,20 +31,20 @@ public class TodoService {
         return todosRepository.save(todos);
     }
 
-    public Todos update(Long todoId, TodoAndPomodoroUpdateRequest todoAndPomodoroUpdateRequest) {
+    public Todos update(Long todoId, TodoUpdateRequest todoUpdateRequest) {
         Todos todos = todosRepository.findById(todoId)
                 .orElseThrow(() -> new TodoNotFoundException(todoId));
 
-        TodoUpdateRequest todoUpdateReq = todoAndPomodoroUpdateRequest.getTodoUpdateRequest();
-        if(todoUpdateReq.getTodo() != null) {
-            todos.updateTodo(todoUpdateReq.getTodo());
+        if(todoUpdateRequest.getTodo() != null) {
+            todos.updateTodo(todoUpdateRequest.getTodo());
         }
-        if(todoUpdateReq.getTaskId() != null) {
-            Tasks task = tasksRepository.findById(todoUpdateReq.getTaskId())
-                    .orElseThrow(() -> new TaskNotFoundException(todoUpdateReq.getTaskId()));
-            todos.updateTask(task);
-        }
+
+        Tasks task = tasksRepository.findById(todoUpdateRequest.getTaskId())
+                .orElseThrow(() -> new TaskNotFoundException(todoUpdateRequest.getTaskId()));
+        todos.updateTask(task);
+
         todosRepository.save(todos);
+
         return todos;
     }
 }
