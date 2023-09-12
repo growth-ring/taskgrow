@@ -13,7 +13,7 @@ export const signUp = async (
     await axios.post('/httpClient/api/v1/users', formData);
     setIsShowLogin(true);
     alert('회원가입이 완료되었습니다.');
-  } catch (error) {
+  } catch (error: any) {
     alert(error.response.data.message);
   }
 };
@@ -22,7 +22,7 @@ export const login = async (formData: UserFormData) => {
   const name = formData.name;
   try {
     return await axios.get(`/httpClient/api/v1/users/${name}`);
-  } catch (error) {
+  } catch (error: any) {
     if (error.response.status === 404) {
       alert('오류입니다');
     }

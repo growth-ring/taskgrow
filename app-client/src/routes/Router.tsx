@@ -10,7 +10,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/tasks" element={<TaskPage />} />
-        <Route path="/todos" element={<Todos />} />
+        <Route path="/todos/:date" element={<Todos />} />
       </Routes>
     </BrowserRouter>
   );

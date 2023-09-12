@@ -1,14 +1,14 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 import styled from 'styled-components';
-
+import { startEndDate } from '../../utils/startEndDate';
+import { useUser } from '../../store/user';
+import { getTaskList } from '../../services/task';
 import good from '../../assets/good.png';
-import { useTodosStore } from '../../store/todos';
 
 const Todo = styled.div`
   width: 50px;
@@ -23,34 +23,59 @@ const Todo = styled.div`
   align-items: center;
 `;
 
-const TaskCalendar = () => {
-  const navigate = useNavigate();
-  const { setToday } = useTodosStore();
-
-  //TODO: task요청시 현재 날짜의 +7 , -7 task 요청
-  const handleViewChange = (value) => {
-    const today = value.activeStartDate;
-
-    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-
-    const sevenDaysAgo = new Date(firstDayOfMonth);
-    sevenDaysAgo.setDate(firstDayOfMonth.getDate() - 7);
-
-    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-    const sevenDaysLater = new Date(lastDayOfMonth);
-    sevenDaysLater.setDate(lastDayOfMonth.getDate() + 7);
-
-    console.log('7일 이전 날짜:', sevenDaysAgo.toLocaleDateString());
-    console.log('7일 이후 날짜:', sevenDaysLater.toLocaleDateString());
+interface TaskData {
+  taskId: string;
+  taskDate: string;
+  todos: {
+    remain: number;
+    done: number;
   };
+}
 
-  const mark = ['2023-08-25', '2023-08-31', '2022-11-22', '2022-11-10'];
+interface ThisMonthProps {
+  thisMonthStart: string;
+  thisMonthEnd: string;
+}
+
+const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
+  const navigate = useNavigate();
+  const { userId } = useUser();
+  const [startDate, setStartDate] = useState(thisMonthStart);
+  const [endDate, setEndDate] = useState(thisMonthEnd);
+  const [monthTaskDate, setMonthTaskDate] = useState<TaskData[]>([]);
+  const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
 
   const handleTodayClick = (day: Date) => {
-    setToday(moment(day).format('YYYY-MM-DD'));
-    navigate('/todos');
+    const userClickDay = moment(day).format('YYYY-MM-DD');
+    navigate(`/todos/${userClickDay}`);
   };
+
+  const handleViewChange = (value: any) => {
+    const monthDate = startEndDate(value.activeStartDate);
+    setStartDate(monthDate.startDate);
+    setEndDate(monthDate.endDate);
+  };
+
+  useEffect(() => {
+    const taskData = { userId, startDate, endDate };
+    getTaskList(taskData).then((tasks) => {
+      const updatedData = tasks.map((task: any) => ({
+        taskId: task.task_id,
+        taskDate: task.task_date.replace('T00:00:00', ''),
+        todos: task.todos,
+      }));
+      setMonthTaskDate(updatedData);
+    });
+  }, [userId, startDate, endDate]);
+
+  useEffect(() => {
+    if (monthTaskDate.length) {
+      const filteredTaskDates = monthTaskDate
+        .filter((date) => date.todos.remain >= 0)
+        .map((date) => date.taskDate);
+      setViewTaskDate(filteredTaskDates);
+    }
+  }, [monthTaskDate]);
 
   return (
     <Calendar
@@ -62,13 +87,25 @@ const TaskCalendar = () => {
       onActiveStartDateChange={handleViewChange}
       tileContent={({ date }) => {
         const html: JSX.Element[] = [];
+        const currentDate = moment(date).format('YYYY-MM-DD');
 
-        mark.forEach((day, i) => {
-          if (day === moment(date).format('YYYY-MM-DD')) {
-            if (day === '2023-08-25') {
+        viewTaskDate.forEach((day, i) => {
+          if (day === currentDate) {
+            const matchingTasks = monthTaskDate.filter(
+              (date) => date.taskDate === day,
+            );
+            const allTasksDone = matchingTasks.every(
+              (date) => date.todos.remain === date.todos.done,
+            );
+
+            if (allTasksDone) {
               html.push(<img src={good} key={i} />);
             } else {
-              html.push(<Todo key={i}>12</Todo>);
+              const remainingTasks = matchingTasks.reduce(
+                (total, date) => total + date.todos.remain,
+                0,
+              );
+              html.push(<Todo key={i}>{remainingTasks}</Todo>);
             }
           }
         });
