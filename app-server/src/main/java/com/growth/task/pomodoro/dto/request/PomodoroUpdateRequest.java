@@ -13,19 +13,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PomodoroUpdateRequest {
-    private int performCount = 0;
     private int planCount;
 
     @Builder
-    public PomodoroUpdateRequest(int performCount, int planCount) {
-        this.performCount = performCount;
+    public PomodoroUpdateRequest(int planCount) {
         this.planCount = planCount;
     }
 
     public Pomodoros toEntity(Todos todos) {
         return Pomodoros.builder()
                 .todo(todos)
-                .performCount(this.performCount)
                 .planCount(this.planCount)
                 .build();
     }
