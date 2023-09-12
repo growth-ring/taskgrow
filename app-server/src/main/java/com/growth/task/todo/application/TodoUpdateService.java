@@ -24,8 +24,8 @@ public class TodoUpdateService {
     }
 
     public TodoAndPomodoroUpdateResponse update(Long todoId, TodoAndPomodoroUpdateRequest todoAndPomodoroUpdateRequest) {
-        Todos todos = todoService.update(todoId, todoAndPomodoroUpdateRequest);
-        Pomodoros pomodoros = pomodoroService.update(todoId, todoAndPomodoroUpdateRequest);
+        Todos todos = todoService.update(todoId, todoAndPomodoroUpdateRequest.getTodoUpdateRequest());
+        Pomodoros pomodoros = pomodoroService.update(todoId, todoAndPomodoroUpdateRequest.getPomodoroUpdateRequest());
 
         TodoUpdateResponse todoUpdateResponse = new TodoUpdateResponse(todos);
         PomodoroUpdateResponse pomodoroUpdateResponse = new PomodoroUpdateResponse(pomodoros);
