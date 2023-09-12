@@ -6,6 +6,7 @@ import com.growth.task.task.domain.Tasks;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -16,11 +17,11 @@ import java.time.LocalDateTime;
 public class TaskAddResponse {
     private Long taskId;
     private Long userId;
-    private LocalDateTime taskDate;
+    private LocalDate taskDate;
     private LocalDateTime createdAt;
 
     @Builder
-    public TaskAddResponse(Long taskId, Long userId, LocalDateTime taskDate, LocalDateTime createdAt) {
+    public TaskAddResponse(Long taskId, Long userId, LocalDate taskDate, LocalDateTime createdAt) {
         this.taskId = taskId;
         this.userId = userId;
         this.taskDate = taskDate;

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,8 +40,8 @@ class TaskAddServiceTest {
     class Describe_save {
         @Nested
         @DisplayName("Task 생성 정보가 주어지면")
-        class Context_wiht_task_info {
-            String taskDate = "2023-08-22T10:10:30";
+        class Context_with_task_info {
+            String taskDate = "2023-08-22";
             private final Users givenUser = Users.builder()
                     .userId(1L)
                     .name("test")
@@ -49,12 +49,12 @@ class TaskAddServiceTest {
                     .build();
             private final Tasks givenTask = Tasks.builder()
                     .taskId(1L)
-                    .taskDate(LocalDateTime.parse(taskDate))
+                    .taskDate(LocalDate.parse(taskDate))
                     .user(givenUser)
                     .build();
             private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
                     .userId(givenUser.getUserId())
-                    .taskDate(givenTask.getTaskDate().toLocalDate())
+                    .taskDate(givenTask.getTaskDate())
                     .build();
 
             @BeforeEach

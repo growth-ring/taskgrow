@@ -72,7 +72,7 @@ class TaskDetailControllerTest {
         return tasksRepository.save(
                 Tasks.builder()
                         .user(user)
-                        .taskDate(taskDate.atStartOfDay())
+                        .taskDate(taskDate)
                         .build()
         );
     }

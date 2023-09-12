@@ -75,13 +75,13 @@ class TaskListControllerTest {
         return tasksRepository.save(
                 Tasks.builder()
                         .user(user)
-                        .taskDate(taskDate.atStartOfDay())
+                        .taskDate(taskDate)
                         .build()
         );
     }
 
-    private Todos getTodo(Tasks task, String todo, Status status) {
-        return todosRepository.save(
+    private void getTodo(Tasks task, String todo, Status status) {
+        todosRepository.save(
                 Todos.builder()
                         .task(task)
                         .todo(todo)
@@ -112,24 +112,30 @@ class TaskListControllerTest {
         }
 
         Users user = getUser("testuser1", "password");
-        Tasks task0 = getTask(user, LocalDate.parse("2023-08-28"));
         Tasks task1 = getTask(user, LocalDate.parse("2023-08-29"));
         Tasks task2 = getTask(user, LocalDate.parse("2023-08-30"));
         Tasks task3 = getTask(user, LocalDate.parse("2023-08-31"));
-        Todos todoTask1StatusReady = getTodo(task1, "디자인 패턴의 아름다움 읽기", Status.READY);
-        Todos todoTask1StatusReady2 = getTodo(task1, "얼고리즘 읽기", Status.READY);
-        Todos todoTask1StatusDone1 = getTodo(task1, "스프링 인 액션 읽기", Status.DONE);
-        Todos todoTask1StatusDone2 = getTodo(task1, "파이브 라인스 오브 코드 읽기", Status.DONE);
-        Todos todoTask1StatusProgress = getTodo(task1, "구글 엔지니어는 이렇게 일한다 읽기", Status.PROGRESS);
-        Todos todoTask2StatusReady = getTodo(task2, "견고한 데이터 엔지니어링 읽기", Status.READY);
-        Todos todoTask2StatusReady2 = getTodo(task2, "레거시 코드 활용 전략 읽기", Status.READY);
-        Todos todoTask2StatusDone = getTodo(task2, "파이썬 코딩의 기술 읽기", Status.DONE);
-        Todos todoTask2StatusDone2 = getTodo(task2, "Two Scoops of Django 읽기", Status.DONE);
-        Todos todoTask3StatusReady = getTodo(task3, "운동하기", Status.READY);
+
+        @BeforeEach
+        void prepare() {
+            getTask(user, LocalDate.parse("2023-08-28"));
+
+            getTodo(task1, "디자인 패턴의 아름다움 읽기", Status.READY);
+            getTodo(task1, "얼고리즘 읽기", Status.READY);
+            getTodo(task1, "스프링 인 액션 읽기", Status.DONE);
+            getTodo(task1, "파이브 라인스 오브 코드 읽기", Status.DONE);
+            getTodo(task1, "구글 엔지니어는 이렇게 일한다 읽기", Status.PROGRESS);
+            getTodo(task2, "견고한 데이터 엔지니어링 읽기", Status.READY);
+            getTodo(task2, "레거시 코드 활용 전략 읽기", Status.READY);
+            getTodo(task2, "파이썬 코딩의 기술 읽기", Status.DONE);
+            getTodo(task2, "Two Scoops of Django 읽기", Status.DONE);
+            getTodo(task3, "운동하기", Status.READY);
+        }
 
         @Nested
         @DisplayName("user Id와 start_date, end_date가 넘어오면")
         class Context_with_user_id_and_start_date_and_end_date {
+
             TaskListRequest request = TaskListRequest.builder()
                     .userId(user.getUserId())
                     .startDate(LocalDate.parse("2023-08-27"))
@@ -143,16 +149,16 @@ class TaskListControllerTest {
 
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("$.*", hasSize(4)))
-                        .andExpect(jsonPath("$[0].task_date").value(equalTo("2023-08-28T00:00:00")))
+                        .andExpect(jsonPath("$[0].task_date").value(equalTo("2023-08-28")))
                         .andExpect(jsonPath("$[0].todos.remain").value(equalTo(0)))
                         .andExpect(jsonPath("$[0].todos.done").value(equalTo(0)))
-                        .andExpect(jsonPath("$[1].task_date").value(equalTo("2023-08-29T00:00:00")))
+                        .andExpect(jsonPath("$[1].task_date").value(equalTo("2023-08-29")))
                         .andExpect(jsonPath("$[1].todos.remain").value(equalTo(3)))
                         .andExpect(jsonPath("$[1].todos.done").value(equalTo(2)))
-                        .andExpect(jsonPath("$[2].task_date").value(equalTo("2023-08-30T00:00:00")))
+                        .andExpect(jsonPath("$[2].task_date").value(equalTo("2023-08-30")))
                         .andExpect(jsonPath("$[2].todos.remain").value(equalTo(2)))
                         .andExpect(jsonPath("$[2].todos.done").value(equalTo(2)))
-                        .andExpect(jsonPath("$[3].task_date").value(equalTo("2023-08-31T00:00:00")))
+                        .andExpect(jsonPath("$[3].task_date").value(equalTo("2023-08-31")))
                         .andExpect(jsonPath("$[3].todos.remain").value(equalTo(1)))
                         .andExpect(jsonPath("$[3].todos.done").value(equalTo(0)))
                 ;
