@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * Task 리스트 조회 DTO
@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 public class TaskListResponse {
     private Long taskId;
     private Long userId;
-    private LocalDateTime taskDate;
+    private LocalDate taskDate;
     private TaskTodoResponse todos;
 
-    public TaskListResponse(Long taskId, Long userId, LocalDateTime taskDate, TaskTodoResponse todos) {
+    public TaskListResponse(Long taskId, Long userId, LocalDate taskDate, TaskTodoResponse todos) {
         this.taskId = taskId;
         this.userId = userId;
         this.taskDate = taskDate;

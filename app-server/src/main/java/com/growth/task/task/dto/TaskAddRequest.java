@@ -35,7 +35,7 @@ public class TaskAddRequest {
     public Tasks toEntity(Users user) {
         return Tasks.builder()
                 .user(user)
-                .taskDate(taskDate.atStartOfDay())
+                .taskDate(taskDate)
                 .build();
     }
 }
