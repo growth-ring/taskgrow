@@ -1,7 +1,7 @@
 package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
-import com.growth.task.pomodoro.domain.PomodorosRepository;
+import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
