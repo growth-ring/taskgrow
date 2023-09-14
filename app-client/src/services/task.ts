@@ -24,7 +24,7 @@ export const addTask = async (taskData: AddTaskData) => {
 
 export const getTask = async (taskId: number) => {
   try {
-    return await axios.get(`/httpClient/api/v1/tasks/${taskId}`);
+    return await axios.get(`/httpClient/api/v1/tasks/${taskId}/todos`);
   } catch (error: any) {
     if (error.response.status === 404) {
       return null;
