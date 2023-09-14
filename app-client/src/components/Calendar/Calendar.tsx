@@ -7,6 +7,7 @@ import './Calendar.css';
 import styled from 'styled-components';
 import { startEndDate } from '../../utils/startEndDate';
 import { useUser } from '../../store/user';
+import { TaskDate, moveToTask } from '../../utils/checkTaskExists';
 import { getTaskList } from '../../services/task';
 import good from '../../assets/good.png';
 
@@ -23,15 +24,6 @@ const Todo = styled.div`
   align-items: center;
 `;
 
-interface TaskData {
-  taskId: string;
-  taskDate: string;
-  todos: {
-    remain: number;
-    done: number;
-  };
-}
-
 interface ThisMonthProps {
   thisMonthStart: string;
   thisMonthEnd: string;
@@ -42,11 +34,13 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const { userId } = useUser();
   const [startDate, setStartDate] = useState(thisMonthStart);
   const [endDate, setEndDate] = useState(thisMonthEnd);
-  const [monthTaskDate, setMonthTaskDate] = useState<TaskData[]>([]);
+  const [monthTaskDate, setMonthTaskDate] = useState<TaskDate[]>([]);
   const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
 
   const handleTodayClick = (day: Date) => {
     const userClickDay = moment(day).format('YYYY-MM-DD');
+    const checkTask = { userId, monthTaskDate, userClickDay };
+    moveToTask(checkTask);
     navigate(`/todos/${userClickDay}`);
   };
 
@@ -91,21 +85,20 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
         viewTaskDate.forEach((day, i) => {
           if (day === currentDate) {
-            const matchingTasks = monthTaskDate.filter(
-              (date) => date.taskDate === day,
-            );
-            const allTasksDone = matchingTasks.every(
-              (date) => date.todos.remain === date.todos.done,
-            );
-
-            if (allTasksDone) {
+            if (
+              monthTaskDate
+                .filter((dates: any) => dates.taskDate === day)
+                .map((date: any) => date.todos.remain === date.todos.done)
+            ) {
               html.push(<img src={good} key={i} />);
             } else {
-              const remainingTasks = matchingTasks.reduce(
-                (total, date) => total + date.todos.remain,
-                0,
+              html.push(
+                <Todo key={i}>
+                  {monthTaskDate
+                    .filter((dates: any) => dates.taskDate === day)
+                    .map((date: any) => date.todos.remain)}
+                </Todo>,
               );
-              html.push(<Todo key={i}>{remainingTasks}</Todo>);
             }
           }
         });
