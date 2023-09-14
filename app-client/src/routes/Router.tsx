@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import MainPage from '../pages/MainPage';
 import TaskPage from '../pages/TaskPage';
-import Todos from '../pages/Todos';
+import Todos from '../pages/TodosPage';
 
 const Router = () => {
   return (
