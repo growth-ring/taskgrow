@@ -34,14 +34,12 @@ public class TodoService {
         Todos todos = todosRepository.findById(todoId)
                 .orElseThrow(() -> new TodoNotFoundException(todoId));
 
-        if(todoUpdateRequest.getTodo() != null) {
+        if (todoUpdateRequest.getTodo() != null) {
             todos.updateTodo(todoUpdateRequest.getTodo());
         }
-
-        Tasks task = tasksRepository.findById(todoUpdateRequest.getTaskId())
-                .orElseThrow(() -> new TaskNotFoundException(todoUpdateRequest.getTaskId()));
-        todos.updateTask(task);
-
+        if (todoUpdateRequest.getStatus() != null) {
+            todos.updateStatus(todoUpdateRequest.getStatus());
+        }
         todosRepository.save(todos);
 
         return todos;
