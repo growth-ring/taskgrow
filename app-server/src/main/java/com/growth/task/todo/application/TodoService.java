@@ -3,7 +3,6 @@ package com.growth.task.todo.application;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.dto.composite.TodoAndPomodoroUpdateRequest;
 import com.growth.task.todo.dto.request.TodoAddRequest;
 import com.growth.task.todo.dto.request.TodoUpdateRequest;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -12,12 +11,12 @@ import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TodoService {
+public class TodoUpdateService {
     private TodosRepository todosRepository;
 
     private TasksRepository tasksRepository;
 
-    public TodoService(TodosRepository todosRepository, TasksRepository tasksRepository) {
+    public TodoUpdateService(TodosRepository todosRepository, TasksRepository tasksRepository) {
         this.todosRepository = todosRepository;
         this.tasksRepository = tasksRepository;
     }
