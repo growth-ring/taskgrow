@@ -11,12 +11,12 @@ import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TodoUpdateService {
+public class TodoService {
     private TodosRepository todosRepository;
 
     private TasksRepository tasksRepository;
 
-    public TodoUpdateService(TodosRepository todosRepository, TasksRepository tasksRepository) {
+    public TodoService(TodosRepository todosRepository, TasksRepository tasksRepository) {
         this.todosRepository = todosRepository;
         this.tasksRepository = tasksRepository;
     }
