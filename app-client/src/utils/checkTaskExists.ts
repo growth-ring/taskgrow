@@ -26,6 +26,15 @@ const checkTaskExists = (checkForm: TaskExistsProps) => {
   );
 };
 
+const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistsProps) => {
+  const taskId = Number(
+    monthTaskDate
+      .filter((task) => task.taskDate === userClickDay)
+      .map((task) => task.taskId),
+  );
+  return taskId;
+};
+
 export const moveToTask = ({
   userId,
   monthTaskDate,
@@ -33,14 +42,10 @@ export const moveToTask = ({
 }: TaskProps) => {
   const checkForm = { monthTaskDate, userClickDay };
   if (checkTaskExists(checkForm)) {
-    const taskId = Number(
-      monthTaskDate
-        .filter((task) => task.taskDate === userClickDay)
-        .map((task) => task.taskId),
-    );
+    const taskId = getTaskId(checkForm);
     getTask(taskId);
+    return taskId;
   } else {
-    const dayTaskDate = { userId, userClickDay };
-    addTask(dayTaskDate);
+    return addTask({ userId, userClickDay });
   }
 };

@@ -13,10 +13,11 @@ interface GetTaskListData {
 
 export const addTask = async (taskData: AddTaskData) => {
   try {
-    return await axios.post('/httpClient/api/v1/tasks', {
+    const task = await axios.post('/httpClient/api/v1/tasks', {
       user_id: taskData.userId,
       task_date: taskData.userClickDay,
     });
+    return task.data.task_id;
   } catch (error: any) {
     alert(error.response.data.message);
   }
@@ -24,7 +25,10 @@ export const addTask = async (taskData: AddTaskData) => {
 
 export const getTask = async (taskId: number) => {
   try {
-    return await axios.get(`/httpClient/api/v1/tasks/${taskId}/todos`);
+    const taskData = await axios.get(
+      `/httpClient/api/v1/tasks/${taskId}/todos`,
+    );
+    return taskData.data;
   } catch (error: any) {
     if (error.response.status === 404) {
       return null;
