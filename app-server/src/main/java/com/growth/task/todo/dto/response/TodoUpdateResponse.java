@@ -13,17 +13,20 @@ import lombok.Getter;
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoUpdateResponse {
+    private Long taskId;
     private String todo;
     private Status status;
 
     @Builder
-    public TodoUpdateResponse(String todo, Status status) {
+    public TodoUpdateResponse(Long taskId, String todo, Status status) {
+        this.taskId = taskId;
         this.todo = todo;
         this.status = status;
     }
 
     public TodoUpdateResponse(Todos todos) {
+        this.taskId = todos.getTask().getTaskId();
         this.todo = todos.getTodo();
-        this.status = todos.updateStatus();
+        this.status = todos.getStatus();
     }
 }
