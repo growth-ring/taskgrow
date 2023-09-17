@@ -7,7 +7,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.growth.task.task.domain.QTasks.tasks;
@@ -24,8 +24,8 @@ public class TasksRepositoryCustomImpl implements TasksRepositoryCustom {
     @Override
     public List<TaskListWithTodoStatusResponse> findRemainedTodosByUserBetweenTimeRange(TaskListRequest request) {
         Long userId = request.getUserId();
-        LocalDateTime startDate = request.getStartDate().atStartOfDay();
-        LocalDateTime endDate = request.getEndDate().atStartOfDay();
+        LocalDate startDate = request.getStartDate();
+        LocalDate endDate = request.getEndDate();
 
         return queryFactory.select(Projections.fields(TaskListWithTodoStatusResponse.class,
                         tasks.taskId,
