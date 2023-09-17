@@ -51,4 +51,16 @@ public class Todos extends BaseTimeEntity {
 
     protected Todos() {
     }
+
+    public void updateTodo(String todo) {
+        this.todo = todo;
+    }
+
+    public void updateTask(Tasks task) {
+        this.task = task;
+    }
+
+    public Status updateStatus() {
+        return Status.READY;
+    }
 }

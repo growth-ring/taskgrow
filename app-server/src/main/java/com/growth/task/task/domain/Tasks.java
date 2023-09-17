@@ -17,7 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -35,10 +35,10 @@ public class Tasks extends BaseTimeEntity {
     )
     private Users user;
     @Column(name = "task_date", nullable = false)
-    private LocalDateTime taskDate;
+    private LocalDate taskDate;
 
     @Builder
-    public Tasks(long taskId, Users user, LocalDateTime taskDate) {
+    public Tasks(long taskId, Users user, LocalDate taskDate) {
         this.taskId = taskId;
         this.user = user;
         this.taskDate = taskDate;
