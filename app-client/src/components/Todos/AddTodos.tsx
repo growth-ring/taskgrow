@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { addTodo } from '../../services/todo';
+import { useTask } from '../../store/task';
 
 interface AddTodosProps {
   getShowAddTodos: (todos: boolean) => void;
 }
 
 const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
+  const { selectedTaskId } = useTask();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('');
 
@@ -30,7 +33,15 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
     setPlanCount(e.target.value);
   };
 
-  const handleAddTodo = () => {};
+  const handleAddTodo = () => {
+    const todoData = {
+      taskId: selectedTaskId,
+      todo: todo,
+      performCount: 0,
+      planCount: Number(planCount),
+    };
+    addTodo(todoData);
+  };
 
   return (
     <div>
@@ -63,18 +74,18 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
               </button>
             </div>
 
-            <p className="mt-2 text-sm text-gray-500">
+            <div className="mt-2 text-sm text-gray-500">
               <hr />
-            </p>
+            </div>
 
             <form className="mt-5" onSubmit={handleSubmit}>
               <div>
