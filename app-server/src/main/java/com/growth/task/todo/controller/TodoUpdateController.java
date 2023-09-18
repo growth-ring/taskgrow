@@ -1,8 +1,9 @@
 package com.growth.task.todo.controller;
 
-import com.growth.task.todo.application.TodoUpdateService;
-import com.growth.task.todo.dto.composite.TodoAndPomodoroUpdateRequest;
-import com.growth.task.todo.dto.composite.TodoAndPomodoroUpdateResponse;
+import com.growth.task.todo.application.TodoService;
+import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.dto.request.TodoUpdateRequest;
+import com.growth.task.todo.dto.response.TodoUpdateResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,18 +13,19 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping("/api/v1/todos")
 public class TodoUpdateController {
 
-    private final TodoUpdateService todoUpdateService;
+    private final TodoService todoService;
 
-    public TodoUpdateController(TodoUpdateService todoUpdateService) {
-        this.todoUpdateService = todoUpdateService;
+    public TodoUpdateController(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     @PatchMapping("/{todoId}")
     @ResponseStatus(OK)
-    public TodoAndPomodoroUpdateResponse update(
+    public TodoUpdateResponse update(
             @PathVariable("todoId") Long todoId,
-            @RequestBody @Valid TodoAndPomodoroUpdateRequest todoAndPomodoroUpdateRequest
+            @RequestBody @Valid TodoUpdateRequest todoUpdateRequest
     ) {
-        return todoUpdateService.update(todoId, todoAndPomodoroUpdateRequest);
+        Todos todos = todoService.update(todoId, todoUpdateRequest);
+        return new TodoUpdateResponse(todos);
     }
 }

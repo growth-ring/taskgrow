@@ -73,9 +73,9 @@ class TaskListServiceTest {
                     .status(Status.READY)
                     .build();
             TaskListRequest request = TaskListRequest.builder()
-                    .userId(givenUser.getUserId())
-                    .startDate(LocalDate.parse("2023-08-01"))
-                    .endDate(LocalDate.parse("2023-08-30"))
+                    .user_id(givenUser.getUserId())
+                    .start_date(LocalDate.parse("2023-08-01"))
+                    .end_date(LocalDate.parse("2023-08-30"))
                     .build();
 
             @BeforeEach
