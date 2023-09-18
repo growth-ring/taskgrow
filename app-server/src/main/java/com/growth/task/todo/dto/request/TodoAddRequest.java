@@ -31,6 +31,7 @@ public class TodoAddRequest {
     public Todos toEntity(Tasks tasks) {
         return Todos.builder()
                 .task(tasks)
+                .todo(this.todo)
                 .build();
     }
 }
