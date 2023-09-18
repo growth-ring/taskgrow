@@ -11,3 +11,11 @@ logging:
         orm:
           jdbc:
             bind: trace
+springdoc:
+  api-docs:
+    path: /resource/static/v3/api-docs
+  swagger-ui:
+    path: /resource/static/swagger
+    config-url: /resource/static/v3/api-docs/swagger-config
+    url: /resource/static/v3/api-docs
+    disable-swagger-default-url: true
