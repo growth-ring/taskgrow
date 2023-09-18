@@ -3,6 +3,7 @@ package com.growth.task.task.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskAddRequest;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.user.domain.Users;
@@ -23,6 +24,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDate;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -155,6 +157,35 @@ class TaskAddControllerTest {
                 resultActions.andExpect(status().isBadRequest())
                 ;
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("존재하는 사용자 id와 이미 존재하는 Task 날짜가 주어지면")
+    class Context_with_existed_task_date_and_existed_user {
+        private final Users givenUser = getUser("test user", "password");
+        private final String taskDate = "2023-08-22";
+        private final TaskAddRequest taskAddRequest = TaskAddRequest.builder()
+                .userId(givenUser.getUserId())
+                .taskDate(LocalDate.parse(taskDate))
+                .build();
+
+        @BeforeEach
+        void prepare() {
+            tasksRepository.save(Tasks.builder()
+                    .user(givenUser)
+                    .taskDate(LocalDate.parse(taskDate))
+                    .build());
+        }
+
+        @DisplayName("400을 응답한다")
+        @Test
+        void it_response_400() throws Exception {
+            final ResultActions resultActions = subject(taskAddRequest);
+
+            resultActions.andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("error").value(equalTo(String.format("Already Exists %s's task for this date( %s ).", givenUser.getName(), taskDate))))
+            ;
         }
     }
 }
