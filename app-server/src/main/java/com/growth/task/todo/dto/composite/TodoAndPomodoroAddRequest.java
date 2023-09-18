@@ -1,6 +1,7 @@
 package com.growth.task.todo.dto.composite;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.todo.dto.request.TodoAddRequest;
@@ -14,9 +15,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TodoAndPomodoroAddRequest {
     @Valid
+    @JsonIgnore
     private TodoAddRequest todoAddRequest;
 
     @Valid
+    @JsonIgnore
     private PomodoroAddRequest pomodoroAddRequest;
 
     @JsonCreator
