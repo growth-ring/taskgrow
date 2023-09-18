@@ -3,6 +3,7 @@ import StateBtn from '../../components/Todos/StateBtn';
 import Timer from '../../components/Pomodoro/Timer';
 import Pomodoro from '../../components/Pomodoro/Pomodoro';
 import PomodoroBtn from '../../components/Pomodoro/PomodoroBtn';
+import TodoAllDelete from '../../components/Todos/TodoAllDelete';
 import TodoList from '../../components/Todos/TodoList';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
@@ -48,11 +49,15 @@ const Todos = () => {
             timerState={timerState}
             time={timerMinute}
           />
-          {onTimer && <>
-          <Timer time={timerMinute} timerState={timerState}/>
-          <PomodoroBtn /></>}
+          {onTimer && (
+            <>
+              <Timer time={timerMinute} timerState={timerState} />
+              <PomodoroBtn />
+            </>
+          )}
         </Time>
-        <div style={{ width: '50%', height: '100%' }}>
+        <div style={{ width: '50%', height: '100%', margin: '2.5rem' }}>
+          <TodoAllDelete />
           <TodoList />
         </div>
       </Container>
