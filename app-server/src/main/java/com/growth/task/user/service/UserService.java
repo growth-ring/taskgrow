@@ -1,6 +1,6 @@
 package com.growth.task.user.service;
 
-import com.growth.task.task.exception.UserNotFoundException;
+import com.growth.task.user.exception.UserNotFoundException;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
 import com.growth.task.user.dto.UserGetResponse;
