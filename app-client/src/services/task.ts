@@ -55,7 +55,7 @@ export const getTaskList = async (taskData: GetTaskListData) => {
 
 export const deleteTask = async (taskId: number) => {
   try {
-    await axios.delete(`/httpClient/api/v1/tasks/${taskId}`);
+    return await axios.delete(`/httpClient/api/v1/tasks/${taskId}`);
   } catch (error: any) {
     return null;
   }
