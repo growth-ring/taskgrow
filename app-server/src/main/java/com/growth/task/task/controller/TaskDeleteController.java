@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -21,9 +22,9 @@ public class TaskDeleteController {
         this.taskDeleteService = taskDeleteService;
     }
 
-    @DeleteMapping("/{taskId}")
+    @DeleteMapping("/{task_id}")
     @ResponseStatus(NO_CONTENT)
-    public void delete(@PathVariable("taskId") Long taskId) {
+    public void delete(@PathVariable("task_id") Long taskId) {
         taskDeleteService.deleteByTaskId(taskId);
     }
 }
