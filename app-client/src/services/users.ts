@@ -12,19 +12,21 @@ export const signUp = async (
   try {
     await axios.post('/httpClient/api/v1/users', formData);
     setIsShowLogin(true);
+    alert('회원가입이 완료되었습니다.');
   } catch (error) {
-    alert(error.response.data.message);
+    alert(error.response.data.error);
   }
 };
 
 export const login = async (formData: UserFormData) => {
   const name = formData.name;
   try {
-    const data = await axios.get(`/httpClient/api/v1/users/${name}`);
-    console.log('data: ', data.data);
+    await axios.get(`/httpClient/api/v1/users/${name}`);
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      alert('오류입니다');
+    if (error.response.status === 404) {
+      alert('아이디 또는 비밀번호가 일치하지 않습니다. 다시 입력해 주세요.');
+    } else {
+      alert('오류가 발생했습니다.');
     }
   }
 };
