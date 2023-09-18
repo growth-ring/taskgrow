@@ -2,6 +2,7 @@ package com.growth.task.task.controller;
 
 import com.growth.task.task.dto.TaskDetailResponse;
 import com.growth.task.task.service.TaskDetailService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import static org.springframework.http.HttpStatus.OK;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/tasks")
+@Tag(name = "Task", description = "Task API Document")
 public class TaskDetailController {
     private final TaskDetailService taskDetailService;
 
