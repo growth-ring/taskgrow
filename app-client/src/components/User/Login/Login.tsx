@@ -1,9 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../../../store/login';
 import { login } from '../../../services/users';
+import { useUser } from '../../../store/user';
 import logo from '../../../assets/logo.png';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { setUserId } = useUser();
+
   const { setIsShowLogin } = useLogin();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +17,10 @@ const Login = () => {
     event.preventDefault();
 
     const form = { name, password };
-    login(form);
+    login(form).then((userData) => {
+      setUserId(userData?.data.user_id);
+      navigate(`/tasks`);
+    });
   };
 
   return (

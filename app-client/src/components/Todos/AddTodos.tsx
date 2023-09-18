@@ -20,7 +20,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
 
   const handleClose = () => {
     getShowAddTodos(false);
-  }
+  };
 
   const handleTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
@@ -29,6 +29,8 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
   const handlePlanCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlanCount(e.target.value);
   };
+
+  const handleAddTodo = () => {};
 
   return (
     <div>
@@ -61,9 +63,9 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
@@ -116,6 +118,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
               <div className="flex justify-end mt-6">
                 <button
                   type="submit"
+                  onClick={handleAddTodo}
                   className="px-3 py-2 text-sm tracking-wide bg-main-color text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50"
                 >
                   추가하기
