@@ -1,4 +1,4 @@
-package com.growth.task.task.exception;
+package com.growth.task.user.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
