@@ -4,6 +4,7 @@ import com.growth.task.user.dto.UserGetResponse;
 import com.growth.task.user.dto.UserSignUpRequest;
 import com.growth.task.user.dto.UserSignUpResponse;
 import com.growth.task.user.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import static org.springframework.http.HttpStatus.OK;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/users")
+@Tag(name = "User", description = "User API Document")
 public class UserController {
     private final UserService userService;
 

@@ -4,7 +4,9 @@ import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.request.TodoAddRequest;
+import com.growth.task.todo.dto.request.TodoUpdateRequest;
 import com.growth.task.todo.exception.TaskNotFoundException;
+import com.growth.task.todo.exception.TodoNotFoundException;
 import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +28,20 @@ public class TodoService {
 
         Todos todos = todoAddRequest.toEntity(tasks);
         return todosRepository.save(todos);
+    }
+
+    public Todos update(Long todoId, TodoUpdateRequest todoUpdateRequest) {
+        Todos todos = todosRepository.findById(todoId)
+                .orElseThrow(() -> new TodoNotFoundException(todoId));
+
+        if (todoUpdateRequest.getTodo() != null) {
+            todos.updateTodo(todoUpdateRequest.getTodo());
+        }
+        if (todoUpdateRequest.getStatus() != null) {
+            todos.updateStatus(todoUpdateRequest.getStatus());
+        }
+        todosRepository.save(todos);
+
+        return todos;
     }
 }

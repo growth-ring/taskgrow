@@ -6,7 +6,7 @@ import com.growth.task.todo.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * Task + Todos status DTO
@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class TaskListWithTodoStatusResponse {
     private Long taskId;
     private Long userId;
-    private LocalDateTime taskDate;
+    private LocalDate taskDate;
     private Status todoStatus;
 
-    public TaskListWithTodoStatusResponse(Long taskId, Long userId, LocalDateTime taskDate, Status todoStatus) {
+    public TaskListWithTodoStatusResponse(Long taskId, Long userId, LocalDate taskDate, Status todoStatus) {
         this.taskId = taskId;
         this.userId = userId;
         this.taskDate = taskDate;

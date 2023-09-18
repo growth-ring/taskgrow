@@ -12,16 +12,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "task_date"}))
 public class Tasks extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +38,10 @@ public class Tasks extends BaseTimeEntity {
     )
     private Users user;
     @Column(name = "task_date", nullable = false)
-    private LocalDateTime taskDate;
+    private LocalDate taskDate;
 
     @Builder
-    public Tasks(long taskId, Users user, LocalDateTime taskDate) {
+    public Tasks(long taskId, Users user, LocalDate taskDate) {
         this.taskId = taskId;
         this.user = user;
         this.taskDate = taskDate;

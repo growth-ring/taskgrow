@@ -73,7 +73,7 @@ class TaskDeleteControllerTest {
         return tasksRepository.save(
                 Tasks.builder()
                         .user(user)
-                        .taskDate(taskDate.atStartOfDay())
+                        .taskDate(taskDate)
                         .build()
         );
     }
@@ -105,12 +105,11 @@ class TaskDeleteControllerTest {
         @Nested
         @DisplayName("todo가 없는 Task id가 주어지면")
         class Context_with_exist_task_and_without_todo {
-            private Users givenUser;
             private Tasks givenTask;
 
             @BeforeEach
             void setUp() {
-                givenUser = getUser("test user", "password");
+                Users givenUser = getUser("test user", "password");
                 givenTask = getTask(givenUser, LocalDate.parse("2023-09-03"));
             }
 
@@ -130,12 +129,11 @@ class TaskDeleteControllerTest {
         @Nested
         @DisplayName("todo가 있는 Task id가 주어지면")
         class Context_with_exist_task_and_with_todo {
-            private Users givenUser;
             private Tasks givenTask;
 
             @BeforeEach
             void setUp() {
-                givenUser = getUser("test user", "password");
+                Users givenUser = getUser("test user", "password");
                 givenTask = getTask(givenUser, LocalDate.parse("2023-09-03"));
                 getTodo(givenTask, "디자인 패턴의 아름다움 읽기", Status.READY);
             }
@@ -161,12 +159,11 @@ class TaskDeleteControllerTest {
         @Nested
         @DisplayName("존재하지 않는 Task id가 주어지면")
         class Context_with_not_exist_task_id {
-            private Users givenUser;
             private Long taskId;
 
             @BeforeEach
             void setUp() {
-                givenUser = getUser("test user", "password");
+                Users givenUser = getUser("test user", "password");
                 taskId = getTask(givenUser, LocalDate.parse("2023-09-03")).getTaskId();
                 tasksRepository.deleteById(taskId);
             }

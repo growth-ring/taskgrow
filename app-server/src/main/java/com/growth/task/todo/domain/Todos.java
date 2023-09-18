@@ -46,9 +46,17 @@ public class Todos extends BaseTimeEntity {
         this.todoId = todoId;
         this.task = task;
         this.todo = todo;
-        this.status = status;
+        this.status = status != null ? status : Status.READY;
     }
 
     protected Todos() {
+    }
+
+    public void updateTodo(String todo) {
+        this.todo = todo;
+    }
+
+    public void updateStatus(Status status) {
+        this.status = status;
     }
 }

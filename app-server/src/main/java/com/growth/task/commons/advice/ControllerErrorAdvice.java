@@ -1,12 +1,13 @@
 package com.growth.task.commons.advice;
 
-import com.growth.task.task.exception.UserNotFoundException;
+import com.growth.task.task.exception.UserAndTaskDateUniqueConstraintViolationException;
 import com.growth.task.todo.exception.BadInputParameterException;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import com.growth.task.user.exception.UserNameDuplicationException;
+import com.growth.task.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -34,9 +35,11 @@ public class ControllerErrorAdvice {
      */
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public String handleUserNotFoundException(UserNotFoundException exception) {
+    public ResponseEntity<Map<String, String>> handleUserNotFoundException(UserNotFoundException exception) {
         log.error("UserNotFoundException", exception);
-        return exception.getMessage();
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
     }
 
     /**
@@ -45,11 +48,13 @@ public class ControllerErrorAdvice {
      * @param exception Input 이 없다는 예외
      * @return 에러 메세지
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(BadInputParameterException.class)
-    public String handleBadInputParameterException(BadInputParameterException exception) {
+    public ResponseEntity<Map<String, String>> handleBadInputParameterException(BadInputParameterException exception) {
         log.error("BadInputParameterException", exception);
-        return exception.getMessage();
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
     }
 
     /**
@@ -60,9 +65,50 @@ public class ControllerErrorAdvice {
      */
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(TaskNotFoundException.class)
-    public String handleTaskNotFoundException(TaskNotFoundException exception) {
+    public ResponseEntity<Map<String, String>> handleTaskNotFoundException(TaskNotFoundException exception) {
         log.error("TaskNotFoundException: taskId={}", exception.getTaskId());
-        return exception.getMessage();
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
+    }
+
+    /**
+     * TodoId 가 없는 경우, NOT_FOUND(404) 와 Error 메세지를 응답한다.
+     *
+     * @param exception TodoId 를 찾을 수 없다는 예외
+     * @return 에러 메세지
+     */
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(TodoNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleTodoNotFoundException(TodoNotFoundException exception) {
+        log.error("TodoNotFoundException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
+    }
+
+    /**
+     * 사용자 이름이 이미 있는 경우, CONFLICT(409)와 Error 메세지를 응답한다.
+     */
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(UserNameDuplicationException.class)
+    public ResponseEntity<Map<String, String>> handleUserNameDuplicationException(UserNameDuplicationException exception) {
+        log.error("UserNameDuplicationException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, CONFLICT);
+    }
+
+    /**
+     * 사용자의 이미 존재하는 테스크 날짜에 요청이 온 경우
+     */
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(UserAndTaskDateUniqueConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleUserAndTaskDateUniqueConstraintViolationException(UserAndTaskDateUniqueConstraintViolationException exception) {
+        log.error("UserAndTaskDateUniqueConstraintViolationException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
     }
 
     /**
@@ -84,29 +130,7 @@ public class ControllerErrorAdvice {
         return errors;
     }
 
-    /**
-     * TodoId 가 없는 경우, NOT_FOUND(404) 와 Error 메세지를 응답한다.
-     *
-     * @param exception TodoId 를 찾을 수 없다는 예외
-     * @return 에러 메세지
-     */
-    @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(TodoNotFoundException.class)
-    public String handleTodoNotFoundException(TodoNotFoundException exception) {
-        log.error("TodoNotFoundException", exception);
-        return exception.getMessage();
-    }
-
-    /**
-     * 사용자 이름이 이미 있는 경우, CONFLICT(409)와 Error 메세지를 응답한다.
-     *
-     * @param exception
-     * @return
-     */
-    @ResponseStatus(CONFLICT)
-    @ExceptionHandler(UserNameDuplicationException.class)
-    public String handleUserNameDuplicationException(UserNameDuplicationException exception) {
-        log.error("UserNameDuplicationException", exception);
-        return exception.getMessage();
+    private static Map<String, String> getErrorResponseBody(Exception exception) {
+        return Map.of("error", exception.getMessage());
     }
 }

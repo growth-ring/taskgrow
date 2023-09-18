@@ -50,7 +50,7 @@ class TasksRepositoryCustomImplTest {
         return tasksRepository.save(
                 Tasks.builder()
                         .user(user)
-                        .taskDate(taskDate.atStartOfDay())
+                        .taskDate(taskDate)
                         .build()
         );
     }
@@ -108,9 +108,9 @@ class TasksRepositoryCustomImplTest {
                 getTodo(task2, "Two Scoops of Django 읽기", Status.DONE);
                 getTodo(task3, "운동하기", Status.DONE);
 
-                request = TaskListRequest.builder().userId(user.getUserId())
-                        .startDate(LocalDate.from(task0.getTaskDate()))
-                        .endDate(LocalDate.from(task2.getTaskDate()))
+                request = TaskListRequest.builder().user_id(user.getUserId())
+                        .start_date(LocalDate.from(task0.getTaskDate()))
+                        .end_date(LocalDate.from(task2.getTaskDate()))
                         .build();
             }
 
