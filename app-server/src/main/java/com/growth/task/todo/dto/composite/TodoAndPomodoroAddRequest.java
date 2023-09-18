@@ -38,4 +38,20 @@ public class TodoAndPomodoroAddRequest {
         this.todoAddRequest = todoAddRequest;
         this.pomodoroAddRequest = pomodoroAddRequest;
     }
+
+    public Long getTaskId() {
+        return todoAddRequest.getTaskId();
+    }
+
+    public String getTodo() {
+        return todoAddRequest.getTodo();
+    }
+
+    public int getPerformCount() {
+        return pomodoroAddRequest.getPerformCount();
+    }
+
+    public int getPlanCount() {
+        return pomodoroAddRequest.getPlanCount();
+    }
 }
