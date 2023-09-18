@@ -102,9 +102,9 @@ class TaskListControllerTest {
     class Describe_GET {
         private ResultActions subject(TaskListRequest request) throws Exception {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("userId", String.valueOf(request.getUserId()));
-            params.add("startDate", String.valueOf(request.getStartDate()));
-            params.add("endDate", String.valueOf(request.getEndDate()));
+            params.add("user_id", String.valueOf(request.getUserId()));
+            params.add("start_date", String.valueOf(request.getStartDate()));
+            params.add("end_date", String.valueOf(request.getEndDate()));
 
             return mockMvc.perform(get("/api/v1/tasks")
                     .params(params)
@@ -137,9 +137,9 @@ class TaskListControllerTest {
         class Context_with_user_id_and_start_date_and_end_date {
 
             TaskListRequest request = TaskListRequest.builder()
-                    .userId(user.getUserId())
-                    .startDate(LocalDate.parse("2023-08-27"))
-                    .endDate(LocalDate.parse("2023-08-31"))
+                    .user_id(user.getUserId())
+                    .start_date(LocalDate.parse("2023-08-27"))
+                    .end_date(LocalDate.parse("2023-08-31"))
                     .build();
 
             @Test
@@ -169,9 +169,9 @@ class TaskListControllerTest {
         @DisplayName("날짜 정보가 안넘어오면")
         class Context_without_date_info {
             TaskListRequest request = TaskListRequest.builder()
-                    .userId(user.getUserId())
-                    .startDate(null)
-                    .endDate(null)
+                    .user_id(user.getUserId())
+                    .start_date(null)
+                    .end_date(null)
                     .build();
 
             @Test

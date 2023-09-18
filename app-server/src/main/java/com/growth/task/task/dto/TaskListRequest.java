@@ -22,9 +22,9 @@ public class TaskListRequest {
     private LocalDate endDate;
 
     @Builder
-    public TaskListRequest(Long userId, LocalDate startDate, LocalDate endDate) {
-        this.userId = userId;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public TaskListRequest(Long user_id, LocalDate start_date, LocalDate end_date) {
+        this.userId = user_id;
+        this.startDate = start_date;
+        this.endDate = end_date;
     }
 }
