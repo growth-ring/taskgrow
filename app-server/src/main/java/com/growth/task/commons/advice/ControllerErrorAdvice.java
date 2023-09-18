@@ -1,10 +1,11 @@
 package com.growth.task.commons.advice;
 
-import com.growth.task.task.exception.UserNotFoundException;
+import com.growth.task.task.exception.UserAndTaskDateUniqueConstraintViolationException;
 import com.growth.task.todo.exception.BadInputParameterException;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import com.growth.task.user.exception.UserNameDuplicationException;
+import com.growth.task.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -88,9 +89,6 @@ public class ControllerErrorAdvice {
 
     /**
      * 사용자 이름이 이미 있는 경우, CONFLICT(409)와 Error 메세지를 응답한다.
-     *
-     * @param exception
-     * @return
      */
     @ResponseStatus(CONFLICT)
     @ExceptionHandler(UserNameDuplicationException.class)
@@ -99,6 +97,18 @@ public class ControllerErrorAdvice {
 
         Map<String, String> errorResponseBody = getErrorResponseBody(exception);
         return new ResponseEntity<>(errorResponseBody, CONFLICT);
+    }
+
+    /**
+     * 사용자의 이미 존재하는 테스크 날짜에 요청이 온 경우
+     */
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(UserAndTaskDateUniqueConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleUserAndTaskDateUniqueConstraintViolationException(UserAndTaskDateUniqueConstraintViolationException exception) {
+        log.error("UserAndTaskDateUniqueConstraintViolationException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
     }
 
     /**
@@ -121,7 +131,6 @@ public class ControllerErrorAdvice {
     }
 
     private static Map<String, String> getErrorResponseBody(Exception exception) {
-        Map<String, String> responseBody = Map.of("error", exception.getMessage());
-        return responseBody;
+        return Map.of("error", exception.getMessage());
     }
 }
