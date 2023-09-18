@@ -40,9 +40,9 @@ export const getTaskList = async (taskData: GetTaskListData) => {
   try {
     const taskListData = await axios.get('/httpClient/api/v1/tasks', {
       params: {
-        userId: taskData.userId,
-        startDate: taskData.startDate,
-        endDate: taskData.endDate,
+        user_id: taskData.userId,
+        start_date: taskData.startDate,
+        end_date: taskData.endDate,
       },
     });
     return taskListData.data;
