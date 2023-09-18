@@ -37,7 +37,7 @@ class TodoAddControllerTest {
                 .todoId(1L)
                 .taskId(0L)
                 .todo("스터디 하기")
-                .status("대기중")
+                .status("ready")
                 .performCount(2)
                 .planCount(5)
                 .build();
@@ -69,7 +69,7 @@ class TodoAddControllerTest {
                 .andExpect(jsonPath("$.todo_id").value(1L))
                 .andExpect(jsonPath("$.task_id").value(0L))
                 .andExpect(jsonPath("$.todo").value("스터디 하기"))
-                .andExpect(jsonPath("$.status").value("대기중"))
+                .andExpect(jsonPath("$.status").value("ready"))
                 .andExpect(jsonPath("$.perform_count").value(2))
                 .andExpect(jsonPath("$.plan_count").value(5));
     }
