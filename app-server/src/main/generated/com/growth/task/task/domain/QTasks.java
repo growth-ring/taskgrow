@@ -27,7 +27,7 @@ public class QTasks extends EntityPathBase<Tasks> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final DateTimePath<java.time.LocalDateTime> taskDate = createDateTime("taskDate", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> taskDate = createDate("taskDate", java.time.LocalDate.class);
 
     public final NumberPath<Long> taskId = createNumber("taskId", Long.class);
 

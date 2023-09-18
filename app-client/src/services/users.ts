@@ -21,7 +21,7 @@ export const signUp = async (
 export const login = async (formData: UserFormData) => {
   const name = formData.name;
   try {
-    await axios.get(`/httpClient/api/v1/users/${name}`);
+    return await axios.get(`/httpClient/api/v1/users/${name}`);
   } catch (error: any) {
     if (error.response.status === 404) {
       alert('아이디 또는 비밀번호가 일치하지 않습니다. 다시 입력해 주세요.');

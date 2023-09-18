@@ -67,7 +67,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
     getTaskList(taskData).then((tasks) => {
       const updatedData = tasks.map((task: any) => ({
         taskId: task.task_id,
-        taskDate: task.task_date.replace('T00:00:00', ''),
+        taskDate: task.task_date,
         todos: task.todos,
       }));
       setMonthTaskDate(updatedData);
