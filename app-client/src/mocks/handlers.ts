@@ -9,8 +9,15 @@ export const handlers = [
 
   rest.post('/test', async (req, res, ctx) => {
     await sleep(200);
-    todos.push(req.body);
-    return res(ctx.status(201), ctx.json(todos));
+    let todoId = 0;
+    const newTodoId = todos.map((value) => {
+      if (todoId < value.todo_id) {
+        todoId = value.todo_id + 1;
+      }
+    });
+    const newData = { ...req.body, todo_id: todoId, status: 'ready' };
+    todos.push(newData);
+    return res(ctx.status(201), ctx.json(newData));
   }),
 
   //   rest.delete('/test', async (req, res, ctx) => {
