@@ -23,7 +23,7 @@ export const addTodo = async (todoData: AddTodoData) => {
 export const getTodos = async (taskId: number) => {
   try {
     const todoData = await axios.get('/test');
-    return todoData.data.filter((todo) => todo.task_id === taskId);
+    return todoData.data.filter((todo: any) => todo.task_id === taskId);
   } catch (error: any) {
     if (error.response.status === 404) {
       return null;
