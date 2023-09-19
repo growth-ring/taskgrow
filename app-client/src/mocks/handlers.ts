@@ -2,7 +2,7 @@ import { rest } from 'msw';
 import todos from './dummy.json';
 
 export const handlers = [
-  rest.get('/test', async (req, res, ctx) => {
+  rest.get(`/test`, async (req, res, ctx) => {
     await sleep(200);
     return res(ctx.status(200), ctx.json(todos));
   }),

@@ -1,16 +1,25 @@
+import { useState, useEffect } from 'react';
 import Todo from './Todo';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
+import { useTask } from '../../store/task';
+import { getTodos } from '../../services/todo';
 
 const TodoList = () => {
+  const { selectedTaskId } = useTask();
   const { setSelectedTodo } = useTodosStore();
   const { setShowTodoBtn, setOnTimer, stop } = useTimerStore();
+  const [todoList, setTodoList] = useState([]);
 
   const handleTodoClick = (title: string) => {
     setOnTimer(true);
     setShowTodoBtn(true);
     setSelectedTodo(title);
   };
+
+  useEffect(() => {
+    getTodos(selectedTaskId).then((todos) => setTodoList(todos));
+  }, []);
 
   return (
     <div
@@ -21,20 +30,16 @@ const TodoList = () => {
         id="tasks"
         style={{ width: '100%', height: '100%', overflow: 'auto' }}
       >
-        <Todo
-          title="밥먹기"
-          completed={true}
-          planCount={3}
-          performCount={3}
-          onClick={() => handleTodoClick('밥먹기')}
-        />
-        <Todo
-          title="영단어 외우기"
-          completed={false}
-          planCount={2}
-          performCount={1}
-          onClick={() => handleTodoClick('영단어 외우기')}
-        />
+        {todoList.map((todo: any) => (
+          <Todo
+            key={todo.todo_id}
+            title={todo.todo}
+            status={todo.status}
+            planCount={todo.plan_count}
+            performCount={todo.perform_count}
+            onClick={() => handleTodoClick(todo.todo)}
+          />
+        ))}
       </div>
     </div>
   );

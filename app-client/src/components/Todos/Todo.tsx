@@ -2,7 +2,7 @@ import { AiOutlineUnorderedList } from 'react-icons/ai';
 
 interface TodoProps {
   title: string;
-  completed: boolean;
+  status: string;
   planCount: number;
   performCount: number;
   onClick: () => void;
@@ -10,7 +10,7 @@ interface TodoProps {
 
 const Todo = ({
   title,
-  completed,
+  status,
   planCount,
   performCount,
   onClick,
@@ -18,9 +18,9 @@ const Todo = ({
   return (
     <div
       className={`flex justify-between items-center border-b border-slate-200 py-3 border-l-4 ${
-        completed ? 'border-l-transparent' : 'border-l-indigo-300'
+        status === 'done' ? 'border-l-transparent' : 'border-l-indigo-300'
       } ${
-        completed
+        status === 'done'
           ? 'color-main-colorbg-gradient-to-r from-transparent to-transparent hover:from-slate-100'
           : 'bg-gradient-to-r from-indigo-100 to-transparent hover:from-indigo-200'
       } transition ease-linear duration-150 cursor-pointer`}
@@ -33,7 +33,7 @@ const Todo = ({
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke={completed ? 'var(--main-color)' : 'currentColor'}
+            stroke={status === 'done' ? 'var(--main-color)' : 'currentColor'}
             className="w-6 h-6 text-slate-500"
           >
             <path
@@ -43,7 +43,11 @@ const Todo = ({
             />
           </svg>
         </div>
-        <div className={`text-slate-500 ${completed ? 'line-through' : ''}`}>
+        <div
+          className={`text-slate-500 ${
+            status === 'done' ? 'line-through' : ''
+          }`}
+        >
           {title}
         </div>
       </div>
