@@ -72,9 +72,9 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
               </button>
             </div>
 
-            <p className="mt-2 text-sm text-gray-500">
+            <div className="mt-2 text-sm text-gray-500">
               <hr />
-            </p>
+            </div>
 
             <form className="mt-5" onSubmit={handleSubmit}>
               <div>
