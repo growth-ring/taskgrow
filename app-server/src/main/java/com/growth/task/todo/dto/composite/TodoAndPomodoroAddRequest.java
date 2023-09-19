@@ -39,6 +39,7 @@ public class TodoAndPomodoroAddRequest {
         this.pomodoroAddRequest = pomodoroAddRequest;
     }
 
+    @JsonProperty("task_id")
     public Long getTaskId() {
         return todoAddRequest.getTaskId();
     }
@@ -47,10 +48,12 @@ public class TodoAndPomodoroAddRequest {
         return todoAddRequest.getTodo();
     }
 
+    @JsonProperty("perform_count")
     public int getPerformCount() {
         return pomodoroAddRequest.getPerformCount();
     }
 
+    @JsonProperty("plan_count")
     public int getPlanCount() {
         return pomodoroAddRequest.getPlanCount();
     }
