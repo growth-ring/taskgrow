@@ -1,15 +1,28 @@
 import { create } from 'zustand';
 
-interface TimerStore {
+interface Todo {
+  todo_id: number;
+  task_id: number;
+  todo: string;
+  status: string;
+  plan_count: number;
+  perform_count: number;
+}
+
+interface TodosStore {
   today: string;
   setToday: (running: string) => void;
+  todoList: Todo[];
+  setTodoList: (todos: Todo[]) => void;
   selectedTodo: string;
   setSelectedTodo: (todo: string) => void;
 }
 
-export const useTodosStore = create<TimerStore>((set) => ({
+export const useTodosStore = create<TodosStore>((set) => ({
   today: '',
   setToday: (day) => set({ today: day }),
+  todoList: [],
+  setTodoList: (newTodo) => set({ todoList: newTodo }),
   selectedTodo: '오늘 할 일 골라주세요',
   setSelectedTodo: (todo) => set({ selectedTodo: todo }),
 }));

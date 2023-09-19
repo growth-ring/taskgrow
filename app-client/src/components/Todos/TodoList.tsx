@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Todo from './Todo';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
@@ -7,9 +7,8 @@ import { getTodos } from '../../services/todo';
 
 const TodoList = () => {
   const { selectedTaskId } = useTask();
-  const { setSelectedTodo } = useTodosStore();
+  const { todoList, setTodoList, setSelectedTodo } = useTodosStore();
   const { setShowTodoBtn, setOnTimer, stop } = useTimerStore();
-  const [todoList, setTodoList] = useState([]);
 
   const handleTodoClick = (title: string) => {
     setOnTimer(true);
@@ -30,7 +29,7 @@ const TodoList = () => {
         id="tasks"
         style={{ width: '100%', height: '100%', overflow: 'auto' }}
       >
-        {todoList.map((todo: any) => (
+        {todoList.map((todo) => (
           <Todo
             key={todo.todo_id}
             title={todo.todo}

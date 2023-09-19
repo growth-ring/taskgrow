@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useTask } from '../../store/task';
-import { addTodo } from '../../services/todo';
+import { addTodo, getTodos } from '../../services/todo';
+
+import { useTodosStore } from '../../store/todos';
 
 interface AddTodosProps {
   getShowAddTodos: (todos: boolean) => void;
 }
 
 const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
+  const { setTodoList } = useTodosStore();
   const { selectedTaskId } = useTask();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('');
@@ -34,13 +37,13 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
   };
 
   const handleAddTodo = () => {
-    const todoData = {
+    addTodo({
       taskId: selectedTaskId,
       todo: todo,
       performCount: 0,
       planCount: +planCount,
-    };
-    addTodo(todoData);
+    });
+    getTodos(selectedTaskId).then((todos) => setTodoList(todos));
   };
 
   return (
