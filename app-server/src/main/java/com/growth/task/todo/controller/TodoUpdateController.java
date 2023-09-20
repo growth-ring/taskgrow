@@ -19,13 +19,13 @@ public class TodoUpdateController {
         this.todoService = todoService;
     }
 
-    @PatchMapping("/{todoId}")
+    @PatchMapping("/{todo_id}")
     @ResponseStatus(OK)
     public TodoUpdateResponse update(
-            @PathVariable("todoId") Long todoId,
+            @PathVariable("todo_id") Long todoId,
             @RequestBody @Valid TodoUpdateRequest todoUpdateRequest
     ) {
         Todos todos = todoService.update(todoId, todoUpdateRequest);
-        return new TodoUpdateResponse(todos);
+        return new TodoUpdateResponse(todoId, todos);
     }
 }
