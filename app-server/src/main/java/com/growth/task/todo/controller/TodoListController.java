@@ -19,7 +19,7 @@ public class TodoListController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TodoListResponse> getTodos(@RequestParam(required = true) Long taskId) {
+    public List<TodoListResponse> getTodos(@RequestParam(name = "task_id", required = true) Long taskId) {
         return todoListService.getTodosByTaskId(taskId);
     }
 }
