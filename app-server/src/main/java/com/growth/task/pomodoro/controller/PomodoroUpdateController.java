@@ -19,10 +19,10 @@ public class PomodoroUpdateController {
         this.pomodoroService = pomodoroService;
     }
 
-    @PatchMapping("/{todoId}")
+    @PatchMapping("/{todo_id}")
     @ResponseStatus(OK)
     public PomodoroUpdateResponse update(
-            @PathVariable("todoId") Long todoId,
+            @PathVariable("todo_id") Long todoId,
             @RequestBody @Valid PomodoroUpdateRequest pomodoroUpdateRequest
     ) {
         Pomodoros pomodoros = pomodoroService.update(todoId, pomodoroUpdateRequest);
