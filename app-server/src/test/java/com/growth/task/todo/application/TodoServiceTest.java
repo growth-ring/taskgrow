@@ -137,7 +137,7 @@ class TodoServiceTest {
             @DisplayName("todo 에 대한 TodoUpdateRequest 가 저장된다.")
             void It_updateTheTodo() {
                 Todos todos = todoService.update(TODO_ID1, todoUpdateRequest_todo);
-                TodoUpdateResponse response = new TodoUpdateResponse(todos);
+                TodoUpdateResponse response = new TodoUpdateResponse(TODO_ID1, todos);
 
                 assertAll(
                         () -> assertThat(response.getTodo()).isEqualTo(NEW_WHAT_TO_DO),
@@ -149,7 +149,7 @@ class TodoServiceTest {
             @DisplayName("status 에 대한 TodoUpdateRequest 가 저장된다.")
             void It_updateTheStatus() {
                 Todos todos = todoService.update(TODO_ID1, todoUpdateRequest_status);
-                TodoUpdateResponse response = new TodoUpdateResponse(todos);
+                TodoUpdateResponse response = new TodoUpdateResponse(TODO_ID1, todos);
 
                 assertAll(
                         () -> assertThat(response.getTodo()).isEqualTo(WHAT_TO_DO),
@@ -161,7 +161,7 @@ class TodoServiceTest {
             @DisplayName("todo 와 status 에 대한 TodoUpdateRequest 가 저장된다.")
             void It_updateTheTodoAndStatus() {
                 Todos todos = todoService.update(TODO_ID1, todoUpdateRequest_todo_and_status);
-                TodoUpdateResponse response = new TodoUpdateResponse(todos);
+                TodoUpdateResponse response = new TodoUpdateResponse(TODO_ID1, todos);
 
                 assertAll(
                         () -> assertThat(response.getTodo()).isEqualTo(NEW_WHAT_TO_DO),
