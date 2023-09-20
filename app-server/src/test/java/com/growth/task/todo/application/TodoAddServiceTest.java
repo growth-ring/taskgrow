@@ -4,7 +4,6 @@ import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.domain.Tasks;
-import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
@@ -18,21 +17,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class TodoAddServiceTest {
 
     @Mock
-    private TasksRepository tasksRepository;
-
     private TodoService todoService;
+    @Mock
     private PomodoroService pomodoroService;
+
     private TodoAddService todoAddService;
 
     private final Long TASK_ID = 1L;
@@ -58,14 +58,14 @@ class TodoAddServiceTest {
             private final Tasks tasks = Tasks.builder()
                     .taskId(TASK_ID)
                     .build();
-            private final Todos todos1 = Todos.builder()
+            private final Todos todos = Todos.builder()
                     .todoId(TODO_ID1)
                     .task(tasks)
                     .todo(WHAT_TO_DO1)
                     .status(Status.READY)
                     .build();
-            private final Pomodoros pomodoro1 = Pomodoros.builder()
-                    .todo(todos1)
+            private final Pomodoros pomodoro = Pomodoros.builder()
+                    .todo(todos)
                     .performCount(POMODORO_PERFORM_COUNT1)
                     .planCount(POMODORO_PLAN_COUNT1)
                     .build();
@@ -84,9 +84,8 @@ class TodoAddServiceTest {
 
             @BeforeEach
             void setUp() {
-                lenient().when(tasksRepository.findById(TASK_ID)).thenReturn(Optional.of(tasks));
-                lenient().when(todoService.save(todoAndPomodoroAddRequest.getTodoAddRequest())).thenReturn(todos1);
-                lenient().when(pomodoroService.save(todoAndPomodoroAddRequest.getPomodoroAddRequest(), todos1)).thenReturn(pomodoro1);
+                lenient().when(todoService.save(any(TodoAddRequest.class))).thenReturn(todos);
+                lenient().when(pomodoroService.save(any(PomodoroAddRequest.class), any(Todos.class))).thenReturn(pomodoro);
             }
 
             @Test
@@ -95,13 +94,16 @@ class TodoAddServiceTest {
                 TodoAndPomodoroAddResponse response = todoAddService.save(todoAndPomodoroAddRequest);
 
                 assertAll(
-                        () -> assertThat(response.getTodoAddResponse().getTodoId()).isEqualTo(TODO_ID1),
-                        () -> assertThat(response.getTodoAddResponse().getTaskId()).isEqualTo(TASK_ID),
-                        () -> assertThat(response.getTodoAddResponse().getTodo()).isEqualTo(WHAT_TO_DO1),
-                        () -> assertThat(response.getTodoAddResponse().getStatus()).isEqualTo(Status.READY),
-                        () -> assertThat(response.getPomodoroAddResponse().getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT1),
-                        () -> assertThat(response.getPomodoroAddResponse().getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT1)
+                        () -> assertThat(response.getTodoId()).isEqualTo(TODO_ID1),
+                        () -> assertThat(response.getTaskId()).isEqualTo(TASK_ID),
+                        () -> assertThat(response.getTodo()).isEqualTo(WHAT_TO_DO1),
+                        () -> assertThat(response.getStatus()).isEqualTo(Status.READY.toString()),
+                        () -> assertThat(response.getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT1),
+                        () -> assertThat(response.getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT1)
                 );
+
+                verify(todoService, times(1)).save(any(TodoAddRequest.class));
+                verify(pomodoroService, times(1)).save(any(PomodoroAddRequest.class), any(Todos.class));
             }
         }
     }
