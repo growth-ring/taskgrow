@@ -15,9 +15,9 @@ public class TodoDeleteController {
         this.todoDeleteService = todoDeleteService;
     }
 
-    @PostMapping("/{todoId}")
+    @PostMapping("/{todo_id}")
     @ResponseStatus(NO_CONTENT)
-    public void delete(@PathVariable("todoId") Long todoId) {
+    public void delete(@PathVariable("todo_id") Long todoId) {
         todoDeleteService.deleteByTodoId(todoId);
     }
 }
