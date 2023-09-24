@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTask } from '../../store/task';
-import { addTodo, getTodos } from '../../services/todo';
+import { addTodo } from '../../services/todo';
 
 import { useTodosStore } from '../../store/todos';
 
@@ -9,7 +9,7 @@ interface AddTodosProps {
 }
 
 const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
-  const { setTodoList } = useTodosStore();
+  const { isTodoChange, setIsTodoChange } = useTodosStore();
   const { selectedTaskId } = useTask();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('');
@@ -43,9 +43,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
       performCount: 0,
       planCount: +planCount,
     }).then(() => {
-      getTodos(selectedTaskId).then((todos) => {
-        setTodoList(todos);
-      });
+      setIsTodoChange(!isTodoChange);
     });
   };
 

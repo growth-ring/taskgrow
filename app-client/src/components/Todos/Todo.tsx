@@ -3,6 +3,7 @@ import { AiOutlineUnorderedList } from 'react-icons/ai';
 import TodoDetail from './TodoDetail';
 
 interface TodoProps {
+  id: number;
   title: string;
   status: string;
   planCount: number;
@@ -11,6 +12,7 @@ interface TodoProps {
 }
 
 const Todo = ({
+  id,
   title,
   status,
   planCount,
@@ -91,6 +93,7 @@ const Todo = ({
       </div>
       {isShow && (
         <TodoDetail
+          todoId={id}
           todoTitle={title}
           todoStatus={status}
           todoPlanCount={planCount}
