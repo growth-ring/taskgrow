@@ -8,7 +8,7 @@ import { getTodos } from '../../services/todo';
 const TodoList = () => {
   const { selectedTaskId } = useTask();
   const { todoList, setTodoList, setSelectedTodo } = useTodosStore();
-  const { setShowTodoBtn, setOnTimer, stop } = useTimerStore();
+  const { setShowTodoBtn, setOnTimer } = useTimerStore();
 
   const handleTodoClick = (title: string) => {
     setOnTimer(true);
@@ -18,7 +18,7 @@ const TodoList = () => {
 
   useEffect(() => {
     getTodos(selectedTaskId).then((todos) => setTodoList(todos));
-  }, []);
+  }, [selectedTaskId]);
 
   return (
     <div

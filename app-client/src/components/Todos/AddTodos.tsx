@@ -42,8 +42,11 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
       todo: todo,
       performCount: 0,
       planCount: +planCount,
+    }).then(() => {
+      getTodos(selectedTaskId).then((todos) => {
+        setTodoList(todos);
+      });
     });
-    getTodos(selectedTaskId).then((todos) => setTodoList(todos));
   };
 
   return (

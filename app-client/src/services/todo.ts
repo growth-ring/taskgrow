@@ -9,7 +9,7 @@ interface AddTodoData {
 
 export const addTodo = async (todoData: AddTodoData) => {
   try {
-    const todo = await axios.post('/test', {
+    const todo = await axios.post('/httpClient/api/v1/todos', {
       task_id: todoData.taskId,
       todo: todoData.todo,
       plan_count: todoData.planCount,
@@ -23,7 +23,11 @@ export const addTodo = async (todoData: AddTodoData) => {
 
 export const getTodos = async (taskId: number) => {
   try {
-    const todoData = await axios.get('/test');
+    const todoData = await axios.get('/httpClient/api/v1/todos', {
+      params: {
+        task_id: taskId,
+      },
+    });
     return todoData.data.filter((todo: any) => todo.task_id === taskId);
   } catch (error: any) {
     if (error.response.status === 404) {

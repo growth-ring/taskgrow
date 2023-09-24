@@ -46,10 +46,13 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
     const taskId = moveToTask({ userId, monthTaskDate, userClickDay });
     if (typeof taskId === 'number') {
       setSelectedTaskId(taskId);
+      navigate(`/todos/${userClickDay}`);
     } else {
-      taskId.then((id) => setSelectedTaskId(id));
+      taskId.then((id) => {
+        setSelectedTaskId(id);
+        navigate(`/todos/${userClickDay}`);
+      });
     }
-    navigate(`/todos/${userClickDay}`);
   };
 
   const handleDateViewChange = (value: any) => {
