@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import TodoDetail from './TodoDetail';
+import DeleteTodo from './DeleteTodo';
 
 interface TodoProps {
   id: number;
@@ -19,14 +20,24 @@ const Todo = ({
   performCount,
   onClick,
 }: TodoProps) => {
-  const [isShow, setIsShow] = useState(false);
+  const [isDetailShow, setIsDetailShow] = useState(false);
+  const [isDeleteShow, setIsDeleteShow] = useState(false);
 
-  const getIsShow = () => {
-    setIsShow(false);
+  const getIsDetailShow = () => {
+    setIsDetailShow(false);
+  };
+
+  const getIsDeleteShow = () => {
+    setIsDeleteShow(false);
+  };
+
+  const handleTodoDelete = () => {
+    //TODO: 삭제여부 묻기
+    setIsDeleteShow(true);
   };
 
   const handleTodoDetail = () => {
-    setIsShow(true);
+    setIsDetailShow(true);
   };
 
   return (
@@ -70,7 +81,7 @@ const Todo = ({
           <div className={`text-slate-500 px-5`}>
             {performCount} / {planCount}
           </div>
-          <button>
+          <button onClick={handleTodoDelete}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -91,15 +102,18 @@ const Todo = ({
           </button>
         </div>
       </div>
-      {isShow && (
+      {isDetailShow && (
         <TodoDetail
           todoId={id}
           todoTitle={title}
           todoStatus={status}
           todoPlanCount={planCount}
           todoPerformCount={performCount}
-          getIsShow={getIsShow}
+          getIsShow={getIsDetailShow}
         />
+      )}
+      {isDeleteShow && (
+        <DeleteTodo todoId={id} todoTitle={title} getIsShow={getIsDeleteShow} />
       )}
     </>
   );

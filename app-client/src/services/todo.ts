@@ -66,3 +66,11 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
     return null;
   }
 };
+
+export const deleteTodo = async (todoId: number) => {
+  try {
+    return await axios.delete(`/httpClient/api/v1/todos/${todoId}`);
+  } catch (error: any) {
+    return null;
+  }
+};

@@ -77,10 +77,7 @@ const TodoDetail = ({
             <div className="flex items-center justify-between space-x-4">
               <h1 className="text-xl font-medium ">할 일 수정</h1>
 
-              <button
-                onClick={handleClose}
-                className="text-gray-600 focus:outline-none hover:text-gray-700"
-              >
+              <button onClick={handleClose}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-6 h-6"
