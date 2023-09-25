@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { startEndDate } from '../../utils/startEndDate';
 import { useUser } from '../../store/user';
 import { TaskDate, moveToTask } from '../../utils/checkTaskExists';
-import { getTaskList } from '../../services/task';
+import { getTask, getTaskList } from '../../services/task';
 import good from '../../assets/good.png';
 import { useTask } from '../../store/task';
 
@@ -25,9 +25,34 @@ const Todo = styled.div`
   align-items: center;
 `;
 
+const PreviewTodoList = styled.div`
+  display: flex;
+  width: 100px;
+  height: 66px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PreviewTodo = styled.div`
+  margin-top: 0.2rem;
+`;
+
 interface ThisMonthProps {
   thisMonthStart: string;
   thisMonthEnd: string;
+}
+
+interface Todos {
+  remain: number;
+  done: number;
+}
+
+interface TaskProps {
+  task_date: string;
+  task_id: number;
+  todos: Todos;
+  user_id: number;
 }
 
 const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
@@ -39,7 +64,6 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const [monthTaskDate, setMonthTaskDate] = useState<TaskDate[]>([]);
   const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
   const [mouseOverDay, setMouseOverDay] = useState('');
-  const [taskTodos, setTaskTodos] = useState([]);
 
   const handleTodayClick = (day: Date) => {
     const userClickDay = moment(day).format('YYYY-MM-DD');
@@ -68,12 +92,18 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   useEffect(() => {
     const taskData = { userId, startDate, endDate };
     getTaskList(taskData).then((tasks) => {
-      const updatedData = tasks.map((task: any) => ({
-        taskId: task.task_id,
-        taskDate: task.task_date,
-        todos: task.todos,
-      }));
-      setMonthTaskDate(updatedData);
+      const updatedData = tasks.map((task: TaskProps) => {
+        return getTask(task.task_id).then((todo) => ({
+          taskId: task.task_id,
+          taskDate: task.task_date,
+          todos: task.todos,
+          todoData: todo.todos,
+        }));
+      });
+
+      Promise.all(updatedData).then((data) => {
+        setMonthTaskDate(data);
+      });
     });
   }, [userId, startDate, endDate]);
 
@@ -97,27 +127,31 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
       tileContent={({ date }) => {
         const html: JSX.Element[] = [];
         const currentDate = moment(date).format('YYYY-MM-DD');
-        const checkTask = { userId, monthTaskDate, userClickDay: currentDate };
 
         viewTaskDate.forEach((day, i) => {
           const taskFinished = monthTaskDate
             .filter((dates: any) => dates.taskDate === day)
-            .map((date: any) => date.todos.remain !== date.todos.done);
-
+            .map(
+              (date: any) =>
+                date.todos.remain === date.todos.done &&
+                date.todos.remain !== 0,
+            );
           if (day === currentDate) {
-            if (taskFinished) {
+            if (taskFinished[0]) {
               html.push(<img src={good} key={i} />);
             } else if (mouseOverDay === currentDate) {
-              moveToTask(checkTask).then((task) =>
-                task.map((it: any) => console.log(it.todos)),
-              );
-              html.push(
-                <div>
-                  {taskTodos.map((todo) => (
-                    <div>{todo}</div>
-                  ))}
-                </div>,
-              );
+              const taskTodo = monthTaskDate
+                .filter((dates: any) => dates.taskDate === day)
+                .map((date: any) => date.todoData);
+              if (taskTodo) {
+                html.push(
+                  <PreviewTodoList>
+                    {taskTodo[0].map((todo: string) => (
+                      <PreviewTodo>{todo}</PreviewTodo>
+                    ))}
+                  </PreviewTodoList>,
+                );
+              }
             } else {
               html.push(
                 <Todo key={i}>

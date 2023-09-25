@@ -1,4 +1,4 @@
-import { getTask, addTask } from '../services/task';
+import { addTask } from '../services/task';
 
 export interface TaskDate {
   taskId: string;
@@ -43,7 +43,6 @@ export const moveToTask = ({
   const checkForm = { monthTaskDate, userClickDay };
   if (checkTaskExists(checkForm)) {
     const taskId = getTaskId(checkForm);
-    getTask(taskId);
     return taskId;
   } else {
     return addTask({ userId, userClickDay });
