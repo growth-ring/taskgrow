@@ -1,8 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useTask } from '../../store/task';
-import { deleteTask } from '../../services/task';
+import DeleteTask from './DeleteTask';
 
 const Container = styled.div`
   display: flex;
@@ -21,44 +20,27 @@ const DeleteButton = styled.button`
   }
 `;
 
-const CheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-`;
-
 const TodoAllDelete = () => {
-  const navigate = useNavigate();
   const { selectedTaskId } = useTask();
-  const [isChecked, setIsChecked] = useState(false);
+  const [isShow, setIsShow] = useState(false);
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
+  const getIsShow = () => {
+    setIsShow(false);
   };
 
   const handleDeleteClick = () => {
-    //TODO: todo삭제
-    if (isChecked) {
-      deleteTask(selectedTaskId).then((message) => {
-        if (message?.request.status === 204) {
-          navigate('/tasks');
-        }
-      });
-    }
+    setIsShow(true);
   };
 
   return (
-    <Container>
-      <DeleteButton onClick={handleDeleteClick}>전체 삭제하기</DeleteButton>
-      <CheckboxLabel>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-        />
-        <p style={{ marginLeft: '5px' }}>task 삭제</p>
-      </CheckboxLabel>
-    </Container>
+    <>
+      <Container>
+        <DeleteButton onClick={handleDeleteClick}>전체 삭제하기</DeleteButton>
+      </Container>
+      {isShow && (
+        <DeleteTask selectedTaskId={selectedTaskId} getIsShow={getIsShow} />
+      )}
+    </>
   );
 };
 

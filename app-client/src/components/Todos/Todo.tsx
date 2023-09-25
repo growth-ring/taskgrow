@@ -32,7 +32,6 @@ const Todo = ({
   };
 
   const handleTodoDelete = () => {
-    //TODO: 삭제여부 묻기
     setIsDeleteShow(true);
   };
 
