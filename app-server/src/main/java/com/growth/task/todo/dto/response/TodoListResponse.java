@@ -1,22 +1,20 @@
 package com.growth.task.todo.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.enums.Status;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoListResponse {
-    @JsonProperty("todo_id")
     private Long todoId;
-    @JsonProperty("task_id")
     private Long taskId;
     private String todo;
     private Status status;
-    @JsonProperty("perform_count")
     private Integer performCount;
-    @JsonProperty("plan_count")
     private Integer planCount;
 
     public TodoListResponse(Long todoId, Long taskId, String todo, Status status, Integer performCount, Integer planCount) {
