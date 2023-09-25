@@ -58,10 +58,9 @@ interface TaskProps {
 const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const navigate = useNavigate();
   const { userId } = useUser();
-  const { setSelectedTaskId } = useTask();
+  const { monthTaskDate, setMonthTaskDate, setSelectedTaskId } = useTask();
   const [startDate, setStartDate] = useState(thisMonthStart);
   const [endDate, setEndDate] = useState(thisMonthEnd);
-  const [monthTaskDate, setMonthTaskDate] = useState<TaskDate[]>([]);
   const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
   const [mouseOverDay, setMouseOverDay] = useState('');
 
