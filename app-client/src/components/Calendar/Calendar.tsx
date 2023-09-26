@@ -7,7 +7,7 @@ import './Calendar.css';
 import styled from 'styled-components';
 import { startEndDate } from '../../utils/startEndDate';
 import { useUser } from '../../store/user';
-import { TaskDate, moveToTask } from '../../utils/checkTaskExists';
+import { moveToTask } from '../../utils/checkTaskExists';
 import { getTask, getTaskList } from '../../services/task';
 import good from '../../assets/good.png';
 import { useTask } from '../../store/task';
@@ -145,8 +145,8 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
               if (taskTodo) {
                 html.push(
                   <PreviewTodoList>
-                    {taskTodo[0].map((todo: string) => (
-                      <PreviewTodo>{todo}</PreviewTodo>
+                    {taskTodo[0].map((todo: string, index: number) => (
+                      <PreviewTodo key={index}>{todo}</PreviewTodo>
                     ))}
                   </PreviewTodoList>,
                 );

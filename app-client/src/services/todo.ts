@@ -14,6 +14,11 @@ interface UpdateTodoData {
   planCount: number;
 }
 
+interface UpdatePomodoro {
+  todoId: number;
+  performCount: number;
+}
+
 export const addTodo = async (todoData: AddTodoData) => {
   try {
     const todo = await axios.post('/httpClient/api/v1/todos', {
@@ -43,7 +48,17 @@ export const getTodos = async (taskId: number) => {
   }
 };
 
-const Updatepomodoro = async (todoData: UpdateTodoData) => {
+export const updatePerformPomodoro = async (pomodoroData: UpdatePomodoro) => {
+  try {
+    await axios.patch(`/httpClient/api/v1/pomodoros/${pomodoroData.todoId}`, {
+      perform_count: pomodoroData.performCount,
+    });
+  } catch (error: any) {
+    return null;
+  }
+};
+
+const updatePlanPomodoro = async (todoData: UpdateTodoData) => {
   try {
     await axios.patch(`/httpClient/api/v1/pomodoros/${todoData.todoId}`, {
       plan_count: todoData.planCount,
@@ -60,7 +75,7 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
       status: todoData.status,
     });
     if (todoData.status === 'READY') {
-      Updatepomodoro(todoData);
+      updatePlanPomodoro(todoData);
     }
   } catch (error: any) {
     return null;

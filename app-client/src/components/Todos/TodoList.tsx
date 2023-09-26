@@ -5,16 +5,34 @@ import { useTimerStore } from '../../store/timer';
 import { useTask } from '../../store/task';
 import { getTodos } from '../../services/todo';
 
+interface Todo {
+  todo_id: number;
+  todo: string;
+  status: string;
+  plan_count: number;
+  perform_count: number;
+}
+
 const TodoList = () => {
   const { selectedTaskId } = useTask();
-  const { todoList, setTodoList, setSelectedTodo, isTodoChange } =
-    useTodosStore();
-  const { setShowTodoBtn, setOnTimer } = useTimerStore();
+  const {
+    todoList,
+    setTodoList,
+    setTodoId,
+    setSelectedTodo,
+    setPerformCount,
+    isTodoChange,
+  } = useTodosStore();
+  const { setShowTodoBtn, setOnTimer, setTimerMinute, stop } = useTimerStore();
 
-  const handleTodoClick = (title: string) => {
+  const handleTodoClick = (todo: Todo) => {
     setOnTimer(true);
     setShowTodoBtn(true);
-    setSelectedTodo(title);
+    setTodoId(todo.todo_id);
+    setPerformCount(todo.perform_count);
+    setSelectedTodo(todo.todo);
+    setTimerMinute(1);
+    stop();
   };
 
   useEffect(() => {
@@ -38,7 +56,7 @@ const TodoList = () => {
             status={todo.status}
             planCount={todo.plan_count}
             performCount={todo.perform_count}
-            onClick={() => handleTodoClick(todo.todo)}
+            onClick={() => handleTodoClick(todo)}
           />
         ))}
       </div>
