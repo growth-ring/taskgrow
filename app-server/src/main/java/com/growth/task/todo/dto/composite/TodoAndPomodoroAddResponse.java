@@ -35,15 +35,4 @@ public class TodoAndPomodoroAddResponse {
         this.performCount = pomodoroAddResponse.getPerformCount();
         this.planCount = pomodoroAddResponse.getPlanCount();
     }
-
-    public static TodoAndPomodoroAddResponse from(TodoAddResponse todoResponse, PomodoroAddResponse pomodoroResponse) {
-        return TodoAndPomodoroAddResponse.builder()
-                .todoId(todoResponse.getTodoId())
-                .taskId(todoResponse.getTaskId())
-                .todo(todoResponse.getTodo())
-                .status(todoResponse.getStatus().toString())
-                .performCount(pomodoroResponse.getPerformCount())
-                .planCount(pomodoroResponse.getPlanCount())
-                .build();
-    }
 }
