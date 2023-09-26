@@ -1,5 +1,6 @@
 package com.growth.task.commons.advice;
 
+import com.growth.task.pomodoro.exception.PomodoroExceedPlanCountException;
 import com.growth.task.task.exception.UserAndTaskDateUniqueConstraintViolationException;
 import com.growth.task.todo.exception.BadInputParameterException;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -132,5 +133,20 @@ public class ControllerErrorAdvice {
 
     private static Map<String, String> getErrorResponseBody(Exception exception) {
         return Map.of("error", exception.getMessage());
+    }
+
+    /**
+     * Pomodoro 의 수행 횟수가 계획된 횟수를 초과한 경우, BAD_REQUEST(400) 와 Error 메세지를 응답한다.
+     *
+     * @param exception Pomodoro 의 수행 횟수가 계획된 횟수를 초과한다는 예외
+     * @return 에러 메세지
+     */
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(PomodoroExceedPlanCountException.class)
+    public ResponseEntity<Map<String, String>> handlePomodoroExceedPlanCountException(PomodoroExceedPlanCountException exception) {
+        log.error("PomodoroExceedPlanCountException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
     }
 }
