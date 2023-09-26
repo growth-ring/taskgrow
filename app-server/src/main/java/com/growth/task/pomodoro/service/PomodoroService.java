@@ -1,7 +1,6 @@
 package com.growth.task.pomodoro.service;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
-import com.growth.task.pomodoro.exception.PomodoroExceedPlanCountException;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
@@ -36,11 +35,7 @@ public class PomodoroService {
 
     public Pomodoros complete(Long todoId) {
         Pomodoros pomodoros = pomodorosRepository.findByTodo_TodoId(todoId);
-
-        if (pomodoros.getPerformCount() >= pomodoros.getPlanCount()) {
-            throw new PomodoroExceedPlanCountException();
-        }
-        pomodoros.updatePerformCount(pomodoros.getPerformCount() + 1);
+        pomodoros.addPerformCount();
 
         pomodorosRepository.save(pomodoros);
         return pomodoros;
