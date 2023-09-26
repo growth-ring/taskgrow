@@ -28,26 +28,18 @@ const HeaderDate = () => {
 
   const [years, month, day] = date.split('-');
 
-  const handleShowDate = (clickDate: string) => {
-    const todayDate = new Date(date);
-    const currentDate =
-      clickDate === 'previous'
-        ? todayDate.getDate() - 1
-        : todayDate.getDate() + 1;
-    const userClickDay = moment(todayDate.setDate(currentDate)).format(
-      'YYYY-MM-DD',
-    );
-
-    const taskId = moveToTask({ userId, monthTaskDate, userClickDay });
-    if (typeof taskId === 'number') {
-      setSelectedTaskId(taskId);
-      navigate(`/todos/${userClickDay}`);
+  const handleShowDate = async (clickDate: string) => {
+    const today = moment(date);
+    if (clickDate === 'previous') {
+      today.subtract(1, 'day');
     } else {
-      taskId.then((id) => {
-        setSelectedTaskId(id);
-        navigate(`/todos/${userClickDay}`);
-      });
+      today.add(1, 'day');
     }
+    const userClickDay = today.format('YYYY-MM-DD');
+
+    const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
+    setSelectedTaskId(taskId);
+    navigate(`/todos/${userClickDay}`);
   };
 
   return (

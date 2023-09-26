@@ -75,7 +75,7 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
       status: todoData.status,
     });
     if (todoData.status === 'READY') {
-      updatePlanPomodoro(todoData);
+      await updatePlanPomodoro(todoData);
     }
   } catch (error: any) {
     return null;

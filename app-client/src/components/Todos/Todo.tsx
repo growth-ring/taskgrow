@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import TodoDetail from './TodoDetail';
 import DeleteTodo from './DeleteTodo';
-import { updateTodo } from '../../services/todo';
 
 interface TodoProps {
   id: number;
@@ -38,16 +37,6 @@ const Todo = ({
 
   const handleTodoDetail = () => {
     setIsDetailShow(true);
-  };
-
-  const test = () => {
-    const todoData = {
-      todoId: id,
-      todo: title,
-      status: 'DONE',
-      planCount: planCount,
-    };
-    updateTodo(todoData);
   };
 
   return (
@@ -125,7 +114,6 @@ const Todo = ({
       {isDeleteShow && (
         <DeleteTodo todoId={id} todoTitle={title} getIsShow={getIsDeleteShow} />
       )}
-      <button onClick={test}>dd</button>
     </>
   );
 };

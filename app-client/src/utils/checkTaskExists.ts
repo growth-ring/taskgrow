@@ -35,15 +35,14 @@ const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistsProps) => {
   return taskId;
 };
 
-export const moveToTask = ({
+export const moveToTask = async ({
   userId,
   monthTaskDate,
   userClickDay,
-}: TaskProps) => {
+}: TaskProps): Promise<number> => {
   const checkForm = { monthTaskDate, userClickDay };
   if (checkTaskExists(checkForm)) {
-    const taskId = getTaskId(checkForm);
-    return taskId;
+    return getTaskId(checkForm);
   } else {
     return addTask({ userId, userClickDay });
   }

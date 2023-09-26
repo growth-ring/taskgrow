@@ -124,7 +124,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
       formatDay={(locale, date) => moment(date).format('D')}
       onActiveStartDateChange={handleDateViewChange}
       tileContent={({ date }) => {
-        const html: JSX.Element[] = [];
+        let html: JSX.Element | null = null;
         const currentDate = moment(date).format('YYYY-MM-DD');
 
         viewTaskDate.forEach((day, i) => {
@@ -137,27 +137,27 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
             );
           if (day === currentDate) {
             if (taskFinished[0]) {
-              html.push(<img src={good} key={i} />);
+              html = <img src={good} key={i} />;
             } else if (mouseOverDay === currentDate) {
               const taskTodo = monthTaskDate
                 .filter((dates: any) => dates.taskDate === day)
                 .map((date: any) => date.todoData);
               if (taskTodo) {
-                html.push(
-                  <PreviewTodoList>
+                html = (
+                  <PreviewTodoList key={i}>
                     {taskTodo[0].map((todo: string, index: number) => (
-                      <PreviewTodo key={index}>{todo}</PreviewTodo>
+                      <PreviewTodo key={`${i}_${index}`}>{todo}</PreviewTodo>
                     ))}
-                  </PreviewTodoList>,
+                  </PreviewTodoList>
                 );
               }
             } else {
-              html.push(
+              html = (
                 <Todo key={i}>
                   {monthTaskDate
                     .filter((dates: any) => dates.taskDate === day)
                     .map((date: any) => date.todos.remain)}
-                </Todo>,
+                </Todo>
               );
             }
           }

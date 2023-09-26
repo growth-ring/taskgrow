@@ -54,17 +54,20 @@ const TodoList = () => {
         id="tasks"
         style={{ width: '100%', height: '100%', overflow: 'auto' }}
       >
-        {todoList.map((todo) => (
-          <Todo
-            key={todo.todo_id}
-            id={todo.todo_id}
-            title={todo.todo}
-            status={todo.status}
-            planCount={todo.plan_count}
-            performCount={todo.perform_count}
-            onClick={() => handleTodoClick(todo)}
-          />
-        ))}
+        {todoList
+          .slice()
+          .sort((a, b) => (a.status === 'DONE' ? 1 : -1))
+          .map((todo) => (
+            <Todo
+              key={todo.todo_id}
+              id={todo.todo_id}
+              title={todo.todo}
+              status={todo.status}
+              planCount={todo.plan_count}
+              performCount={todo.perform_count}
+              onClick={() => handleTodoClick(todo)}
+            />
+          ))}
       </div>
     </div>
   );
