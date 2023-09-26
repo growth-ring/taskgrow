@@ -2,7 +2,9 @@ package com.growth.task.todo.controller;
 
 import com.growth.task.todo.application.TodoService;
 import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.dto.request.TodoStatusUpdateRequest;
 import com.growth.task.todo.dto.request.TodoUpdateRequest;
+import com.growth.task.todo.dto.response.TodoStatusUpdateResponse;
 import com.growth.task.todo.dto.response.TodoUpdateResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,5 +31,15 @@ public class TodoUpdateController {
     ) {
         Todos todos = todoService.update(todoId, todoUpdateRequest);
         return new TodoUpdateResponse(todoId, todos);
+    }
+
+    @PatchMapping("/{todo_id}/status")
+    @ResponseStatus(OK)
+    public TodoStatusUpdateResponse changeStatus(
+            @PathVariable("todo_id") Long todoId,
+            @RequestBody @Valid TodoStatusUpdateRequest todoStatusUpdateRequest
+    ) {
+        Todos todos = todoService.updateTodoStatus(todoId, todoStatusUpdateRequest);
+        return new TodoStatusUpdateResponse(todoId, todos);
     }
 }
