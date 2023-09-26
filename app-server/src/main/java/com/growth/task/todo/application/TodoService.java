@@ -4,6 +4,7 @@ import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.request.TodoAddRequest;
+import com.growth.task.todo.dto.request.TodoStatusUpdateRequest;
 import com.growth.task.todo.dto.request.TodoUpdateRequest;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.exception.TodoNotFoundException;
@@ -42,6 +43,14 @@ public class TodoService {
         }
         todosRepository.save(todos);
 
+        return todos;
+    }
+
+    public Todos updateTodoStatus(Long todoId, TodoStatusUpdateRequest todoStatusUpdateRequest) {
+        Todos todos = todosRepository.findById(todoId)
+                .orElseThrow(() -> new TodoNotFoundException(todoId));
+        todos.updateStatus(todoStatusUpdateRequest.getStatus());
+        todosRepository.save(todos);
         return todos;
     }
 }
