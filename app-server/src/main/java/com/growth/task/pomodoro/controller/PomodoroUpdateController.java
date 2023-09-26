@@ -2,6 +2,7 @@ package com.growth.task.pomodoro.controller;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
+import com.growth.task.pomodoro.dto.response.PomodoroCompleteResponse;
 import com.growth.task.pomodoro.dto.response.PomodoroUpdateResponse;
 import com.growth.task.pomodoro.service.PomodoroService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,5 +30,12 @@ public class PomodoroUpdateController {
     ) {
         Pomodoros pomodoros = pomodoroService.update(todoId, pomodoroUpdateRequest);
         return new PomodoroUpdateResponse(pomodoros);
+    }
+
+    @PatchMapping("/{todo_id}/complete")
+    @ResponseStatus(OK)
+    public PomodoroCompleteResponse complete(@PathVariable("todo_id") Long todoId) {
+        Pomodoros pomodoros = pomodoroService.complete(todoId);
+        return new PomodoroCompleteResponse(pomodoros);
     }
 }
