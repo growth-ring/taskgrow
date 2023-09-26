@@ -1,5 +1,9 @@
 package com.growth.task.todo.enums;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.growth.task.todo.config.StatusDeserializer;
+
+@JsonDeserialize(using = StatusDeserializer.class)
 public enum Status {
     READY("ready", "대기중"),
     DONE("done", "완료"),
