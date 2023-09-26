@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import TodoDetail from './TodoDetail';
 import DeleteTodo from './DeleteTodo';
+import { updateTodo } from '../../services/todo';
 
 interface TodoProps {
   id: number;
@@ -39,13 +40,23 @@ const Todo = ({
     setIsDetailShow(true);
   };
 
+  const test = () => {
+    const todoData = {
+      todoId: id,
+      todo: title,
+      status: 'DONE',
+      planCount: planCount,
+    };
+    updateTodo(todoData);
+  };
+
   return (
     <>
       <div
         className={`flex justify-between items-center border-b border-slate-200 py-3 border-l-4 ${
-          status === 'done' ? 'border-l-transparent' : 'border-l-indigo-300'
+          status === 'DONE' ? 'border-l-transparent' : 'border-l-indigo-300'
         } ${
-          status === 'done'
+          status === 'DONE'
             ? 'color-main-colorbg-gradient-to-r from-transparent to-transparent hover:from-slate-100'
             : 'bg-gradient-to-r from-indigo-100 to-transparent hover:from-indigo-200'
         } transition ease-linear duration-150 cursor-pointer`}
@@ -58,7 +69,7 @@ const Todo = ({
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
-              stroke={status === 'done' ? 'var(--main-color)' : 'currentColor'}
+              stroke={status === 'DONE' ? 'var(--main-color)' : 'currentColor'}
               className="w-6 h-6 text-slate-500"
             >
               <path
@@ -70,7 +81,7 @@ const Todo = ({
           </div>
           <div
             className={`text-slate-500 ${
-              status === 'done' ? 'line-through' : ''
+              status === 'DONE' ? 'line-through' : ''
             }`}
           >
             {title}
@@ -114,6 +125,7 @@ const Todo = ({
       {isDeleteShow && (
         <DeleteTodo todoId={id} todoTitle={title} getIsShow={getIsDeleteShow} />
       )}
+      <button onClick={test}>dd</button>
     </>
   );
 };

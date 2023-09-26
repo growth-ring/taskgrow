@@ -18,6 +18,8 @@ interface TodosStore {
   setTodoId: (todoId: number) => void;
   performCount: number;
   setPerformCount: (performCount: number) => void;
+  planCount: number;
+  setPlanCount: (planCount: number) => void;
   isTodoChange: boolean;
   setIsTodoChange: (todoChange: boolean) => void;
   selectedTodo: string;
@@ -33,6 +35,8 @@ export const useTodosStore = create<TodosStore>((set) => ({
   setTodoId: (id) => set({ todoId: id }),
   performCount: 0,
   setPerformCount: (count) => set({ performCount: count }),
+  planCount: 0,
+  setPlanCount: (count) => set({ planCount: count }),
   isTodoChange: false,
   setIsTodoChange: (todoChange) => set({ isTodoChange: todoChange }),
   selectedTodo: '오늘 할 일 골라주세요',

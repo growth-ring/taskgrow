@@ -40,7 +40,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
     addTodo({
       taskId: selectedTaskId,
       todo: todo,
-      performCount: 0,
+      performCount: 1,
       planCount: +planCount,
     }).then(() => {
       setIsTodoChange(!isTodoChange);

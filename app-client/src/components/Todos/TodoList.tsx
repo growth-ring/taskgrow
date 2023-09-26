@@ -16,6 +16,7 @@ interface Todo {
 const TodoList = () => {
   const { selectedTaskId } = useTask();
   const {
+    setPlanCount,
     todoList,
     setTodoList,
     setTodoId,
@@ -26,13 +27,18 @@ const TodoList = () => {
   const { setShowTodoBtn, setOnTimer, setTimerMinute, stop } = useTimerStore();
 
   const handleTodoClick = (todo: Todo) => {
-    setOnTimer(true);
-    setShowTodoBtn(true);
-    setTodoId(todo.todo_id);
-    setPerformCount(todo.perform_count);
-    setSelectedTodo(todo.todo);
-    setTimerMinute(1);
-    stop();
+    if (todo.status === 'DONE') {
+      alert('완료된 할 일 입니다.');
+    } else {
+      setOnTimer(true);
+      setShowTodoBtn(true);
+      setTodoId(todo.todo_id);
+      setPlanCount(todo.plan_count);
+      setPerformCount(todo.perform_count);
+      setSelectedTodo(todo.todo);
+      setTimerMinute(1);
+      stop();
+    }
   };
 
   useEffect(() => {
