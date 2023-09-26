@@ -1,7 +1,6 @@
 package com.growth.task.pomodoro.controller;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
-import com.growth.task.pomodoro.exception.PomodoroExceedPlanCountException;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.pomodoro.service.PomodoroService;
 import com.growth.task.task.domain.Tasks;
@@ -11,7 +10,11 @@ import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +29,8 @@ import java.time.LocalDate;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("PomodoroUpdateController 테스트")
 @SpringBootTest
@@ -58,7 +62,7 @@ public class PomodoroUpdateControllerTest {
     }
 
     private ResultActions performComplete(Long todoId) throws Exception {
-        return mockMvc.perform(patch("/api/v1/pomodoros/" + todoId + "/complete")
+        return mockMvc.perform(patch("/api/v1/pomodoros/{todo_id}/complete", todoId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
     }
@@ -155,11 +159,12 @@ public class PomodoroUpdateControllerTest {
             }
 
             @Test
-            @DisplayName("PomodoroExceedPlanCountException 오류를 반환한다.")
-            void it_returns_PomodoroExceedPlanCountException() throws Exception {
+            @DisplayName("성공 응답을 반환한다.")
+            void it_returns_success_response() throws Exception {
                 performComplete(todoId)
-                        .andExpect(status().isBadRequest())
-                        .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof PomodoroExceedPlanCountException));
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.perform_count", equalTo(4)))
+                        .andExpect(jsonPath("$.plan_count", equalTo(3)));
             }
         }
 
@@ -173,11 +178,12 @@ public class PomodoroUpdateControllerTest {
             }
 
             @Test
-            @DisplayName("PomodoroExceedPlanCountException 오류를 반환한다.")
-            void it_returns_PomodoroExceedPlanCountException() throws Exception {
+            @DisplayName("성공 응답을 반환한다.")
+            void it_returns_success_response() throws Exception {
                 performComplete(todoId)
-                        .andExpect(status().isBadRequest())
-                        .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof PomodoroExceedPlanCountException));
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.perform_count", equalTo(5)))
+                        .andExpect(jsonPath("$.plan_count", equalTo(3)));
             }
         }
     }
