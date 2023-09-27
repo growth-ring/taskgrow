@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { useUser } from '../../store/user';
 import { useTask } from '../../store/task';
-import { moveToTask } from '../../utils/checkTaskExists';
+import { getAllTask, moveToTask } from '../../utils/checkTaskExists';
 
 const Arrow = styled.button`
   margin: 0 100px;
@@ -20,7 +20,7 @@ const HeaderDate = () => {
   const { date } = useParams();
   const navigate = useNavigate();
   const { userId } = useUser();
-  const { monthTaskDate, setSelectedTaskId } = useTask();
+  const { setSelectedTaskId } = useTask();
 
   if (!date) {
     return null;
@@ -37,9 +37,13 @@ const HeaderDate = () => {
     }
     const userClickDay = today.format('YYYY-MM-DD');
 
+    const startDate = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
+    const endDate = moment(date).add(1, 'day').format('YYYY-MM-DD');
+
+    navigate(`/todos/${userClickDay}`);
+    const monthTaskDate = await getAllTask({ userId, startDate, endDate });
     const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
-    navigate(`/todos/${userClickDay}`);
   };
 
   return (

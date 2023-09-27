@@ -7,8 +7,7 @@ import './Calendar.css';
 import styled from 'styled-components';
 import { startEndDate } from '../../utils/startEndDate';
 import { useUser } from '../../store/user';
-import { moveToTask } from '../../utils/checkTaskExists';
-import { getTask, getTaskList } from '../../services/task';
+import { getAllTask, moveToTask } from '../../utils/checkTaskExists';
 import good from '../../assets/good.png';
 import { useTask } from '../../store/task';
 
@@ -43,18 +42,6 @@ interface ThisMonthProps {
   thisMonthEnd: string;
 }
 
-interface Todos {
-  remain: number;
-  done: number;
-}
-
-interface TaskProps {
-  task_date: string;
-  task_id: number;
-  todos: Todos;
-  user_id: number;
-}
-
 const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const navigate = useNavigate();
   const { userId } = useUser();
@@ -64,18 +51,11 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
   const [mouseOverDay, setMouseOverDay] = useState('');
 
-  const handleTodayClick = (day: Date) => {
+  const handleTodayClick = async (day: Date) => {
     const userClickDay = moment(day).format('YYYY-MM-DD');
-    const taskId = moveToTask({ userId, monthTaskDate, userClickDay });
-    if (typeof taskId === 'number') {
-      setSelectedTaskId(taskId);
-      navigate(`/todos/${userClickDay}`);
-    } else {
-      taskId.then((id) => {
-        setSelectedTaskId(id);
-        navigate(`/todos/${userClickDay}`);
-      });
-    }
+    navigate(`/todos/${userClickDay}`);
+    const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
+    setSelectedTaskId(taskId);
   };
 
   const handleDateViewChange = (value: any) => {
@@ -90,20 +70,10 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
   useEffect(() => {
     const taskData = { userId, startDate, endDate };
-    getTaskList(taskData).then((tasks) => {
-      const updatedData = tasks.map((task: TaskProps) => {
-        return getTask(task.task_id).then((todo) => ({
-          taskId: task.task_id,
-          taskDate: task.task_date,
-          todos: task.todos,
-          todoData: todo.todos,
-        }));
-      });
-
-      Promise.all(updatedData).then((data) => {
-        setMonthTaskDate(data);
-      });
-    });
+    const getMonthTaskDate = async () => {
+      setMonthTaskDate(await getAllTask(taskData));
+    };
+    getMonthTaskDate();
   }, [userId, startDate, endDate]);
 
   useEffect(() => {
