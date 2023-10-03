@@ -14,6 +14,8 @@ import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
@@ -25,6 +27,7 @@ public class Pomodoros extends BaseTimeEntity {
     private long pomodoroId;
 
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "todo_id",
             referencedColumnName = "todo_id",
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT)
@@ -46,6 +49,10 @@ public class Pomodoros extends BaseTimeEntity {
     }
 
     protected Pomodoros() {
+    }
+
+    public void increasePerformCount() {
+        this.performCount++;
     }
 
     public void updatePerformCount(int performCount) {

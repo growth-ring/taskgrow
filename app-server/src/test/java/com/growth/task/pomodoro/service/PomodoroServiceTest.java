@@ -103,7 +103,7 @@ class PomodoroServiceTest {
 
             @BeforeEach
             void setUp() {
-                given(pomodorosRepository.findByTodo_TodoId(TODO_ID1)).willReturn(pomodoros);
+                given(pomodorosRepository.findByTodo_TodoId(TODO_ID1)).willReturn(Optional.of(pomodoros));
             }
 
             @Test
