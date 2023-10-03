@@ -70,4 +70,10 @@ public class Todos extends BaseTimeEntity {
             throw new IllegalArgumentException(String.format("이미 완료된 Todo입니다. Todo=%s", this.todo));
         }
     }
+
+    public void validateUpdatePomodoro() {
+        if (!isReady(status)) {
+            throw new IllegalArgumentException(String.format("변경할 수 없는 상태입니다. status= ", status));
+        }
+    }
 }

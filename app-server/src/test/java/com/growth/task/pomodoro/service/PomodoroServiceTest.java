@@ -5,6 +5,7 @@ import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -96,8 +97,12 @@ class PomodoroServiceTest {
             private final PomodoroUpdateRequest pomodoroUpdateRequest = PomodoroUpdateRequest.builder()
                     .planCount(PLANCOUNT1)
                     .build();
-
+            private final Todos givenTodo = Todos.builder()
+                    .todo("스터디")
+                    .status(Status.READY)
+                    .build();
             private final Pomodoros pomodoros = Pomodoros.builder()
+                    .todo(givenTodo)
                     .planCount(PLANCOUNT2)
                     .build();
 
