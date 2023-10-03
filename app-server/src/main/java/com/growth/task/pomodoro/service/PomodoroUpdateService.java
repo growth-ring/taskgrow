@@ -19,7 +19,7 @@ public class PomodoroUpdateService {
 
     public Pomodoros update(Long todoId, PomodoroUpdateRequest pomodoroUpdateRequest) {
         Pomodoros pomodoros = findPomodoroByTodoId(todoId);
-
+        pomodoros.getTodo().validateUpdatePomodoro();
         pomodoros.updatePlanCount(pomodoroUpdateRequest.getPlanCount());
 
         pomodorosRepository.save(pomodoros);
