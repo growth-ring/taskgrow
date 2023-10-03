@@ -41,6 +41,7 @@ public class PomodoroService {
     public PomodoroUpdateResponse complete(Long todoId) {
         Pomodoros pomodoro = findPomodoroByTodoId(todoId);
 
+        pomodoro.getTodo().validateCompletePomodoro();
         pomodoro.increasePerformCount();
         return new PomodoroUpdateResponse(pomodoro);
     }

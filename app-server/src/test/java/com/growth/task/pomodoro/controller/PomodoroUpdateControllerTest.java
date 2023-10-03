@@ -10,6 +10,7 @@ import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -114,11 +116,14 @@ public class PomodoroUpdateControllerTest {
             }
 
             @Test
-            @DisplayName("perform_count가 1개 올라가고 200을 응답한다")
+            @DisplayName("todo 상태가 Progress로 변경되고 perform_count가 1개 올라가고 200을 응답한다")
             void it_response_200() throws Exception {
                 subject(todoId).andExpect(status().isOk())
                         .andExpect(jsonPath("$.perform_count", equalTo(5)))
                         .andExpect(jsonPath("$.plan_count", equalTo(3)));
+
+                Todos todos = todosRepository.findById(todoId).orElse(null);
+                assertThat(todos.getStatus()).isEqualTo(Status.PROGRESS);
             }
         }
 

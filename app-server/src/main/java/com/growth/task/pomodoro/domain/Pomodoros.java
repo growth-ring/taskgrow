@@ -17,8 +17,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import static com.growth.task.todo.enums.Status.isDone;
-
 @Getter
 @Entity
 @DynamicUpdate
@@ -54,9 +52,6 @@ public class Pomodoros extends BaseTimeEntity {
     }
 
     public void increasePerformCount() {
-        if (isDone(todo.getStatus())) {
-            throw new IllegalArgumentException(String.format("이미 완료된 Todo입니다. Todo=%s", todo.getTodo()));
-        }
         this.performCount++;
     }
 
