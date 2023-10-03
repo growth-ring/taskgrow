@@ -3,6 +3,7 @@ package com.growth.task.pomodoro.service;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
+import com.growth.task.pomodoro.dto.response.PomodoroUpdateResponse;
 import com.growth.task.pomodoro.exception.PomodoroNotFoundException;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.todo.domain.Todos;
@@ -34,6 +35,14 @@ public class PomodoroService {
 
         pomodorosRepository.save(pomodoros);
         return pomodoros;
+    }
+
+    @Transactional
+    public PomodoroUpdateResponse complete(Long todoId) {
+        Pomodoros pomodoro = findPomodoroByTodoId(todoId);
+
+        pomodoro.increasePerformCount();
+        return new PomodoroUpdateResponse(pomodoro);
     }
 
     @Transactional(readOnly = true)
