@@ -2,7 +2,7 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
-import com.growth.task.pomodoro.service.PomodoroService;
+import com.growth.task.pomodoro.service.PomodoroAddService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
@@ -31,7 +31,7 @@ class TodoAddServiceTest {
     @Mock
     private TodoService todoService;
     @Mock
-    private PomodoroService pomodoroService;
+    private PomodoroAddService pomodoroAddService;
 
     private TodoAddService todoAddService;
 
@@ -44,8 +44,8 @@ class TodoAddServiceTest {
     @BeforeEach
     void setUp() {
         todoService = mock(TodoService.class);
-        pomodoroService = mock(PomodoroService.class);
-        todoAddService = new TodoAddService(todoService, pomodoroService);
+        pomodoroAddService = mock(PomodoroAddService.class);
+        todoAddService = new TodoAddService(todoService, pomodoroAddService);
     }
 
     @Nested
@@ -85,7 +85,7 @@ class TodoAddServiceTest {
             @BeforeEach
             void setUp() {
                 lenient().when(todoService.save(any(TodoAddRequest.class))).thenReturn(todos);
-                lenient().when(pomodoroService.save(any(PomodoroAddRequest.class), any(Todos.class))).thenReturn(pomodoro);
+                lenient().when(pomodoroAddService.save(any(PomodoroAddRequest.class), any(Todos.class))).thenReturn(pomodoro);
             }
 
             @Test
@@ -103,7 +103,7 @@ class TodoAddServiceTest {
                 );
 
                 verify(todoService, times(1)).save(any(TodoAddRequest.class));
-                verify(pomodoroService, times(1)).save(any(PomodoroAddRequest.class), any(Todos.class));
+                verify(pomodoroAddService, times(1)).save(any(PomodoroAddRequest.class), any(Todos.class));
             }
         }
     }
