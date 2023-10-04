@@ -2,7 +2,7 @@ package com.growth.task.pomodoro.controller;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
-import com.growth.task.pomodoro.service.PomodoroService;
+import com.growth.task.pomodoro.service.PomodoroAddService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
@@ -10,7 +10,6 @@ import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,7 +44,7 @@ public class PomodoroUpdateControllerTest {
     @Autowired
     private WebApplicationContext wac;
     @Autowired
-    private PomodoroService pomodoroService;
+    private PomodoroAddService pomodoroAddService;
     @Autowired
     private UsersRepository usersRepository;
     @Autowired

@@ -2,7 +2,7 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
-import com.growth.task.pomodoro.service.PomodoroService;
+import com.growth.task.pomodoro.service.PomodoroAddService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
@@ -40,7 +40,7 @@ public class TodoListServiceTest {
     private TasksRepository tasksRepository;
 
     private TodoService todoService;
-    private PomodoroService pomodoroService;
+    private PomodoroAddService pomodoroAddService;
     private TodoListService todoListService;
 
     private final Long TASK_ID = 1L;
@@ -58,7 +58,7 @@ public class TodoListServiceTest {
     @BeforeEach
     void setUp() {
         todoService = mock(TodoService.class);
-        pomodoroService = mock(PomodoroService.class);
+        pomodoroAddService = mock(PomodoroAddService.class);
         todoListService = new TodoListService(todosRepository, pomodorosRepository, tasksRepository);
     }
 
