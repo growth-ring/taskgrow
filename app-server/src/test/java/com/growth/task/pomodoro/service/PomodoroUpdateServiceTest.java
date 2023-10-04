@@ -3,6 +3,8 @@ package com.growth.task.pomodoro.service;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
+import com.growth.task.todo.domain.Todos;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class PomodoroUpdateServiceTest {
@@ -44,6 +47,7 @@ class PomodoroUpdateServiceTest {
 
             private final Pomodoros pomodoros = Pomodoros.builder()
                     .planCount(PLANCOUNT2)
+                    .todo(mock(Todos.class))
                     .build();
 
             @BeforeEach
