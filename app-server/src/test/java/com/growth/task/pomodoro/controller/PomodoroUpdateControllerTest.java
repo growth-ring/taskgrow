@@ -1,8 +1,10 @@
 package com.growth.task.pomodoro.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.growth.task.pomodoro.domain.Pomodoros;
+import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
-import com.growth.task.pomodoro.service.PomodoroService;
+import com.growth.task.pomodoro.service.PomodoroAddService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
@@ -10,12 +12,13 @@ import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,7 +48,7 @@ public class PomodoroUpdateControllerTest {
     @Autowired
     private WebApplicationContext wac;
     @Autowired
-    private PomodoroService pomodoroService;
+    private PomodoroAddService pomodoroAddService;
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
@@ -54,6 +57,7 @@ public class PomodoroUpdateControllerTest {
     private TodosRepository todosRepository;
     @Autowired
     private PomodorosRepository pomodorosRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
@@ -94,14 +98,12 @@ public class PomodoroUpdateControllerTest {
         }
 
         private Long todoId;
-        private Users user;
         private Tasks task;
         private Todos todo;
-        private Pomodoros pomodoros;
 
         @BeforeEach
         void setUp() {
-            user = getUser("user", "password");
+            Users user = getUser("user", "password");
             task = getTask(user, LocalDate.parse("2023-10-03"));
             todo = getTodo(task, "스터디", Status.READY);
         }
@@ -111,7 +113,7 @@ public class PomodoroUpdateControllerTest {
         class Context_with_exist_todoId_when_pomodoro_complete {
             @BeforeEach
             void setUp() {
-                pomodoros = getPomodoros(todo, 4, 3);
+                Pomodoros pomodoros = getPomodoros(todo, 4, 3);
                 todoId = pomodoros.getTodo().getTodoId();
             }
 
@@ -133,7 +135,7 @@ public class PomodoroUpdateControllerTest {
             @BeforeEach
             void setUp() {
                 Todos doneTodo = getTodo(task, "책 읽기", Status.DONE);
-                pomodoros = getPomodoros(doneTodo, 4, 3);
+                getPomodoros(doneTodo, 4, 3);
                 todoId = doneTodo.getTodoId();
             }
 
@@ -150,8 +152,8 @@ public class PomodoroUpdateControllerTest {
         class Context_with_not_exist_todoId_when_pomodoro_complete {
             @BeforeEach
             void setUp() {
-                pomodoros = getPomodoros(todo, 4, 3);
-                todoId = pomodoros.getTodo().getTodoId();
+                getPomodoros(todo, 4, 3);
+                todoId = todo.getTodoId();
                 todosRepository.deleteById(todoId);
             }
 
@@ -159,6 +161,71 @@ public class PomodoroUpdateControllerTest {
             @DisplayName("404를 응답한다")
             void it_response_404() throws Exception {
                 subject(todoId).andExpect(status().isNotFound());
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("PATCH /api/v1/pomodoros/{todo_id} 요청은")
+    class Describe_udpate {
+        private ResultActions subject(Long todoId, PomodoroUpdateRequest pomodoroUpdateRequest) throws Exception {
+
+            return mockMvc.perform(patch("/api/v1/pomodoros/{todo_id}", todoId)
+                    .content(objectMapper.writeValueAsString(pomodoroUpdateRequest))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+                    ;
+        }
+
+        private Long todoId;
+        private Tasks task;
+
+        @BeforeEach
+        void setUp() {
+            Users user = getUser("user", "password");
+            task = getTask(user, LocalDate.parse("2023-10-03"));
+        }
+
+        @Nested
+        @DisplayName("대기 상태인 Todo의 plan_count를 변경하면")
+        class Context_with_plan_count_when_todo_status_is_ready {
+            private PomodoroUpdateRequest request;
+
+            @BeforeEach
+            void setUp() {
+                Todos todo = getTodo(task, "스터디", Status.READY);
+                Pomodoros pomodoros = getPomodoros(todo, 4, 3);
+                todoId = pomodoros.getTodo().getTodoId();
+                request = PomodoroUpdateRequest.builder()
+                        .planCount(5)
+                        .build();
+            }
+
+            @Test
+            @DisplayName("plan_count가 변경되고 200을 응답한다")
+            void it_response_200() throws Exception {
+                subject(todoId, request).andExpect(status().isOk())
+                        .andExpect(jsonPath("$.perform_count", equalTo(4)))
+                        .andExpect(jsonPath("$.plan_count", equalTo(5)));
+            }
+        }
+
+        @Nested
+        @DisplayName("ready가 아닌 todo의 해당하는 plan_count를 변경하면")
+        class Context_with_plan_count_when_todo_status_is_progress {
+
+            @ParameterizedTest
+            @ValueSource(strings = {"PROGRESS", "DONE"})
+            @DisplayName("400을 응답한다")
+            void it_response_400(String status) throws Exception {
+                Todos todo = getTodo(task, "스터디", Status.valueOf(status));
+                Pomodoros pomodoros = getPomodoros(todo, 4, 3);
+                todoId = pomodoros.getTodo().getTodoId();
+                PomodoroUpdateRequest request = PomodoroUpdateRequest.builder()
+                        .planCount(5)
+                        .build();
+                subject(todoId, request).andExpect(status().isBadRequest())
+                ;
             }
         }
     }

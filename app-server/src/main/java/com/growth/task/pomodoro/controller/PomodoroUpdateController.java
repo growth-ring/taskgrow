@@ -3,7 +3,8 @@ package com.growth.task.pomodoro.controller;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
 import com.growth.task.pomodoro.dto.response.PomodoroUpdateResponse;
-import com.growth.task.pomodoro.service.PomodoroService;
+import com.growth.task.pomodoro.service.PomodoroAddService;
+import com.growth.task.pomodoro.service.PomodoroUpdateService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ import static org.springframework.http.HttpStatus.OK;
 @Tag(name = "Pomodoro", description = "Pomodoro API Document")
 public class PomodoroUpdateController {
 
-    private final PomodoroService pomodoroService;
+    private final PomodoroUpdateService pomodoroUpdateService;
 
-    public PomodoroUpdateController(PomodoroService pomodoroService) {
-        this.pomodoroService = pomodoroService;
+    public PomodoroUpdateController(PomodoroUpdateService pomodoroUpdateService) {
+        this.pomodoroUpdateService = pomodoroUpdateService;
     }
 
     @PatchMapping("/{todo_id}")
@@ -33,7 +34,7 @@ public class PomodoroUpdateController {
             @PathVariable("todo_id") Long todoId,
             @RequestBody @Valid PomodoroUpdateRequest pomodoroUpdateRequest
     ) {
-        Pomodoros pomodoros = pomodoroService.update(todoId, pomodoroUpdateRequest);
+        Pomodoros pomodoros = pomodoroUpdateService.update(todoId, pomodoroUpdateRequest);
         return new PomodoroUpdateResponse(pomodoros);
     }
 
@@ -41,7 +42,7 @@ public class PomodoroUpdateController {
     public ResponseEntity<PomodoroUpdateResponse> complete(
             @PathVariable("todo_id") Long todoId
     ) {
-        PomodoroUpdateResponse pomodoro = pomodoroService.complete(todoId);
+        PomodoroUpdateResponse pomodoro = pomodoroUpdateService.complete(todoId);
         return ResponseEntity.ok(pomodoro);
     }
 }
