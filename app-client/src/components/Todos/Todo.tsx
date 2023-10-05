@@ -58,7 +58,7 @@ const Todo = ({
     setShowTodoBtn(true);
     setSelectedTodo('오늘 할 일 골라주세요');
     setOnTimer(false);
-    setTimerMinute(1);
+    setTimerMinute(25);
   };
 
   return (

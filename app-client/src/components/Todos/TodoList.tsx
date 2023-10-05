@@ -36,7 +36,7 @@ const TodoList = () => {
       setPlanCount(todo.plan_count);
       setPerformCount(todo.perform_count);
       setSelectedTodo(todo.todo);
-      setTimerMinute(1);
+      setTimerMinute(25);
       stop();
     }
   };
