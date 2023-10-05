@@ -101,10 +101,9 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
           const taskFinished = monthTaskDate
             .filter((dates: any) => dates.taskDate === day)
             .map(
-              (date: any) =>
-                date.todos.remain === date.todos.done &&
-                date.todos.remain !== 0,
+              (date: any) => date.todos.remain === 0 && date.todos.done !== 0,
             );
+
           if (day === currentDate) {
             if (taskFinished[0]) {
               html = <img src={good} key={i} />;

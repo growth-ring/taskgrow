@@ -17,8 +17,8 @@ const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
   const handleDelete = async () => {
     const response = await deleteTodo(todoId);
     if (response === 'OK') {
-      setIsTodoChange(!isTodoChange);
       setSelectedTodo('오늘 할 일 골라주세요');
+      setIsTodoChange(!isTodoChange);
     }
   };
 

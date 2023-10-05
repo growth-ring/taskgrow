@@ -148,7 +148,7 @@ const TodoDetail = ({
                   id="teammateEmail"
                   name="teammateEmail"
                   type="number"
-                  disabled={todoStatus === 'Ready'}
+                  disabled={todoStatus !== 'READY'}
                   required
                   placeholder="25분 기본"
                   value={planCount}

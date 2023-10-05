@@ -4,7 +4,6 @@ import { TimerState } from '../../store/timer';
 import { useTimerStore } from '../../store/timer';
 import { useTodosStore } from '../../store/todos';
 import { updatePerformPomodoro } from '../../services/todo';
-import { updateTodo } from '../../services/todo';
 
 const Time = styled.div`
   color: var(--main-color);
@@ -23,7 +22,8 @@ const Timer = ({ time, timerState }: TimerProps) => {
   const INTERVAL = 1000;
   const [timerTime, setTimerTime] = useState<number>(USER_TIME);
   const { complete } = useTimerStore();
-  const { planCount, performCount, todoId, selectedTodo } = useTodosStore();
+  const { todoId, selectedTodo, isTodoChange, setIsTodoChange } =
+    useTodosStore();
 
   const minute = String(Math.floor((timerTime / (1000 * 60)) % 60)).padStart(
     2,
@@ -44,29 +44,9 @@ const Timer = ({ time, timerState }: TimerProps) => {
       if (timerTime <= 0) {
         clearInterval(timer);
         complete();
-        const pomodoroData = {
-          todoId: todoId,
-          performCount: performCount + 1,
-        };
-        updatePerformPomodoro(pomodoroData);
-
-        if (performCount + 1 === planCount) {
-          const todoData = {
-            todoId: todoId,
-            todo: selectedTodo,
-            status: 'DONE',
-            planCount: planCount,
-          };
-          updateTodo(todoData);
-        } else {
-          const todoData = {
-            todoId: todoId,
-            todo: selectedTodo,
-            status: 'PROGRESS',
-            planCount: planCount,
-          };
-          updateTodo(todoData);
-        }
+        updatePerformPomodoro(todoId).then(() =>
+          setIsTodoChange(!isTodoChange),
+        );
       }
       return () => {
         clearInterval(timer);

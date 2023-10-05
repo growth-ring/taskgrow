@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import TodoDetail from './TodoDetail';
 import DeleteTodo from './DeleteTodo';
+import { updateTodo } from '../../services/todo';
+import { useTodosStore } from '../../store/todos';
+import { useTimerStore } from '../../store/timer';
 
 interface TodoProps {
   id: number;
@@ -20,6 +23,9 @@ const Todo = ({
   performCount,
   onClick,
 }: TodoProps) => {
+  const { isTodoChange, setIsTodoChange, setSelectedTodo } = useTodosStore();
+  const { setShowTodoBtn, setOnTimer, setTimerMinute, stop } = useTimerStore();
+
   const [isDetailShow, setIsDetailShow] = useState(false);
   const [isDeleteShow, setIsDeleteShow] = useState(false);
 
@@ -39,6 +45,22 @@ const Todo = ({
     setIsDetailShow(true);
   };
 
+  const handleTodoComplete = async () => {
+    const todoData = {
+      todoId: id,
+      todo: title,
+      status: 'DONE',
+      planCount: planCount,
+    };
+    await updateTodo(todoData);
+    setIsTodoChange(!isTodoChange);
+    stop();
+    setShowTodoBtn(true);
+    setSelectedTodo('오늘 할 일 골라주세요');
+    setOnTimer(false);
+    setTimerMinute(1);
+  };
+
   return (
     <>
       <div
@@ -52,7 +74,7 @@ const Todo = ({
         onClick={onClick}
       >
         <div className="inline-flex items-center space-x-2">
-          <div>
+          <button onClick={handleTodoComplete} disabled={status === 'DONE'}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -67,7 +89,7 @@ const Todo = ({
                 d="M4.5 12.75l6 6 9-13.5"
               />
             </svg>
-          </div>
+          </button>
           <div
             className={`text-slate-500 ${
               status === 'DONE' ? 'line-through' : ''
@@ -96,7 +118,11 @@ const Todo = ({
               />
             </svg>
           </button>
-          <button className={`text-slate-500 px-2`} onClick={handleTodoDetail}>
+          <button
+            className={`text-slate-500 px-2`}
+            onClick={handleTodoDetail}
+            disabled={status === 'DONE'}
+          >
             <AiOutlineUnorderedList />
           </button>
         </div>
