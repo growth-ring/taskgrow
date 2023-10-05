@@ -53,9 +53,9 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
   const handleTodayClick = async (day: Date) => {
     const userClickDay = moment(day).format('YYYY-MM-DD');
-    navigate(`/todos/${userClickDay}`);
     const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
+    navigate(`/todos/${userClickDay}`);
   };
 
   const handleDateViewChange = (value: any) => {

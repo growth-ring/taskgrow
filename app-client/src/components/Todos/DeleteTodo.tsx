@@ -1,4 +1,5 @@
 import { deleteTodo } from '../../services/todo';
+import { useTodosStore } from '../../store/todos';
 
 interface TodoProps {
   todoId: number;
@@ -7,12 +8,18 @@ interface TodoProps {
 }
 
 const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
+  const { isTodoChange, setIsTodoChange, setSelectedTodo } = useTodosStore();
+
   const handleClose = () => {
     getIsShow();
   };
 
-  const handleDelete = () => {
-    deleteTodo(todoId);
+  const handleDelete = async () => {
+    const response = await deleteTodo(todoId);
+    if (response === 'OK') {
+      setIsTodoChange(!isTodoChange);
+      setSelectedTodo('오늘 할 일 골라주세요');
+    }
   };
 
   return (

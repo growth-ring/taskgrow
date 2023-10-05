@@ -84,7 +84,8 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
 
 export const deleteTodo = async (todoId: number) => {
   try {
-    return await axios.delete(`/httpClient/api/v1/todos/${todoId}`);
+    const answer = await axios.delete(`/httpClient/api/v1/todos/${todoId}`);
+    return answer.status === 204 ? 'OK' : null;
   } catch (error: any) {
     return null;
   }

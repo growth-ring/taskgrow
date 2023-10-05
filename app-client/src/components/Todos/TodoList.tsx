@@ -56,7 +56,7 @@ const TodoList = () => {
       >
         {todoList
           .slice()
-          .sort((a, b) => (a.status === 'DONE' ? 1 : -1))
+          .sort((a) => (a.status === 'DONE' ? 1 : -1))
           .map((todo) => (
             <Todo
               key={todo.todo_id}
