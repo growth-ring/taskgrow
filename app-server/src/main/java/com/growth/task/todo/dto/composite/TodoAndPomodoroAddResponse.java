@@ -10,12 +10,29 @@ import lombok.Getter;
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoAndPomodoroAddResponse {
-    private TodoAddResponse todoAddResponse;
-    private PomodoroAddResponse pomodoroAddResponse;
+    private Long todoId;
+    private Long taskId;
+    private String todo;
+    private String status;
+    private int performCount;
+    private int planCount;
 
     @Builder
+    public TodoAndPomodoroAddResponse(Long todoId, Long taskId, String todo, String status, int performCount, int planCount) {
+        this.todoId = todoId;
+        this.taskId = taskId;
+        this.todo = todo;
+        this.status = status;
+        this.performCount = performCount;
+        this.planCount = planCount;
+    }
+
     public TodoAndPomodoroAddResponse(TodoAddResponse todoAddResponse, PomodoroAddResponse pomodoroAddResponse) {
-        this.todoAddResponse = todoAddResponse;
-        this.pomodoroAddResponse = pomodoroAddResponse;
+        this.todoId = todoAddResponse.getTodoId();
+        this.taskId = todoAddResponse.getTaskId();
+        this.todo = todoAddResponse.getTodo();
+        this.status = todoAddResponse.getStatus().toString(); // Enum을 문자열로 변환
+        this.performCount = pomodoroAddResponse.getPerformCount();
+        this.planCount = pomodoroAddResponse.getPlanCount();
     }
 }

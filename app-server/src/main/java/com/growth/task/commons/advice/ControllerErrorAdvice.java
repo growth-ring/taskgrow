@@ -6,6 +6,7 @@ import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import com.growth.task.user.exception.UserNameDuplicationException;
 import com.growth.task.user.exception.UserNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,18 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Slf4j
 @ControllerAdvice
 public class ControllerErrorAdvice {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleEntityNotFoundException(EntityNotFoundException exception) {
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException exception) {
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
+    }
+
     /**
      * User를 찾을 수 없는 경우, NOT_FOUND(404)와 Error 메세지를 응답한다.
      *

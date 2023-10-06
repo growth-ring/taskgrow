@@ -52,13 +52,13 @@ function Pomodoro({ timerState, time, startTime }: PomodoroProps) {
       }
       return;
     }
-    
+
     const animationDuration: number = time * 60 * 1000;
-    
+
     const animate = () => {
       const currentTime = Date.now();
       const elapsedTime = currentTime - startTime;
-      
+
       if (elapsedTime < animationDuration) {
         setPercentage((elapsedTime / animationDuration) * 100);
         setAnimationFrameId(requestAnimationFrame(animate));
@@ -76,18 +76,16 @@ function Pomodoro({ timerState, time, startTime }: PomodoroProps) {
         cancelAnimationFrame(animationFrameId);
       }
     };
-
   }, [timerState, animationFrameId]);
-
 
   return (
     <>
-      {timerState === 'INITIAL' && (
+      {(timerState === 'INITIAL' || timerState === 'FINISHED') && (
         <CenteredBox>
           <DefaultPomodoro />
         </CenteredBox>
       )}
-      {timerState === 'RUNNING'  && (
+      {timerState === 'RUNNING' && (
         <CenteredBox>
           <BackContainer>
             <Container percentage={percentage} />

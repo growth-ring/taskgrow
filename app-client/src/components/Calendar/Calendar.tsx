@@ -7,8 +7,7 @@ import './Calendar.css';
 import styled from 'styled-components';
 import { startEndDate } from '../../utils/startEndDate';
 import { useUser } from '../../store/user';
-import { TaskDate, moveToTask } from '../../utils/checkTaskExists';
-import { getTaskList } from '../../services/task';
+import { getAllTask, moveToTask } from '../../utils/checkTaskExists';
 import good from '../../assets/good.png';
 import { useTask } from '../../store/task';
 
@@ -25,6 +24,19 @@ const Todo = styled.div`
   align-items: center;
 `;
 
+const PreviewTodoList = styled.div`
+  display: flex;
+  width: 100px;
+  height: 66px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PreviewTodo = styled.div`
+  margin-top: 0.2rem;
+`;
+
 interface ThisMonthProps {
   thisMonthStart: string;
   thisMonthEnd: string;
@@ -33,22 +45,16 @@ interface ThisMonthProps {
 const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const navigate = useNavigate();
   const { userId } = useUser();
-  const { setSelectedTaskId } = useTask();
+  const { monthTaskDate, setMonthTaskDate, setSelectedTaskId } = useTask();
   const [startDate, setStartDate] = useState(thisMonthStart);
   const [endDate, setEndDate] = useState(thisMonthEnd);
-  const [monthTaskDate, setMonthTaskDate] = useState<TaskDate[]>([]);
   const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
   const [mouseOverDay, setMouseOverDay] = useState('');
-  const [taskTodos, setTaskTodos] = useState([]);
 
-  const handleTodayClick = (day: Date) => {
+  const handleTodayClick = async (day: Date) => {
     const userClickDay = moment(day).format('YYYY-MM-DD');
-    const taskId = moveToTask({ userId, monthTaskDate, userClickDay });
-    if (typeof taskId === 'number') {
-      setSelectedTaskId(taskId);
-    } else {
-      taskId.then((id) => setSelectedTaskId(id));
-    }
+    const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
+    setSelectedTaskId(taskId);
     navigate(`/todos/${userClickDay}`);
   };
 
@@ -64,14 +70,10 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
   useEffect(() => {
     const taskData = { userId, startDate, endDate };
-    getTaskList(taskData).then((tasks) => {
-      const updatedData = tasks.map((task: any) => ({
-        taskId: task.task_id,
-        taskDate: task.task_date,
-        todos: task.todos,
-      }));
-      setMonthTaskDate(updatedData);
-    });
+    const getMonthTaskDate = async () => {
+      setMonthTaskDate(await getAllTask(taskData));
+    };
+    getMonthTaskDate();
   }, [userId, startDate, endDate]);
 
   useEffect(() => {
@@ -92,36 +94,39 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
       formatDay={(locale, date) => moment(date).format('D')}
       onActiveStartDateChange={handleDateViewChange}
       tileContent={({ date }) => {
-        const html: JSX.Element[] = [];
+        let html: JSX.Element | null = null;
         const currentDate = moment(date).format('YYYY-MM-DD');
-        const checkTask = { userId, monthTaskDate, userClickDay: currentDate };
 
         viewTaskDate.forEach((day, i) => {
           const taskFinished = monthTaskDate
             .filter((dates: any) => dates.taskDate === day)
-            .map((date: any) => date.todos.remain !== date.todos.done);
+            .map(
+              (date: any) => date.todos.remain === 0 && date.todos.done !== 0,
+            );
 
           if (day === currentDate) {
-            if (taskFinished) {
-              html.push(<img src={good} key={i} />);
+            if (taskFinished[0]) {
+              html = <img src={good} key={i} />;
             } else if (mouseOverDay === currentDate) {
-              moveToTask(checkTask).then((task) =>
-                task.map((it: any) => console.log(it.todos)),
-              );
-              html.push(
-                <div>
-                  {taskTodos.map((todo) => (
-                    <div>{todo}</div>
-                  ))}
-                </div>,
-              );
+              const taskTodo = monthTaskDate
+                .filter((dates: any) => dates.taskDate === day)
+                .map((date: any) => date.todoData);
+              if (taskTodo) {
+                html = (
+                  <PreviewTodoList key={i}>
+                    {taskTodo[0].map((todo: string, index: number) => (
+                      <PreviewTodo key={`${i}_${index}`}>{todo}</PreviewTodo>
+                    ))}
+                  </PreviewTodoList>
+                );
+              }
             } else {
-              html.push(
+              html = (
                 <Todo key={i}>
                   {monthTaskDate
                     .filter((dates: any) => dates.taskDate === day)
                     .map((date: any) => date.todos.remain)}
-                </Todo>,
+                </Todo>
               );
             }
           }

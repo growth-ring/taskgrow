@@ -23,11 +23,11 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class PomodoroServiceTest {
+class PomodoroAddServiceTest {
     @Mock
     private PomodorosRepository pomodorosRepository;
 
-    private PomodoroService pomodoroService;
+    private PomodoroAddService pomodoroAddService;
     private Todos todos;
 
     private final Long TODO_ID1 = 1L;
@@ -36,7 +36,7 @@ class PomodoroServiceTest {
 
     @BeforeEach
     void setUp() {
-        pomodoroService = new PomodoroService(pomodorosRepository);
+        pomodoroAddService = new PomodoroAddService(pomodorosRepository);
         todos = mock(Todos.class);
     }
 
@@ -58,7 +58,7 @@ class PomodoroServiceTest {
             @Test
             @DisplayName("todos 를 입력 받아 pomodoros 로 변환하여 저장된다.")
             void It_saveThePomodoro() {
-                pomodoroService.save(pomodoroAddRequest, todos);
+                pomodoroAddService.save(pomodoroAddRequest, todos);
 
                 verify(pomodorosRepository).save(any(Pomodoros.class));
             }
@@ -80,38 +80,8 @@ class PomodoroServiceTest {
             @DisplayName("TaskNotFoundException 오류를 던진다.")
             void It_throws_TaskNotFoundException() {
                 assertThrows(TodoNotFoundException.class, () -> {
-                    pomodoroService.save(pomodoroAddRequest, todos);
+                    pomodoroAddService.save(pomodoroAddRequest, todos);
                 });
-            }
-        }
-    }
-
-    @Nested
-    @DisplayName("PomodoroService 의 update 메서드는")
-    class Describe_update {
-
-        @Nested
-        @DisplayName("todoId 가 null 이 아닌 경우")
-        class Context_whenTodoIdExists {
-            private final PomodoroUpdateRequest pomodoroUpdateRequest = PomodoroUpdateRequest.builder()
-                    .planCount(PLANCOUNT1)
-                    .build();
-
-            private final Pomodoros pomodoros = Pomodoros.builder()
-                    .planCount(PLANCOUNT2)
-                    .build();
-
-            @BeforeEach
-            void setUp() {
-                given(pomodorosRepository.findByTodo_TodoId(TODO_ID1)).willReturn(pomodoros);
-            }
-
-            @Test
-            @DisplayName("pomodoroUpdateRequest 를 입력 받아 업데이트한다.")
-            void It_updateThePomodoro() {
-                Pomodoros response = pomodoroService.update(TODO_ID1, pomodoroUpdateRequest);
-
-                assertThat(response.getPlanCount()).isEqualTo(PLANCOUNT1);
             }
         }
     }

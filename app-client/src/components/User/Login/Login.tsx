@@ -18,8 +18,8 @@ const Login = () => {
 
     const form = { name, password };
     login(form).then((userData) => {
-      setUserId(userData?.data.user_id);
       navigate(`/tasks`);
+      setUserId(userData?.data.user_id);
     });
   };
 

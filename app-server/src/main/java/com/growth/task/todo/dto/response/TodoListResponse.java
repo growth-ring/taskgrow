@@ -1,11 +1,14 @@
 package com.growth.task.todo.dto.response;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.enums.Status;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoListResponse {
     private Long todoId;
     private Long taskId;

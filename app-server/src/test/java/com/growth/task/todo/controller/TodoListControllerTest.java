@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TodoListControllerIntegrationTest {
+class TodoListControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,19 +35,19 @@ class TodoListControllerIntegrationTest {
         List<TodoListResponse> todoList = Arrays.asList(todo1, todo2);
         when(todoListService.getTodosByTaskId(1L)).thenReturn(todoList);
 
-        mockMvc.perform(get("/api/v1/todos").param("taskId", "1"))
+        mockMvc.perform(get("/api/v1/todos").param("task_id", "1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].todoId").value(1L))
-                .andExpect(jsonPath("$[0].taskId").value(1L))
+                .andExpect(jsonPath("$[0].todo_id").value(1L))
+                .andExpect(jsonPath("$[0].task_id").value(1L))
                 .andExpect(jsonPath("$[0].todo").value("디자인패턴의 아름다움 스터디"))
                 .andExpect(jsonPath("$[0].status").value("READY"))
-                .andExpect(jsonPath("$[0].performCount").value(1))
-                .andExpect(jsonPath("$[0].planCount").value(2))
-                .andExpect(jsonPath("$[1].todoId").value(2L))
-                .andExpect(jsonPath("$[1].taskId").value(1L))
+                .andExpect(jsonPath("$[0].perform_count").value(1))
+                .andExpect(jsonPath("$[0].plan_count").value(2))
+                .andExpect(jsonPath("$[1].todo_id").value(2L))
+                .andExpect(jsonPath("$[1].task_id").value(1L))
                 .andExpect(jsonPath("$[1].todo").value("프로젝트 진행하기"))
                 .andExpect(jsonPath("$[1].status").value("PROGRESS"))
-                .andExpect(jsonPath("$[1].performCount").value(1))
-                .andExpect(jsonPath("$[1].planCount").value(2));
+                .andExpect(jsonPath("$[1].perform_count").value(1))
+                .andExpect(jsonPath("$[1].plan_count").value(2));
     }
 }

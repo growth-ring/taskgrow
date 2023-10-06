@@ -17,6 +17,9 @@ import lombok.Getter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import static com.growth.task.todo.enums.Status.PROGRESS;
+import static com.growth.task.todo.enums.Status.isDone;
+import static com.growth.task.todo.enums.Status.isReady;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
@@ -58,5 +61,19 @@ public class Todos extends BaseTimeEntity {
 
     public void updateStatus(Status status) {
         this.status = status;
+    }
+
+    public void validateCompletePomodoro() {
+        if (isReady(this.status)) {
+            this.updateStatus(PROGRESS);
+        } else if (isDone(this.status)) {
+            throw new IllegalArgumentException(String.format("이미 완료된 Todo입니다. Todo=%s", this.todo));
+        }
+    }
+
+    public void validateUpdatePomodoro() {
+        if (!isReady(status)) {
+            throw new IllegalArgumentException(String.format("변경할 수 없는 상태입니다. status= ", status));
+        }
     }
 }
