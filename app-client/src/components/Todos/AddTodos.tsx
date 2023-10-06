@@ -14,10 +14,17 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (+planCount > 0) {
+      await addTodo({
+        taskId: selectedTaskId,
+        todo: todo,
+        performCount: 0,
+        planCount: +planCount,
+      });
+      setIsTodoChange(!isTodoChange);
       getShowAddTodos(false);
     } else {
       alert('1 이상의 숫자를 넣어주세요');
@@ -34,17 +41,6 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
 
   const handlePlanCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlanCount(e.target.value);
-  };
-
-  const handleAddTodo = () => {
-    addTodo({
-      taskId: selectedTaskId,
-      todo: todo,
-      performCount: 0,
-      planCount: +planCount,
-    }).then(() => {
-      setIsTodoChange(!isTodoChange);
-    });
   };
 
   return (
@@ -133,7 +129,6 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
               <div className="flex justify-end mt-6">
                 <button
                   type="submit"
-                  onClick={handleAddTodo}
                   className="px-3 py-2 text-sm tracking-wide bg-main-color text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50"
                 >
                   추가하기
