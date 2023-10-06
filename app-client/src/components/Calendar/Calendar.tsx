@@ -12,25 +12,51 @@ import good from '../../assets/good.png';
 import { useTask } from '../../store/task';
 
 const Todo = styled.div`
-  width: 50px;
-  height: 50px;
-  margin-top: 10px;
-  font-size: 22px;
   color: black;
   background-color: #f5f5f5;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 767px) {
+    margin: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    margin: 10px;
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+  }
 `;
 
 const PreviewTodoList = styled.div`
-  display: flex;
-  width: 100px;
-  height: 66px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  text-align: left;
+  width: 100%;
+  overflow: hidden;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
 `;
 
 const PreviewTodo = styled.div`
@@ -106,7 +132,11 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
           if (day === currentDate) {
             if (taskFinished[0]) {
-              html = <img src={good} key={i} />;
+              html = (
+                <Todo>
+                  <img src={good} key={i} />
+                </Todo>
+              );
             } else if (mouseOverDay === currentDate) {
               const taskTodo = monthTaskDate
                 .filter((dates: any) => dates.taskDate === day)
@@ -115,7 +145,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
                 html = (
                   <PreviewTodoList key={i}>
                     {taskTodo[0].map((todo: string, index: number) => (
-                      <PreviewTodo key={`${i}_${index}`}>{todo}</PreviewTodo>
+                      <PreviewTodo key={`${i}_${index}`}>- {todo}</PreviewTodo>
                     ))}
                   </PreviewTodoList>
                 );
