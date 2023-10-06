@@ -24,16 +24,20 @@ const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
     getIsShow();
   };
 
-  const handleDelete = () => {
-    getTodos(selectedTaskId).then((todos) =>
-      todos.map((todo: TodosProps) => deleteTodo(todo.todo_id)),
-    );
+  const handleDelete = async () => {
+    const todoList = await getTodos(selectedTaskId);
+    if (todoList) {
+      await Promise.all(
+        todoList.map(async (todo: TodosProps) => {
+          await deleteTodo(todo.todo_id);
+        }),
+      );
+    }
 
-    deleteTask(selectedTaskId).then((message) => {
-      if (message?.request.status === 204) {
-        navigate('/tasks');
-      }
-    });
+    const deleteMessage = await deleteTask(selectedTaskId);
+    if (deleteMessage?.status === 204) {
+      navigate('/tasks');
+    }
   };
 
   return (
