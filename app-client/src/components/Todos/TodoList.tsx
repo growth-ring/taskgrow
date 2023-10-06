@@ -47,12 +47,16 @@ const TodoList = () => {
 
   return (
     <div
-      className="max-w-lg mx-auto bg-white p-8 rounded-xl shadow shadow-slate-300"
+      className="max-w-lg mx-auto bg-white p-4 rounded-xl shadow shadow-slate-300"
       style={{ width: '100%' }}
     >
       <div
         id="tasks"
-        style={{ width: '100%', height: '100%', overflow: 'auto' }}
+        style={{
+          width: '100%',
+          height: '100%',
+          overflow: 'auto',
+        }}
       >
         {todoList
           .slice()

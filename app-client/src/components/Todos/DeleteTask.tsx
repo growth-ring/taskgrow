@@ -43,7 +43,7 @@ const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
   return (
     <div>
       <div
-        className="fixed inset-0 z-50 overflow-y-auto"
+        className="fixed inset-0 z-50 overflow-y-auto "
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true"
