@@ -8,7 +8,7 @@ const MainPage = () => {
 
   return (
     <div
-      className="flex h-screen w-full items-center justify-center bg-gray-900 bg-no-repeat"
+      className="flex h-full w-full items-center justify-center"
       style={{
         backgroundColor: 'var(--main-color)',
       }}

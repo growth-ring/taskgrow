@@ -71,10 +71,18 @@ const Todo = ({
             ? 'color-main-colorbg-gradient-to-r from-transparent to-transparent hover:from-slate-100'
             : 'bg-gradient-to-r from-indigo-100 to-transparent hover:from-indigo-200'
         } transition ease-linear duration-150 cursor-pointer`}
+        style={{ display: 'flex', width: '100%' }}
         onClick={onClick}
       >
-        <div className="inline-flex items-center space-x-2">
-          <button onClick={handleTodoComplete} disabled={status === 'DONE'}>
+        <div
+          className="inline-flex items-center space-x-2"
+          style={{ width: '60%' }}
+        >
+          <button
+            onClick={handleTodoComplete}
+            disabled={status === 'DONE'}
+            style={{ width: '10%' }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -94,11 +102,15 @@ const Todo = ({
             className={`text-slate-500 ${
               status === 'DONE' ? 'line-through' : ''
             }`}
+            style={{
+              width: '100%',
+              overflow: 'hidden',
+            }}
           >
             {title}
           </div>
         </div>
-        <div style={{ display: 'flex' }}>
+        <div style={{ width: '40%', display: 'flex' }}>
           <div className={`text-slate-500 px-5`}>
             {performCount} / {planCount}
           </div>

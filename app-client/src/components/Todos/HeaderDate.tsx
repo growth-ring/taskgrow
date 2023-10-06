@@ -8,12 +8,33 @@ import { useTask } from '../../store/task';
 import { getAllTask, moveToTask } from '../../utils/checkTaskExists';
 
 const Arrow = styled.button`
-  margin: 0 100px;
+  @media (max-width: 767px) {
+    margin: 0 20px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    margin: 0 60px;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 0 100px;
+  }
 `;
 
 const Today = styled.div`
-  width: 180px;
   text-align: center;
+
+  @media (max-width: 767px) {
+    width: 160px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    width: 170px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 180px;
+  }
 `;
 
 const HeaderDate = () => {
