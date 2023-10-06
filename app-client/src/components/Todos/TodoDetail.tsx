@@ -1,38 +1,49 @@
 import { useState } from 'react';
-import { useTask } from '../../store/task';
-import { addTodo } from '../../services/todo';
-
+import { updateTodo } from '../../services/todo';
 import { useTodosStore } from '../../store/todos';
 
-interface AddTodosProps {
-  getShowAddTodos: (todos: boolean) => void;
+interface TodoProps {
+  todoId: number;
+  todoTitle: string;
+  todoStatus: string;
+  todoPlanCount: number;
+  todoPerformCount: number;
+  getIsShow: () => void;
 }
 
-const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
+const TodoDetail = ({
+  todoId,
+  todoTitle,
+  todoStatus,
+  todoPlanCount,
+  todoPerformCount,
+  getIsShow,
+}: TodoProps) => {
   const { isTodoChange, setIsTodoChange } = useTodosStore();
-  const { selectedTaskId } = useTask();
-  const [todo, setTodo] = useState('');
-  const [planCount, setPlanCount] = useState('');
+  const [todo, setTodo] = useState(todoTitle);
+  const [performCount, setPerformCount] = useState(todoPerformCount);
+  const [planCount, setPlanCount] = useState(todoPlanCount);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleClose = () => {
+    getIsShow();
+  };
+
+  const handleUpdateTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    const todoData = {
+      todoId: todoId,
+      todo: todo,
+      status: todoStatus,
+      planCount: planCount,
+    };
     if (+planCount > 0) {
-      await addTodo({
-        taskId: selectedTaskId,
-        todo: todo,
-        performCount: 0,
-        planCount: +planCount,
+      updateTodo(todoData).then(() => {
+        getIsShow();
+        setIsTodoChange(!isTodoChange);
       });
-      setIsTodoChange(!isTodoChange);
-      getShowAddTodos(false);
     } else {
       alert('1 이상의 숫자를 넣어주세요');
     }
-  };
-
-  const handleClose = () => {
-    getShowAddTodos(false);
   };
 
   const handleTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +51,11 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
   };
 
   const handlePlanCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPlanCount(e.target.value);
+    setPlanCount(+e.target.value);
+  };
+
+  const handlePerformCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPerformCount(+e.target.value);
   };
 
   return (
@@ -60,12 +75,9 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
 
           <div className="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
             <div className="flex items-center justify-between space-x-4">
-              <h1 className="text-xl font-medium text-gray-800 ">할 일 추가</h1>
+              <h1 className="text-xl font-medium ">할 일 수정</h1>
 
-              <button
-                onClick={handleClose}
-                className="text-gray-600 focus:outline-none hover:text-gray-700"
-              >
+              <button onClick={handleClose}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-6 h-6"
@@ -87,11 +99,11 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
               <hr />
             </div>
 
-            <form className="mt-5" onSubmit={handleSubmit}>
+            <form className="mt-5" onSubmit={handleUpdateTodo}>
               <div>
                 <label
                   htmlFor="todo"
-                  className="block text-sm text-gray-700 capitalize dark:text-gray-200"
+                  className="block text-sm capitalize dark:text-gray-200"
                 >
                   할 일
                 </label>
@@ -106,32 +118,53 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
                   className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
                 />
               </div>
-
               <div className="mt-4">
                 <label
                   htmlFor="teammateEmail"
                   className="block text-sm text-gray-700 capitalize dark:text-gray-200"
                 >
-                  뽀모도로 개수
+                  완료 뽀모도로 개수
                 </label>
                 <input
                   id="teammateEmail"
                   name="teammateEmail"
                   type="number"
+                  disabled
+                  required
+                  placeholder="25분 기본"
+                  value={performCount}
+                  onChange={handlePerformCountChange}
+                  className="block w-full px-3 py-2 mt-2 text-gray placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
+                />
+              </div>
+              <div className="mt-4">
+                <label
+                  htmlFor="teammateEmail"
+                  className="block text-sm capitalize"
+                >
+                  계획 뽀모도로 개수
+                </label>
+                <input
+                  id="teammateEmail"
+                  name="teammateEmail"
+                  type="number"
+                  disabled={todoStatus !== 'READY'}
                   required
                   placeholder="25분 기본"
                   value={planCount}
                   onChange={handlePlanCountChange}
-                  className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
+                  className="block w-full px-3 py-2 mt-2 text-gray placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
                 />
               </div>
-
-              <div className="flex justify-end mt-6">
+              <div className="py-2 text-gray font-thin text-sm">
+                이미 시작한 것은 뽀모도로 개수 수정이 불가능합니다
+              </div>
+              <div className="flex justify-end mt-6 ">
                 <button
                   type="submit"
                   className="px-3 py-2 text-sm tracking-wide bg-main-color text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50"
                 >
-                  추가하기
+                  수정하기
                 </button>
               </div>
             </form>
@@ -142,4 +175,4 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
   );
 };
 
-export default AddTodos;
+export default TodoDetail;
