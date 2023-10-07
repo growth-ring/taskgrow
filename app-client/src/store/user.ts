@@ -5,7 +5,9 @@ interface UserStore {
   setUserId: (id: number) => void;
 }
 
+const userName = localStorage.getItem('userName');
+
 export const useUser = create<UserStore>((set) => ({
-  userId: 0,
+  userId: userName === null ? 0 : +userName,
   setUserId: (id) => set({ userId: id }),
 }));

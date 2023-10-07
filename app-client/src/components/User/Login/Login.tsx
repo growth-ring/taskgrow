@@ -20,6 +20,7 @@ const Login = () => {
     login(form).then((userData) => {
       navigate(`/tasks`);
       setUserId(userData?.data.user_id);
+      localStorage.setItem('userName', userData?.data.user_id);
     });
   };
 

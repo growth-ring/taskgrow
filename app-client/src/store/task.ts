@@ -16,9 +16,11 @@ interface LoginStore {
   setSelectedTaskId: (selectedTaskId: number) => void;
 }
 
+const taskId = localStorage.getItem('taskId');
+
 export const useTask = create<LoginStore>((set) => ({
   monthTaskDate: [],
   setMonthTaskDate: (taskDate) => set({ monthTaskDate: taskDate }),
-  selectedTaskId: 0,
+  selectedTaskId: taskId === null ? 0 : +taskId,
   setSelectedTaskId: (taskId) => set({ selectedTaskId: taskId }),
 }));
