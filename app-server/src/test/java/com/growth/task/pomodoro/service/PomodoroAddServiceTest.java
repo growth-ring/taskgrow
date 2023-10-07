@@ -1,9 +1,8 @@
 package com.growth.task.pomodoro.service;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
-import com.growth.task.pomodoro.dto.request.PomodoroUpdateRequest;
-import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
+import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,13 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PomodoroAddServiceTest {
