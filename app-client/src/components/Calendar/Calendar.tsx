@@ -81,6 +81,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
     const userClickDay = moment(day).format('YYYY-MM-DD');
     const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
+    localStorage.setItem('taskId', String(taskId));
     navigate(`/todos/${userClickDay}`);
   };
 

@@ -13,14 +13,17 @@ const Login = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const form = { name, password };
-    login(form).then((userData) => {
+    const user = await login(form);
+
+    if (user) {
       navigate(`/tasks`);
-      setUserId(userData?.data.user_id);
-    });
+      setUserId(user);
+      localStorage.setItem('userName', user);
+    }
   };
 
   return (
