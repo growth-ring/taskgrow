@@ -10,13 +10,32 @@ import { useTimerStore } from '../../store/timer';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 90%;
+  @media (max-width: 767px) {
+    padding-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  @media (min-width: 768px) {
+    display: flex;
+    width: 100%;
+    height: 90%;
+  }
 `;
 
 const Todo = styled.div`
-  font-size: 30px;
+  margin: 0 10%;
+
+  @media (max-width: 767px) {
+    font-size: 20px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    font-size: 25px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 30px;
+  }
 `;
 
 const Line = styled.div`
@@ -24,12 +43,34 @@ const Line = styled.div`
 `;
 
 const Time = styled.div`
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  item-align: center;
-  text-align: center;
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    item-align: center;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    item-align: center;
+    text-align: center;
+  }
+`;
+
+const TodosBox = styled.div`
+  @media (max-width: 767px) {
+    margin: 10px 20px;
+  }
+
+  @media (min-width: 768px) {
+    width: 50%;
+    height: 100%;
+    margin: 2.5rem;
+  }
 `;
 
 const Todos = () => {
@@ -56,10 +97,10 @@ const Todos = () => {
             </>
           )}
         </Time>
-        <div style={{ width: '50%', height: '100%', margin: '2.5rem' }}>
+        <TodosBox>
           <TodoAllDelete />
           <TodoList />
-        </div>
+        </TodosBox>
       </Container>
     </>
   );
