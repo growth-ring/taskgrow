@@ -4,6 +4,7 @@ import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import { useTask } from '../../store/task';
 import { getTodos } from '../../services/todo';
+import resetTimer from '../../utils/resetTimer';
 
 interface Todo {
   todo_id: number;
@@ -15,29 +16,25 @@ interface Todo {
 
 const TodoList = () => {
   const { selectedTaskId } = useTask();
+  const timer = useTimerStore();
+  const todos = useTodosStore();
   const {
     setPlanCount,
     todoList,
     setTodoList,
     setTodoId,
-    setSelectedTodo,
     setPerformCount,
     isTodoChange,
   } = useTodosStore();
-  const { setShowTodoBtn, setOnTimer, setTimerMinute, stop } = useTimerStore();
 
   const handleTodoClick = (todo: Todo) => {
     if (todo.status === 'DONE') {
       alert('완료된 할 일 입니다.');
     } else {
-      setOnTimer(true);
-      setShowTodoBtn(true);
       setTodoId(todo.todo_id);
       setPlanCount(todo.plan_count);
       setPerformCount(todo.perform_count);
-      setSelectedTodo(todo.todo);
-      setTimerMinute(25);
-      stop();
+      resetTimer(timer, todos, todo.todo);
     }
   };
 

@@ -9,6 +9,7 @@ import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import styled from 'styled-components';
 import { useEffect } from 'react';
+import resetTimer from '../../utils/resetTimer';
 
 const Container = styled.div`
   @media (max-width: 767px) {
@@ -75,22 +76,13 @@ const TodosBox = styled.div`
 `;
 
 const Todos = () => {
-  const {
-    setShowTodoBtn,
-    setOnTimer,
-    stop,
-    onTimer,
-    timerState,
-    startTime,
-    timerMinute,
-  } = useTimerStore();
-  const { setSelectedTodo, selectedTodo } = useTodosStore();
+  const timer = useTimerStore();
+  const todos = useTodosStore();
+  const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
+  const { selectedTodo } = useTodosStore();
 
   useEffect(() => {
-    stop();
-    setShowTodoBtn(true);
-    setSelectedTodo('오늘 할 일 골라주세요');
-    setOnTimer(false);
+    resetTimer(timer, todos, 'reset');
   }, []);
 
   return (
