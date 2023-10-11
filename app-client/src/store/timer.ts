@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 export type TimerState = 'INITIAL' | 'RUNNING' | 'FINISHED';
 
-interface TimerStore {
+export interface TimerStore {
   showTodoBtn: boolean;
   setShowTodoBtn: (btn: boolean) => void;
   onTimer: boolean;

@@ -9,7 +9,7 @@ interface Todo {
   perform_count: number;
 }
 
-interface TodosStore {
+export interface TodosStore {
   today: string;
   setToday: (running: string) => void;
   todoList: Todo[];

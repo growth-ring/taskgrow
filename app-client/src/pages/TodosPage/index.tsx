@@ -8,6 +8,8 @@ import TodoList from '../../components/Todos/TodoList';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import styled from 'styled-components';
+import { useEffect } from 'react';
+import resetTimer from '../../utils/resetTimer';
 
 const Container = styled.div`
   @media (max-width: 767px) {
@@ -74,8 +76,14 @@ const TodosBox = styled.div`
 `;
 
 const Todos = () => {
+  const timer = useTimerStore();
+  const todos = useTodosStore();
   const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
   const { selectedTodo } = useTodosStore();
+
+  useEffect(() => {
+    resetTimer(timer, todos, 'reset');
+  }, []);
 
   return (
     <>
