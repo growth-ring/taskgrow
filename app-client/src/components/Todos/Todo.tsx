@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AiOutlineUnorderedList } from 'react-icons/ai';
+import { BsPencil } from 'react-icons/bs';
 import TodoDetail from './TodoDetail';
 import DeleteTodo from './DeleteTodo';
 import { updateTodo } from '../../services/todo';
@@ -110,7 +110,7 @@ const Todo = ({
             {title}
           </div>
         </div>
-        <div style={{ width: '40%', display: 'flex' }}>
+        <div style={{ display: 'flex' }}>
           <div className={`text-slate-500 px-5`}>
             {performCount} / {planCount}
           </div>
@@ -135,7 +135,7 @@ const Todo = ({
             onClick={handleTodoDetail}
             disabled={status === 'DONE'}
           >
-            <AiOutlineUnorderedList />
+            <BsPencil />
           </button>
         </div>
       </div>
