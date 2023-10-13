@@ -2,11 +2,12 @@ package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
+import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.exception.TaskNotFoundException;
+import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class TodoListService {
 
+    public static final int PREVIEW_LIMIT = 3;
     private final TodosRepository todosRepository;
     private final PomodorosRepository pomodorosRepository;
     private final TasksRepository tasksRepository;
@@ -72,11 +74,7 @@ public class TodoListService {
      * @param taskId 테스크 아이디
      * @return 투두 내용 리스트
      */
-    public List<String> getTodosTop3ByTaskId(Long taskId) {
-        List<String> todos = todosRepository.findTop3ByTask_TaskId(taskId)
-                .stream()
-                .map(Todos::getTodo)
-                .toList();
-        return todos;
+    public List<TaskTodoDetailResponse> getTaskTodosPreview(Long taskId) {
+        return todosRepository.getTaskTodoPreview(taskId, PREVIEW_LIMIT);
     }
 }
