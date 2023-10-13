@@ -2,6 +2,7 @@ package com.growth.task.task.service;
 
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskDetailResponse;
+import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.application.TodoListService;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -23,7 +24,7 @@ public class TaskDetailService {
         Tasks task = tasksRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));
 
-        List<String> todos = todoListService.getTodosTop3ByTaskId(task.getTaskId());
+        List<TaskTodoDetailResponse> todos = todoListService.getTaskTodosPreview(task.getTaskId());
 
         return new TaskDetailResponse(task.getTaskId(), todos);
     }
