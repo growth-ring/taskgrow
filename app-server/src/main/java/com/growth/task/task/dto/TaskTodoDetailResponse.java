@@ -5,17 +5,17 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @NoArgsConstructor
 @Getter
-public class TaskDetailResponse {
-    private Long taskId;
-    private List<TaskTodoDetailResponse> todos;
+public class TaskTodoDetailResponse {
+    private String todo;
+    private Integer performCount;
+    private Integer planCount;
 
-    public TaskDetailResponse(Long taskId, List<TaskTodoDetailResponse> todos) {
-        this.taskId = taskId;
-        this.todos = todos;
+    public TaskTodoDetailResponse(String todo, int performCount, int planCount) {
+        this.todo = todo;
+        this.performCount = performCount;
+        this.planCount = planCount;
     }
 }
