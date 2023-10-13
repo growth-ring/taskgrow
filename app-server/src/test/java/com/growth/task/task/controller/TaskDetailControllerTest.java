@@ -3,6 +3,8 @@ package com.growth.task.task.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.growth.task.pomodoro.domain.Pomodoros;
+import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
@@ -43,6 +45,8 @@ class TaskDetailControllerTest {
     private UsersRepository usersRepository;
     @Autowired
     private TodosRepository todosRepository;
+    @Autowired
+    private PomodorosRepository pomodorosRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
@@ -77,15 +81,20 @@ class TaskDetailControllerTest {
         );
     }
 
-    private Todos getTodo(Tasks task, String todo, Status status) {
-        return todosRepository.save(
+    private void getTodo(Tasks task, String todo, Status status, int performCount, int planCount) {
+        Todos givenTodo = todosRepository.save(
                 Todos.builder()
                         .task(task)
                         .todo(todo)
                         .status(status)
                         .build()
         );
+        pomodorosRepository.save(Pomodoros.builder().todo(givenTodo)
+                .performCount(performCount)
+                .planCount(planCount)
+                .build());
     }
+
 
     @AfterEach
     void cleanUp() {
@@ -111,67 +120,25 @@ class TaskDetailControllerTest {
         }
 
         @Nested
-        @DisplayName("todo를 5개 가진 taskId가 넘어오면")
-        class Context_when_taskId_with_todo_5 {
+        @DisplayName("todo를 가진 taskId가 넘어오면")
+        class Context_when_taskId_with_todo {
             @BeforeEach
             void setUp() {
-                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY);
-                getTodo(task, "얼고리즘 읽기", Status.READY);
-                getTodo(task, "스프링 인 액션 읽기", Status.DONE);
-                getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE);
-                getTodo(task, "구글 엔지니어는 이렇게 일한다 읽기", Status.PROGRESS);
+                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY,0,3);
+                getTodo(task, "얼고리즘 읽기", Status.READY,0,2);
+                getTodo(task, "스프링 인 액션 읽기", Status.DONE,2,2);
+                getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE,3,3);
+                getTodo(task, "구글 엔지니어는 이렇게 일한다 읽기", Status.PROGRESS,1,3);
             }
 
             @Test
-            @DisplayName("Task 정보와 투두 3개를 응답한다")
-            void it_response_200_and_return_task_todo_3() throws Exception {
+            @DisplayName("Task 정보와 투두와 뽀모도로 개수를 응답한다")
+            void it_response_200_and_return_task_todo_and_pomodoro() throws Exception {
                 final ResultActions resultActions = subject(task.getTaskId());
 
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("task_id").value(equalTo(task.getTaskId().intValue())))
                         .andExpect(jsonPath("todos", hasSize(3)))
-                ;
-            }
-        }
-
-        @Nested
-        @DisplayName("todo를 3개 가진 taskId가 넘어오면")
-        class Context_when_taskId_with_todo_3 {
-            @BeforeEach
-            void setUp() {
-                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY);
-                getTodo(task, "얼고리즘 읽기", Status.READY);
-                getTodo(task, "스프링 인 액션 읽기", Status.DONE);
-            }
-
-            @Test
-            @DisplayName("Task 정보와 투두 3개를 응답한다")
-            void it_response_200_and_return_task_todo_3() throws Exception {
-                final ResultActions resultActions = subject(task.getTaskId());
-
-                resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("task_id").value(equalTo(task.getTaskId().intValue())))
-                        .andExpect(jsonPath("todos", hasSize(3)))
-                ;
-            }
-        }
-
-        @Nested
-        @DisplayName("todo를 1개 가진 taskId가 넘어오면")
-        class Context_when_taskId_with_todo_1 {
-            @BeforeEach
-            void setUp() {
-                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY);
-            }
-
-            @Test
-            @DisplayName("Task 정보와 투두 1개를 응답한다")
-            void it_response_200_and_return_task_todo_1() throws Exception {
-                final ResultActions resultActions = subject(task.getTaskId());
-
-                resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("task_id").value(equalTo(task.getTaskId().intValue())))
-                        .andExpect(jsonPath("todos", hasSize(1)))
                 ;
             }
         }
