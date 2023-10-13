@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TodosRepository extends JpaRepository<Todos, Long> {
+public interface TodosRepository extends JpaRepository<Todos, Long>, TodosRepositoryCustom {
     List<Todos> findByTask_TaskId(Long taskId);
-
-    List<Todos> findTop3ByTask_TaskId(Long taskId);
 }
