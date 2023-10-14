@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { AiOutlineUnorderedList } from 'react-icons/ai';
+import { BsPencil } from 'react-icons/bs';
 import TodoDetail from './TodoDetail';
 import DeleteTodo from './DeleteTodo';
 import { updateTodo } from '../../services/todo';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
+import resetTimer from '../../utils/resetTimer';
 
 interface TodoProps {
   id: number;
@@ -23,8 +24,9 @@ const Todo = ({
   performCount,
   onClick,
 }: TodoProps) => {
-  const { isTodoChange, setIsTodoChange, setSelectedTodo } = useTodosStore();
-  const { setShowTodoBtn, setOnTimer, setTimerMinute, stop } = useTimerStore();
+  const timer = useTimerStore();
+  const todos = useTodosStore();
+  const { isTodoChange, setIsTodoChange } = useTodosStore();
 
   const [isDetailShow, setIsDetailShow] = useState(false);
   const [isDeleteShow, setIsDeleteShow] = useState(false);
@@ -54,11 +56,7 @@ const Todo = ({
     };
     await updateTodo(todoData);
     setIsTodoChange(!isTodoChange);
-    stop();
-    setShowTodoBtn(true);
-    setSelectedTodo('오늘 할 일 골라주세요');
-    setOnTimer(false);
-    setTimerMinute(25);
+    resetTimer(timer, todos, 'reset');
   };
 
   return (
@@ -110,7 +108,7 @@ const Todo = ({
             {title}
           </div>
         </div>
-        <div style={{ width: '40%', display: 'flex' }}>
+        <div style={{ display: 'flex' }}>
           <div className={`text-slate-500 px-5`}>
             {performCount} / {planCount}
           </div>
@@ -135,7 +133,7 @@ const Todo = ({
             onClick={handleTodoDetail}
             disabled={status === 'DONE'}
           >
-            <AiOutlineUnorderedList />
+            <BsPencil />
           </button>
         </div>
       </div>

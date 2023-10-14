@@ -52,7 +52,7 @@ const Timer = ({ time, timerState }: TimerProps) => {
         clearInterval(timer);
       };
     }
-  }, [timerState, timerTime]);
+  }, [time, timerState, timerTime]);
 
   const isBreak: boolean = selectedTodo === '휴식';
 

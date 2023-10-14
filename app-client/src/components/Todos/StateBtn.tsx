@@ -3,6 +3,7 @@ import Button from '../UI/Button';
 
 import { useTimerStore } from '../../store/timer';
 import { useTodosStore } from '../../store/todos';
+import resetTimer from '../../utils/resetTimer';
 
 const Container = styled.div`
   margin-bottom: 30px;
@@ -13,33 +14,24 @@ const Wrapper = styled.div`
 `;
 
 const StateBtn = () => {
-  const { showTodoBtn, setShowTodoBtn, stop, setOnTimer, setTimerMinute } =
-    useTimerStore();
-  const { setSelectedTodo } = useTodosStore();
+  const timer = useTimerStore();
+  const todos = useTodosStore();
 
   const handleShowTodo = () => {
-    stop();
-    setShowTodoBtn(true);
-    setSelectedTodo('오늘 할 일 골라주세요');
-    setOnTimer(false);
-    setTimerMinute(25);
+    resetTimer(timer, todos, 'reset');
   };
 
   const handleShowBreak = () => {
-    stop();
-    setShowTodoBtn(false);
-    setSelectedTodo('휴식');
-    setOnTimer(true);
-    setTimerMinute(5);
+    resetTimer(timer, todos, '휴식');
   };
 
   return (
     <Container>
       <Wrapper>
-        <Button showTodo={showTodoBtn} onClick={handleShowTodo}>
+        <Button showTodo={timer.showTodoBtn} onClick={handleShowTodo}>
           할 일
         </Button>
-        <Button showTodo={!showTodoBtn} onClick={handleShowBreak}>
+        <Button showTodo={!timer.showTodoBtn} onClick={handleShowBreak}>
           휴식
         </Button>
       </Wrapper>
