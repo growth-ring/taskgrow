@@ -126,6 +126,7 @@ class TodoServiceTest {
                     .todoId(TODO_ID1)
                     .task(tasks)
                     .todo(WHAT_TO_DO)
+                    .status(Status.PROGRESS)
                     .build();
 
             @BeforeEach
@@ -141,7 +142,7 @@ class TodoServiceTest {
 
                 assertAll(
                         () -> assertThat(response.getTodo()).isEqualTo(NEW_WHAT_TO_DO),
-                        () -> assertThat(response.getStatus()).isEqualTo(Status.READY)
+                        () -> assertThat(response.getStatus()).isEqualTo(Status.PROGRESS)
                 );
             }
 
