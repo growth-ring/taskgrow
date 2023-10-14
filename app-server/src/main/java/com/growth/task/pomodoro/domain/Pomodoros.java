@@ -21,6 +21,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @DynamicUpdate
 public class Pomodoros extends BaseTimeEntity {
+    public static final int PLAN_COUNT_LIMIT = 20;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pomodoro_id")
@@ -42,6 +43,7 @@ public class Pomodoros extends BaseTimeEntity {
 
     @Builder
     public Pomodoros(long pomodoroId, Todos todo, int performCount, int planCount) {
+        validate(planCount);
         this.pomodoroId = pomodoroId;
         this.todo = todo;
         this.performCount = performCount;
@@ -61,5 +63,10 @@ public class Pomodoros extends BaseTimeEntity {
 
     public void updatePlanCount(int planCount) {
         this.planCount = planCount;
+    }
+    private void validate(int planCount){
+        if(planCount > PLAN_COUNT_LIMIT){
+            throw new IllegalArgumentException("plan_count는 20을 넘을 수 없습니다.");
+        }
     }
 }
