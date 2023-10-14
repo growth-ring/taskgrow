@@ -60,7 +60,14 @@ public class Todos extends BaseTimeEntity {
     }
 
     public void updateStatus(Status status) {
+        validateUpdateStatus(status);
         this.status = status;
+    }
+
+    public void validateUpdateStatus(Status status) {
+        if (isDone(status) && isReady(this.status)) {
+            throw new IllegalArgumentException("진행한 Todo만 완료할 수 있습니다.");
+        }
     }
 
     public void validateCompletePomodoro() {
