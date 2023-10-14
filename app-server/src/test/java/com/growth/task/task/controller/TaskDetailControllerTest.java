@@ -128,7 +128,7 @@ class TaskDetailControllerTest {
                 getTodo(task, "얼고리즘 읽기", Status.READY,0,2);
                 getTodo(task, "스프링 인 액션 읽기", Status.DONE,2,2);
                 getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE,3,3);
-                getTodo(task, "구글 엔지니어는 이렇게 일한다 읽기", Status.PROGRESS,1,3);
+                getTodo(task, "구엔이일 읽기", Status.PROGRESS,1,3);
             }
 
             @Test
