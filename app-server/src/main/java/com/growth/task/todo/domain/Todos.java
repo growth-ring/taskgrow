@@ -38,7 +38,7 @@ public class Todos extends BaseTimeEntity {
     )
     private Tasks task;
 
-    @Column(name = "todo", nullable = false)
+    @Column(name = "todo", length = 18, nullable = false)
     private String todo;
 
     @Column(name = "status", columnDefinition = "varchar(20) default 'READY'", nullable = false)
