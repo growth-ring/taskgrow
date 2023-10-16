@@ -8,8 +8,8 @@ import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.todo.enums.Status;
+import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -117,6 +117,7 @@ class TaskDetailControllerTest {
         void setUp() {
             user = getUser("testuser1", "password");
             task = getTask(user, LocalDate.parse("2023-08-29"));
+            getTask(user, LocalDate.parse("2023-08-30"));
         }
 
         @Nested
@@ -124,11 +125,13 @@ class TaskDetailControllerTest {
         class Context_when_taskId_with_todo {
             @BeforeEach
             void setUp() {
-                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY,0,3);
-                getTodo(task, "얼고리즘 읽기", Status.READY,0,2);
-                getTodo(task, "스프링 인 액션 읽기", Status.DONE,2,2);
-                getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE,3,3);
-                getTodo(task, "구엔이일 읽기", Status.PROGRESS,1,3);
+                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
+                getTodo(task, "얼고리즘 읽기", Status.READY, 0, 2);
+                getTodo(task, "스프링 인 액션 읽기", Status.DONE, 2, 2);
+                getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
+                getTodo(task, "구엔이일 읽기", Status.PROGRESS, 1, 3);
+                getTodo(task, "코틀린 인 액션 읽기", Status.PROGRESS, 1, 3);
+                getTodo(task, "코드 구현하기", Status.DONE, 3, 3);
             }
 
             @Test
