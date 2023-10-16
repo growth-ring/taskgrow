@@ -4,6 +4,7 @@ import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepositoryCustom;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -31,9 +32,20 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 .innerJoin(pomodoros)
                 .on(todos.todoId.eq(pomodoros.todo.todoId))
                 .fetchJoin()
-                .where(todos.status.ne(Status.DONE))
+                .where(
+                        eqTaskId(taskId),
+                        neStatusDone()
+                )
                 .limit(limit)
                 .fetch()
                 ;
+    }
+
+    private static BooleanExpression neStatusDone() {
+        return todos.status.ne(Status.DONE);
+    }
+
+    private static BooleanExpression eqTaskId(Long taskId) {
+        return todos.task.taskId.eq(taskId);
     }
 }
