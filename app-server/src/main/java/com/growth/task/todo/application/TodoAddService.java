@@ -8,14 +8,16 @@ import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
 import com.growth.task.todo.dto.response.TodoAddResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class TodoAddService {
 
     private final TodoService todoService;
     private final PomodoroAddService pomodoroAddService;
 
-    public TodoAddService (
+    public TodoAddService(
             TodoService todoService,
             PomodoroAddService pomodoroAddService
     ) {
@@ -23,6 +25,7 @@ public class TodoAddService {
         this.pomodoroAddService = pomodoroAddService;
     }
 
+    @Transactional
     public TodoAndPomodoroAddResponse save(TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
         Todos todos = todoService.save(todoAndPomodoroAddRequest.getTodoAddRequest());
         Pomodoros pomodoros = pomodoroAddService.save(todoAndPomodoroAddRequest.getPomodoroAddRequest(), todos);
