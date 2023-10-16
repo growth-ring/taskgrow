@@ -28,9 +28,7 @@ const TodoList = () => {
   } = useTodosStore();
 
   const handleTodoClick = (todo: Todo) => {
-    if (todo.status === 'DONE') {
-      alert('완료된 할 일 입니다.');
-    } else {
+    if (todo.status !== 'DONE') {
       setTodoId(todo.todo_id);
       setPlanCount(todo.plan_count);
       setPerformCount(todo.perform_count);

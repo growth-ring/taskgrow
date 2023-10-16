@@ -48,15 +48,19 @@ const Todo = ({
   };
 
   const handleTodoComplete = async () => {
-    const todoData = {
-      todoId: id,
-      todo: title,
-      status: 'DONE',
-      planCount: planCount,
-    };
-    await updateTodo(todoData);
-    setIsTodoChange(!isTodoChange);
-    resetTimer(timer, todos, 'reset');
+    if (status === 'READY') {
+      alert('진행한 Todo만 완료할 수 있습니다');
+    } else {
+      const todoData = {
+        todoId: id,
+        todo: title,
+        status: status === 'PROGRESS' ? 'DONE' : 'PROGRESS',
+        planCount: planCount,
+      };
+      await updateTodo(todoData);
+      setIsTodoChange(!isTodoChange);
+      resetTimer(timer, todos, 'reset');
+    }
   };
 
   return (
@@ -76,11 +80,7 @@ const Todo = ({
           className="inline-flex items-center space-x-2"
           style={{ width: '60%' }}
         >
-          <button
-            onClick={handleTodoComplete}
-            disabled={status === 'DONE'}
-            style={{ width: '10%' }}
-          >
+          <button onClick={handleTodoComplete} style={{ width: '10%' }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
