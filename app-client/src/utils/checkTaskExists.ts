@@ -62,7 +62,7 @@ export const getAllTask = async ({
 
   const updatedData = await Promise.all(
     tasks.map(async (task: TaskProps) => {
-      const todo = await getTask(1);
+      const todo = await getTask(task.task_id);
       return {
         taskId: task.task_id,
         taskDate: task.task_date,
@@ -71,7 +71,6 @@ export const getAllTask = async ({
       };
     }),
   );
-  console.log('updateData: ', updatedData);
 
   return updatedData;
 };

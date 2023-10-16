@@ -47,20 +47,49 @@ const PreviewTodoList = styled.div`
   overflow: hidden;
 
   @media (max-width: 767px) {
-    font-size: 12px;
+    font-size: 9px;
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
-    font-size: 14px;
+    font-size: 11px;
   }
 
   @media (min-width: 1024px) {
-    font-size: 16px;
+    font-size: 13px;
   }
 `;
 
 const PreviewTodo = styled.div`
-  margin-top: 0.2rem;
+  @media (min-width: 768px) and (max-width: 1023px) {
+    margin-top: 0.3rem;
+  }
+
+  @media (min-width: 1024px) {
+    margin-top: 0.4rem;
+  }
+`;
+
+const TodoText = styled.div`
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @media (max-width: 767px) {
+    width: 1.5rem;
+    height: 1rem;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    width: 3.6rem;
+    height: 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    width: 5.5rem;
+    height: 1rem;
+  }
 `;
 
 interface ThisMonthProps {
@@ -142,16 +171,24 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
               const taskTodo = monthTaskDate
                 .filter((dates: any) => dates.taskDate === day)
                 .map((date: any) =>
+                  date.todoData.map((todo: any) => todo.todo),
+                );
+
+              const taskTodoCount = monthTaskDate
+                .filter((dates: any) => dates.taskDate === day)
+                .map((date: any) =>
                   date.todoData.map(
-                    (todo: any) =>
-                      `${todo.todo} ${todo.perform_count} / ${todo.plan_count}`,
+                    (todo: any) => `${todo.perform_count} / ${todo.plan_count}`,
                   ),
                 );
+
               if (taskTodo) {
                 html = (
                   <PreviewTodoList key={i}>
                     {taskTodo[0].map((todo: string, index: number) => (
-                      <PreviewTodo key={`${i}_${index}`}>- {todo}</PreviewTodo>
+                      <PreviewTodo key={`${i}_${index}`}>
+                        ◻ <TodoText>{todo}</TodoText> {taskTodoCount[0][index]}
+                      </PreviewTodo>
                     ))}
                   </PreviewTodoList>
                 );
