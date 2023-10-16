@@ -71,7 +71,7 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
       await updatePlanPomodoro(todoData);
     }
   } catch (error: any) {
-    return null;
+    return alert(error.response.data.error);
   }
 };
 
