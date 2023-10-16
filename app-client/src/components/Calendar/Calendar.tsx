@@ -141,7 +141,12 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
             } else if (mouseOverDay === currentDate) {
               const taskTodo = monthTaskDate
                 .filter((dates: any) => dates.taskDate === day)
-                .map((date: any) => date.todoData);
+                .map((date: any) =>
+                  date.todoData.map(
+                    (todo: any) =>
+                      `${todo.todo} ${todo.perform_count} / ${todo.plan_count}`,
+                  ),
+                );
               if (taskTodo) {
                 html = (
                   <PreviewTodoList key={i}>
