@@ -9,7 +9,9 @@ import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class TodoService {
     private TodosRepository todosRepository;
@@ -21,6 +23,7 @@ public class TodoService {
         this.tasksRepository = tasksRepository;
     }
 
+    @Transactional
     public Todos save(TodoAddRequest todoAddRequest) {
         Long taskId = todoAddRequest.getTaskId();
         Tasks tasks = tasksRepository.findById(taskId)
@@ -30,6 +33,7 @@ public class TodoService {
         return todosRepository.save(todos);
     }
 
+    @Transactional
     public Todos update(Long todoId, TodoUpdateRequest todoUpdateRequest) {
         Todos todos = todosRepository.findById(todoId)
                 .orElseThrow(() -> new TodoNotFoundException(todoId));
