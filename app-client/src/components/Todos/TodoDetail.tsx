@@ -36,13 +36,15 @@ const TodoDetail = ({
       status: todoStatus,
       planCount: planCount,
     };
-    if (+planCount > 0) {
+    if (+planCount > 0 && +planCount <= 20) {
       updateTodo(todoData).then(() => {
         getIsShow();
         setIsTodoChange(!isTodoChange);
       });
-    } else {
+    } else if (+planCount <= 0) {
       alert('1 이상의 숫자를 넣어주세요');
+    } else {
+      alert('뽀모도로는 최대 20개까지 가능합니다');
     }
   };
 
@@ -157,6 +159,7 @@ const TodoDetail = ({
                 />
               </div>
               <div className="py-2 text-gray font-thin text-sm">
+                뽀모도로는 최대 20개까지 가능합니다 <br />
                 이미 시작한 것은 뽀모도로 개수 수정이 불가능합니다
               </div>
               <div className="flex justify-end mt-6 ">
