@@ -79,11 +79,11 @@ const Todos = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
   const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
-  const { selectedTodo } = useTodosStore();
+  const { selectedTodo, isTodoChange } = useTodosStore();
 
   useEffect(() => {
     resetTimer(timer, todos, 'reset');
-  }, []);
+  }, [isTodoChange]);
 
   return (
     <>

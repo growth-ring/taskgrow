@@ -17,7 +17,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (+planCount > 0) {
+    if (+planCount > 0 && +planCount <= 20) {
       await addTodo({
         taskId: selectedTaskId,
         todo: todo,
@@ -26,8 +26,10 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
       });
       setIsTodoChange(!isTodoChange);
       getShowAddTodos(false);
-    } else {
+    } else if (+planCount <= 0) {
       alert('1 이상의 숫자를 넣어주세요');
+    } else {
+      alert('뽀모도로는 최대 20개까지 가능합니다');
     }
   };
 
@@ -101,6 +103,7 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
                   type="text"
                   required
                   placeholder=""
+                  maxLength={18}
                   value={todo}
                   onChange={handleTodoChange}
                   className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
@@ -124,6 +127,9 @@ const AddTodos = ({ getShowAddTodos }: AddTodosProps) => {
                   onChange={handlePlanCountChange}
                   className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
                 />
+              </div>
+              <div className="py-2 text-gray font-thin text-sm">
+                뽀모도로는 최대 20개까지 가능합니다
               </div>
 
               <div className="flex justify-end mt-6">
