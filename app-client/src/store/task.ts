@@ -1,17 +1,18 @@
 import { create } from 'zustand';
 
-interface TaskDate {
+interface TaskDateTodo {
   taskId: string;
   taskDate: string;
   todos: {
     remain: number;
     done: number;
   };
+  todoData: { todo: string; perform_count: number; plan_count: number }[];
 }
 
 interface LoginStore {
-  monthTaskDate: TaskDate[];
-  setMonthTaskDate: (taskDate: TaskDate[]) => void;
+  monthTaskDate: TaskDateTodo[];
+  setMonthTaskDate: (taskDate: TaskDateTodo[]) => void;
   selectedTaskId: number;
   setSelectedTaskId: (selectedTaskId: number) => void;
 }

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import Calendar from 'react-calendar';
+import Calendar, { OnArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 import styled from 'styled-components';
@@ -114,8 +114,13 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
     navigate(`/todos/${userClickDay}`);
   };
 
-  const handleDateViewChange = (value: any) => {
-    const monthDate = startEndDate(value.activeStartDate);
+  const handleDateViewChange = ({ activeStartDate }: OnArgs) => {
+    if (activeStartDate === null) {
+      console.error('activeStartDate는 null이 될 수 없습니다.');
+      return;
+    }
+
+    const monthDate = startEndDate(activeStartDate);
     setStartDate(monthDate.startDate);
     setEndDate(monthDate.endDate);
   };
@@ -155,10 +160,8 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
         viewTaskDate.forEach((day, i) => {
           const taskFinished = monthTaskDate
-            .filter((dates: any) => dates.taskDate === day)
-            .map(
-              (date: any) => date.todos.remain === 0 && date.todos.done !== 0,
-            );
+            .filter((dates) => dates.taskDate === day)
+            .map((date) => date.todos.remain === 0 && date.todos.done !== 0);
 
           if (day === currentDate) {
             if (taskFinished[0]) {
@@ -169,16 +172,14 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
               );
             } else if (mouseOverDay === currentDate) {
               const taskTodo = monthTaskDate
-                .filter((dates: any) => dates.taskDate === day)
-                .map((date: any) =>
-                  date.todoData.map((todo: any) => todo.todo),
-                );
+                .filter((dates) => dates.taskDate === day)
+                .map((date) => date.todoData.map((todo) => todo.todo));
 
               const taskTodoCount = monthTaskDate
-                .filter((dates: any) => dates.taskDate === day)
-                .map((date: any) =>
+                .filter((dates) => dates.taskDate === day)
+                .map((date) =>
                   date.todoData.map(
-                    (todo: any) => `${todo.perform_count} / ${todo.plan_count}`,
+                    (todo) => `${todo.perform_count} / ${todo.plan_count}`,
                   ),
                 );
 
@@ -197,8 +198,8 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
               html = (
                 <Todo key={i}>
                   {monthTaskDate
-                    .filter((dates: any) => dates.taskDate === day)
-                    .map((date: any) => date.todos.remain)}
+                    .filter((dates) => dates.taskDate === day)
+                    .map((date) => date.todos.remain)}
                 </Todo>
               );
             }

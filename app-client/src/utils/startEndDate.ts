@@ -6,9 +6,7 @@ const formatData = (data: string) => {
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 };
 
-export const startEndDate = (value: string | object) => {
-  const today: any = value === 'today' ? new Date() : value;
-
+export const startEndDate = (today: Date) => {
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
   const sevenDaysAgo = new Date(firstDayOfMonth);

@@ -11,7 +11,7 @@ const Main = styled.div`
 `;
 
 const TaskPage = () => {
-  const monthDate = startEndDate('today');
+  const monthDate = startEndDate(new Date());
 
   return (
     <Main>
