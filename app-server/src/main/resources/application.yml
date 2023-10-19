@@ -1,5 +1,12 @@
 spring:
+  datasource:
+    url: jdbc:mariadb://3.39.23.180:3306/taskgrow
+    username: root
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
+    hibernate:
+      ddl-auto: validate
     show_sql: true
     properties:
       hibernate:
