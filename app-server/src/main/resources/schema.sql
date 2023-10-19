@@ -1,7 +1,7 @@
 -- create table
 -- table users
 CREATE TABLE IF NOT EXISTS users (
-    user_id int NOT NULL AUTO_INCREMENT,
+    user_id bigint NOT NULL AUTO_INCREMENT,
     name varchar(21) NOT NULL,
     password varchar(32) NOT NULL,
     created_at timestamp NOT NULL,
@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
 );
 -- table tasks
 CREATE TABLE IF NOT EXISTS tasks (
-    task_id int NOT NULL AUTO_INCREMENT,
-    user_id int NOT NULL,
+    task_id bigint NOT NULL AUTO_INCREMENT,
+    user_id bigint NOT NULL,
     task_date timestamp NOT NULL,
     created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS tasks (
 );
 -- table todos
 CREATE TABLE IF NOT EXISTS todos (
-    todo_id int NOT NULL AUTO_INCREMENT,
-    task_id int NOT NULL,
+    todo_id bigint NOT NULL AUTO_INCREMENT,
+    task_id bigint NOT NULL,
     todo varchar(200) NOT NULL,
     status varchar(20) NOT NULL,
     created_at timestamp NOT NULL,
@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS todos (
 );
 -- table pomodoros
 CREATE TABLE IF NOT EXISTS pomodoros (
-    pomodoro_id int NOT NULL AUTO_INCREMENT,
-    todo_id int NOT NULL,
+    pomodoro_id bigint NOT NULL AUTO_INCREMENT,
+    todo_id bigint NOT NULL,
     perform_count int NOT NULL,
     plan_count int NOT NULL,
     created_at timestamp NOT NULL,
