@@ -1,6 +1,14 @@
 spring:
   profiles:
     active: local # default
+  http:
+    encoding:
+      charset:
+        UTF-8
+      enabled:
+        true
+      force:
+        true
   jpa:
     show_sql: true
     properties:
