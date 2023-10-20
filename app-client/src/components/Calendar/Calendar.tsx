@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import Calendar, { OnArgs } from 'react-calendar';
+import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 import styled from 'styled-components';
@@ -114,7 +114,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
     navigate(`/todos/${userClickDay}`);
   };
 
-  const handleDateViewChange = ({ activeStartDate }: OnArgs) => {
+  const handleDateViewChange = ({ activeStartDate }: any) => {
     if (activeStartDate === null) {
       console.error('activeStartDate는 null이 될 수 없습니다.');
       return;
