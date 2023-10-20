@@ -152,7 +152,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
       locale="ko-KO"
       next2Label={null}
       prev2Label={null}
-      formatDay={(locale, date) => moment(date).format('D')}
+      formatDay={(date) => moment(date).format('D')}
       onActiveStartDateChange={handleDateViewChange}
       tileContent={({ date }) => {
         let html: JSX.Element | null = null;
