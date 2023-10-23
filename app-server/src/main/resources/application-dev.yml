@@ -11,7 +11,7 @@ spring:
       force:
         true
   datasource:
-    url: jdbc:mariadb://3.39.23.180:3306/taskgrow
+    url: jdbc:mariadb://13.125.177.52:3306/taskgrow
     username: root
     password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
