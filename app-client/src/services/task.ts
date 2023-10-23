@@ -13,7 +13,7 @@ interface GetTaskListData {
 
 export const addTask = async (taskData: AddTaskData) => {
   try {
-    const task = await axios.post('/httpClient/api/v1/tasks', {
+    const task = await axios.post('/api/v1/tasks', {
       user_id: taskData.userId,
       task_date: taskData.userClickDay,
     });
@@ -26,7 +26,7 @@ export const addTask = async (taskData: AddTaskData) => {
 export const getTask = async (taskId: number) => {
   try {
     const taskData = await axios.get(
-      `/httpClient/api/v1/tasks/${taskId}/todos`,
+      `/api/v1/tasks/${taskId}/todos`,
     );
     return taskData.data;
   } catch (error: any) {
@@ -38,7 +38,7 @@ export const getTask = async (taskId: number) => {
 
 export const getTaskList = async (taskData: GetTaskListData) => {
   try {
-    const taskListData = await axios.get('/httpClient/api/v1/tasks', {
+    const taskListData = await axios.get('/api/v1/tasks', {
       params: {
         user_id: taskData.userId,
         start_date: taskData.startDate,
@@ -55,7 +55,7 @@ export const getTaskList = async (taskData: GetTaskListData) => {
 
 export const deleteTask = async (taskId: number) => {
   try {
-    return await axios.delete(`/httpClient/api/v1/tasks/${taskId}`);
+    return await axios.delete(`/api/v1/tasks/${taskId}`);
   } catch (error: any) {
     return null;
   }

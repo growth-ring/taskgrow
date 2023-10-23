@@ -10,7 +10,7 @@ export const signUp = async (
   setIsShowLogin: (isShowLogin: boolean) => void,
 ) => {
   try {
-    await axios.post('/httpClient/api/v1/users', formData);
+    await axios.post('/api/v1/users', formData);
     setIsShowLogin(true);
     alert('회원가입이 완료되었습니다.');
   } catch (error: any) {
@@ -21,7 +21,7 @@ export const signUp = async (
 export const login = async (formData: UserFormData) => {
   const name = formData.name;
   try {
-    const user = await axios.get(`/httpClient/api/v1/users/${name}`);
+    const user = await axios.get(`/api/v1/users/${name}`);
     return user.data.user_id;
   } catch (error: any) {
     if (error.response.status === 404) {
