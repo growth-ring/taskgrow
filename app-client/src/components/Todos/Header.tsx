@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { SlPlus } from 'react-icons/sl';
+import { SlPlus, SlCalender } from 'react-icons/sl';
 import AddTodos from './AddTodos';
 import HeaderDate from './HeaderDate';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -38,23 +39,52 @@ const Date = styled.div`
 
 const AddTodo = styled.button`
   @media (max-width: 767px) {
-    font-size: 21px;
     margin-right: 20px;
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
-    font-size: 23px;
     margin-right: 50px;
   }
 
   @media (min-width: 1024px) {
-    font-size: 25px;
     margin-right: 100px;
+  }
+`;
+
+const GoBack = styled.button`
+  @media (max-width: 767px) {
+    margin-right: 10px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    margin-right: 30px;
+  }
+
+  @media (min-width: 1024px) {
+    margin-right: 40px;
+  }
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    font-size: 21px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    font-size: 23px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 25px;
   }
 `;
 
 const Header = () => {
   const [showAddTodos, setShowAddTodos] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowAddTodos = () => {
     setShowAddTodos(true);
@@ -64,15 +94,24 @@ const Header = () => {
     setShowAddTodos(todos);
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       <Container>
         <Date>
           <HeaderDate />
         </Date>
-        <AddTodo onClick={handleShowAddTodos}>
-          <SlPlus />
-        </AddTodo>
+        <Wrapper>
+          <GoBack onClick={handleGoBack}>
+            <SlCalender />
+          </GoBack>
+          <AddTodo onClick={handleShowAddTodos}>
+            <SlPlus />
+          </AddTodo>
+        </Wrapper>
       </Container>
       {showAddTodos && <AddTodos getShowAddTodos={getShowAddTodos} />}
     </>
