@@ -152,12 +152,11 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
       locale="ko-KO"
       next2Label={null}
       prev2Label={null}
-      formatDay={(date) => moment(date).format('D')}
+      formatDay={(locale, date) => moment(date, locale).format('D')}
       onActiveStartDateChange={handleDateViewChange}
       tileContent={({ date }) => {
         let html: JSX.Element | null = null;
         const currentDate = moment(date).format('YYYY-MM-DD');
-
         viewTaskDate.forEach((day, i) => {
           const taskFinished = monthTaskDate
             .filter((dates) => dates.taskDate === day)
