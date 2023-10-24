@@ -29,3 +29,4 @@ springdoc:
     config-url: /resource/static/v3/api-docs/swagger-config
     url: /resource/static/v3/api-docs
     disable-swagger-default-url: true
+  enable-spring-security: false

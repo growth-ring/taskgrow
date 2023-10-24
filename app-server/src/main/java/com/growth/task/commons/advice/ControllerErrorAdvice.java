@@ -4,6 +4,7 @@ import com.growth.task.task.exception.UserAndTaskDateUniqueConstraintViolationEx
 import com.growth.task.todo.exception.BadInputParameterException;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.exception.TodoNotFoundException;
+import com.growth.task.user.exception.AuthenticationFailureException;
 import com.growth.task.user.exception.UserNameDuplicationException;
 import com.growth.task.user.exception.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +25,7 @@ import java.util.Map;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @ControllerAdvice
@@ -124,12 +126,21 @@ public class ControllerErrorAdvice {
         return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
     }
 
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(AuthenticationFailureException.class)
+    public ResponseEntity<Map<String, String>> handleAuthenticationFailureException(AuthenticationFailureException exception) {
+        log.error("AuthenticationFailureException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, UNAUTHORIZED);
+    }
+
     /**
      * javax.validation.Valid or @Validated으로 binding error 발생 시 발생한다.
      */
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         log.error("MethodArgumentNotValidException", exception);
 
         BindingResult bindingResult = exception.getBindingResult();
@@ -140,7 +151,7 @@ public class ControllerErrorAdvice {
         for (ObjectError error : allErrors) {
             errors.put(((FieldError) error).getField(), error.getDefaultMessage());
         }
-        return errors;
+        return new ResponseEntity<>(errors, BAD_REQUEST);
     }
 
     private static Map<String, String> getErrorResponseBody(Exception exception) {
