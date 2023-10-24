@@ -34,6 +34,6 @@ public class LoginController {
     public LoginResponse login(@RequestBody @Valid LoginRequest request) {
         Users user = userService.getByName(request.getName());
         Users loginUser = authService.login(user, request.getPassword());
-        return new LoginResponse(loginUser.getName());
+        return new LoginResponse(loginUser);
     }
 }
