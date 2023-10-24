@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -18,10 +19,10 @@ public class Users extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(columnDefinition = "varchar(32)", unique = true, nullable = false)
+    @Column(length = 32, unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "varchar(32)")
+    @Column(nullable = false, length = 128)
     private String password;
 
     @Builder
@@ -32,5 +33,9 @@ public class Users extends BaseTimeEntity {
     }
 
     protected Users() {
+    }
+
+    public void modifyPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 }

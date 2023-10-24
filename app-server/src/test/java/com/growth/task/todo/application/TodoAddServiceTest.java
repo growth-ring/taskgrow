@@ -49,7 +49,7 @@ class TodoAddServiceTest {
     }
 
     @Nested
-    @DisplayName("save 메서드는")
+    @DisplayName("signUp 메서드는")
     class Describe_save {
 
         @Nested

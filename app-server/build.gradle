@@ -41,6 +41,10 @@ dependencies {
 
     // swagger openapi
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    //security
+    implementation 'org.springframework.security:spring-security-core'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
