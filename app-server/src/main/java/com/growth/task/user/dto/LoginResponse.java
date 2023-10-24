@@ -1,22 +1,21 @@
 package com.growth.task.user.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.user.domain.Users;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class LoginResponse {
-    private Long id;
+    private Long userId;
     private String name;
 
-    public LoginResponse(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public LoginResponse(Users users) {
-        this.id = users.getUserId();
+        this.userId = users.getUserId();
         this.name = users.getName();
     }
 }
