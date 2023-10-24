@@ -38,7 +38,7 @@ class PomodoroAddServiceTest {
     }
 
     @Nested
-    @DisplayName("PomodoroService 의 save 메서드는")
+    @DisplayName("PomodoroService 의 signUp 메서드는")
     class Describe_save {
 
         @Nested

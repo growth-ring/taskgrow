@@ -47,7 +47,7 @@ class TodoServiceTest {
     }
 
     @Nested
-    @DisplayName("TodoService 의 save 메서드는")
+    @DisplayName("TodoService 의 signUp 메서드는")
     class Describe_save {
 
         @Nested

@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping
     @ResponseStatus(CREATED)
     public UserSignUpResponse create(@RequestBody @Valid UserSignUpRequest request) {
-        return userService.save(request);
+        return userService.signUp(request);
     }
 
     @GetMapping("/{name}")
