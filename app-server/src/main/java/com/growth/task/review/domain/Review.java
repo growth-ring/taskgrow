@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_id")
     private Long id;
     @OnDelete(action = OnDeleteAction.CASCADE)
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", referencedColumnName = "task_id")
     private Tasks tasks;
