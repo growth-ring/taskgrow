@@ -40,6 +40,7 @@ const Login = () => {
               type="text"
               name="name"
               placeholder="이름"
+              required
               onChange={(e) => setName(e.target.value)}
               className={
                 'rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md'
@@ -49,9 +50,10 @@ const Login = () => {
 
           <div className="mb-4 text-lg">
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder="비밀번호"
+              required
               onChange={(e) => setPassword(e.target.value)}
               className={
                 'rounded-3xl border-none bg-yellow-400 bg-opacity-50 px-6 py-2 text-center text-inherit placeholder-slate-200 shadow-lg outline-none backdrop-blur-md'
