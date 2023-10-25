@@ -49,7 +49,7 @@ const Login = () => {
 
           <div className="mb-4 text-lg">
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder="비밀번호"
               onChange={(e) => setPassword(e.target.value)}
