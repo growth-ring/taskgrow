@@ -37,6 +37,16 @@ CREATE TABLE IF NOT EXISTS pomodoros (
     updated_at timestamp NOT NULL,
     primary key (pomodoro_id)
 );
+-- table review
+CREATE TABLE review (
+    review_id bigint NOT NULL AUTO_INCREMENT,
+    task_id bigint NOT NULL,
+    contents TEXT NOT NULL,
+    feelings_score int NOT NULL,
+    created_at timestamp NOT NULL,
+    updated_at timestamp NOT NULL,
+    primary key (review_id)
+);
 
 -- sef UNIQUE
 ALTER TABLE IF EXISTS users
@@ -68,3 +78,10 @@ ALTER TABLE IF EXISTS pomodoros
     ON DELETE CASCADE
 ;
 
+-- review
+ALTER TABLE IF EXISTS review
+   ADD CONSTRAINT fk_task_review
+   FOREIGN KEY (task_id)
+   REFERENCES tasks
+   ON DELETE CASCADE
+;
