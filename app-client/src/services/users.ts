@@ -19,13 +19,12 @@ export const signUp = async (
 };
 
 export const login = async (formData: UserFormData) => {
-  const name = formData.name;
   try {
-    const user = await axios.get(`/api/v1/users/${name}`);
+    const user = await axios.post('/api/v1/login', formData);
     return user.data.user_id;
   } catch (error: any) {
-    if (error.response.status === 404) {
-      alert('아이디 또는 비밀번호가 일치하지 않습니다. 다시 입력해 주세요.');
+    if (error.response.status === 404 || error.response.status === 401) {
+      alert('로그인에 실패했습니다. 이름 또는 비밀번호를 확인하세요.');
     } else {
       alert('오류가 발생했습니다.');
     }
