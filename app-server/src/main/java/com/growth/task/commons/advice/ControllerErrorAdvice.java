@@ -1,5 +1,7 @@
 package com.growth.task.commons.advice;
 
+import com.growth.task.review.exception.AlreadyReviewException;
+import com.growth.task.review.exception.OutOfBoundsException;
 import com.growth.task.task.exception.UserAndTaskDateUniqueConstraintViolationException;
 import com.growth.task.todo.exception.BadInputParameterException;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -133,6 +135,24 @@ public class ControllerErrorAdvice {
 
         Map<String, String> errorResponseBody = getErrorResponseBody(exception);
         return new ResponseEntity<>(errorResponseBody, UNAUTHORIZED);
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(OutOfBoundsException.class)
+    public ResponseEntity<Map<String, String>> handleOutOfBoundsException(OutOfBoundsException exception) {
+        log.error("OutOfBoundsException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
+    }
+
+    @ResponseStatus(CONFLICT)
+    @ExceptionHandler(AlreadyReviewException.class)
+    public ResponseEntity<Map<String, String>> handleAlreadyReviewException(AlreadyReviewException exception) {
+        log.error("AlreadyReviewException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, CONFLICT);
     }
 
     /**
