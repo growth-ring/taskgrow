@@ -21,11 +21,15 @@ public class TaskDetailService {
     }
 
     public TaskDetailResponse getTask(Long taskId) {
-        Tasks task = tasksRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        Tasks task = findTaskById(taskId);
 
         List<TaskTodoDetailResponse> todos = todoListService.getTaskTodosPreview(task.getTaskId());
 
         return new TaskDetailResponse(task.getTaskId(), todos);
+    }
+
+    public Tasks findTaskById(Long taskId) {
+        return tasksRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 }
