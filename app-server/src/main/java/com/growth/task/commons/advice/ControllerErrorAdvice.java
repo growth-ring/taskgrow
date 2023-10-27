@@ -2,6 +2,7 @@ package com.growth.task.commons.advice;
 
 import com.growth.task.review.exception.AlreadyReviewException;
 import com.growth.task.review.exception.OutOfBoundsException;
+import com.growth.task.review.exception.ReviewNotFoundException;
 import com.growth.task.task.exception.UserAndTaskDateUniqueConstraintViolationException;
 import com.growth.task.todo.exception.BadInputParameterException;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -99,6 +100,15 @@ public class ControllerErrorAdvice {
     @ExceptionHandler(TodoNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleTodoNotFoundException(TodoNotFoundException exception) {
         log.error("TodoNotFoundException", exception);
+
+        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
+        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(ReviewNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleReviewNotFoundException(ReviewNotFoundException exception) {
+        log.error("ReviewNotFoundException", exception);
 
         Map<String, String> errorResponseBody = getErrorResponseBody(exception);
         return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
