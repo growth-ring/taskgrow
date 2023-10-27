@@ -25,16 +25,16 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDate;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("ReviewDetailController")
+@DisplayName("ReviewDeleteController")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-class ReviewDetailControllerTest {
+class ReviewDeleteControllerTest {
     public static final String CONTENTS = "테스트를 작성하였다. 기분이 좋다";
+
     @Autowired
     private ReviewRepository reviewRepository;
     @Autowired
@@ -92,11 +92,11 @@ class ReviewDetailControllerTest {
         );
     }
 
-    @DisplayName("Review 단건 조회 GET 요청은")
+    @DisplayName("Review 삭제 요청은")
     @Nested
-    class Describe_GET {
+    class Describe_DELETE {
         private ResultActions subject(Long reviewId) throws Exception {
-            return mockMvc.perform(get("/api/v1/review/{reviewId}", reviewId));
+            return mockMvc.perform(delete("/api/v1/review/{reviewId}", reviewId));
         }
 
         @Nested
@@ -112,12 +112,10 @@ class ReviewDetailControllerTest {
             }
 
             @Test
-            @DisplayName("id에 해당하는 회고를 조회하고 200을 응답한다")
-            void it_response_200() throws Exception {
+            @DisplayName("204을 응답한다")
+            void it_response_204() throws Exception {
                 ResultActions resultActions = subject(review.getId());
-                resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("contents").value(CONTENTS))
-                        .andExpect(jsonPath("feelings_score").value(7))
+                resultActions.andExpect(status().isNoContent())
                 ;
             }
         }
