@@ -5,8 +5,10 @@ import Pomodoro from '../../components/Pomodoro/Pomodoro';
 import PomodoroBtn from '../../components/Pomodoro/PomodoroBtn';
 import TodoAllDelete from '../../components/Todos/TodoAllDelete';
 import TodoList from '../../components/Todos/TodoList';
+import Review from '../../components/Review/Review';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
+import { useReviewStore } from '../../store/review';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import resetTimer from '../../utils/resetTimer';
@@ -45,21 +47,14 @@ const Line = styled.div`
 `;
 
 const Time = styled.div`
-  @media (max-width: 767px) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    item-align: center;
-    text-align: center;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  item-align: center;
+  text-align: center;
 
   @media (min-width: 768px) {
     width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    item-align: center;
-    text-align: center;
   }
 `;
 
@@ -78,6 +73,7 @@ const TodosBox = styled.div`
 const Todos = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
+  const { isReview } = useReviewStore();
   const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
   const { selectedTodo, isTodoChange } = useTodosStore();
 
@@ -92,16 +88,21 @@ const Todos = () => {
       <Container>
         <Time>
           <StateBtn />
-          <Todo>{selectedTodo}</Todo>
-          <Pomodoro
-            startTime={startTime}
-            timerState={timerState}
-            time={timerMinute}
-          />
-          {onTimer && (
+          {isReview && <Review />}
+          {!isReview && (
             <>
-              <Timer time={timerMinute} timerState={timerState} />
-              <PomodoroBtn />
+              <Todo>{selectedTodo}</Todo>
+              <Pomodoro
+                startTime={startTime}
+                timerState={timerState}
+                time={timerMinute}
+              />
+              {onTimer && (
+                <>
+                  <Timer time={timerMinute} timerState={timerState} />
+                  <PomodoroBtn />
+                </>
+              )}
             </>
           )}
         </Time>
