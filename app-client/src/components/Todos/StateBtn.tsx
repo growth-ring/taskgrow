@@ -3,6 +3,7 @@ import Button from '../UI/Button';
 
 import { useTimerStore } from '../../store/timer';
 import { useTodosStore } from '../../store/todos';
+import { useReviewStore } from '../../store/review';
 import resetTimer from '../../utils/resetTimer';
 
 const Container = styled.div`
@@ -16,18 +17,22 @@ const Wrapper = styled.div`
 const StateBtn = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
+  const { openReview, closeReview } = useReviewStore();
 
   const handleShowTodo = () => {
+    closeReview();
     timer.showTodo();
     resetTimer(timer, todos, 'reset');
   };
 
   const handleShowBreak = () => {
+    closeReview();
     timer.showBreak();
     resetTimer(timer, todos, '휴식');
   };
 
   const handleShowReview = () => {
+    openReview();
     timer.showReview();
   };
 
