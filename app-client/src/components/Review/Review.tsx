@@ -1,4 +1,4 @@
-import Title from './title';
+import Title from './Title';
 import Mood from './Mood';
 import UserReview from './UserReview';
 
