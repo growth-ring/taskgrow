@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useReviewStore } from '../../store/review';
 
 const Score = styled.div`
   background-color: var(--sub-yellow-color);
@@ -14,7 +15,9 @@ const Score = styled.div`
 `;
 
 const SelectedMood = () => {
-  return <Score> ? </Score>;
+  const { feelingsScore } = useReviewStore();
+
+  return <Score> {feelingsScore === 0 ? '?' : feelingsScore} </Score>;
 };
 
 export default SelectedMood;
