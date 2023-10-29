@@ -1,6 +1,7 @@
 package com.growth.task.review.domain;
 
 import com.growth.task.commons.domain.BaseTimeEntity;
+import com.growth.task.review.dto.ReviewUpdateRequest;
 import com.growth.task.review.exception.OutOfBoundsException;
 import com.growth.task.task.domain.Tasks;
 import jakarta.persistence.Column;
@@ -58,5 +59,11 @@ public class Review extends BaseTimeEntity {
 
     private static boolean isBetween(Integer value, int lower, int upper) {
         return value >= lower && value <= upper;
+    }
+
+    public void update(ReviewUpdateRequest request) {
+        validFeelingsScore(request.getFeelingsScore());
+        this.feelingsScore = request.getFeelingsScore();
+        this.contents = request.getContents();
     }
 }
