@@ -18,21 +18,30 @@ const StateBtn = () => {
   const todos = useTodosStore();
 
   const handleShowTodo = () => {
+    timer.showTodo();
     resetTimer(timer, todos, 'reset');
   };
 
   const handleShowBreak = () => {
+    timer.showBreak();
     resetTimer(timer, todos, '휴식');
+  };
+
+  const handleShowReview = () => {
+    timer.showReview();
   };
 
   return (
     <Container>
       <Wrapper>
-        <Button showTodo={timer.showTodoBtn} onClick={handleShowTodo}>
+        <Button title="TODO" onClick={handleShowTodo}>
           할 일
         </Button>
-        <Button showTodo={!timer.showTodoBtn} onClick={handleShowBreak}>
+        <Button title="BREAK" onClick={handleShowBreak}>
           휴식
+        </Button>
+        <Button title="REVIEW" onClick={handleShowReview}>
+          회고
         </Button>
       </Wrapper>
     </Container>

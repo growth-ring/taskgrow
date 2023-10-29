@@ -1,10 +1,13 @@
 import { create } from 'zustand';
 
 export type TimerState = 'INITIAL' | 'RUNNING' | 'FINISHED';
+export type SelectedBtnState = 'TODO' | 'BREAK' | 'REVIEW';
 
 export interface TimerStore {
-  showTodoBtn: boolean;
-  setShowTodoBtn: (btn: boolean) => void;
+  selectedBtn: SelectedBtnState;
+  showTodo: () => void;
+  showBreak: () => void;
+  showReview: () => void;
   onTimer: boolean;
   setOnTimer: (timer: boolean) => void;
   timerState: TimerState;
@@ -17,8 +20,10 @@ export interface TimerStore {
 }
 
 export const useTimerStore = create<TimerStore>((set) => ({
-  showTodoBtn: true,
-  setShowTodoBtn: (btn) => set({ showTodoBtn: btn }),
+  selectedBtn: 'TODO',
+  showTodo: () => set({ selectedBtn: 'TODO' }),
+  showBreak: () => set({ selectedBtn: 'BREAK' }),
+  showReview: () => set({ selectedBtn: 'REVIEW' }),
   onTimer: false,
   setOnTimer: (timer) => set({ onTimer: timer }),
   timerState: 'INITIAL',
