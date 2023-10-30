@@ -7,7 +7,7 @@ const Container = styled.div`
 `;
 
 interface SquareProps {
-  active: boolean;
+  $active: string;
   onClick: () => void;
 }
 
@@ -15,8 +15,8 @@ const Square = styled.button<SquareProps>`
   width: 30px;
   height: 30px;
   background-color: ${(props) =>
-    props.active ? 'var(--main-color)' : 'var(--sub-yellow-color)'};
-  color: ${(props) => (props.active ? 'white' : 'gray')};
+    props.$active === 'true' ? 'var(--main-color)' : 'var(--sub-yellow-color)'};
+  color: ${(props) => (props.$active === 'true' ? 'white' : 'gray')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,7 +39,7 @@ const MoodSelect = () => {
       {Array.from({ length: 10 }, (_, index) => (
         <Square
           key={index}
-          active={activeButtons[index]}
+          $active={activeButtons[index].toString()}
           onClick={() => handleClick(index)}
         >
           {index + 1}
