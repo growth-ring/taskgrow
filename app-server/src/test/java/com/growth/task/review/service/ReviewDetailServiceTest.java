@@ -78,11 +78,57 @@ class ReviewDetailServiceTest {
     }
 
     @Nested
-    @DisplayName("getReview는")
-    class Describe_getReview {
+    @DisplayName("findReviewByTaskId는")
+    class Describe_findReviewByTaskId {
+        @Nested
+        @DisplayName("존재하는 회고의 테스크 아이디가 주어지면")
+        class Context_with_exist_review_id {
+            private Tasks givenTask = mock(Tasks.class);
+            private Review review = Review.builder()
+                    .tasks(givenTask)
+                    .contents("모든 Todo를 끝내서 기분이 좋다")
+                    .feelingsScore(10)
+                    .build();
+
+            @BeforeEach
+            void prepare() {
+                ReflectionTestUtils.setField(givenTask, "taskId", 1L);
+                given(reviewRepository.findByTasks_TaskId(givenTask.getTaskId()))
+                        .willReturn(Optional.of(review));
+            }
+
+            @Test
+            @DisplayName("회고를 조회해 리턴한다")
+            void it_return_review() {
+                Review actual = reviewDetailService.findReviewByTaskId(givenTask.getTaskId());
+                assertAll(
+                        () -> assertThat(actual.getContents()).isEqualTo(review.getContents()),
+                        () -> assertThat(actual.getFeelingsScore()).isEqualTo(review.getFeelingsScore())
+                );
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하지 않는 회고 아이디가 주어지면")
+        class Context_with_not_exist_review_id {
+            private final Long invalidId = 0L;
+
+            @Test
+            @DisplayName("찾을 수 없다는 예외를 던진다")
+            void it_return_review() {
+                Executable when = () -> reviewDetailService.findReviewById(invalidId);
+                assertThrows(ReviewNotFoundException.class, when);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("getReviewByTaskId")
+    class Describe_getReviewByTaskId {
         @Nested
         @DisplayName("존재하는 회고 아이디가 주어지면")
         class Context_with_exist_review_id {
+            private Tasks givenTask = mock(Tasks.class);
             private Review review = Review.builder()
                     .tasks(mock(Tasks.class))
                     .contents("모든 Todo를 끝내서 기분이 좋다")
@@ -91,15 +137,15 @@ class ReviewDetailServiceTest {
 
             @BeforeEach
             void prepare() {
-                ReflectionTestUtils.setField(review, "id", 1L);
-                given(reviewRepository.findById(review.getId()))
+                ReflectionTestUtils.setField(givenTask, "taskId", 1L);
+                given(reviewRepository.findByTasks_TaskId(givenTask.getTaskId()))
                         .willReturn(Optional.of(review));
             }
 
             @Test
             @DisplayName("회고를 조회해 리턴한다")
             void it_return_review() {
-                ReviewDetailResponse actual = reviewDetailService.getReview(review.getId());
+                ReviewDetailResponse actual = reviewDetailService.getReviewByTaskId(givenTask.getTaskId());
                 assertAll(
                         () -> assertThat(actual.getContents()).isEqualTo(review.getContents()),
                         () -> assertThat(actual.getFeelingsScore()).isEqualTo(review.getFeelingsScore())
