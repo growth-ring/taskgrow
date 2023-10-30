@@ -6,6 +6,8 @@ export interface ReviewStore {
   closeReview: () => void;
   feelingsScore: number;
   setFeelingsScore: (score: number) => void;
+  reviewId: number;
+  setReviewId: (id: number) => void;
 }
 
 export const useReviewStore = create<ReviewStore>((set) => ({
@@ -14,4 +16,6 @@ export const useReviewStore = create<ReviewStore>((set) => ({
   closeReview: () => set({ isReview: false }),
   feelingsScore: 0,
   setFeelingsScore: (score) => set({ feelingsScore: score }),
+  reviewId: 0,
+  setReviewId: (id) => set({ reviewId: id }),
 }));

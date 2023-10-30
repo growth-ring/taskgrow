@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BsTrash3, BsCheckCircleFill } from 'react-icons/bs';
 import { useTask } from '../../store/task';
 import { useReviewStore } from '../../store/review';
-import { addReview } from '../../services/review';
+import { addReview, getReview } from '../../services/review';
 
 const Button = styled.button`
   &:hover {
@@ -50,7 +50,7 @@ const ButtonBox = styled.div`
 
 const UserReview = () => {
   const { selectedTaskId } = useTask();
-  const { feelingsScore } = useReviewStore();
+  const { feelingsScore, setFeelingsScore, setReviewId } = useReviewStore();
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -68,6 +68,19 @@ const UserReview = () => {
       alert('회고 추가 되었습니다.');
     }
   };
+
+  const findReview = async () => {
+    const review = await getReview(selectedTaskId);
+    if (review) {
+      setInputValue(review.contents);
+      setFeelingsScore(review.feelings_score);
+      setReviewId(review.review_id);
+    }
+  };
+
+  useEffect(() => {
+    findReview();
+  }, []);
 
   return (
     <>
