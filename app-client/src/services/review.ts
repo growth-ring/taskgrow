@@ -27,3 +27,12 @@ export const addReview = async (reviewData: AddReviewData) => {
     }
   }
 };
+
+export const getReview = async (taskId: number) => {
+  try {
+    const review = await axios.get(`/httpClient/api/v1/review/${taskId}`);
+    return review.data;
+  } catch (error: any) {
+    return null;
+  }
+};
