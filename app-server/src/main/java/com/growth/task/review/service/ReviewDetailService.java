@@ -16,8 +16,8 @@ public class ReviewDetailService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewDetailResponse getReview(Long reviewId) {
-        Review review = findReviewById(reviewId);
+    public ReviewDetailResponse getReviewByTaskId(Long taskId) {
+        Review review = findReviewByTaskId(taskId);
         return new ReviewDetailResponse(review);
     }
 
@@ -25,5 +25,11 @@ public class ReviewDetailService {
     public Review findReviewById(Long reviewId) {
         return reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewNotFoundException(reviewId));
+    }
+
+    @Transactional(readOnly = true)
+    public Review findReviewByTaskId(Long taskId) {
+        return reviewRepository.findByTasks_TaskId(taskId)
+                .orElseThrow(() -> new ReviewNotFoundException("리뷰를 찾을 수 없습니다."));
     }
 }

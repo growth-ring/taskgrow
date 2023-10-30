@@ -95,26 +95,26 @@ class ReviewDetailControllerTest {
     @DisplayName("Review 단건 조회 GET 요청은")
     @Nested
     class Describe_GET {
-        private ResultActions subject(Long reviewId) throws Exception {
-            return mockMvc.perform(get("/api/v1/review/{reviewId}", reviewId));
+        private ResultActions subject(Long taskId) throws Exception {
+            return mockMvc.perform(get("/api/v1/review/{taskId}", taskId));
         }
 
         @Nested
-        @DisplayName("존재하는 Review id가 주어지면")
-        class Context_with_exist_review_id {
-            private Review review;
+        @DisplayName("회고가 존재하는 task id가 주어지면")
+        class Context_with_task_id_when_exist_review {
+            private Tasks task;
 
             @BeforeEach
             void prepare() {
                 Users user = getUser("grow", "password");
-                Tasks task = getTask(user, LocalDate.of(2023, 10, 26));
-                review = getReview(task, CONTENTS, 7);
+                task = getTask(user, LocalDate.of(2023, 10, 26));
+                Review review = getReview(task, CONTENTS, 7);
             }
 
             @Test
             @DisplayName("id에 해당하는 회고를 조회하고 200을 응답한다")
             void it_response_200() throws Exception {
-                ResultActions resultActions = subject(review.getId());
+                ResultActions resultActions = subject(task.getTaskId());
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("contents").value(CONTENTS))
                         .andExpect(jsonPath("feelings_score").value(7))
@@ -123,22 +123,22 @@ class ReviewDetailControllerTest {
         }
 
         @Nested
-        @DisplayName("존재하지 않는 Review id가 주어지면")
+        @DisplayName("회고가 존재하지 않는 테스크 id가 주어지면")
         class Context_with_not_exist_review_id {
-            private Review review;
+            private Tasks task;
 
             @BeforeEach
             void prepare() {
                 Users user = getUser("grow", "password");
-                Tasks task = getTask(user, LocalDate.of(2023, 10, 26));
-                review = getReview(task, CONTENTS, 7);
+                task = getTask(user, LocalDate.of(2023, 10, 26));
+                Review review = getReview(task, CONTENTS, 7);
                 reviewRepository.deleteById(review.getId());
             }
 
             @Test
             @DisplayName("404을 응답한다")
             void it_response_404() throws Exception {
-                ResultActions resultActions = subject(review.getId());
+                ResultActions resultActions = subject(task.getTaskId());
                 resultActions.andExpect(status().isNotFound())
                 ;
             }
