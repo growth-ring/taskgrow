@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { BsTrash3, BsCheckCircleFill } from 'react-icons/bs';
+import { useTask } from '../../store/task';
+import { useReviewStore } from '../../store/review';
+import { addReview } from '../../services/review';
 
 const Button = styled.button`
   &:hover {
@@ -46,10 +49,24 @@ const ButtonBox = styled.div`
 `;
 
 const UserReview = () => {
+  const { selectedTaskId } = useTask();
+  const { feelingsScore } = useReviewStore();
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
+  };
+
+  const handleAddReview = async () => {
+    const reviewData = {
+      taskId: selectedTaskId,
+      content: inputValue,
+      feelingsScore: feelingsScore,
+    };
+    const isAddReview = await addReview(reviewData);
+    if (isAddReview) {
+      alert('회고 추가 되었습니다.');
+    }
   };
 
   return (
@@ -59,7 +76,7 @@ const UserReview = () => {
         <Button style={{ margin: '0 1rem' }}>
           <BsTrash3 />
         </Button>
-        <Button>
+        <Button onClick={handleAddReview}>
           <BsCheckCircleFill />
         </Button>
       </ButtonBox>
