@@ -10,11 +10,13 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.growth.task.review.domain.QReview.review;
 import static com.growth.task.task.domain.QTasks.tasks;
 import static com.growth.task.todo.domain.QTodos.todos;
 
 @Repository
 public class TasksRepositoryCustomImpl implements TasksRepositoryCustom {
+    public static final int NOT_EXIST_SCORE = -1;
     private final JPAQueryFactory queryFactory;
 
     public TasksRepositoryCustomImpl(JPAQueryFactory queryFactory) {
@@ -31,11 +33,14 @@ public class TasksRepositoryCustomImpl implements TasksRepositoryCustom {
                         tasks.taskId,
                         tasks.user.userId.as("userId"),
                         tasks.taskDate,
-                        todos.status.as("todoStatus")
+                        todos.status.as("todoStatus"),
+                        review.feelingsScore.coalesce(NOT_EXIST_SCORE).as("feelingsScore")
                 ))
                 .from(tasks)
                 .leftJoin(todos)
                 .on(tasks.taskId.eq(todos.task.taskId))
+                .leftJoin(review)
+                .on(tasks.taskId.eq(review.tasks.taskId))
                 .where(
                         tasks.user.userId.eq(userId)
                                 .and(tasks.taskDate.between(startDate, endDate))
