@@ -2,7 +2,7 @@ package com.growth.task.task.service;
 
 import com.growth.task.task.dto.TaskListRequest;
 import com.growth.task.task.dto.TaskListResponse;
-import com.growth.task.task.dto.TaskListWithTodoStatusResponse;
+import com.growth.task.task.dto.TaskListQueryResponse;
 import com.growth.task.task.dto.TaskTodoResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.enums.Status;
@@ -31,7 +31,7 @@ public class TaskListService {
 
     @Transactional(readOnly = true)
     public List<TaskListResponse> getTasks(TaskListRequest request) {
-        List<TaskListWithTodoStatusResponse> taskList = tasksRepository.findRemainedTodosByUserBetweenTimeRange(request);
+        List<TaskListQueryResponse> taskList = tasksRepository.findRemainedTodosByUserBetweenTimeRange(request);
 
         Map<Long, TaskTodoResponse> groupingByTask = calculateTaskTodoStatusMap(taskList);
 
@@ -50,12 +50,12 @@ public class TaskListService {
      * @return todos 진행률이 매핑된 Task List
      */
     public static List<TaskListResponse> collectToTask(
-            List<TaskListWithTodoStatusResponse> taskList,
+            List<TaskListQueryResponse> taskList,
             Map<Long, TaskTodoResponse> groupingByTask
     ) {
         return taskList.stream()
                 .collect(toMap(
-                        TaskListWithTodoStatusResponse::getTaskId,
+                        TaskListQueryResponse::getTaskId,
                         task -> {
                             TaskTodoResponse todos = groupingByTask.getOrDefault(task.getTaskId(), new TaskTodoResponse(0, 0));
                             return new TaskListResponse(task, todos);
@@ -80,10 +80,10 @@ public class TaskListService {
      * @param taskList Task 리스트
      * @return 테스크의 진행률 Map
      */
-    public Map<Long, TaskTodoResponse> calculateTaskTodoStatusMap(List<TaskListWithTodoStatusResponse> taskList) {
+    public Map<Long, TaskTodoResponse> calculateTaskTodoStatusMap(List<TaskListQueryResponse> taskList) {
         return taskList.stream()
                 .collect(groupingBy(
-                                TaskListWithTodoStatusResponse::getTaskId,
+                                TaskListQueryResponse::getTaskId,
                                 collectingAndThen(toList(),
                                         tasks -> calculateTodoStatus(tasks)
                                 )
@@ -100,10 +100,10 @@ public class TaskListService {
      * @param tasks Task 리스트
      * @return Todos 진행률
      */
-    public TaskTodoResponse calculateTodoStatus(List<TaskListWithTodoStatusResponse> tasks) {
+    public TaskTodoResponse calculateTodoStatus(List<TaskListQueryResponse> tasks) {
         int doneCount = 0;
         int remainCount = 0;
-        for (TaskListWithTodoStatusResponse task : tasks) {
+        for (TaskListQueryResponse task : tasks) {
             Status todoStatus = task.getTodoStatus();
             if (isDone(todoStatus)) {
                 doneCount++;

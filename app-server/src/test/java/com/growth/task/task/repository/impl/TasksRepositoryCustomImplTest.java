@@ -3,7 +3,7 @@ package com.growth.task.task.repository.impl;
 import com.growth.task.config.TestQueryDslConfig;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskListRequest;
-import com.growth.task.task.dto.TaskListWithTodoStatusResponse;
+import com.growth.task.task.dto.TaskListQueryResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.enums.Status;
@@ -117,7 +117,7 @@ class TasksRepositoryCustomImplTest {
             @Test
             @DisplayName("task 정보와 todo status를 반환한다")
             void it_return_task_info_and_todo_count() {
-                List<TaskListWithTodoStatusResponse> result = tasksRepository.findRemainedTodosByUserBetweenTimeRange(request);
+                List<TaskListQueryResponse> result = tasksRepository.findRemainedTodosByUserBetweenTimeRange(request);
 
                 assertAll(
                         () -> assertThat(result).hasSize(10),

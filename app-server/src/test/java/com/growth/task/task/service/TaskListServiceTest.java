@@ -3,7 +3,7 @@ package com.growth.task.task.service;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskListRequest;
 import com.growth.task.task.dto.TaskListResponse;
-import com.growth.task.task.dto.TaskListWithTodoStatusResponse;
+import com.growth.task.task.dto.TaskListQueryResponse;
 import com.growth.task.task.dto.TaskTodoResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
@@ -29,6 +29,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("TaskListService")
 class TaskListServiceTest {
+    public static final Integer FEELINGS_SCORE = 1;
     private TaskListService taskListService;
     @Mock
     private TasksRepository tasksRepository;
@@ -82,9 +83,9 @@ class TaskListServiceTest {
             void prepare() {
                 given(tasksRepository.findRemainedTodosByUserBetweenTimeRange(request))
                         .willReturn(List.of(
-                                new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo1.getStatus()),
-                                new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo2.getStatus()),
-                                new TaskListWithTodoStatusResponse(1L, 1L, givenTask.getTaskDate(), givenTodo3.getStatus())
+                                new TaskListQueryResponse(1L, 1L, givenTask.getTaskDate(), givenTodo1.getStatus(), FEELINGS_SCORE),
+                                new TaskListQueryResponse(1L, 1L, givenTask.getTaskDate(), givenTodo2.getStatus(), FEELINGS_SCORE),
+                                new TaskListQueryResponse(1L, 1L, givenTask.getTaskDate(), givenTodo3.getStatus(), FEELINGS_SCORE)
                         ));
             }
 
@@ -107,21 +108,21 @@ class TaskListServiceTest {
         @Nested
         @DisplayName("todo status를 가진 task 리스트가 주어지면")
         class Context_with_task_list_with_todo_status {
-            List<TaskListWithTodoStatusResponse> taskList = List.of(
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(4L, 1L, LocalDate.parse("2023-08-28"), null)
+            List<TaskListQueryResponse> taskList = List.of(
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(4L, 1L, LocalDate.parse("2023-08-28"), null, FEELINGS_SCORE)
 
             );
 
@@ -155,12 +156,12 @@ class TaskListServiceTest {
             @Nested
             @DisplayName("READY, PROGRESS, DONE이 골고루 존재하면")
             class Context_with_todo_status_ready_progress_done {
-                List<TaskListWithTodoStatusResponse> taskList = List.of(
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS),
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS),
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE)
+                List<TaskListQueryResponse> taskList = List.of(
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS, FEELINGS_SCORE),
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS, FEELINGS_SCORE),
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE)
                 );
 
                 @Test
@@ -177,9 +178,9 @@ class TaskListServiceTest {
             @Nested
             @DisplayName("READY만 존재하면")
             class Context_with_todo_status_is_only_ready {
-                List<TaskListWithTodoStatusResponse> taskList = List.of(
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY)
+                List<TaskListQueryResponse> taskList = List.of(
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE)
                 );
 
                 @Test
@@ -196,9 +197,9 @@ class TaskListServiceTest {
             @Nested
             @DisplayName("READY와 PROGRESS만 존재하면")
             class Context_with_todo_status_is_ready_or_progress {
-                List<TaskListWithTodoStatusResponse> taskList = List.of(
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS)
+                List<TaskListQueryResponse> taskList = List.of(
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS, FEELINGS_SCORE)
                 );
 
                 @Test
@@ -215,9 +216,9 @@ class TaskListServiceTest {
             @Nested
             @DisplayName("DONE만 존재하면")
             class Context_with_todo_status_is_only_done {
-                List<TaskListWithTodoStatusResponse> taskList = List.of(
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE)
+                List<TaskListQueryResponse> taskList = List.of(
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE)
                 );
 
                 @Test
@@ -234,8 +235,8 @@ class TaskListServiceTest {
             @Nested
             @DisplayName("존재하지 않다면")
             class Context_with_todo_status_is_null {
-                List<TaskListWithTodoStatusResponse> taskList = List.of(
-                        new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), null)
+                List<TaskListQueryResponse> taskList = List.of(
+                        new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), null, FEELINGS_SCORE)
                 );
 
                 @Test
@@ -257,18 +258,18 @@ class TaskListServiceTest {
         @Nested
         @DisplayName("테스크 리스트와 todos 진행률 Map이 주어지면")
         class Context_wiht_task_list_and_todos_status_map {
-            List<TaskListWithTodoStatusResponse> taskList = List.of(
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS),
-                    new TaskListWithTodoStatusResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY),
-                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE),
-                    new TaskListWithTodoStatusResponse(4L, 1L, LocalDate.parse("2023-08-28"), null)
+            List<TaskListQueryResponse> taskList = List.of(
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.PROGRESS, FEELINGS_SCORE),
+                    new TaskListQueryResponse(1L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(2L, 1L, LocalDate.parse("2023-08-28"), Status.READY, FEELINGS_SCORE),
+                    new TaskListQueryResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(3L, 1L, LocalDate.parse("2023-08-28"), Status.DONE, FEELINGS_SCORE),
+                    new TaskListQueryResponse(4L, 1L, LocalDate.parse("2023-08-28"), null, FEELINGS_SCORE)
 
             );
             Map<Long, TaskTodoResponse> groupingByTask = Map.of(

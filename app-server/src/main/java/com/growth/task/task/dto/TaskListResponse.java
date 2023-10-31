@@ -18,18 +18,21 @@ public class TaskListResponse {
     private Long userId;
     private LocalDate taskDate;
     private TaskTodoResponse todos;
+    private Integer feelingsScore;
 
-    public TaskListResponse(Long taskId, Long userId, LocalDate taskDate, TaskTodoResponse todos) {
+    public TaskListResponse(Long taskId, Long userId, LocalDate taskDate, TaskTodoResponse todos, Integer feelingsScore) {
         this.taskId = taskId;
         this.userId = userId;
         this.taskDate = taskDate;
         this.todos = todos;
+        this.feelingsScore = feelingsScore;
     }
 
-    public TaskListResponse(TaskListWithTodoStatusResponse task, TaskTodoResponse todos) {
+    public TaskListResponse(TaskListQueryResponse task, TaskTodoResponse todos) {
         this.taskId = task.getTaskId();
         this.userId = task.getUserId();
         this.taskDate = task.getTaskDate();
         this.todos = todos;
+        this.feelingsScore = task.getFeelingsScore();
     }
 }
