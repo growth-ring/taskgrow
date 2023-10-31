@@ -13,7 +13,9 @@ export const addReview = async (reviewData: AddReviewData) => {
       content: reviewData.content,
       feelings_score: reviewData.feelingsScore,
     });
-    return review.status === 201;
+    if (review.status === 201) {
+      return review.data;
+    }
   } catch (error: any) {
     const errorMessage =
       error.response.data.feelingsScore || error.response.data.content;
@@ -34,5 +36,16 @@ export const getReview = async (taskId: number) => {
     return review.data;
   } catch (error: any) {
     return null;
+  }
+};
+
+export const deleteReview = async (reviewId: number) => {
+  try {
+    const isDelete = await axios.delete(
+      `/httpClient/api/v1/review/${reviewId}`,
+    );
+    return isDelete.status === 204;
+  } catch (error: any) {
+    alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
