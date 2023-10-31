@@ -19,21 +19,21 @@ public class ReviewAddRequest {
     @NotNull(message = "테스크 id는 필수입니다.")
     private Long taskId;
     @NotBlank(message = "회고 내용은 필수입니다.")
-    private String content;
+    private String contents;
     @Min(value = 1, message = "기분 점수는 1 ~ 10 사이를 입력해주세요.")
     @Max(value = 10, message = "기분 점수는 1 ~ 10 사이를 입력해주세요.")
     private Integer feelingsScore;
 
-    public ReviewAddRequest(Long taskId, String content, Integer feelingsScore) {
+    public ReviewAddRequest(Long taskId, String contents, Integer feelingsScore) {
         this.taskId = taskId;
-        this.content = content;
+        this.contents = contents;
         this.feelingsScore = feelingsScore;
     }
 
     public Review toEntity(Tasks task) {
         return Review.builder()
                 .tasks(task)
-                .contents(content)
+                .contents(contents)
                 .feelingsScore(feelingsScore)
                 .build();
     }
