@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BsTrash3, BsCheckCircleFill } from 'react-icons/bs';
 import { useTask } from '../../store/task';
+import { useTimerStore } from '../../store/timer';
 import { useReviewStore } from '../../store/review';
 import {
   addReview,
@@ -54,9 +55,15 @@ const ButtonBox = styled.div`
 `;
 
 const UserReview = () => {
+  const timer = useTimerStore();
   const { selectedTaskId } = useTask();
-  const { feelingsScore, setFeelingsScore, setReviewId, reviewId } =
-    useReviewStore();
+  const {
+    feelingsScore,
+    setFeelingsScore,
+    setReviewId,
+    reviewId,
+    closeReview,
+  } = useReviewStore();
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -89,8 +96,8 @@ const UserReview = () => {
     const isDelete = await deleteReview(reviewId);
     if (isDelete) {
       alert('회고 삭제 되었습니다.');
-      setReviewId(0);
-      setInputValue('');
+      closeReview();
+      timer.showTodo();
     }
   };
 
