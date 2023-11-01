@@ -15,7 +15,7 @@ interface UpdateReview extends Review {
 
 export const addReview = async (reviewData: AddReview) => {
   try {
-    const review = await axios.post('/httpClient/api/v1/review', {
+    const review = await axios.post('/api/v1/review', {
       task_id: reviewData.taskId,
       contents: reviewData.contents,
       feelings_score: reviewData.feelingsScore,
@@ -39,7 +39,7 @@ export const addReview = async (reviewData: AddReview) => {
 
 export const getReview = async (taskId: number) => {
   try {
-    const review = await axios.get(`/httpClient/api/v1/review/${taskId}`);
+    const review = await axios.get(`/api/v1/review/${taskId}`);
     return review.data;
   } catch (error: any) {
     return null;
@@ -48,9 +48,7 @@ export const getReview = async (taskId: number) => {
 
 export const deleteReview = async (reviewId: number) => {
   try {
-    const isDelete = await axios.delete(
-      `/httpClient/api/v1/review/${reviewId}`,
-    );
+    const isDelete = await axios.delete(`/api/v1/review/${reviewId}`);
     return isDelete.status === 204;
   } catch (error: any) {
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
@@ -59,7 +57,7 @@ export const deleteReview = async (reviewId: number) => {
 
 export const updateReview = async (reviewData: UpdateReview) => {
   try {
-    await axios.put(`/httpClient/api/v1/review/${reviewData.reviewId}`, {
+    await axios.put(`/api/v1/review/${reviewData.reviewId}`, {
       contents: reviewData.contents,
       feelings_score: reviewData.feelingsScore,
     });
