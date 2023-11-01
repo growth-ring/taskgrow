@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useReviewStore } from '../../store/review';
 
 const Container = styled.div`
@@ -7,7 +7,7 @@ const Container = styled.div`
 `;
 
 interface SquareProps {
-  active: boolean;
+  $active: string;
   onClick: () => void;
 }
 
@@ -15,8 +15,8 @@ const Square = styled.button<SquareProps>`
   width: 30px;
   height: 30px;
   background-color: ${(props) =>
-    props.active ? 'var(--main-color)' : 'var(--sub-yellow-color)'};
-  color: ${(props) => (props.active ? 'white' : 'gray')};
+    props.$active === 'true' ? 'var(--main-color)' : 'var(--sub-yellow-color)'};
+  color: ${(props) => (props.$active === 'true' ? 'white' : 'gray')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@ const Square = styled.button<SquareProps>`
 `;
 
 const MoodSelect = () => {
-  const { setFeelingsScore } = useReviewStore();
+  const { feelingsScore, setFeelingsScore } = useReviewStore();
   const [activeButtons, setActiveButtons] = useState<boolean[]>(
     Array(10).fill(false),
   );
@@ -34,12 +34,16 @@ const MoodSelect = () => {
     setFeelingsScore(index + 1);
   };
 
+  useEffect(() => {
+    handleClick(feelingsScore - 1);
+  }, []);
+
   return (
     <Container>
       {Array.from({ length: 10 }, (_, index) => (
         <Square
           key={index}
-          active={activeButtons[index]}
+          $active={activeButtons[index].toString()}
           onClick={() => handleClick(index)}
         >
           {index + 1}

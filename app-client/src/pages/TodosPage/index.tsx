@@ -73,12 +73,13 @@ const TodosBox = styled.div`
 const Todos = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
-  const { isReview } = useReviewStore();
+  const { isReview, closeReview } = useReviewStore();
   const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
   const { selectedTodo, isTodoChange } = useTodosStore();
 
   useEffect(() => {
     resetTimer(timer, todos, 'reset');
+    closeReview();
   }, [isTodoChange]);
 
   return (
