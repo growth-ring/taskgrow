@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { BsTrash3, BsCheckCircleFill } from 'react-icons/bs';
 import { useTask } from '../../store/task';
 import { useReviewStore } from '../../store/review';
-import { addReview, getReview, deleteReview } from '../../services/review';
+import {
+  addReview,
+  getReview,
+  deleteReview,
+  updateReview,
+} from '../../services/review';
 
 const Button = styled.button`
   &:hover {
@@ -59,15 +64,24 @@ const UserReview = () => {
   };
 
   const handleAddReview = async () => {
-    const reviewData = {
-      taskId: selectedTaskId,
-      content: inputValue,
-      feelingsScore: feelingsScore,
-    };
-    const isAddReview = await addReview(reviewData);
-    if (isAddReview) {
-      setReviewId(isAddReview.review_id);
-      alert('회고 추가 되었습니다.');
+    if (reviewId !== 0) {
+      const reviewData = {
+        reviewId: reviewId,
+        content: inputValue,
+        feelingsScore: feelingsScore,
+      };
+      await updateReview(reviewData);
+    } else {
+      const reviewData = {
+        taskId: selectedTaskId,
+        content: inputValue,
+        feelingsScore: feelingsScore,
+      };
+      const isAddReview = await addReview(reviewData);
+      if (isAddReview) {
+        setReviewId(isAddReview.review_id);
+        alert('회고 추가 되었습니다.');
+      }
     }
   };
 
