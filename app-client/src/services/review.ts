@@ -1,12 +1,19 @@
 import axios from 'axios';
 
-interface AddReviewData {
-  taskId: number;
+interface Review {
   content: string;
   feelingsScore: number;
 }
 
-export const addReview = async (reviewData: AddReviewData) => {
+interface AddReview extends Review {
+  taskId: number;
+}
+
+interface UpdateReview extends Review {
+  reviewId: number;
+}
+
+export const addReview = async (reviewData: AddReview) => {
   try {
     const review = await axios.post('/httpClient/api/v1/review', {
       task_id: reviewData.taskId,
@@ -45,6 +52,18 @@ export const deleteReview = async (reviewId: number) => {
       `/httpClient/api/v1/review/${reviewId}`,
     );
     return isDelete.status === 204;
+  } catch (error: any) {
+    alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+  }
+};
+
+export const updateReview = async (reviewData: UpdateReview) => {
+  try {
+    await axios.put(`/httpClient/api/v1/review/${reviewData.reviewId}`, {
+      contents: reviewData.content,
+      feelings_score: reviewData.feelingsScore,
+    });
+    return alert('회고 수정 되었습니다.');
   } catch (error: any) {
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
