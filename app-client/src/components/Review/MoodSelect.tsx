@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useReviewStore } from '../../store/review';
 
 const Container = styled.div`
@@ -24,7 +24,7 @@ const Square = styled.button<SquareProps>`
 `;
 
 const MoodSelect = () => {
-  const { setFeelingsScore } = useReviewStore();
+  const { feelingsScore, setFeelingsScore } = useReviewStore();
   const [activeButtons, setActiveButtons] = useState<boolean[]>(
     Array(10).fill(false),
   );
@@ -33,6 +33,10 @@ const MoodSelect = () => {
     setActiveButtons((prevButtons) => prevButtons.map((_, i) => i <= index));
     setFeelingsScore(index + 1);
   };
+
+  useEffect(() => {
+    handleClick(feelingsScore - 1);
+  }, []);
 
   return (
     <Container>
