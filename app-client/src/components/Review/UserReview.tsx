@@ -67,14 +67,14 @@ const UserReview = () => {
     if (reviewId !== 0) {
       const reviewData = {
         reviewId: reviewId,
-        content: inputValue,
+        contents: inputValue,
         feelingsScore: feelingsScore,
       };
       await updateReview(reviewData);
     } else {
       const reviewData = {
         taskId: selectedTaskId,
-        content: inputValue,
+        contents: inputValue,
         feelingsScore: feelingsScore,
       };
       const isAddReview = await addReview(reviewData);
