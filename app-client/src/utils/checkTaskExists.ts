@@ -17,6 +17,7 @@ interface TaskProps {
     remain: number;
     done: number;
   };
+  feelings_score: number;
   user_id: number;
 }
 
@@ -67,6 +68,7 @@ export const getAllTask = async ({
         taskId: task.task_id,
         taskDate: task.task_date,
         todos: task.todos,
+        feelingsScore: task.feelings_score,
         todoData: todo.todos,
       };
     }),
