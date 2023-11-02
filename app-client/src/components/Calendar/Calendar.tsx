@@ -8,8 +8,9 @@ import styled from 'styled-components';
 import { startEndDate } from '../../utils/startEndDate';
 import { useUser } from '../../store/user';
 import { getAllTask, moveToTask } from '../../utils/checkTaskExists';
-import good from '../../assets/good.png';
 import { useTask } from '../../store/task';
+import done from '../../assets/done.png';
+import FeelingsScore from './FeelingsScore';
 
 const Todo = styled.div`
   color: black;
@@ -158,17 +159,23 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
         let html: JSX.Element | null = null;
         const currentDate = moment(date).format('YYYY-MM-DD');
         viewTaskDate.forEach((day, i) => {
+          const score = monthTaskDate.filter(
+            (dates) => dates.taskDate === day,
+          )[0].feelingsScore;
+
           const taskFinished = monthTaskDate
             .filter((dates) => dates.taskDate === day)
             .map((date) => date.todos.remain === 0 && date.todos.done !== 0);
 
           if (day === currentDate) {
-            if (taskFinished[0]) {
+            if (taskFinished[0] && score === -1) {
               html = (
                 <Todo>
-                  <img src={good} key={i} />
+                  <img src={done} />
                 </Todo>
               );
+            } else if (taskFinished[0]) {
+              html = <FeelingsScore score={score} />;
             } else if (mouseOverDay === currentDate) {
               const taskTodo = monthTaskDate
                 .filter((dates) => dates.taskDate === day)

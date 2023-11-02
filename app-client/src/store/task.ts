@@ -7,6 +7,7 @@ interface TaskDateTodo {
     remain: number;
     done: number;
   };
+  feelingsScore: number;
   todoData: { todo: string; perform_count: number; plan_count: number }[];
 }
 
