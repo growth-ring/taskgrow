@@ -17,6 +17,7 @@ public class PomodoroUpdateService {
         this.pomodorosRepository = pomodorosRepository;
     }
 
+    @Transactional
     public Pomodoros update(Long todoId, PomodoroUpdateRequest pomodoroUpdateRequest) {
         Pomodoros pomodoros = findPomodoroByTodoId(todoId);
         pomodoros.getTodo().validateUpdatePomodoro();
