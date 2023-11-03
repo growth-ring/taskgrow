@@ -35,7 +35,9 @@ jobs:
 
     - name: Docker build
       if: github.ref == 'refs/heads/main'
-      run: docker build . --build-arg DEPENDENCY=build/dependency -t lkw2v/task-grow --platform linux/amd64
+      run: |
+        docker login -u lkw2v -p ${{ secrets.TASKGROW_DOCKER_TOKEN }}
+        docker build . -t lkw2v/task-grow --platform linux/amd64
 
 
     - name: Docker push
