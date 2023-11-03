@@ -1,4 +1,4 @@
-name: TaskGrow Server Image CI
+name: TaskGrow Server CI
 
 on:
   push:
@@ -6,8 +6,16 @@ on:
     paths:
       - "app-server/**"
       - ".github/workflows/server-CI.yml"
-jobs:
+  pull_request:
+    paths:
+      - ".github/workflows/server-CI.yml"
+permissions:
+  contents: read
+defaults:
+  run:
+    working-directory: ./app-server
 
+jobs:
   build:
     runs-on: ubuntu-latest
 
@@ -21,11 +29,13 @@ jobs:
         distribution: 'temurin'
         
     - name: Grant execute permission for gradlew
-      run: cd app-server && chmod +x gradlew
-      
+      run: chmod +x gradlew
+    - name: gradle Assemble
+      run: ./gradlew assemble
+
     - name: Docker build
       if: github.ref == 'refs/heads/main'
-      run: docker build --build-arg DEPENDENCY=build/dependency -t lkw2v/task-grow --platform linux/amd64 .
+      run: docker build . --build-arg DEPENDENCY=build/dependency -t lkw2v/task-grow --platform linux/amd64
 
     - name: Docker push
       if: github.ref == 'refs/heads/main'
