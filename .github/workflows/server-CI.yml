@@ -23,11 +23,6 @@ jobs:
     - name: Grant execute permission for gradlew
       run: cd app-server && chmod +x gradlew
       
-    - name: Run build with Gradle wrapper
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: app-server:build
-        cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
     - name: Docker build
       if: github.ref == 'refs/heads/main'
       run: docker build . -t lkw2v/task-grow:${GITHUB_SHA::7}
