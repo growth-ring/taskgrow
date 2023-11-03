@@ -17,6 +17,7 @@ public class PomodoroAddService {
         this.pomodorosRepository = pomodorosRepository;
     }
 
+    @Transactional
     public Pomodoros save(PomodoroAddRequest pomodoroAddRequest, Todos todos) {
         if (todos.getTodoId() == null) {
             throw new TodoNotFoundException();
