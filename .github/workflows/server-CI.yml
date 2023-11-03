@@ -25,8 +25,8 @@ jobs:
       
     - name: Docker build
       if: github.ref == 'refs/heads/main'
-      run: docker build . -t lkw2v/task-grow:${GITHUB_SHA::7}
-    
+      run: docker build --build-arg DEPENDENCY=build/dependency -t lkw2v/task-grow:${GITHUB_SHA::7} --platform linux/amd64 .
+
     - name: Docker push
       if: github.ref == 'refs/heads/main'
       run: |
