@@ -34,14 +34,12 @@ jobs:
       run: ./gradlew build
 
     - name: Docker build
-      if: github.ref == 'refs/heads/main'
       run: |
         docker login -u lkw2v -p ${{ secrets.TASKGROW_DOCKER_TOKEN }}
         docker build . -t lkw2v/task-grow --platform linux/amd64
 
 
     - name: Docker push
-      if: github.ref == 'refs/heads/main'
       run: |
         docker login -u lkw2v -p ${{ secrets.TASKGROW_DOCKER_TOKEN }}
         docker push lkw2v/task-grow
