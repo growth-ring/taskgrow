@@ -4,7 +4,7 @@ import { useTimerStore } from '../../store/timer';
 interface ButtonProps {
   children: ReactNode;
   onClick: () => void;
-  title: string;
+  title?: string;
 }
 
 const Button = ({ children, onClick, title }: ButtonProps) => {
