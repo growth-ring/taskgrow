@@ -1,4 +1,4 @@
-package com.growth.task.commons.advice;
+package com.growth.task.commons.error;
 
 import com.growth.task.commons.error.ErrorCode;
 import com.growth.task.commons.error.ErrorResponse;
