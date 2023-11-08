@@ -1,7 +1,7 @@
 package com.growth.task.user.service;
 
 import com.growth.task.user.domain.Users;
-import com.growth.task.user.exception.AuthenticationFailureException;
+import com.growth.task.user.exception.LoginFailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class AuthenticationService {
 
     public Users login(Users user, String password) {
         if (!user.authenticate(password, passwordEncoder)) {
-            throw new AuthenticationFailureException();
+            throw new LoginFailException();
         }
         return user;
     }
