@@ -54,15 +54,6 @@ public class ControllerErrorAdvice {
         return new ResponseEntity<>(errorResponseBody, UNAUTHORIZED);
     }
 
-    @ResponseStatus(CONFLICT)
-    @ExceptionHandler(AlreadyReviewException.class)
-    public ResponseEntity<Map<String, String>> handleAlreadyReviewException(AlreadyReviewException exception) {
-        log.error("AlreadyReviewException", exception);
-
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, CONFLICT);
-    }
-
     /**
      * javax.validation.Valid or @Validated으로 binding error 발생 시 발생한다.
      */
