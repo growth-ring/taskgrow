@@ -5,16 +5,11 @@ import com.growth.task.user.exception.UserNameDuplicationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -47,18 +42,11 @@ public class ControllerErrorAdvice {
      */
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         log.error("MethodArgumentNotValidException", exception);
 
-        BindingResult bindingResult = exception.getBindingResult();
-
-        Map<String, String> errors = new HashMap<>();
-
-        List<ObjectError> allErrors = bindingResult.getAllErrors();
-        for (ObjectError error : allErrors) {
-            errors.put(((FieldError) error).getField(), error.getDefaultMessage());
-        }
-        return new ResponseEntity<>(errors, BAD_REQUEST);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_VALID_ERROR, exception.getBindingResult());
+        return new ResponseEntity<>(response, BAD_REQUEST);
     }
 
     @ExceptionHandler(BusinessException.class)
