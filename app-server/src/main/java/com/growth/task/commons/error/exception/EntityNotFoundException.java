@@ -1,4 +1,4 @@
-package com.growth.task.commons.advice;
+package com.growth.task.commons.error.exception;
 
 import com.growth.task.commons.error.ErrorCode;
 import com.growth.task.commons.error.exception.BusinessException;

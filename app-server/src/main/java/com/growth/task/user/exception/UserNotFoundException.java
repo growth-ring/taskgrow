@@ -1,6 +1,6 @@
 package com.growth.task.user.exception;
 
-import com.growth.task.commons.advice.EntityNotFoundException;
+import com.growth.task.commons.error.exception.EntityNotFoundException;
 
 public class UserNotFoundException extends EntityNotFoundException {
     public UserNotFoundException() {
