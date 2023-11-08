@@ -1,8 +1,6 @@
 package com.growth.task.commons.error;
 
 import com.growth.task.commons.error.exception.BusinessException;
-import com.growth.task.review.exception.AlreadyReviewException;
-import com.growth.task.user.exception.AuthenticationFailureException;
 import com.growth.task.user.exception.UserNameDuplicationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +19,6 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @ControllerAdvice
@@ -43,15 +40,6 @@ public class ControllerErrorAdvice {
 
         Map<String, String> errorResponseBody = getErrorResponseBody(exception);
         return new ResponseEntity<>(errorResponseBody, CONFLICT);
-    }
-
-    @ResponseStatus(UNAUTHORIZED)
-    @ExceptionHandler(AuthenticationFailureException.class)
-    public ResponseEntity<Map<String, String>> handleAuthenticationFailureException(AuthenticationFailureException exception) {
-        log.error("AuthenticationFailureException", exception);
-
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, UNAUTHORIZED);
     }
 
     /**

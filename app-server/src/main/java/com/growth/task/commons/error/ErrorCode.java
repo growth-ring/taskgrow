@@ -8,6 +8,8 @@ import lombok.Getter;
 public enum ErrorCode {
     // 잘못된 서버 요청
     BAD_REQUEST_ERROR(400, "G001", "Bad Request Exception"),
+    // 인증에 실패함
+    AUTHENTICATE_FAIL_ERROR(401, "G007", "Authentication Fail Exception"),
 
     // 권한이 없음
     FORBIDDEN_ERROR(403, "G002", "Forbidden Exception"),
