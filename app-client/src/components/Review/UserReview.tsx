@@ -118,9 +118,11 @@ const UserReview = () => {
     <>
       <Review value={inputValue} onChange={handleInputChange}></Review>
       <ButtonBox>
-        <Button onClick={handleDeleteReview} style={{ margin: '0 1rem' }}>
-          <BsTrash3 />
-        </Button>
+        {reviewId !== 0 && (
+          <Button onClick={handleDeleteReview} style={{ margin: '0 1rem' }}>
+            <BsTrash3 />
+          </Button>
+        )}
         <Button onClick={handleAddReview}>
           <BsCheckCircleFill />
         </Button>
