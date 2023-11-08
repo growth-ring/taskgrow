@@ -184,7 +184,7 @@ class TaskAddControllerTest {
             final ResultActions resultActions = subject(taskAddRequest);
 
             resultActions.andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("error").value(equalTo(String.format("Already Exists %s's task for this date( %s ).", givenUser.getName(), taskDate))))
+                    .andExpect(jsonPath("reason").value(equalTo(String.format("Already Exists %s's task for this date( %s ).", givenUser.getName(), taskDate))))
             ;
         }
     }
