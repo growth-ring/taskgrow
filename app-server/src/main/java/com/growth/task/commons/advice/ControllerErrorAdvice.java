@@ -1,5 +1,8 @@
 package com.growth.task.commons.advice;
 
+import com.growth.task.commons.error.ErrorCode;
+import com.growth.task.commons.error.ErrorResponse;
+import com.growth.task.commons.error.exception.BusinessException;
 import com.growth.task.review.exception.AlreadyReviewException;
 import com.growth.task.review.exception.OutOfBoundsException;
 import com.growth.task.review.exception.ReviewNotFoundException;
@@ -12,6 +15,7 @@ import com.growth.task.user.exception.UserNameDuplicationException;
 import com.growth.task.user.exception.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -33,11 +37,6 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @Slf4j
 @ControllerAdvice
 public class ControllerErrorAdvice {
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleEntityNotFoundException(EntityNotFoundException exception) {
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
-    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException exception) {
@@ -45,20 +44,7 @@ public class ControllerErrorAdvice {
         return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
     }
 
-    /**
-     * User를 찾을 수 없는 경우, NOT_FOUND(404)와 Error 메세지를 응답한다.
-     *
-     * @param exception User를 찾을 수 없다는 예외
-     * @return 에러 메세지
-     */
-    @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleUserNotFoundException(UserNotFoundException exception) {
-        log.error("UserNotFoundException", exception);
 
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
-    }
 
     /**
      * Input 이 없는 경우, BAD_REQUEST(400) 와 Error 메세지를 응답한다.
@@ -75,44 +61,6 @@ public class ControllerErrorAdvice {
         return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
     }
 
-    /**
-     * Task 를 찾을 수 없는 경우, NOT_FOUND(404) 와 Error 메세지를 응답한다.
-     *
-     * @param exception Tasks 를 찾을 수 없다는 예외
-     * @return 에러 메세지
-     */
-    @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(TaskNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTaskNotFoundException(TaskNotFoundException exception) {
-        log.error("TaskNotFoundException: taskId={}", exception.getTaskId());
-
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
-    }
-
-    /**
-     * TodoId 가 없는 경우, NOT_FOUND(404) 와 Error 메세지를 응답한다.
-     *
-     * @param exception TodoId 를 찾을 수 없다는 예외
-     * @return 에러 메세지
-     */
-    @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(TodoNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTodoNotFoundException(TodoNotFoundException exception) {
-        log.error("TodoNotFoundException", exception);
-
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
-    }
-
-    @ResponseStatus(NOT_FOUND)
-    @ExceptionHandler(ReviewNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleReviewNotFoundException(ReviewNotFoundException exception) {
-        log.error("ReviewNotFoundException", exception);
-
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, NOT_FOUND);
-    }
 
     /**
      * 사용자 이름이 이미 있는 경우, CONFLICT(409)와 Error 메세지를 응답한다.
@@ -182,6 +130,14 @@ public class ControllerErrorAdvice {
             errors.put(((FieldError) error).getField(), error.getDefaultMessage());
         }
         return new ResponseEntity<>(errors, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException exception) {
+        log.error("handleBusinessException", exception);
+        final ErrorCode errorCode = exception.getErrorCode();
+        final ErrorResponse response = ErrorResponse.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
     private static Map<String, String> getErrorResponseBody(Exception exception) {
