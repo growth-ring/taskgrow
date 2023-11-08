@@ -24,8 +24,7 @@ export const addReview = async (reviewData: AddReview) => {
       return review.data;
     }
   } catch (error: any) {
-    const errorMessage =
-      error.response.data.feelingsScore || error.response.data.contents;
+    const errorMessage = error.response.data.errors[0].reason;
 
     if (error.response.status === 409) {
       alert('하루에 하나의 회고만 작성할 수 있습니다.');
@@ -48,7 +47,9 @@ export const getReview = async (taskId: number) => {
 
 export const deleteReview = async (reviewId: number) => {
   try {
-    const isDelete = await axios.delete(`/api/v1/review/${reviewId}`);
+    const isDelete = await axios.delete(
+      `/httpClient/api/v1/review/${reviewId}`,
+    );
     return isDelete.status === 204;
   } catch (error: any) {
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
