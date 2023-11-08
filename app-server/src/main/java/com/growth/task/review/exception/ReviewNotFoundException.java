@@ -1,6 +1,8 @@
 package com.growth.task.review.exception;
 
-public class ReviewNotFoundException extends RuntimeException {
+import com.growth.task.commons.advice.EntityNotFoundException;
+
+public class ReviewNotFoundException extends EntityNotFoundException {
     public ReviewNotFoundException(Long reviewId) {
         super("리뷰를 찾을 수 없습니다. review id =" + reviewId);
     }

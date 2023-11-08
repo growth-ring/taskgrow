@@ -1,6 +1,7 @@
 package com.growth.task.pomodoro.exception;
 
-import jakarta.persistence.EntityNotFoundException;
+
+import com.growth.task.commons.advice.EntityNotFoundException;
 
 public class PomodoroNotFoundException extends EntityNotFoundException {
     public PomodoroNotFoundException() {

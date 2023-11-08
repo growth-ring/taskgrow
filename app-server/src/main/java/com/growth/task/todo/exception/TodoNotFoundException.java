@@ -1,6 +1,8 @@
 package com.growth.task.todo.exception;
 
-public class TodoNotFoundException extends RuntimeException {
+import com.growth.task.commons.advice.EntityNotFoundException;
+
+public class TodoNotFoundException extends EntityNotFoundException {
     public TodoNotFoundException() {
         super("This Todo is Not Found.");
     }

@@ -1,6 +1,8 @@
 package com.growth.task.user.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import com.growth.task.commons.advice.EntityNotFoundException;
+
+public class UserNotFoundException extends EntityNotFoundException {
     public UserNotFoundException() {
         super("This User is Not Found.");
     }

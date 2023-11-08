@@ -1,6 +1,8 @@
 package com.growth.task.todo.exception;
 
-public class TaskNotFoundException extends RuntimeException {
+import com.growth.task.commons.advice.EntityNotFoundException;
+
+public class TaskNotFoundException extends EntityNotFoundException {
     private final Long taskId;
 
     public TaskNotFoundException(Long taskId) {
