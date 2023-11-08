@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { httpClient } from './api';
 
 interface UserFormData {
   name: string;
@@ -10,7 +10,7 @@ export const signUp = async (
   setIsShowLogin: (isShowLogin: boolean) => void,
 ) => {
   try {
-    await axios.post('/api/v1/users', formData);
+    await httpClient.post('/users', formData);
     setIsShowLogin(true);
     alert('회원가입이 완료되었습니다.');
   } catch (error: any) {
@@ -20,7 +20,7 @@ export const signUp = async (
 
 export const login = async (formData: UserFormData) => {
   try {
-    const user = await axios.post('/api/v1/login', formData);
+    const user = await httpClient.post('/login', formData);
     return user.data.user_id;
   } catch (error: any) {
     if (error.response.status === 404 || error.response.status === 401) {

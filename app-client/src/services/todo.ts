@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { httpClient } from './api';
 
 interface AddTodoData {
   taskId: number;
@@ -16,7 +16,7 @@ interface UpdateTodoData {
 
 export const addTodo = async (todoData: AddTodoData) => {
   try {
-    const todo = await axios.post('/api/v1/todos', {
+    const todo = await httpClient.post('/todos', {
       task_id: todoData.taskId,
       todo: todoData.todo,
       plan_count: todoData.planCount,
@@ -30,7 +30,7 @@ export const addTodo = async (todoData: AddTodoData) => {
 
 export const getTodos = async (taskId: number) => {
   try {
-    const todoData = await axios.get('/api/v1/todos', {
+    const todoData = await httpClient.get('/todos', {
       params: {
         task_id: taskId,
       },
@@ -45,7 +45,7 @@ export const getTodos = async (taskId: number) => {
 
 export const updatePerformPomodoro = async (todoId: number) => {
   try {
-    await axios.patch(`/api/v1/pomodoros/${todoId}/complete`);
+    await httpClient.patch(`/pomodoros/${todoId}/complete`);
   } catch (error: any) {
     return null;
   }
@@ -53,7 +53,7 @@ export const updatePerformPomodoro = async (todoId: number) => {
 
 const updatePlanPomodoro = async (todoData: UpdateTodoData) => {
   try {
-    await axios.patch(`/api/v1/pomodoros/${todoData.todoId}`, {
+    await httpClient.patch(`/pomodoros/${todoData.todoId}`, {
       plan_count: todoData.planCount,
     });
   } catch (error: any) {
@@ -63,7 +63,7 @@ const updatePlanPomodoro = async (todoData: UpdateTodoData) => {
 
 export const updateTodo = async (todoData: UpdateTodoData) => {
   try {
-    await axios.patch(`/api/v1/todos/${todoData.todoId}`, {
+    await httpClient.patch(`/todos/${todoData.todoId}`, {
       todo: todoData.todo,
       status: todoData.status,
     });
@@ -77,7 +77,7 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
 
 export const deleteTodo = async (todoId: number) => {
   try {
-    const answer = await axios.delete(`/api/v1/todos/${todoId}`);
+    const answer = await httpClient.delete(`/todos/${todoId}`);
     return answer.status === 204 ? 'OK' : null;
   } catch (error: any) {
     return null;
