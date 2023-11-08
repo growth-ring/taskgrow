@@ -8,22 +8,24 @@ import lombok.Getter;
 public enum ErrorCode {
     // 잘못된 서버 요청
     BAD_REQUEST_ERROR(400, "G001", "Bad Request Exception"),
+    // 요청 값이 이미 존재하는 경우
+    ALREADY_EXISTS_ERROR(400, "G002", "Already Exist Exception"),
     // 인증에 실패함
-    AUTHENTICATE_FAIL_ERROR(401, "G007", "Authentication Fail Exception"),
+    AUTHENTICATE_FAIL_ERROR(401, "G003", "Authentication Fail Exception"),
 
     // 권한이 없음
-    FORBIDDEN_ERROR(403, "G002", "Forbidden Exception"),
+    FORBIDDEN_ERROR(403, "G004", "Forbidden Exception"),
     // 서버로 요청한 리소스가 존재하지 않음
-    NOT_FOUND_ERROR(404, "G003", "Not Found Exception"),
+    NOT_FOUND_ERROR(404, "G005", "Not Found Exception"),
 
     // NULL Point Exception 발생
-    NULL_POINT_ERROR(404, "G004", "Null Point Exception"),
+    NULL_POINT_ERROR(404, "G006", "Null Point Exception"),
 
     // @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
-    NOT_VALID_ERROR(400, "G005", "handle Validation Exception"),
+    NOT_VALID_ERROR(400, "G007", "handle Validation Exception"),
 
     // @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
-    NOT_VALID_HEADER_ERROR(404, "G006", "Header에 데이터가 존재하지 않는 경우 "),
+    NOT_VALID_HEADER_ERROR(404, "G008", "Header에 데이터가 존재하지 않는 경우 "),
 
     // 서버가 처리 할 방법을 모르는 경우 발생
     INTERNAL_SERVER_ERROR(500, "G999", "Internal Server Error Exception");

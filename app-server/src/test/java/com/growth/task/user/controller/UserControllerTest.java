@@ -98,11 +98,11 @@ class UserControllerTest {
                     .build();
 
             @Test
-            @DisplayName("Conflict 409을 응답한다")
-            void it_response_409() throws Exception {
+            @DisplayName("400을 응답한다")
+            void it_response_400() throws Exception {
                 final ResultActions resultActions = subject(request);
 
-                resultActions.andExpect(status().isConflict())
+                resultActions.andExpect(status().isBadRequest())
                 ;
             }
         }
