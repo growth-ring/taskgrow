@@ -8,7 +8,6 @@ on:
       - '.github/workflows/client-CI.yml'
   pull_request:
     paths:
-      - 'app-client/**'
       - '.github/workflows/client-CI.yml'
 
 defaults:
