@@ -8,8 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.Map;
-
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
@@ -17,9 +15,11 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class ControllerErrorAdvice {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException exception) {
-        Map<String, String> errorResponseBody = getErrorResponseBody(exception);
-        return new ResponseEntity<>(errorResponseBody, BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
+        log.error("IllegalArgumentException", exception);
+
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.BAD_REQUEST_ERROR, exception.getMessage());
+        return new ResponseEntity<>(response, BAD_REQUEST);
     }
 
     /**
@@ -39,9 +39,5 @@ public class ControllerErrorAdvice {
         final ErrorCode errorCode = exception.getErrorCode();
         final ErrorResponse response = ErrorResponse.of(errorCode, exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
-    }
-
-    private static Map<String, String> getErrorResponseBody(Exception exception) {
-        return Map.of("error", exception.getMessage());
     }
 }
