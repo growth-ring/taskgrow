@@ -9,6 +9,7 @@ import Review from '../../components/Review/Review';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import { useReviewStore } from '../../store/review';
+import { useTask } from '../../store/task';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import resetTimer from '../../utils/resetTimer';
@@ -73,14 +74,15 @@ const TodosBox = styled.div`
 const Todos = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
+  const { selectedTaskId } = useTask();
   const { isReview, closeReview } = useReviewStore();
   const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
-  const { selectedTodo, isTodoChange } = useTodosStore();
+  const { selectedTodo } = useTodosStore();
 
   useEffect(() => {
     resetTimer(timer, todos, 'reset');
     closeReview();
-  }, [isTodoChange]);
+  }, [selectedTaskId]);
 
   return (
     <>

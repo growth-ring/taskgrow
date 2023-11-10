@@ -4,6 +4,7 @@ import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import { useTask } from '../../store/task';
 import { getTodos } from '../../services/todo';
+import { useReviewStore } from '../../store/review';
 import resetTimer from '../../utils/resetTimer';
 
 interface Todo {
@@ -16,6 +17,7 @@ interface Todo {
 
 const TodoList = () => {
   const { selectedTaskId } = useTask();
+  const { closeReview } = useReviewStore();
   const timer = useTimerStore();
   const todos = useTodosStore();
   const {
@@ -33,6 +35,7 @@ const TodoList = () => {
       setPlanCount(todo.plan_count);
       setPerformCount(todo.perform_count);
       resetTimer(timer, todos, todo.todo);
+      closeReview();
     }
   };
 

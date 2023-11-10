@@ -36,7 +36,7 @@ const MoodSelect = () => {
 
   useEffect(() => {
     handleClick(feelingsScore - 1);
-  }, []);
+  }, [feelingsScore]);
 
   return (
     <Container>
