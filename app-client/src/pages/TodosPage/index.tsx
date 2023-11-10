@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Header from '../../components/Todos/Header';
 import StateBtn from '../../components/Todos/StateBtn';
 import Timer from '../../components/Pomodoro/Timer';
@@ -11,8 +12,8 @@ import { useTimerStore } from '../../store/timer';
 import { useReviewStore } from '../../store/review';
 import { useTask } from '../../store/task';
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import resetTimer from '../../utils/resetTimer';
+import { updatePerformPomodoro } from '../../services/todo';
 
 const Container = styled.div`
   @media (max-width: 767px) {
@@ -76,13 +77,62 @@ const Todos = () => {
   const todos = useTodosStore();
   const { selectedTaskId } = useTask();
   const { isReview, closeReview } = useReviewStore();
-  const { onTimer, timerState, startTime, timerMinute } = useTimerStore();
-  const { selectedTodo } = useTodosStore();
+  const { onTimer, timerState, startTime, timerMinute, complete } =
+    useTimerStore();
+  const USER_TIME = timerMinute * 60 * 1000;
+  const { todoId, selectedTodo, isTodoChange, setIsTodoChange } =
+    useTodosStore();
+  const [animationFrameId, setAnimationFrameId] = useState<number | null>(null);
+  const [percentage, setPercentage] = useState<number>(0);
+  const [timerTime, setTimerTime] = useState<number>(USER_TIME);
+  const isBreak: boolean = selectedTodo === '휴식';
 
   useEffect(() => {
     resetTimer(timer, todos, 'reset');
     closeReview();
   }, [selectedTaskId]);
+
+  useEffect(() => {
+    if (timerState === 'INITIAL') {
+      setTimerTime(USER_TIME);
+    }
+
+    if (timerState !== 'RUNNING') {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        setAnimationFrameId(null);
+        setPercentage(0);
+      }
+      return;
+    }
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - startTime;
+
+      if (elapsedTime < USER_TIME) {
+        setTimerTime(USER_TIME - elapsedTime);
+        setPercentage((elapsedTime / USER_TIME) * 100);
+        setAnimationFrameId(requestAnimationFrame(animate));
+      } else {
+        complete();
+        updatePerformPomodoro(todoId).then(() =>
+          setIsTodoChange(!isTodoChange),
+        );
+        setPercentage(100);
+      }
+    };
+
+    if (animationFrameId === null) {
+      setAnimationFrameId(requestAnimationFrame(animate));
+    }
+
+    return () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [timerState, animationFrameId, timerTime]);
 
   return (
     <>
@@ -95,14 +145,14 @@ const Todos = () => {
           {!isReview && (
             <>
               <Todo>{selectedTodo}</Todo>
-              <Pomodoro
-                startTime={startTime}
-                timerState={timerState}
-                time={timerMinute}
-              />
+              <Pomodoro percentage={percentage} timerState={timerState} />
               {onTimer && (
                 <>
-                  <Timer time={timerMinute} timerState={timerState} />
+                  <Timer
+                    time={timerTime}
+                    timerState={timerState}
+                    isBreak={isBreak}
+                  />
                   <PomodoroBtn />
                 </>
               )}
