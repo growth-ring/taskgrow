@@ -45,12 +45,10 @@ const isTaskExist = (checkForm: TaskExistProps) => {
 };
 
 const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistProps) => {
-  const taskId = Number(
-    monthTaskDate
-      .filter((task) => task.taskDate === userClickDay)
-      .map((task) => task.taskId),
+  const foundTask = monthTaskDate.find(
+    (task) => task.taskDate === userClickDay,
   );
-  return taskId;
+  return Number(foundTask?.taskId);
 };
 
 export const getAllTask = async ({
