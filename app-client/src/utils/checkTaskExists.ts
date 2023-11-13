@@ -10,7 +10,7 @@ export interface TaskDate {
   };
 }
 
-interface TaskProps {
+interface TaskData {
   task_id: number;
   task_date: string;
   todos: {
@@ -21,12 +21,12 @@ interface TaskProps {
   user_id: number;
 }
 
-interface TaskExistsProps {
+interface TaskExistProps {
   monthTaskDate: TaskDate[];
   userClickDay: string;
 }
 
-interface MoveToTaskProps extends TaskExistsProps {
+interface ClickTaskProps extends TaskExistProps {
   userId: number;
 }
 
@@ -36,7 +36,7 @@ interface AllTaskProps {
   endDate: string;
 }
 
-const checkTaskExists = (checkForm: TaskExistsProps) => {
+const isTaskExist = (checkForm: TaskExistProps) => {
   return (
     checkForm.monthTaskDate.filter(
       (task) => task.taskDate === checkForm.userClickDay,
@@ -44,7 +44,7 @@ const checkTaskExists = (checkForm: TaskExistsProps) => {
   );
 };
 
-const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistsProps) => {
+const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistProps) => {
   const taskId = Number(
     monthTaskDate
       .filter((task) => task.taskDate === userClickDay)
@@ -62,7 +62,7 @@ export const getAllTask = async ({
   const tasks = await getTaskList(taskData);
 
   const updatedData = await Promise.all(
-    tasks.map(async (task: TaskProps) => {
+    tasks.map(async (task: TaskData) => {
       const todo = await getTask(task.task_id);
       return {
         taskId: task.task_id,
@@ -77,13 +77,13 @@ export const getAllTask = async ({
   return updatedData;
 };
 
-export const moveToTask = async ({
+export const clickTask = async ({
   userId,
   monthTaskDate,
   userClickDay,
-}: MoveToTaskProps): Promise<number> => {
+}: ClickTaskProps): Promise<number> => {
   const checkForm = { monthTaskDate, userClickDay };
-  if (checkTaskExists(checkForm)) {
+  if (isTaskExist(checkForm)) {
     return getTaskId(checkForm);
   } else {
     return addTask({ userId, userClickDay });
