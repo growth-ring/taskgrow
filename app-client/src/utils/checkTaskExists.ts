@@ -36,21 +36,6 @@ interface AllTaskProps {
   endDate: string;
 }
 
-const isTaskExist = (checkForm: TaskExistProps) => {
-  return (
-    checkForm.monthTaskDate.filter(
-      (task) => task.taskDate === checkForm.userClickDay,
-    ).length === 1
-  );
-};
-
-const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistProps) => {
-  const foundTask = monthTaskDate.find(
-    (task) => task.taskDate === userClickDay,
-  );
-  return Number(foundTask?.taskId);
-};
-
 export const getAllTask = async ({
   userId,
   startDate,
@@ -86,4 +71,17 @@ export const clickTask = async ({
   } else {
     return addTask({ userId, userClickDay });
   }
+};
+
+const isTaskExist = (checkForm: TaskExistProps) => {
+  return checkForm.monthTaskDate.some(
+    (task) => task.taskDate === checkForm.userClickDay,
+  );
+};
+
+const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistProps) => {
+  const foundTask = monthTaskDate.find(
+    (task) => task.taskDate === userClickDay,
+  );
+  return Number(foundTask?.taskId);
 };
