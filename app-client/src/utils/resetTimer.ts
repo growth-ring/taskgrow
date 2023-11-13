@@ -14,13 +14,8 @@ function resetTimer(timer: TimerStore, todos: TodosStore, todo: string): void {
   } else {
     setSelectedTodo(todo);
     setOnTimer(true);
-    if (todo === '휴식') {
-      showBreak();
-      setTimerMinute(5);
-    } else {
-      showTodo();
-      setTimerMinute(25);
-    }
+    todo === '휴식' ? showBreak() : showTodo();
+    setTimerMinute(todo === '휴식' ? 5 : 25);
   }
 }
 
