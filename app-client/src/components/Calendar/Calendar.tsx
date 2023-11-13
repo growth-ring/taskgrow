@@ -7,7 +7,7 @@ import './Calendar.css';
 import styled from 'styled-components';
 import { startEndDate } from '../../utils/startEndDate';
 import { useUser } from '../../store/user';
-import { getAllTask, moveToTask } from '../../utils/checkTaskExists';
+import { getAllTask, clickTask } from '../../utils/checkTaskExists';
 import { useTask } from '../../store/task';
 import done from '../../assets/done.png';
 import FeelingsScore from './FeelingsScore';
@@ -109,7 +109,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
   const handleTodayClick = async (day: Date) => {
     const userClickDay = moment(day).format('YYYY-MM-DD');
-    const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
+    const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
     localStorage.setItem('taskId', String(taskId));
     navigate(`/todos/${userClickDay}`);

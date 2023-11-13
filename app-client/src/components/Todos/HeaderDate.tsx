@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { useUser } from '../../store/user';
 import { useTask } from '../../store/task';
-import { getAllTask, moveToTask } from '../../utils/checkTaskExists';
+import { getAllTask, clickTask } from '../../utils/checkTaskExists';
 
 const Arrow = styled.button`
   @media (max-width: 767px) {
@@ -63,7 +63,7 @@ const HeaderDate = () => {
 
     navigate(`/todos/${userClickDay}`);
     const monthTaskDate = await getAllTask({ userId, startDate, endDate });
-    const taskId = await moveToTask({ userId, monthTaskDate, userClickDay });
+    const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
   };
 

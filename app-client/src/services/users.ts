@@ -14,7 +14,7 @@ export const signUp = async (
     setIsShowLogin(true);
     alert('회원가입이 완료되었습니다.');
   } catch (error: any) {
-    alert(error.response.data.error);
+    alert(error.response.data.reason);
   }
 };
 
