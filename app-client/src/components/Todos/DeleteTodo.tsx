@@ -8,7 +8,7 @@ interface TodoProps {
 }
 
 const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
-  const { isTodoChange, setIsTodoChange, setSelectedTodo } = useTodosStore();
+  const { isTodoChange, setIsTodoChange } = useTodosStore();
 
   const handleClose = () => {
     getIsShow();
@@ -17,7 +17,6 @@ const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
   const handleDelete = async () => {
     const response = await deleteTodo(todoId);
     if (response === 'OK') {
-      setSelectedTodo('오늘 할 일 골라주세요');
       setIsTodoChange(!isTodoChange);
     }
   };

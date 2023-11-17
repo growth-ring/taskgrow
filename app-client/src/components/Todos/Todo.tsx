@@ -79,7 +79,6 @@ const Todo = ({
             : 'bg-gradient-to-r from-indigo-100 to-transparent hover:from-indigo-200'
         } transition ease-linear duration-150 cursor-pointer`}
         style={{ display: 'flex', width: '100%' }}
-        onClick={onClick}
       >
         <div
           className="inline-flex items-center space-x-2"
@@ -101,7 +100,7 @@ const Todo = ({
               color: todos.todoId === id ? 'var(--main-color)' : '',
             }}
           >
-            {title}
+            <button onClick={onClick}>{title}</button>
           </div>
         </div>
         <div style={{ display: 'flex' }}>
