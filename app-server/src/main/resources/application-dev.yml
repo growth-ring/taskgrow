@@ -10,11 +10,11 @@ spring:
         true
       force:
         true
-  datasource:
-    url: jdbc:mariadb://13.125.177.52:3306/taskgrow
-    username: root
-    password: 1234
-    driver-class-name: org.mariadb.jdbc.Driver
+  #  datasource:
+  #    url: jdbc:mariadb://13.125.177.52:3306/taskgrow
+  #    username: root
+  #    password: 1234
+  #    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: validate
@@ -22,6 +22,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  profiles:
+    include: db
 logging:
   level:
     org:
