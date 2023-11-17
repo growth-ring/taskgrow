@@ -144,7 +144,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   useEffect(() => {
     if (monthTaskDate.length) {
       const filteredTaskDates = monthTaskDate
-        .filter((date) => date.todos.remain >= 0)
+        .filter((date) => date.todos.remain >= 0 && date.todoData.length > 0)
         .map((date) => date.taskDate);
       setViewTaskDate(filteredTaskDates);
     }
