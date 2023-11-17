@@ -14,6 +14,7 @@ import { useTask } from '../../store/task';
 import styled from 'styled-components';
 import resetTimer from '../../utils/resetTimer';
 import { updatePerformPomodoro } from '../../services/todo';
+import { getTodos } from '../../services/todo';
 
 const Container = styled.div`
   @media (max-width: 767px) {
@@ -88,9 +89,11 @@ const Todos = () => {
   const isBreak: boolean = selectedTodo === '휴식';
 
   useEffect(() => {
-    resetTimer(timer, todos, 'reset');
-    closeReview();
-  }, [selectedTaskId]);
+    getTodos(selectedTaskId).then((todoList) => {
+      resetTimer(timer, todos, 'reset', todoList);
+      closeReview();
+    });
+  }, [selectedTaskId, isTodoChange]);
 
   useEffect(() => {
     if (timerState === 'INITIAL') {

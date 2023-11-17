@@ -1,9 +1,6 @@
-import { useEffect } from 'react';
 import Todo from './Todo';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
-import { useTask } from '../../store/task';
-import { getTodos } from '../../services/todo';
 import { useReviewStore } from '../../store/review';
 import resetTimer from '../../utils/resetTimer';
 
@@ -16,18 +13,11 @@ interface Todo {
 }
 
 const TodoList = () => {
-  const { selectedTaskId } = useTask();
   const { closeReview } = useReviewStore();
   const timer = useTimerStore();
   const todos = useTodosStore();
-  const {
-    setPlanCount,
-    todoList,
-    setTodoList,
-    setTodoId,
-    setPerformCount,
-    isTodoChange,
-  } = useTodosStore();
+  const { setPlanCount, todoList, setTodoId, setPerformCount } =
+    useTodosStore();
 
   const handleTodoClick = (todo: Todo) => {
     if (todo.status !== 'DONE') {
@@ -38,10 +28,6 @@ const TodoList = () => {
       closeReview();
     }
   };
-
-  useEffect(() => {
-    getTodos(selectedTaskId).then((todos) => setTodoList(todos));
-  }, [selectedTaskId, isTodoChange]);
 
   return (
     <div

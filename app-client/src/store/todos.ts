@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface Todo {
+export interface Todo {
   todo_id: number;
   task_id: number;
   todo: string;
@@ -39,6 +39,6 @@ export const useTodosStore = create<TodosStore>((set) => ({
   setPlanCount: (count) => set({ planCount: count }),
   isTodoChange: false,
   setIsTodoChange: (todoChange) => set({ isTodoChange: todoChange }),
-  selectedTodo: '오늘 할 일 골라주세요',
+  selectedTodo: '오늘 할 일 추가해 주세요',
   setSelectedTodo: (todo) => set({ selectedTodo: todo }),
 }));
