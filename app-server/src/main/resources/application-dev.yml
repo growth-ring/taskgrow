@@ -22,8 +22,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  profiles:
-    include: db
 logging:
   level:
     org:
