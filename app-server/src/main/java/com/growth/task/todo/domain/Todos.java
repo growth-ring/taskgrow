@@ -6,6 +6,8 @@ import com.growth.task.todo.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,6 +44,7 @@ public class Todos extends BaseTimeEntity {
     private String todo;
 
     @Column(name = "status", columnDefinition = "varchar(20) default 'READY'", nullable = false)
+    @Enumerated(EnumType.STRING) // 이 부분을 추가
     private Status status;
 
     @Builder
