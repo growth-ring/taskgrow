@@ -98,7 +98,6 @@ const Todo = ({
             }`}
             style={{
               width: '100%',
-              overflow: 'hidden',
               color: todos.todoId === id ? 'var(--main-color)' : '',
             }}
           >
