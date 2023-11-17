@@ -22,18 +22,20 @@ const StateBtn = () => {
   const handleShowTodo = () => {
     closeReview();
     timer.showTodo();
-    resetTimer(timer, todos, 'reset');
+    resetTimer(timer, todos, 'reset', todos.todoList);
   };
 
   const handleShowBreak = () => {
     closeReview();
     timer.showBreak();
     resetTimer(timer, todos, '휴식');
+    todos.setTodoId(0);
   };
 
   const handleShowReview = () => {
     openReview();
     timer.showReview();
+    todos.setTodoId(0);
   };
 
   return (

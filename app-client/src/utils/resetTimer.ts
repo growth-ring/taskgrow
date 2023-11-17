@@ -8,19 +8,27 @@ function resetTimer(
   todo: string,
   todoList?: Todo[],
 ): void {
-  const { showTodo, showBreak, setOnTimer, stop, setTimerMinute } = timer;
-  const { setSelectedTodo, setTodoList } = todos;
+  const { timerState, showTodo, showBreak, setOnTimer, stop, setTimerMinute } =
+    timer;
+  const { setSelectedTodo, setTodoList, setTodoId } = todos;
 
-  stop();
-  if (todo === 'reset' && todoList) {
+  if (todoList) {
     setTodoList(todoList);
-    setSelectedTodo(
-      todoList.length ? '오늘 할 일 골라주세요' : '오늘 할 일 추가해 주세요',
-    );
-    setOnTimer(false);
+  }
+
+  if (todo === 'reset') {
+    if (timerState !== 'FINISHED') {
+      setTodoId(0);
+      stop();
+      setOnTimer(false);
+      setSelectedTodo(
+        todoList?.length ? '오늘 할 일 골라주세요' : '오늘 할 일 추가해 주세요',
+      );
+    }
     showTodo();
     setTimerMinute(25);
   } else {
+    stop();
     setSelectedTodo(todo);
     setOnTimer(true);
     todo === '휴식' ? showBreak() : showTodo();

@@ -11,6 +11,7 @@ import { getAllTask, clickTask } from '../../utils/checkTaskExists';
 import { useTask } from '../../store/task';
 import done from '../../assets/done.png';
 import FeelingsScore from './FeelingsScore';
+import { useTimerStore } from '../../store/timer';
 
 const Todo = styled.div`
   color: black;
@@ -101,6 +102,7 @@ interface ThisMonthProps {
 const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const navigate = useNavigate();
   const { userId } = useUser();
+  const { stop } = useTimerStore();
   const { monthTaskDate, setMonthTaskDate, setSelectedTaskId } = useTask();
   const [startDate, setStartDate] = useState(thisMonthStart);
   const [endDate, setEndDate] = useState(thisMonthEnd);
@@ -108,6 +110,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const [mouseOverDay, setMouseOverDay] = useState('');
 
   const handleTodayClick = async (day: Date) => {
+    stop();
     const userClickDay = moment(day).format('YYYY-MM-DD');
     const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
