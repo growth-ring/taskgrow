@@ -63,6 +63,8 @@ const PreviewTodoList = styled.div`
 `;
 
 const PreviewTodo = styled.div`
+  color: black;
+
   @media (min-width: 768px) and (max-width: 1023px) {
     margin-top: 0.3rem;
   }
