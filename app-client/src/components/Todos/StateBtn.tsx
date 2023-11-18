@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../UI/Button';
+import Alert from '../UI/Alert';
 
 import { useTimerStore } from '../../store/timer';
 import { useTodosStore } from '../../store/todos';
@@ -18,24 +20,45 @@ const StateBtn = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
   const { openReview, closeReview } = useReviewStore();
+  const [isShow, setIsShow] = useState(false);
+  const [title, setTitle] = useState('');
+
+  const getIsShow = () => {
+    setIsShow(!isShow);
+  };
 
   const handleShowTodo = () => {
-    closeReview();
-    timer.showTodo();
-    resetTimer(timer, todos, 'reset', todos.todoList);
+    if (timer.timerState === 'RUNNING' && timer.selectedBtn === 'BREAK') {
+      setIsShow(true);
+      setTitle('할 일');
+    } else {
+      closeReview();
+      timer.showTodo();
+      resetTimer(timer, todos, 'reset', todos.todoList);
+    }
   };
 
   const handleShowBreak = () => {
-    closeReview();
-    timer.showBreak();
-    resetTimer(timer, todos, '휴식');
-    todos.setTodoId(0);
+    if (timer.timerState === 'RUNNING' && timer.selectedBtn === 'TODO') {
+      setIsShow(true);
+      setTitle('휴식');
+    } else {
+      closeReview();
+      timer.showBreak();
+      resetTimer(timer, todos, '휴식');
+      todos.setTodoId(0);
+    }
   };
 
   const handleShowReview = () => {
-    openReview();
-    timer.showReview();
-    todos.setTodoId(0);
+    if (timer.timerState === 'RUNNING') {
+      setIsShow(true);
+      setTitle('회고');
+    } else {
+      openReview();
+      timer.showReview();
+      todos.setTodoId(0);
+    }
   };
 
   return (
@@ -51,6 +74,7 @@ const StateBtn = () => {
           회고
         </Button>
       </Wrapper>
+      {isShow && <Alert text={title} getIsShow={getIsShow} />}
     </Container>
   );
 };
