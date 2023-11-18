@@ -12,6 +12,7 @@ import { useTask } from '../../store/task';
 import done from '../../assets/done.png';
 import FeelingsScore from './FeelingsScore';
 import { useTimerStore } from '../../store/timer';
+import { useTodosStore } from '../../store/todos';
 
 const Todo = styled.div`
   color: black;
@@ -104,6 +105,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const { userId } = useUser();
   const { stop } = useTimerStore();
   const { monthTaskDate, setMonthTaskDate, setSelectedTaskId } = useTask();
+  const { setTaskDate } = useTodosStore();
   const [startDate, setStartDate] = useState(thisMonthStart);
   const [endDate, setEndDate] = useState(thisMonthEnd);
   const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
@@ -112,10 +114,11 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const handleTodayClick = async (day: Date) => {
     stop();
     const userClickDay = moment(day).format('YYYY-MM-DD');
+    navigate(`/todos/${userClickDay}`);
     const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
+    setTaskDate(userClickDay);
     localStorage.setItem('taskId', String(taskId));
-    navigate(`/todos/${userClickDay}`);
   };
 
   const handleDateViewChange = ({ activeStartDate }: any) => {

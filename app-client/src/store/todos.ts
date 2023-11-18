@@ -10,8 +10,8 @@ export interface Todo {
 }
 
 export interface TodosStore {
-  today: string;
-  setToday: (running: string) => void;
+  taskDate: string;
+  setTaskDate: (running: string) => void;
   todoList: Todo[];
   setTodoList: (todos: Todo[]) => void;
   todoId: number;
@@ -27,8 +27,8 @@ export interface TodosStore {
 }
 
 export const useTodosStore = create<TodosStore>((set) => ({
-  today: '',
-  setToday: (day) => set({ today: day }),
+  taskDate: '',
+  setTaskDate: (day) => set({ taskDate: day }),
   todoList: [],
   setTodoList: (newTodo) => set({ todoList: newTodo }),
   todoId: 0,
