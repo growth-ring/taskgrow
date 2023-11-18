@@ -1,30 +1,49 @@
-import { deleteTodo } from '../../services/todo';
+import { useNavigate } from 'react-router-dom';
+import { useTimerStore } from '../../store/timer';
 import { useTodosStore } from '../../store/todos';
+import { useReviewStore } from '../../store/review';
+import resetTimer from '../../utils/resetTimer';
 
-interface TodoProps {
-  todoId: number;
-  todoTitle: string;
+type alert = {
+  text: string;
   getIsShow: () => void;
-}
+};
 
-const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
-  const { isTodoChange, setIsTodoChange } = useTodosStore();
+const Alert = ({ text, getIsShow }: alert) => {
+  const navigate = useNavigate();
+  const timer = useTimerStore();
+  const todos = useTodosStore();
+  const { openReview, closeReview } = useReviewStore();
 
   const handleClose = () => {
     getIsShow();
   };
 
-  const handleDelete = async () => {
-    const response = await deleteTodo(todoId);
-    if (response === 'OK') {
-      setIsTodoChange(!isTodoChange);
+  const handleChange = () => {
+    getIsShow();
+
+    if (text === '할 일') {
+      closeReview();
+      timer.showTodo();
+      resetTimer(timer, todos, 'reset', todos.todoList);
+    } else if (text === '휴식') {
+      closeReview();
+      timer.showBreak();
+      resetTimer(timer, todos, '휴식');
+      todos.setTodoId(0);
+    } else if (text === 'task') {
+      navigate('/tasks');
+    } else {
+      openReview();
+      timer.showReview();
+      todos.setTodoId(0);
     }
   };
 
   return (
     <div>
       <div
-        className="fixed inset-0 z-50 overflow-y-auto"
+        className="fixed inset-0 z-50 overflow-y-auto "
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true"
@@ -57,16 +76,16 @@ const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
             </div>
 
             <div className="mt-5">
-              <span className="text-main-color">{todoTitle}</span>
-              을(를) 삭제하시겠습니까?
+              <span className="text-main-color">{text} </span>로
+              이동하시겠습니까? 진행 중인 타이머가 초기화됩니다.
             </div>
 
             <div className="flex justify-end mt-6 ">
               <button
-                onClick={handleDelete}
+                onClick={handleChange}
                 className="px-3 py-2 text-sm tracking-wide bg-main-color text-white capitalize transition-colors duration-200 transform bg-indigo-500 rounded-md dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:ring-opacity-50"
               >
-                삭제하기
+                이동하기
               </button>
             </div>
           </div>
@@ -76,4 +95,4 @@ const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
   );
 };
 
-export default DeleteTodo;
+export default Alert;

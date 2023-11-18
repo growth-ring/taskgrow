@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { SlPlus, SlCalender } from 'react-icons/sl';
 import AddTodos from './AddTodos';
 import HeaderDate from './HeaderDate';
+import Alert from '../UI/Alert';
 import { useNavigate } from 'react-router-dom';
+import { useTimerStore } from '../../store/timer';
 
 const Container = styled.div`
   display: flex;
@@ -83,8 +85,10 @@ const Wrapper = styled.div`
 `;
 
 const Header = () => {
-  const [showAddTodos, setShowAddTodos] = useState(false);
   const navigate = useNavigate();
+  const { timerState } = useTimerStore();
+  const [showAddTodos, setShowAddTodos] = useState(false);
+  const [showGoBack, setShowGoBack] = useState(false);
 
   const handleShowAddTodos = () => {
     setShowAddTodos(true);
@@ -95,7 +99,15 @@ const Header = () => {
   };
 
   const handleGoBack = () => {
-    navigate('/tasks');
+    if (timerState === 'RUNNING') {
+      setShowGoBack(true);
+    } else {
+      navigate('/tasks');
+    }
+  };
+
+  const getIsShow = () => {
+    setShowGoBack(!showGoBack);
   };
 
   return (
@@ -114,6 +126,7 @@ const Header = () => {
         </Wrapper>
       </Container>
       {showAddTodos && <AddTodos getShowAddTodos={getShowAddTodos} />}
+      {showGoBack && <Alert text={'task'} getIsShow={getIsShow} />}
     </>
   );
 };

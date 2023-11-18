@@ -11,6 +11,8 @@ import { getAllTask, clickTask } from '../../utils/checkTaskExists';
 import { useTask } from '../../store/task';
 import done from '../../assets/done.png';
 import FeelingsScore from './FeelingsScore';
+import { useTimerStore } from '../../store/timer';
+import { useTodosStore } from '../../store/todos';
 
 const Todo = styled.div`
   color: black;
@@ -61,6 +63,8 @@ const PreviewTodoList = styled.div`
 `;
 
 const PreviewTodo = styled.div`
+  color: black;
+
   @media (min-width: 768px) and (max-width: 1023px) {
     margin-top: 0.3rem;
   }
@@ -101,16 +105,20 @@ interface ThisMonthProps {
 const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   const navigate = useNavigate();
   const { userId } = useUser();
+  const { stop } = useTimerStore();
   const { monthTaskDate, setMonthTaskDate, setSelectedTaskId } = useTask();
+  const { setTaskDate } = useTodosStore();
   const [startDate, setStartDate] = useState(thisMonthStart);
   const [endDate, setEndDate] = useState(thisMonthEnd);
   const [viewTaskDate, setViewTaskDate] = useState<string[]>([]);
   const [mouseOverDay, setMouseOverDay] = useState('');
 
   const handleTodayClick = async (day: Date) => {
+    stop();
     const userClickDay = moment(day).format('YYYY-MM-DD');
     const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
+    setTaskDate(userClickDay);
     localStorage.setItem('taskId', String(taskId));
     navigate(`/todos/${userClickDay}`);
   };
@@ -141,7 +149,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   useEffect(() => {
     if (monthTaskDate.length) {
       const filteredTaskDates = monthTaskDate
-        .filter((date) => date.todos.remain >= 0)
+        .filter((date) => date.todos.remain >= 0 && date.todoData.length > 0)
         .map((date) => date.taskDate);
       setViewTaskDate(filteredTaskDates);
     }

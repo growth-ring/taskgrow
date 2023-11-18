@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface Todo {
+export interface Todo {
   todo_id: number;
   task_id: number;
   todo: string;
@@ -10,8 +10,8 @@ interface Todo {
 }
 
 export interface TodosStore {
-  today: string;
-  setToday: (running: string) => void;
+  taskDate: string;
+  setTaskDate: (running: string) => void;
   todoList: Todo[];
   setTodoList: (todos: Todo[]) => void;
   todoId: number;
@@ -27,8 +27,8 @@ export interface TodosStore {
 }
 
 export const useTodosStore = create<TodosStore>((set) => ({
-  today: '',
-  setToday: (day) => set({ today: day }),
+  taskDate: '',
+  setTaskDate: (day) => set({ taskDate: day }),
   todoList: [],
   setTodoList: (newTodo) => set({ todoList: newTodo }),
   todoId: 0,
@@ -39,6 +39,6 @@ export const useTodosStore = create<TodosStore>((set) => ({
   setPlanCount: (count) => set({ planCount: count }),
   isTodoChange: false,
   setIsTodoChange: (todoChange) => set({ isTodoChange: todoChange }),
-  selectedTodo: '오늘 할 일 골라주세요',
+  selectedTodo: '오늘 할 일 추가해 주세요',
   setSelectedTodo: (todo) => set({ selectedTodo: todo }),
 }));

@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { BsPencil, BsTrash3 } from 'react-icons/bs';
+import {
+  BsPencil,
+  BsTrash3,
+  BsCheckSquareFill,
+  BsSquare,
+} from 'react-icons/bs';
 import TodoDetail from './TodoDetail';
 import DeleteTodo from './DeleteTodo';
 import { updateTodo } from '../../services/todo';
@@ -74,27 +79,17 @@ const Todo = ({
             : 'bg-gradient-to-r from-indigo-100 to-transparent hover:from-indigo-200'
         } transition ease-linear duration-150 cursor-pointer`}
         style={{ display: 'flex', width: '100%' }}
-        onClick={onClick}
       >
         <div
           className="inline-flex items-center space-x-2"
           style={{ width: '60%' }}
         >
           <button onClick={handleTodoComplete} style={{ width: '10%' }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke={status === 'DONE' ? 'var(--main-color)' : 'currentColor'}
-              className="w-6 h-6 text-slate-500"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 12.75l6 6 9-13.5"
-              />
-            </svg>
+            {status === 'DONE' ? (
+              <BsCheckSquareFill style={{ color: 'var(--main-color)' }} />
+            ) : (
+              <BsSquare />
+            )}
           </button>
           <div
             className={`text-slate-500 ${
@@ -102,10 +97,10 @@ const Todo = ({
             }`}
             style={{
               width: '100%',
-              overflow: 'hidden',
+              color: todos.todoId === id ? 'var(--main-color)' : '',
             }}
           >
-            {title}
+            <button onClick={onClick}>{title}</button>
           </div>
         </div>
         <div style={{ display: 'flex' }}>
