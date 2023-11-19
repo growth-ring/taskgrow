@@ -17,8 +17,8 @@ public class TodoStatsRequest {
     private LocalDate endDate;
 
     @Builder
-    public TodoStatsRequest(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public TodoStatsRequest(LocalDate start_date, LocalDate end_date) {
+        this.startDate = start_date;
+        this.endDate = end_date;
     }
 }
