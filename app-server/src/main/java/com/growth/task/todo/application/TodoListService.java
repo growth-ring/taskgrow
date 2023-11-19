@@ -5,16 +5,25 @@ import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.dto.TodoStatsRequest;
+import com.growth.task.todo.dto.TodoStatsResponse;
+import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.response.TodoListResponse;
+import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.exception.TaskNotFoundException;
 import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.growth.task.todo.enums.Status.DONE;
+import static com.growth.task.todo.enums.Status.PROGRESS;
+
+@Transactional
 @Service
 public class TodoListService {
 
@@ -33,6 +42,7 @@ public class TodoListService {
         this.tasksRepository = tasksRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<TodoListResponse> getTodosByTaskId(Long taskId) {
         List<Todos> todosEntities = validateTaskAndFetchTodos(taskId);
 
@@ -76,5 +86,35 @@ public class TodoListService {
      */
     public List<TaskTodoDetailResponse> getTaskTodosPreview(Long taskId) {
         return todosRepository.getTaskTodoPreview(taskId, PREVIEW_LIMIT);
+    }
+
+    /**
+     * 날짜 범위에 해당하는 todo의 통계를 계산한다.
+     * 총 투두 개수, 완료한 투두 개수, 진행 중인 투두 개수, 미완료인 투두 개수
+     *
+     * @param userId
+     * @param request
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public TodoStatsResponse getTodoStats(Long userId, TodoStatsRequest request) {
+        List<TodoResponse> todos = todosRepository.findByUserIdAndBetweenTimeRange(userId, request);
+
+        return aggregate(todos);
+    }
+
+    public TodoStatsResponse aggregate(List<TodoResponse> todos) {
+        long totalCount = todos.size();
+        long doneCount = calculateCountByStatus(todos, DONE);
+        long progressCount = calculateCountByStatus(todos, PROGRESS);
+        long undoneCount = totalCount - doneCount;
+
+        return new TodoStatsResponse(totalCount, doneCount, progressCount, undoneCount);
+    }
+
+    private Long calculateCountByStatus(List<TodoResponse> todos, Status status) {
+        return todos.stream()
+                .filter(todo -> todo.getStatus() == status)
+                .count();
     }
 }

@@ -6,10 +6,13 @@ import com.growth.task.pomodoro.service.PomodoroAddService;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.repository.TodosRepository;
+import com.growth.task.todo.dto.TodoResponse;
+import com.growth.task.todo.dto.TodoStatsRequest;
+import com.growth.task.todo.dto.TodoStatsResponse;
 import com.growth.task.todo.dto.response.TodoListResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.exception.TaskNotFoundException;
+import com.growth.task.todo.repository.TodosRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,18 +21,30 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class TodoListServiceTest {
 
+    public static final int DONE_COUNT = 5;
+    public static final int PROGRESS_COUNT = 2;
+    public static final int UNDONE_COUNT = 5;
+    public static final long USER_ID = 1L;
+    public static final LocalDate LOCAL_DATE_11_20 = LocalDate.of(2023, 11, 20);
+    public static final LocalDate LOCAL_DATE_11_19 = LocalDate.of(2023, 11, 19);
+    public static final int TOTAL_COUNT = 10;
+    public static final int STATS_DONE = 7;
+    public static final int STATS_PROGRESS = 2;
+    public static final int STATS_UNDONE = 3;
     @Mock
     private TodosRepository todosRepository;
 
@@ -164,6 +179,82 @@ public class TodoListServiceTest {
                 assertThat(secondResponse.getStatus()).isEqualTo(Status.PROGRESS);
                 assertThat(secondResponse.getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT2);
                 assertThat(secondResponse.getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT2);
+            }
+        }
+    }
+
+    @DisplayName("aggregate")
+    @Nested
+    class Describe_aggregate {
+        @DisplayName("todo 리스트가 주어지면")
+        @Nested
+        class Context_with_todo_list {
+            private static List<TodoResponse> todos = List.of(
+                    new TodoResponse(1L, 1L, "책읽기", Status.READY),
+                    new TodoResponse(1L, 1L, "소설읽기", Status.DONE),
+                    new TodoResponse(1L, 2L, "책읽기", Status.DONE),
+                    new TodoResponse(1L, 2L, "운동하기", Status.DONE),
+                    new TodoResponse(1L, 2L, "스터디하기", Status.DONE),
+                    new TodoResponse(1L, 3L, "밥먹기", Status.PROGRESS),
+                    new TodoResponse(1L, 3L, "책읽기", Status.DONE),
+                    new TodoResponse(1L, 4L, "책읽기", Status.READY),
+                    new TodoResponse(1L, 4L, "쓰레기버리기", Status.READY),
+                    new TodoResponse(1L, 4L, "계획짜기", Status.PROGRESS)
+            );
+
+            @DisplayName("총 투두 개수, 완료한 투두 개수, 진행중인 투두 개수, 미완료 투두 개수를 계산한다")
+            @Test
+            void it_aggregate() {
+                TodoStatsResponse actual = todoListService.aggregate(todos);
+
+                assertAll(
+                        () -> assertThat(actual.getTotalCount()).isEqualTo(todos.size()),
+                        () -> assertThat(actual.getDoneCount()).isEqualTo(DONE_COUNT),
+                        () -> assertThat(actual.getProgressCount()).isEqualTo(PROGRESS_COUNT),
+                        () -> assertThat(actual.getUndoneCount()).isEqualTo(UNDONE_COUNT)
+                );
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("getTodoCount")
+    class Describe_getTodoCount {
+        @Nested
+        @DisplayName("사용자 아이디가 주어지면")
+        class Context_with_userId {
+            private TodoStatsRequest request = new TodoStatsRequest(LOCAL_DATE_11_19, LOCAL_DATE_11_20);
+
+            @BeforeEach
+            void prepare() {
+                List<TodoResponse> todos = List.of(
+                        new TodoResponse(1L, 1L, "책읽기", Status.READY),
+                        new TodoResponse(1L, 1L, "소설읽기", Status.DONE),
+                        new TodoResponse(1L, 2L, "책읽기", Status.DONE),
+                        new TodoResponse(1L, 2L, "운동하기", Status.DONE),
+                        new TodoResponse(1L, 2L, "스터디하기", Status.DONE),
+                        new TodoResponse(1L, 3L, "밥먹기", Status.PROGRESS),
+                        new TodoResponse(1L, 3L, "책읽기", Status.DONE),
+                        new TodoResponse(1L, 4L, "책읽기", Status.DONE),
+                        new TodoResponse(1L, 4L, "쓰레기버리기", Status.DONE),
+                        new TodoResponse(1L, 4L, "계획짜기", Status.PROGRESS)
+                );
+                given(todosRepository.findByUserIdAndBetweenTimeRange(USER_ID, request))
+                        .willReturn(todos);
+            }
+
+            @Test
+            @DisplayName("총 투두 개수, 완료한 투두 개수, 진행중인 투두 개수, 미완료 투두 개수를 리턴한다")
+            void it_return_stats_todo() {
+                TodoStatsResponse todoStats = todoListService.getTodoStats(USER_ID, request);
+
+                assertAll(
+                        () -> assertThat(todoStats.getTotalCount()).isEqualTo(TOTAL_COUNT),
+                        () -> assertThat(todoStats.getDoneCount()).isEqualTo(STATS_DONE),
+                        () -> assertThat(todoStats.getProgressCount()).isEqualTo(STATS_PROGRESS),
+                        () -> assertThat(todoStats.getUndoneCount()).isEqualTo(STATS_UNDONE)
+
+                );
             }
         }
     }
