@@ -7,6 +7,8 @@ import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.dto.TodoResponse;
+import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
@@ -31,6 +33,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DataJpaTest
 class TodosRepositoryTest {
     public static final int LIMIT = 3;
+    public static final LocalDate DATE_2023_11_01 = LocalDate.of(2023, 11, 1);
+    public static final LocalDate DATE_2023_11_02 = LocalDate.of(2023, 11, 2);
+    public static final LocalDate DATE_2023_11_03 = LocalDate.of(2023, 11, 3);
+    public static final LocalDate DATE_2023_11_04 = LocalDate.of(2023, 11, 4);
+    public static final LocalDate DATE_2023_11_05 = LocalDate.of(2023, 11, 5);
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
@@ -58,7 +65,7 @@ class TodosRepositoryTest {
         );
     }
 
-    private void getTodo(Tasks task, String todo, Status status, int performCount, int planCount) {
+    private void getTodoWithPomo(Tasks task, String todo, Status status, int performCount, int planCount) {
         Todos givenTodo = todosRepository.save(
                 Todos.builder()
                         .task(task)
@@ -70,6 +77,16 @@ class TodosRepositoryTest {
                 .performCount(performCount)
                 .planCount(planCount)
                 .build());
+    }
+
+    private Todos getTodo(Tasks task, String todo, Status status) {
+        return todosRepository.save(
+                Todos.builder()
+                        .task(task)
+                        .todo(todo)
+                        .status(status)
+                        .build()
+        );
     }
 
     @AfterEach
@@ -96,12 +113,12 @@ class TodosRepositoryTest {
         class Context_with_task_id_and_limit {
             @BeforeEach
             void setUp() {
-                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
-                getTodo(task, "얼고리즘 읽기", Status.READY, 0, 4);
-                getTodo(task, "스프링 인 액션 읽기", Status.DONE, 3, 4);
-                getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
-                getTodo(task, "구엔이일 읽기", Status.PROGRESS, 2, 5);
-                getTodo(task, "코틀린 함수형 프로그래밍 읽기", Status.PROGRESS, 2, 4);
+                getTodoWithPomo(task, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
+                getTodoWithPomo(task, "얼고리즘 읽기", Status.READY, 0, 4);
+                getTodoWithPomo(task, "스프링 인 액션 읽기", Status.DONE, 3, 4);
+                getTodoWithPomo(task, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
+                getTodoWithPomo(task, "구엔이일 읽기", Status.PROGRESS, 2, 5);
+                getTodoWithPomo(task, "코틀린 함수형 프로그래밍 읽기", Status.PROGRESS, 2, 4);
             }
 
             @Test
@@ -120,9 +137,9 @@ class TodosRepositoryTest {
         class Context_todo_3 {
             @BeforeEach
             void setUp() {
-                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
-                getTodo(task, "얼고리즘 읽기", Status.READY, 0, 2);
-                getTodo(task, "스프링 인 액션 읽기", Status.DONE, 2, 2);
+                getTodoWithPomo(task, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
+                getTodoWithPomo(task, "얼고리즘 읽기", Status.READY, 0, 2);
+                getTodoWithPomo(task, "스프링 인 액션 읽기", Status.DONE, 2, 2);
             }
 
             @Test
@@ -141,6 +158,90 @@ class TodosRepositoryTest {
             void it_return_1() {
                 List<TaskTodoDetailResponse> result = todosRepository.getTaskTodoPreview(task.getTaskId(), LIMIT);
                 assertThat(result).isEmpty();
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("findByUserIdAndBetweenTimeRange")
+    class Describe_findByUserIdAndBetweenTimeRange {
+        private Users user;
+
+        @BeforeEach
+        void prepare() {
+            user = getUser("test", "1234");
+            Tasks task1 = getTask(user, DATE_2023_11_01);
+            Tasks task2 = getTask(user, DATE_2023_11_02);
+            Tasks task3 = getTask(user, DATE_2023_11_03);
+            Tasks task4 = getTask(user, DATE_2023_11_04);
+            Tasks task5 = getTask(user, DATE_2023_11_05);
+
+
+            getTodoWithPomo(task1, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
+            getTodoWithPomo(task1, "얼고리즘 읽기", Status.READY, 0, 4);
+            getTodoWithPomo(task2, "스프링 인 액션 읽기", Status.DONE, 3, 4);
+            getTodoWithPomo(task3, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
+            getTodoWithPomo(task3, "구엔이일 읽기", Status.PROGRESS, 2, 5);
+            getTodoWithPomo(task3, "코틀린 함수형 프로그래밍 읽기", Status.PROGRESS, 2, 4);
+            getTodoWithPomo(task4, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
+            getTodoWithPomo(task4, "얼고리즘 읽기", Status.READY, 0, 4);
+            getTodoWithPomo(task4, "스프링 인 액션 읽기", Status.DONE, 3, 4);
+            getTodoWithPomo(task5, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
+        }
+
+        @Nested
+        @DisplayName("사용자 아이디와 빈 날짜가 주어지면")
+        class Context_with_user_id {
+            private final TodoStatsRequest request = new TodoStatsRequest(null, null);
+
+            @Test
+            @DisplayName("사용자 아이디에 해당하는 todo 리스트를 불러온다")
+            void it_return_todo_list_by_user() {
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+
+                assertThat(actual).hasSize(10);
+            }
+        }
+
+        @Nested
+        @DisplayName("사용자 아이디와 끝 날짜가 주어지면")
+        class Context_with_user_id_and_end_date {
+            private final TodoStatsRequest request = new TodoStatsRequest(null, DATE_2023_11_03);
+
+            @Test
+            @DisplayName("사용자 아이디와 날짜 범위에 해당하는 todo 리스트를 불러온다")
+            void it_return_todo_list_by_user() {
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+
+                assertThat(actual).hasSize(6);
+            }
+        }
+
+        @Nested
+        @DisplayName("사용자 아이디와 시작 날짜가 주어지면")
+        class Context_with_user_id_and_start_date {
+            private final TodoStatsRequest request = new TodoStatsRequest(DATE_2023_11_03, null);
+
+            @Test
+            @DisplayName("사용자 아이디와 날짜 범위에 해당하는 todo 리스트를 불러온다")
+            void it_return_todo_list_by_user() {
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+
+                assertThat(actual).hasSize(7);
+            }
+        }
+
+        @Nested
+        @DisplayName("사용자 아이디와 날짜가 주어지면")
+        class Context_with_user_id_and_date {
+            private final TodoStatsRequest request = new TodoStatsRequest(DATE_2023_11_03, DATE_2023_11_04);
+
+            @Test
+            @DisplayName("사용자 아이디와 날짜 범위에 해당하는 todo 리스트를 불러온다")
+            void it_return_todo_list_by_user() {
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+
+                assertThat(actual).hasSize(6);
             }
         }
     }
