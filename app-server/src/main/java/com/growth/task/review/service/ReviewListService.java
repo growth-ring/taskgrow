@@ -9,13 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
+import static com.growth.task.review.domain.Review.FEELING_SCORE_LOWER_BOUND;
+import static com.growth.task.review.domain.Review.FEELING_SCORE_UPPER_BOUND;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
-@Transactional
 @Service
 public class ReviewListService {
+    public static final long DEFAULT_SCORE_COUNT = 0L;
     private final ReviewRepository reviewRepository;
 
     public ReviewListService(ReviewRepository reviewRepository) {
@@ -25,8 +28,8 @@ public class ReviewListService {
     @Transactional(readOnly = true)
     public ReviewStatsResponse getReviewStats(Long userId, ReviewStatsRequest request) {
         List<ReviewDetailResponse> reviews = getReviewList(userId, request);
-        Map<Integer, Long> feelings = reviews.stream()
-                .collect(groupingBy(ReviewDetailResponse::getFeelingsScore, counting()));
+
+        Map<Integer, Long> feelings = addDefaultScore(countFeelingsScore(reviews));
 
         return new ReviewStatsResponse(feelings);
     }
@@ -34,5 +37,19 @@ public class ReviewListService {
     @Transactional(readOnly = true)
     public List<ReviewDetailResponse> getReviewList(Long userId, ReviewStatsRequest request) {
         return reviewRepository.findByUserIdAndBetweenTimeRange(userId, request);
+    }
+
+    private Map<Integer, Long> countFeelingsScore(List<ReviewDetailResponse> reviews) {
+        return reviews.stream()
+                .collect(groupingBy(
+                        ReviewDetailResponse::getFeelingsScore,
+                        counting()
+                ));
+    }
+
+    private Map<Integer, Long> addDefaultScore(Map<Integer, Long> feelings) {
+        IntStream.rangeClosed(FEELING_SCORE_LOWER_BOUND, FEELING_SCORE_UPPER_BOUND)
+                .forEach(i -> feelings.putIfAbsent(i, DEFAULT_SCORE_COUNT));
+        return feelings;
     }
 }

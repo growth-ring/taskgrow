@@ -45,13 +45,13 @@ class ReviewListServiceTest {
             void prepare() {
                 List<ReviewDetailResponse> reviews = List.of(
                         new ReviewDetailResponse(1L, "review1", 1),
-                        new ReviewDetailResponse(2L, "review1", 2),
+                        new ReviewDetailResponse(2L, "review1", 1),
                         new ReviewDetailResponse(3L, "review1", 3),
-                        new ReviewDetailResponse(4L, "review1", 4),
-                        new ReviewDetailResponse(5L, "review1", 5),
+                        new ReviewDetailResponse(4L, "review1", 3),
+                        new ReviewDetailResponse(5L, "review1", 3),
                         new ReviewDetailResponse(6L, "review1", 6),
                         new ReviewDetailResponse(7L, "review1", 7),
-                        new ReviewDetailResponse(8L, "review1", 8),
+                        new ReviewDetailResponse(8L, "review1", 7),
                         new ReviewDetailResponse(9L, "review1", 9),
                         new ReviewDetailResponse(10L, "review1", 10)
                 );
@@ -64,14 +64,14 @@ class ReviewListServiceTest {
             void it_return_feelings_score_count() {
                 ReviewStatsResponse reviewStats = reviewListService.getReviewStats(USER_ID, request);
                 Map<Integer, Long> expected = Map.of(
-                        1, 1L,
-                        2, 1L,
-                        3, 1L,
-                        4, 1L,
-                        5, 1L,
+                        1, 2L,
+                        2, 0L,
+                        3, 3L,
+                        4, 0L,
+                        5, 0L,
                         6, 1L,
-                        7, 1L,
-                        8, 1L,
+                        7, 2L,
+                        8, 0L,
                         9, 1L,
                         10, 1L
                 );
