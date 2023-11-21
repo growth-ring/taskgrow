@@ -1,8 +1,8 @@
 package com.growth.task.todo.repository.impl;
 
 import com.growth.task.task.dto.TaskTodoDetailResponse;
-import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.TodoResponse;
+import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepositoryCustom;
 import com.querydsl.core.types.Projections;
@@ -16,7 +16,6 @@ import java.util.List;
 import static com.growth.task.pomodoro.domain.QPomodoros.pomodoros;
 import static com.growth.task.task.domain.QTasks.tasks;
 import static com.growth.task.todo.domain.QTodos.todos;
-import static com.growth.task.user.domain.QUsers.users;
 
 @Repository
 public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
@@ -56,15 +55,17 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 ))
                 .from(todos)
                 .leftJoin(tasks)
-                .on(todos.task.taskId.eq(tasks.taskId))
-                .leftJoin(users)
-                .on(tasks.user.userId.eq(users.userId))
+                .on(todos.task.eq(tasks))
                 .where(
-                        users.userId.eq(userId),
+                        eqUserId(userId),
                         betweenTimeRange(request)
                 )
                 .fetch()
                 ;
+    }
+
+    private static BooleanExpression eqUserId(Long userId) {
+        return tasks.user.userId.eq(userId);
     }
 
     private static BooleanExpression betweenTimeRange(TodoStatsRequest request) {
