@@ -2,7 +2,7 @@ package com.growth.task.todo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
-import com.growth.task.todo.application.TodoAddService;
+import com.growth.task.todo.application.TodoWithRelatedAddService;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
 import com.growth.task.todo.dto.request.TodoAddRequest;
@@ -29,7 +29,7 @@ class TodoAddControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private TodoAddService todoAddService;
+    private TodoWithRelatedAddService todoWithRelatedAddService;
 
     @BeforeEach
     public void setUp() {
@@ -42,7 +42,7 @@ class TodoAddControllerTest {
                 .planCount(5)
                 .build();
 
-        when(todoAddService.save(Mockito.any(TodoAndPomodoroAddRequest.class))).thenReturn(response);
+        when(todoWithRelatedAddService.saveWithRelated(Mockito.any(TodoAndPomodoroAddRequest.class))).thenReturn(response);
     }
 
     @Test

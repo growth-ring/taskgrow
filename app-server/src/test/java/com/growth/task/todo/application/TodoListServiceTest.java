@@ -54,7 +54,7 @@ public class TodoListServiceTest {
     @Mock
     private TasksRepository tasksRepository;
 
-    private TodoService todoService;
+    private TodoAddService todoAddService;
     private PomodoroAddService pomodoroAddService;
     private TodoListService todoListService;
 
@@ -72,7 +72,7 @@ public class TodoListServiceTest {
 
     @BeforeEach
     void setUp() {
-        todoService = mock(TodoService.class);
+        todoAddService = mock(TodoAddService.class);
         pomodoroAddService = mock(PomodoroAddService.class);
         todoListService = new TodoListService(todosRepository, pomodorosRepository, tasksRepository);
     }
