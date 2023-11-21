@@ -3,6 +3,7 @@ package com.growth.task.review.service;
 import com.growth.task.review.domain.Review;
 import com.growth.task.review.dto.ReviewAddRequest;
 import com.growth.task.review.dto.ReviewAddResponse;
+import com.growth.task.review.repository.ReviewRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.service.TaskDetailService;
 import org.junit.jupiter.api.BeforeEach;
