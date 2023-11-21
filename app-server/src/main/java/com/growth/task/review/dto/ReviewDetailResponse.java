@@ -3,12 +3,11 @@ package com.growth.task.review.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.review.domain.Review;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @JsonNaming(SnakeCaseStrategy.class)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 public class ReviewDetailResponse {
     private Long reviewId;

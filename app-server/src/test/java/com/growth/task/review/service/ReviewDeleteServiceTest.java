@@ -2,6 +2,7 @@ package com.growth.task.review.service;
 
 import com.growth.task.review.domain.Review;
 import com.growth.task.review.exception.ReviewNotFoundException;
+import com.growth.task.review.repository.ReviewRepository;
 import com.growth.task.task.domain.Tasks;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

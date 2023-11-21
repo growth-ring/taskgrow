@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.growth.task.review.domain.Review;
-import com.growth.task.review.service.ReviewRepository;
+import com.growth.task.review.repository.ReviewRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskListRequest;
 import com.growth.task.task.repository.TasksRepository;

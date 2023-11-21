@@ -3,6 +3,7 @@ package com.growth.task.review.service;
 import com.growth.task.review.domain.Review;
 import com.growth.task.review.dto.ReviewDetailResponse;
 import com.growth.task.review.exception.ReviewNotFoundException;
+import com.growth.task.review.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
