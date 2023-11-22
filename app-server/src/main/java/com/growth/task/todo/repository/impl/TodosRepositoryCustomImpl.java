@@ -4,7 +4,6 @@ import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
-
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepositoryCustom;
 import com.querydsl.core.types.Projections;
@@ -81,6 +80,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 .on(pomodoros.todo.eq(todos))
                 .fetch()
                 ;
+    }
 
     private static BooleanExpression eqUserId(Long userId) {
         return tasks.user.userId.eq(userId);
