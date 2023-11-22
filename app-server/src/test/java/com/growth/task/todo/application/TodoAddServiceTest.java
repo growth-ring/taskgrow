@@ -1,7 +1,7 @@
 package com.growth.task.todo.application;
 
 import com.growth.task.task.domain.Tasks;
-import com.growth.task.task.repository.TasksRepository;
+import com.growth.task.task.service.TaskDetailService;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.request.TodoAddRequest;
 import com.growth.task.todo.exception.TaskNotFoundException;
@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -28,7 +26,7 @@ class TodoAddServiceTest {
     @Mock
     private TodosRepository todosRepository;
     @Mock
-    private TasksRepository tasksRepository;
+    private TaskDetailService taskDetailService;
 
     private TodoAddService todoAddService;
 
@@ -38,7 +36,7 @@ class TodoAddServiceTest {
 
     @BeforeEach
     void setUp() {
-        todoAddService = new TodoAddService(todosRepository, tasksRepository);
+        todoAddService = new TodoAddService(todosRepository, taskDetailService);
 
     }
 
@@ -60,7 +58,7 @@ class TodoAddServiceTest {
 
             @BeforeEach
             void setUp() {
-                given(tasksRepository.findById(TASK_ID1)).willReturn(Optional.of(tasks));
+                given(taskDetailService.findTaskById(TASK_ID1)).willReturn(tasks);
             }
 
             @Test
@@ -82,7 +80,7 @@ class TodoAddServiceTest {
 
             @BeforeEach
             void setUp() {
-                when(tasksRepository.findById(TASK_ID2)).thenReturn(Optional.empty());
+                when(taskDetailService.findTaskById(TASK_ID2)).thenThrow(TaskNotFoundException.class);
             }
 
             @Test
