@@ -1,8 +1,6 @@
 package com.growth.task.todo.application;
 
-import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.dto.TaskTodoDetailResponse;
-import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.TodoStatsResponse;
@@ -17,23 +15,16 @@ import java.util.List;
 import static com.growth.task.todo.enums.Status.DONE;
 import static com.growth.task.todo.enums.Status.PROGRESS;
 
-@Transactional
 @Service
 public class TodoListService {
 
     public static final int PREVIEW_LIMIT = 3;
     private final TodosRepository todosRepository;
-    private final PomodorosRepository pomodorosRepository;
-    private final TasksRepository tasksRepository;
 
     public TodoListService(
-            TodosRepository todosRepository,
-            PomodorosRepository pomodorosRepository,
-            TasksRepository tasksRepository
+            TodosRepository todosRepository
     ) {
         this.todosRepository = todosRepository;
-        this.pomodorosRepository = pomodorosRepository;
-        this.tasksRepository = tasksRepository;
     }
 
     /**

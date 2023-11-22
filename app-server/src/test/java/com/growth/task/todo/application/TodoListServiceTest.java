@@ -1,10 +1,7 @@
 package com.growth.task.todo.application;
 
 import com.growth.task.pomodoro.domain.Pomodoros;
-import com.growth.task.pomodoro.repository.PomodorosRepository;
-import com.growth.task.pomodoro.service.PomodoroAddService;
 import com.growth.task.task.domain.Tasks;
-import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.TodoStatsRequest;
@@ -27,7 +24,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class TodoListServiceTest {
@@ -44,15 +40,6 @@ public class TodoListServiceTest {
     public static final int STATS_UNDONE = 3;
     @Mock
     private TodosRepository todosRepository;
-
-    @Mock
-    private PomodorosRepository pomodorosRepository;
-
-    @Mock
-    private TasksRepository tasksRepository;
-
-    private TodoAddService todoAddService;
-    private PomodoroAddService pomodoroAddService;
     private TodoListService todoListService;
 
     private final Long TASK_ID = 1L;
@@ -69,9 +56,7 @@ public class TodoListServiceTest {
 
     @BeforeEach
     void setUp() {
-        todoAddService = mock(TodoAddService.class);
-        pomodoroAddService = mock(PomodoroAddService.class);
-        todoListService = new TodoListService(todosRepository, pomodorosRepository, tasksRepository);
+        todoListService = new TodoListService(todosRepository);
     }
 
     @DisplayName("getTodosByTaskId 메서드는")
