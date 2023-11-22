@@ -23,4 +23,12 @@ public class TodoUpdateRequest {
         this.todo = todo;
         this.status = status;
     }
+
+    public boolean hasStatus() {
+        return this.status != null;
+    }
+
+    public boolean hasTodo() {
+        return this.todo != null;
+    }
 }

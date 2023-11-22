@@ -20,13 +20,12 @@ public class TodoUpdateService {
         Todos todos = todosRepository.findById(todoId)
                 .orElseThrow(() -> new TodoNotFoundException(todoId));
 
-        if (todoUpdateRequest.getTodo() != null) {
+        if (todoUpdateRequest.hasTodo()) {
             todos.updateTodo(todoUpdateRequest.getTodo());
         }
-        if (todoUpdateRequest.getStatus() != null) {
+        if (todoUpdateRequest.hasStatus()) {
             todos.updateStatus(todoUpdateRequest.getStatus());
         }
-        todosRepository.save(todos);
 
         return todos;
     }
