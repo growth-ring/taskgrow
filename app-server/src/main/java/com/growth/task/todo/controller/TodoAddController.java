@@ -1,6 +1,6 @@
 package com.growth.task.todo.controller;
 
-import com.growth.task.todo.application.TodoAddService;
+import com.growth.task.todo.application.TodoWithRelatedAddService;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,15 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Todo", description = "Todo API Document")
 public class TodoAddController {
 
-    private final TodoAddService todoAddService;
+    private final TodoWithRelatedAddService todoWithRelatedAddService;
 
-    public TodoAddController(TodoAddService todoAddService) {
-        this.todoAddService = todoAddService;
+    public TodoAddController(TodoWithRelatedAddService todoWithRelatedAddService) {
+        this.todoWithRelatedAddService = todoWithRelatedAddService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TodoAndPomodoroAddResponse create(@RequestBody @Valid TodoAndPomodoroAddRequest todoAndPomodoroAddRequest) {
-        return todoAddService.save(todoAndPomodoroAddRequest);
+        return todoWithRelatedAddService.saveWithRelated(todoAndPomodoroAddRequest);
     }
 }

@@ -34,7 +34,7 @@ class ReviewAddServiceTest {
     }
 
     @Nested
-    @DisplayName("save")
+    @DisplayName("saveWithRelated")
     class Describe_save {
         @Nested
         @DisplayName("존재하는 테스트와 회고 내용과 기분점수가 주어지면")

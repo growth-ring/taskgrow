@@ -7,18 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class TodoDeleteService {
+public class TodoDetailService {
     private final TodosRepository todosRepository;
 
-    public TodoDeleteService(TodosRepository todosRepository) {
+    public TodoDetailService(TodosRepository todosRepository) {
         this.todosRepository = todosRepository;
     }
 
-    @Transactional
-    public void deleteByTodoId(Long todoId) {
-        Todos todos = todosRepository.findById(todoId)
+    @Transactional(readOnly = true)
+    public Todos getTodo(Long todoId) {
+        return todosRepository.findById(todoId)
                 .orElseThrow(() -> new TodoNotFoundException(todoId));
-
-        todosRepository.delete(todos);
     }
 }

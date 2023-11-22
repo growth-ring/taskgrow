@@ -3,6 +3,7 @@ package com.growth.task.todo.repository.impl;
 import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.TodoStatsRequest;
+import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepositoryCustom;
 import com.querydsl.core.types.Projections;
@@ -64,8 +65,26 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 ;
     }
 
+    @Override
+    public List<TodoWithPomodoroResponse> findTodoWithPomodoroByTaskId(Long taskId) {
+        return queryFactory.select(Projections.fields(TodoWithPomodoroResponse.class,
+                        todos.todoId,
+                        todos.task.taskId,
+                        todos.todo,
+                        todos.status,
+                        pomodoros.performCount,
+                        pomodoros.planCount
+                ))
+                .from(todos)
+                .leftJoin(pomodoros)
+                .on(pomodoros.todo.eq(todos))
+                .fetch()
+                ;
+    }
+
     private static BooleanExpression eqUserId(Long userId) {
         return tasks.user.userId.eq(userId);
+
     }
 
     private static BooleanExpression betweenTimeRange(TodoStatsRequest request) {
