@@ -3,7 +3,7 @@ package com.growth.task.todo.controller;
 import com.growth.task.todo.application.TodoListService;
 import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.TodoStatsResponse;
-import com.growth.task.todo.dto.response.TodoListResponse;
+import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class TodoListController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TodoListResponse> getTodos(@RequestParam(name = "task_id", required = true) Long taskId) {
+    public List<TodoWithPomodoroResponse> getTodos(@RequestParam(name = "task_id", required = true) Long taskId) {
         return todoListService.getTodosByTaskId(taskId);
     }
 
