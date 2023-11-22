@@ -26,7 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -135,10 +135,12 @@ class TodoDeleteControllerTest {
             void setUp() {
                 todoId = todo.getTodoId();
             }
+
             @Test
             @DisplayName("204 상태 코드와 함께 Pomodoro 가 삭제된다.")
             void it_returns_no_content_and_delete_response() throws Exception {
-                performDelete(todoId).andExpect(status().isNoContent());
+                performDelete(todoId)
+                        .andExpect(status().isNoContent());
                 assertNull(pomodorosRepository.findById(pomodoros.getPomodoroId()).orElse(null));
             }
         }
