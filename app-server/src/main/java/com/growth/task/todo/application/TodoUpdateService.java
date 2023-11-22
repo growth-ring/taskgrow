@@ -2,23 +2,20 @@ package com.growth.task.todo.application;
 
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.request.TodoUpdateRequest;
-import com.growth.task.todo.exception.TodoNotFoundException;
-import com.growth.task.todo.repository.TodosRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TodoUpdateService {
-    private final TodosRepository todosRepository;
+    private final TodoDetailService todoDetailService;
 
-    public TodoUpdateService(TodosRepository todosRepository) {
-        this.todosRepository = todosRepository;
+    public TodoUpdateService(TodoDetailService todoDetailService) {
+        this.todoDetailService = todoDetailService;
     }
 
     @Transactional
     public Todos update(Long todoId, TodoUpdateRequest todoUpdateRequest) {
-        Todos todos = todosRepository.findById(todoId)
-                .orElseThrow(() -> new TodoNotFoundException(todoId));
+        Todos todos = todoDetailService.getTodo(todoId);
 
         if (todoUpdateRequest.hasTodo()) {
             todos.updateTodo(todoUpdateRequest.getTodo());

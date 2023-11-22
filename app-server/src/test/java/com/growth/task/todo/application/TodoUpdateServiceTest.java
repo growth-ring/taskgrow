@@ -5,7 +5,6 @@ import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.request.TodoUpdateRequest;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.exception.TodoNotFoundException;
-import com.growth.task.todo.repository.TodosRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,13 +14,10 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("TodoUpdateService")
@@ -31,11 +27,11 @@ class TodoUpdateServiceTest {
     private final String NEW_WHAT_TO_DO = "쿠버네티스 입문";
     private TodoUpdateService todoUpdateService;
     @Mock
-    private TodosRepository todosRepository;
+    private TodoDetailService todoDetailService;
 
     @BeforeEach
     void setUp() {
-        todoUpdateService = new TodoUpdateService(todosRepository);
+        todoUpdateService = new TodoUpdateService(todoDetailService);
     }
 
     @Nested
@@ -72,8 +68,8 @@ class TodoUpdateServiceTest {
 
             @BeforeEach
             void prepare() {
-                given(todosRepository.findById(TODO_ID1))
-                        .willReturn(Optional.of(todos));
+                given(todoDetailService.getTodo(TODO_ID1))
+                        .willReturn(todos);
             }
 
             @Test
@@ -118,8 +114,8 @@ class TodoUpdateServiceTest {
 
             @BeforeEach
             void setUp() {
-                when(todosRepository.findById(TODO_ID1))
-                        .thenReturn(Optional.empty());
+                given(todoDetailService.getTodo(TODO_ID1))
+                        .willThrow(TodoNotFoundException.class);
             }
 
             @Test
