@@ -36,7 +36,7 @@ const Menu = () => {
   const navigate = useNavigate();
 
   const handleGoState = () => {
-    navigate('/stats');
+    navigate('/mypage');
   };
 
   return (

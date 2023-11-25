@@ -23,7 +23,8 @@ const Form = ({ type }: { type: string }) => {
     if (user) {
       navigate(`/tasks`);
       setUserId(user);
-      localStorage.setItem('userName', user);
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userNameId', user);
     }
   };
 
