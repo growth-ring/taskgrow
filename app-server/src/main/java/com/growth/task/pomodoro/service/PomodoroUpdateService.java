@@ -8,7 +8,6 @@ import com.growth.task.pomodoro.repository.PomodorosRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Service
 public class PomodoroUpdateService {
     private final PomodorosRepository pomodorosRepository;
