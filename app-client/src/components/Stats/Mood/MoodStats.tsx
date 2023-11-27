@@ -14,9 +14,10 @@ const Container = styled.div`
 
 const MoodStats = () => {
   const Title = ['감정', '20'];
-  const maxMood = '기분 좋은 날';
-  const comment = `${maxMood}이 제일 많았어요`;
-  const subComment = '달력에서 자세히 볼 수 있어요 🗓️';
+  const firstMood = '기분 좋은 날';
+  const secondMood = '행복한 날';
+  const comment = `${firstMood}이 제일 많았어요`;
+  const subComment = `두번째로는 ${secondMood}이 많았어요`;
 
   return (
     <Container>
