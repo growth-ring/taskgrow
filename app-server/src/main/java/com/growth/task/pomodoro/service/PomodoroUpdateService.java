@@ -22,7 +22,6 @@ public class PomodoroUpdateService {
         pomodoros.getTodo().validateUpdatePomodoro();
         pomodoros.updatePlanCount(pomodoroUpdateRequest.getPlanCount());
 
-        pomodorosRepository.save(pomodoros);
         return pomodoros;
     }
 
