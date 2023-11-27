@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import Box from '../UI/Box';
-import { TodosComment } from '../../../constants/StatsComment';
 
 const Container = styled.div`
   display: flex;
@@ -13,13 +12,11 @@ const Container = styled.div`
   }
 `;
 
-const TodosStats = () => {
-  const Title = ['한 일', '30'];
-  const percent = 80;
-  const comment = `완료 달성률은 ${percent}% 이에요`;
-  const subComment =
-    TodosComment.find((comments) => comments.percent === percent)?.comment ||
-    '';
+const MoodStats = () => {
+  const Title = ['감정', '20'];
+  const maxMood = '기분 좋은 날';
+  const comment = `${maxMood}이 제일 많았어요`;
+  const subComment = '달력에서 자세히 볼 수 있어요 🗓️';
 
   return (
     <Container>
@@ -28,4 +25,4 @@ const TodosStats = () => {
   );
 };
 
-export default TodosStats;
+export default MoodStats;

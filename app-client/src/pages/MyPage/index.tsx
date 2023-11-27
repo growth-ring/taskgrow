@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Header from '../../components/Menu/Header';
 import HeaderDate from '../../components/Stats/HeaderDate';
 import TodosStats from '../../components/Stats/Todos/TodosStats';
+import MoodStats from '../../components/Stats/Mood/MoodStats';
 
 const Line = styled.div`
   background-color: #f5f5f5;
@@ -29,6 +30,7 @@ const MyPage = () => {
       <HeaderDate />
       <Container>
         <TodosStats />
+        <MoodStats />
       </Container>
     </>
   );

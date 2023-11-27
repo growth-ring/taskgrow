@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import Circle from '../Todos/Circle';
 
-const Container = styled.div`
+const Container = styled.div<{ category: string }>`
   width: 75%;
 
   @media (max-width: 767px) {
-    margin: 0 10px;
+    ${({ category }) => category === '한 일' && `margin: 0 10px;`}
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
-    margin: 0 100px;
+    ${({ category }) => category === '한 일' && `margin: 0 100px;`}
   }
 
   @media (min-width: 1024px) {
-    margin: 0 150px;
+    ${({ category }) => category === '한 일' && `margin: 0 150px;`}
   }
 `;
 
@@ -28,7 +28,7 @@ const Content = styled.div`
     3px 3px 10px rgba(50, 50, 50, 0.1);
 `;
 
-const Title = styled.div`
+const TitleBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 10px;
@@ -55,17 +55,25 @@ const SubText = styled.div`
   color: #949494;
 `;
 
-const Box = () => {
+interface BoxType {
+  title: string[];
+  comment: string;
+  subComment: string;
+}
+
+const Box = ({ title, comment, subComment }: BoxType) => {
+  const category = title[0];
+  const count = title[1];
   return (
-    <Container>
-      <Title>
-        <div>한 일</div>
-        <div>총 30개</div>
-      </Title>
+    <Container category={category}>
+      <TitleBox>
+        <div>{category}</div>
+        <div>총 {count}개</div>
+      </TitleBox>
       <Content>
-        <Circle />
-        <Text>완료 달성률은 80% 이에요</Text>
-        <SubText>잘하고 있어요! 🥳</SubText>
+        {category === '한 일' && <Circle />}
+        <Text>{comment}</Text>
+        <SubText>{subComment}</SubText>
       </Content>
     </Container>
   );
