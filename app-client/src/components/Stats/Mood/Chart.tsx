@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, Tooltip, XAxis } from 'recharts';
+import { BarChart, Bar, Tooltip, XAxis, Cell } from 'recharts';
 import styled from 'styled-components';
 import { MoodList } from '../../../constants/StatsComment';
 
@@ -36,6 +36,11 @@ const Chart = () => {
     setChartSize({ width: newWidth, height: newHeight, fontSize: newFontSize });
   };
 
+  const sortedMoodList = [...MoodList].sort((a, b) => b.num - a.num);
+
+  const firstMood = sortedMoodList[0].num;
+  const secondMood = sortedMoodList[1].num;
+
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -50,7 +55,20 @@ const Chart = () => {
       >
         <XAxis dataKey="icon" fontSize={chartSize.fontSize} />
         <Tooltip content={<CustomTooltip />} />
-        <Bar dataKey="num" fill={`var(--sub-blue-color)`} />
+        <Bar dataKey="num">
+          {MoodList.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={
+                entry.num === firstMood
+                  ? `var(--main-color)`
+                  : entry.num === secondMood
+                  ? `var(--sub-blue-color)`
+                  : `var(--line-color)`
+              }
+            />
+          ))}
+        </Bar>
       </BarChart>
     </Container>
   );
