@@ -62,8 +62,7 @@ export const getReviewStats = async (userReviewStats: ReviewStats) => {
         },
       },
     );
-    console.log(feelings.data.feelings);
-    // return
+    return feelings.data.feelings;
   } catch (error: any) {
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }

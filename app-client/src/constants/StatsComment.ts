@@ -5,26 +5,26 @@ export const TodosComment = Object.freeze([
   },
 ]);
 
-export const MoodList = Object.freeze([
+export const MoodList = Object([
   {
     name: 'HAPPY',
     icon: '🥰',
-    num: 5,
+    num: 0,
   },
   {
     name: 'NICE',
     icon: '😀',
-    num: 9,
+    num: 0,
   },
   {
     name: 'GOOD',
     icon: '🙂',
-    num: 1,
+    num: 0,
   },
   {
     name: 'SOSO',
     icon: '😐',
-    num: 2,
+    num: 0,
   },
   {
     name: 'SAD',
@@ -34,6 +34,6 @@ export const MoodList = Object.freeze([
   {
     name: 'CRY',
     icon: '😢',
-    num: 3,
+    num: 0,
   },
 ]);
