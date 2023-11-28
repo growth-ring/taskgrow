@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, Tooltip, XAxis, Cell } from 'recharts';
 import styled from 'styled-components';
-import { MoodList } from '../../../constants/StatsComment';
+import { useMoods } from '../../../store/mood';
 
 const Container = styled.div`
   display: flex;
@@ -23,6 +23,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 const Chart = () => {
+  const { moods, topMoods } = useMoods();
   const [chartSize, setChartSize] = useState({
     width: 400,
     height: 180,
@@ -36,11 +37,6 @@ const Chart = () => {
     setChartSize({ width: newWidth, height: newHeight, fontSize: newFontSize });
   };
 
-  const sortedMoodList = [...MoodList].sort((a, b) => b.num - a.num);
-
-  const firstMood = sortedMoodList[0].num;
-  const secondMood = sortedMoodList[1].num;
-
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -48,21 +44,17 @@ const Chart = () => {
 
   return (
     <Container>
-      <BarChart
-        width={chartSize.width}
-        height={chartSize.height}
-        data={MoodList as { name: string; icon: string; num: number }[]}
-      >
+      <BarChart width={chartSize.width} height={chartSize.height} data={moods}>
         <XAxis dataKey="icon" fontSize={chartSize.fontSize} />
         <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="num">
-          {MoodList.map((entry, index) => (
+          {moods.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
               fill={
-                entry.num === firstMood
+                entry.num === topMoods.firstMood.num
                   ? `var(--main-color)`
-                  : entry.num === secondMood
+                  : entry.num === topMoods.secondMood.num
                   ? `var(--sub-blue-color)`
                   : `var(--line-color)`
               }

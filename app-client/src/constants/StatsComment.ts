@@ -5,35 +5,29 @@ export const TodosComment = Object.freeze([
   },
 ]);
 
-export const MoodList = Object([
+export const MoodsComments = Object.freeze([
   {
     name: 'HAPPY',
-    icon: '🥰',
-    num: 0,
+    comment: '행복한 날',
   },
   {
     name: 'NICE',
-    icon: '😀',
-    num: 0,
+    comment: '기분 좋은 날',
   },
   {
     name: 'GOOD',
-    icon: '🙂',
-    num: 0,
+    comment: '괜찮은 날',
   },
   {
     name: 'SOSO',
-    icon: '😐',
-    num: 0,
+    comment: '그저 그런 날',
   },
   {
     name: 'SAD',
-    icon: '🙁',
-    num: 0,
+    comment: '우울한 날',
   },
   {
     name: 'CRY',
-    icon: '😢',
-    num: 0,
+    comment: '울고 싶은 날',
   },
 ]);

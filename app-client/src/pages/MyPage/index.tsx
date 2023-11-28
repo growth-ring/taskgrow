@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Menu/Header';
 import HeaderDate from '../../components/Stats/HeaderDate';
 import TodosStats from '../../components/Stats/Todos/TodosStats';
 import MoodStats from '../../components/Stats/Mood/MoodStats';
+import { useMoods } from '../../store/mood';
 
 const Line = styled.div`
   background-color: #f5f5f5;
@@ -23,6 +25,13 @@ const Container = styled.div`
 `;
 
 const MyPage = () => {
+  const { getMoods, findTopMoods } = useMoods();
+
+  useEffect(() => {
+    getMoods();
+    findTopMoods();
+  }, []);
+
   return (
     <>
       <Header title="통계" />
