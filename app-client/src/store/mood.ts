@@ -82,7 +82,7 @@ export const useMoods = create<MoodStore>((set) => ({
         subComment = '그 외 감정은 없어요';
       } else {
         comment = '기록된 감정이 없어요';
-        subComment = '회고를 작성해 보는 건 어떨가요?';
+        subComment = '회고를 작성해 보는 건 어떨까요?';
       }
 
       return {
