@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { useState } from 'react';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
+import { useDate } from '../../store/stats';
 
 const Container = styled.div`
   display: flex;
@@ -65,9 +65,7 @@ const Today = styled.div`
 `;
 
 const HeaderDate = () => {
-  const currentDate = new Date();
-  const [month, setMonth] = useState<number>(currentDate.getMonth() + 1);
-  const [year, setYear] = useState<number>(currentDate.getFullYear());
+  const { year, setYear, month, setMonth } = useDate();
 
   const handleShowDate = (clickAction: string) => {
     let newMonth = month;

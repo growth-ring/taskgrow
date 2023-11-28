@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Box from '../UI/Box';
+import { useMoods } from '../../../store/mood';
 
 const Container = styled.div`
   display: flex;
@@ -13,15 +14,18 @@ const Container = styled.div`
 `;
 
 const MoodStats = () => {
-  const Title = ['감정', '20'];
-  const firstMood = '기분 좋은 날';
-  const secondMood = '행복한 날';
-  const comment = `${firstMood}이 가장 많았어요`;
-  const subComment = `두번째로는 ${secondMood}이 많았어요`;
+  const { moods, topMoodsComments } = useMoods();
+
+  const total = moods.reduce((acc, { num }) => acc + num, 0).toString();
+  const title = ['감정', total];
 
   return (
     <Container>
-      <Box title={Title} comment={comment} subComment={subComment} />
+      <Box
+        title={title}
+        comment={topMoodsComments.comment}
+        subComment={topMoodsComments.subComment}
+      />
     </Container>
   );
 };
