@@ -5,6 +5,7 @@ import HeaderDate from '../../components/Stats/HeaderDate';
 import TodosStats from '../../components/Stats/Todos/TodosStats';
 import MoodStats from '../../components/Stats/Mood/MoodStats';
 import { useMoods } from '../../store/mood';
+import { useTodosStore } from '../../store/todos';
 
 const Line = styled.div`
   background-color: #f5f5f5;
@@ -26,10 +27,12 @@ const Container = styled.div`
 
 const MyPage = () => {
   const { getMoods, findTopMoods } = useMoods();
+  const { getTodos } = useTodosStore();
 
   useEffect(() => {
     getMoods();
     findTopMoods();
+    getTodos();
   }, []);
 
   return (
