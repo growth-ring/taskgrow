@@ -28,7 +28,7 @@ const TodosStats = () => {
   const subComment =
     total_count === 0
       ? '할 일을 정해볼까요?'
-      : TodosComment.find((comments) => comments.percent > percent)?.comment ||
+      : TodosComment.find((comments) => comments.percent >= percent)?.comment ||
         '';
 
   return (

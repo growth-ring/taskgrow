@@ -27,15 +27,18 @@ const Container = styled.div`
 `;
 
 const MyPage = () => {
-  const { getMoods, findTopMoods } = useMoods();
-  const { getTodos } = useTodosStore();
   const { year, month } = useDate();
+  const { getMoods, findTopMoods, moods } = useMoods();
+  const { getTodos } = useTodosStore();
 
   useEffect(() => {
     getMoods();
-    findTopMoods();
     getTodos();
   }, [year, month]);
+
+  useEffect(() => {
+    findTopMoods();
+  }, [moods]);
 
   return (
     <>
