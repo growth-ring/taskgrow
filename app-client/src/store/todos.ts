@@ -39,10 +39,6 @@ export interface TodosStore {
   getTodos: () => void;
 }
 
-const year = useDate.getState().year;
-const month = useDate.getState().month;
-const userId = useUser.getState().userId;
-
 export const useTodosStore = create<TodosStore>((set) => ({
   taskDate: '',
   setTaskDate: (day) => set({ taskDate: day }),
@@ -65,6 +61,9 @@ export const useTodosStore = create<TodosStore>((set) => ({
     undone_count: 0,
   },
   getTodos: async () => {
+    const { year, month } = useDate.getState();
+    const { userId } = useUser.getState();
+
     const firstDay = moment(new Date(year, month - 1, 1)).format('YYYY-MM-DD');
     const lastDay = moment(new Date(year, month, 0)).format('YYYY-MM-DD');
 

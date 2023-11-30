@@ -6,6 +6,7 @@ import TodosStats from '../../components/Stats/Todos/TodosStats';
 import MoodStats from '../../components/Stats/Mood/MoodStats';
 import { useMoods } from '../../store/mood';
 import { useTodosStore } from '../../store/todos';
+import { useDate } from '../../store/stats';
 
 const Line = styled.div`
   background-color: #f5f5f5;
@@ -28,12 +29,13 @@ const Container = styled.div`
 const MyPage = () => {
   const { getMoods, findTopMoods } = useMoods();
   const { getTodos } = useTodosStore();
+  const { year, month } = useDate();
 
   useEffect(() => {
     getMoods();
     findTopMoods();
     getTodos();
-  }, []);
+  }, [year, month]);
 
   return (
     <>
