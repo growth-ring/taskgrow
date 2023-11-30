@@ -42,6 +42,10 @@ const Chart = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    console.log('topMoods: ', topMoods);
+  }, []);
+
   return (
     <Container>
       <BarChart width={chartSize.width} height={chartSize.height} data={moods}>

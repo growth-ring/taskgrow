@@ -14,6 +14,12 @@ interface UpdateTodoData {
   planCount: number;
 }
 
+interface TodosStats {
+  userId: string;
+  startDate: string;
+  endDate: string;
+}
+
 export const addTodo = async (todoData: AddTodoData) => {
   try {
     const todo = await httpClient.post('/todos', {
@@ -40,6 +46,23 @@ export const getTodos = async (taskId: number) => {
     if (error.response.status === 404) {
       return null;
     }
+  }
+};
+
+export const getTodosStats = async (userTodosStats: TodosStats) => {
+  try {
+    const Todos = await httpClient.get(
+      `/todos/stats/${userTodosStats.userId}`,
+      {
+        params: {
+          start_date: userTodosStats.startDate,
+          end_date: userTodosStats.endDate,
+        },
+      },
+    );
+    return Todos.data;
+  } catch (error: any) {
+    alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
 

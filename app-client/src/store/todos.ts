@@ -1,4 +1,8 @@
 import { create } from 'zustand';
+import { useDate } from './stats';
+import { useUser } from './user';
+import { getTodosStats } from '../services/todo';
+import moment from 'moment';
 
 export interface Todo {
   todo_id: number;
@@ -7,6 +11,13 @@ export interface Todo {
   status: string;
   plan_count: number;
   perform_count: number;
+}
+
+interface TodosStats {
+  total_count: number;
+  done_count: number;
+  progress_count: number;
+  undone_count: number;
 }
 
 export interface TodosStore {
@@ -24,6 +35,8 @@ export interface TodosStore {
   setIsTodoChange: (todoChange: boolean) => void;
   selectedTodo: string;
   setSelectedTodo: (todo: string) => void;
+  todosStats: TodosStats;
+  getTodos: () => void;
 }
 
 export const useTodosStore = create<TodosStore>((set) => ({
@@ -41,4 +54,26 @@ export const useTodosStore = create<TodosStore>((set) => ({
   setIsTodoChange: (todoChange) => set({ isTodoChange: todoChange }),
   selectedTodo: '오늘 할 일 추가해 주세요',
   setSelectedTodo: (todo) => set({ selectedTodo: todo }),
+  todosStats: {
+    total_count: 0,
+    done_count: 0,
+    progress_count: 0,
+    undone_count: 0,
+  },
+  getTodos: async () => {
+    const { year, month } = useDate.getState();
+    const { userId } = useUser.getState();
+
+    const firstDay = moment(new Date(year, month - 1, 1)).format('YYYY-MM-DD');
+    const lastDay = moment(new Date(year, month, 0)).format('YYYY-MM-DD');
+
+    const userTodosStats = {
+      userId: userId.toString(),
+      startDate: firstDay,
+      endDate: lastDay,
+    };
+
+    const todos = await getTodosStats(userTodosStats);
+    set({ todosStats: todos });
+  },
 }));

@@ -20,10 +20,6 @@ export interface MoodStore {
   findTopMoods: () => void;
 }
 
-const year = useDate.getState().year;
-const month = useDate.getState().month;
-const userId = useUser.getState().userId;
-
 export const useMoods = create<MoodStore>((set) => ({
   moods: [
     { name: 'HAPPY', icon: '🥰', num: 0 },
@@ -34,6 +30,9 @@ export const useMoods = create<MoodStore>((set) => ({
     { name: 'CRY', icon: '😢', num: 0 },
   ],
   getMoods: async () => {
+    const { year, month } = useDate.getState();
+    const { userId } = useUser.getState();
+
     const firstDay = moment(new Date(year, month - 1, 1)).format('YYYY-MM-DD');
     const lastDay = moment(new Date(year, month, 0)).format('YYYY-MM-DD');
 

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Box from '../UI/Box';
 import { TodosComment } from '../../../constants/StatsComment';
+import { useTodosStore } from '../../../store/todos';
 
 const Container = styled.div`
   display: flex;
@@ -14,12 +15,21 @@ const Container = styled.div`
 `;
 
 const TodosStats = () => {
-  const Title = ['한 일', '30'];
-  const percent = 80;
-  const comment = `완료 달성률은 ${percent}% 이에요`;
+  const { todosStats } = useTodosStore();
+  const { total_count, done_count } = todosStats;
+
+  const Title = ['한 일', total_count.toString()];
+  const percent =
+    total_count === 0 ? 0 : Math.floor((done_count / total_count) * 100);
+  const comment =
+    total_count === 0
+      ? '기록된 한 일이 없어요'
+      : `완료 달성률은 ${percent}% 이에요`;
   const subComment =
-    TodosComment.find((comments) => comments.percent === percent)?.comment ||
-    '';
+    total_count === 0
+      ? '할 일을 정해볼까요?'
+      : TodosComment.find((comments) => comments.percent >= percent)?.comment ||
+        '';
 
   return (
     <Container>

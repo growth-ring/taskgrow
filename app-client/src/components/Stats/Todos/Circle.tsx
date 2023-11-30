@@ -4,6 +4,7 @@ import {
   FaRegCalendarMinus,
   FaRegCalendarXmark,
 } from 'react-icons/fa6';
+import { useTodosStore } from '../../../store/todos';
 
 const Container = styled.div`
   display: flex;
@@ -74,22 +75,23 @@ const Count = styled.div`
 `;
 
 const Circle = () => {
+  const { todosStats } = useTodosStore();
   return (
     <Container>
       <Stats bg="var(--main-color)">
         <StatsIcon as={FaRegCalendarCheck} />
         <Title>완료</Title>
-        <Count>1</Count>
+        <Count>{todosStats.done_count}</Count>
       </Stats>
       <Stats bg="var(--sub-blue-color)">
         <StatsIcon as={FaRegCalendarMinus} />
         <Title>진행중</Title>
-        <Count>15</Count>
+        <Count>{todosStats.progress_count}</Count>
       </Stats>
       <Stats bg="var(--line-color)">
         <StatsIcon as={FaRegCalendarXmark} />
         <Title>미완료</Title>
-        <Count>3</Count>
+        <Count>{todosStats.undone_count}</Count>
       </Stats>
     </Container>
   );
