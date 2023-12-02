@@ -13,15 +13,12 @@ const Line = styled.div`
 `;
 
 const Container = styled.div`
-  width: 100%;
-  margin-top: 50px;
+  max-width: 1024px;
+  margin: 50px auto 0 auto;
+`;
 
-  @media (max-width: 767px) {
-    padding-bottom: 20px;
-    margin-top: 20px;
-  }
-
-  @media (min-width: 768px) {
+const Wrap = styled.div`
+  @media (min-width: 1024px) {
     display: flex;
   }
 `;
@@ -46,8 +43,10 @@ const MyPage = () => {
       <Line style={{ height: '2px' }} />
       <HeaderDate />
       <Container>
-        <TodosStats />
-        <MoodStats />
+        <Wrap>
+          <TodosStats />
+          <MoodStats />
+        </Wrap>
       </Container>
     </>
   );

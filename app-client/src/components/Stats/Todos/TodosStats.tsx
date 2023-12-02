@@ -4,13 +4,12 @@ import { TodosComment } from '../../../constants/StatsComment';
 import { useTodosStore } from '../../../store/todos';
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  text-align: center;
+  width: 50%;
+  margin-right: 15px;
 
-  @media (min-width: 768px) {
-    width: 50%;
-    flex-direction: column;
+  @media (max-width: 1023px) {
+    width: 90%;
+    margin: 50px auto 0 auto;
   }
 `;
 

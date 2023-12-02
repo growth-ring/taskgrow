@@ -13,18 +13,17 @@ const Container = styled.div`
 `;
 
 const Stats = styled.div<{ bg: string }>`
+  aspect-ratio: 1 / 1;
+
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   border-radius: 50%;
   background-color: ${(props) => props.bg};
-  width: 40vw;
-  height: 10vw;
+  width: 10rem;
 
   @media (max-width: 767px) {
-    width: 30vw;
-    height: 20vw;
     font-size: 14px;
     margin: 5px 2px;
   }

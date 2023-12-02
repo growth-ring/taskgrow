@@ -2,26 +2,11 @@ import styled from 'styled-components';
 import Circle from '../Todos/Circle';
 import Chart from '../Mood/Chart';
 
-const Container = styled.div<{ category: string }>`
-  width: 75%;
-
-  @media (max-width: 767px) {
-    ${({ category }) => category === '한 일' && `margin-bottom: 30px`}
-  }
-
-  @media (min-width: 768px) and (max-width: 1023px) {
-    ${({ category }) => category === '한 일' && `margin: 0 100px;`}
-  }
-
-  @media (min-width: 1024px) {
-    ${({ category }) => category === '한 일' && `margin: 0 150px;`}
-  }
-`;
-
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
   margin-top: 10px;
 
   background-color: white;
@@ -31,13 +16,7 @@ const Content = styled.div`
     3px 3px 10px rgba(50, 50, 50, 0.1),
     3px 3px 10px rgba(50, 50, 50, 0.1);
 
-  width: 38vw;
-  height: 22vw;
-
-  @media (max-width: 767px) {
-    width: 75vw;
-    height: 60vw;
-  }
+  height: 270px;
 `;
 
 const TitleBox = styled.div`
@@ -49,6 +28,7 @@ const TitleBox = styled.div`
 
 const Text = styled.div`
   margin-top: 10px;
+
   @media (max-width: 767px) {
     font-size: 18px;
   }
@@ -89,7 +69,7 @@ const Box = ({ title, comment, subComment }: BoxType) => {
   const category = title[0];
   const count = title[1];
   return (
-    <Container category={category}>
+    <>
       <TitleBox>
         <div>{category}</div>
         <div>총 {count}개</div>
@@ -100,7 +80,7 @@ const Box = ({ title, comment, subComment }: BoxType) => {
         <Text>{comment}</Text>
         <SubText>{subComment}</SubText>
       </Content>
-    </Container>
+    </>
   );
 };
 

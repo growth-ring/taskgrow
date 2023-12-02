@@ -3,13 +3,16 @@ import Box from '../UI/Box';
 import { useMoods } from '../../../store/mood';
 
 const Container = styled.div`
+  width: 50%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   text-align: center;
 
-  @media (min-width: 768px) {
-    width: 50%;
-    flex-direction: column;
+  @media (max-width: 1023px) {
+    width: 90%;
+    margin: 50px auto 0 auto;
+    padding-bottom: 50px;
   }
 `;
 
