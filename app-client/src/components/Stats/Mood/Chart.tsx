@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { BarChart, Bar, Tooltip, XAxis, Cell } from 'recharts';
 import styled from 'styled-components';
 import { useMoods } from '../../../store/mood';
@@ -6,6 +6,7 @@ import { useMoods } from '../../../store/mood';
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  height: 180px;
 `;
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -24,23 +25,6 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 const Chart = () => {
   const { moods, topMoods } = useMoods();
-  const [chartSize, setChartSize] = useState({
-    width: 400,
-    height: 180,
-    fontSize: 22,
-  });
-
-  const handleResize = () => {
-    const newWidth = (window.innerWidth / 100) * 40;
-    const newHeight = (window.innerHeight / 100) * 20;
-    const newFontSize = (window.innerHeight / 100) * 3;
-    setChartSize({ width: newWidth, height: newHeight, fontSize: newFontSize });
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     console.log('topMoods: ', topMoods);
@@ -48,8 +32,8 @@ const Chart = () => {
 
   return (
     <Container>
-      <BarChart width={chartSize.width} height={chartSize.height} data={moods}>
-        <XAxis dataKey="icon" fontSize={chartSize.fontSize} />
+      <BarChart width={400} height={180} data={moods}>
+        <XAxis dataKey="icon" fontSize={22} />
         <Tooltip content={<CustomTooltip />} />
         <Bar dataKey="num">
           {moods.map((entry, index) => (
