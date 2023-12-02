@@ -4,7 +4,7 @@ import { useDate } from '../../store/stats';
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 
   @media (max-width: 767px) {
     padding: 0 20px;
