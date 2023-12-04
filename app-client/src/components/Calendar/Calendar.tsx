@@ -119,6 +119,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
     const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
     setSelectedTaskId(taskId);
     setTaskDate(userClickDay);
+    localStorage.setItem('taskDate', userClickDay);
     localStorage.setItem('taskId', String(taskId));
     navigate(`/todos/${userClickDay}`);
   };

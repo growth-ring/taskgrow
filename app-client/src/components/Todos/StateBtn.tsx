@@ -28,6 +28,7 @@ const StateBtn = () => {
   };
 
   const handleShowTodo = () => {
+    timer.stop();
     if (timer.timerState === 'RUNNING' && timer.selectedBtn === 'BREAK') {
       setIsShow(true);
       setTitle('할 일');
@@ -39,6 +40,7 @@ const StateBtn = () => {
   };
 
   const handleShowBreak = () => {
+    timer.stop();
     if (timer.timerState === 'RUNNING' && timer.selectedBtn === 'TODO') {
       setIsShow(true);
       setTitle('휴식');
@@ -51,6 +53,7 @@ const StateBtn = () => {
   };
 
   const handleShowReview = () => {
+    timer.stop();
     if (timer.timerState === 'RUNNING') {
       setIsShow(true);
       setTitle('회고');

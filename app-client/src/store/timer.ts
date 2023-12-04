@@ -19,25 +19,30 @@ export interface TimerStore {
   setTimerMinute: (minute: number) => void;
 }
 
+const userStartTime = Number(localStorage.getItem('startTime'));
+
 export const useTimerStore = create<TimerStore>((set) => ({
   selectedBtn: 'TODO',
   showTodo: () => set({ selectedBtn: 'TODO' }),
   showBreak: () => set({ selectedBtn: 'BREAK' }),
   showReview: () => set({ selectedBtn: 'REVIEW' }),
-  onTimer: false,
+  onTimer: true,
   setOnTimer: (timer) => set({ onTimer: timer }),
-  timerState: 'INITIAL',
-  startTime: 0,
+  timerState: 'RUNNING',
+  startTime: userStartTime,
   start: () => {
+    const userStartTime = Date.now();
     set({
       timerState: 'RUNNING',
-      startTime: Date.now(),
+      startTime: userStartTime,
     });
+    localStorage.setItem('startTime', String(userStartTime));
   },
   stop: () => {
     set({
       timerState: 'INITIAL',
     });
+    localStorage.setItem('startTime', '0');
   },
   complete: () => {
     set({

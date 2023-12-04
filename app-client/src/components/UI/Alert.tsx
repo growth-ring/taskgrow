@@ -24,10 +24,12 @@ const Alert = ({ text, getIsShow }: alert) => {
 
     if (text === '할 일') {
       closeReview();
+
       timer.showTodo();
       resetTimer(timer, todos, 'reset', todos.todoList);
     } else if (text === '휴식') {
       closeReview();
+
       timer.showBreak();
       resetTimer(timer, todos, '휴식');
       todos.setTodoId(0);

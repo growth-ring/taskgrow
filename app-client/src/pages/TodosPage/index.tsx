@@ -53,7 +53,6 @@ const Time = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  item-align: center;
   text-align: center;
 
   @media (min-width: 768px) {

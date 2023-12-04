@@ -17,7 +17,7 @@ function resetTimer(
   }
 
   if (todo === 'reset') {
-    if (timerState !== 'FINISHED') {
+    if (timerState === 'INITIAL') {
       setTodoId(0);
       stop();
       setOnTimer(false);
@@ -30,6 +30,7 @@ function resetTimer(
   } else {
     stop();
     setSelectedTodo(todo);
+    localStorage.setItem('todo', todo);
     setOnTimer(true);
     todo === '휴식' ? showBreak() : showTodo();
     setTimerMinute(todo === '휴식' ? 5 : 25);

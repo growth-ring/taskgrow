@@ -39,8 +39,11 @@ export interface TodosStore {
   getTodos: () => void;
 }
 
+const userTaskDate = localStorage.getItem('taskDate');
+const userSelectedTodo = localStorage.getItem('todo');
+
 export const useTodosStore = create<TodosStore>((set) => ({
-  taskDate: '',
+  taskDate: userTaskDate ? userTaskDate : '',
   setTaskDate: (day) => set({ taskDate: day }),
   todoList: [],
   setTodoList: (newTodo) => set({ todoList: newTodo }),
@@ -52,7 +55,9 @@ export const useTodosStore = create<TodosStore>((set) => ({
   setPlanCount: (count) => set({ planCount: count }),
   isTodoChange: false,
   setIsTodoChange: (todoChange) => set({ isTodoChange: todoChange }),
-  selectedTodo: '오늘 할 일 추가해 주세요',
+  selectedTodo: userSelectedTodo
+    ? userSelectedTodo
+    : '오늘 할 일 추가해 주세요',
   setSelectedTodo: (todo) => set({ selectedTodo: todo }),
   todosStats: {
     total_count: 0,
