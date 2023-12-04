@@ -32,6 +32,7 @@ const StateBtn = () => {
       setIsShow(true);
       setTitle('할 일');
     } else {
+      localStorage.setItem('todo', '');
       closeReview();
       timer.showTodo();
       resetTimer(timer, todos, 'reset', todos.todoList);

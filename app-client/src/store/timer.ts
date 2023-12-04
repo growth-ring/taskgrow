@@ -19,31 +19,37 @@ export interface TimerStore {
   setTimerMinute: (minute: number) => void;
 }
 
+const userStartTime = Number(localStorage.getItem('startTime'));
+const userTodo = localStorage.getItem('todo');
+
 export const useTimerStore = create<TimerStore>((set) => ({
-  selectedBtn: 'TODO',
+  selectedBtn: userTodo === '휴식' ? 'BREAK' : 'TODO',
   showTodo: () => set({ selectedBtn: 'TODO' }),
   showBreak: () => set({ selectedBtn: 'BREAK' }),
   showReview: () => set({ selectedBtn: 'REVIEW' }),
-  onTimer: false,
+  onTimer: userStartTime === 0 && userTodo !== '휴식' ? false : true,
   setOnTimer: (timer) => set({ onTimer: timer }),
-  timerState: 'INITIAL',
-  startTime: 0,
+  timerState: userStartTime ? 'RUNNING' : 'INITIAL',
+  startTime: userStartTime,
   start: () => {
+    const userStartTime = Date.now();
     set({
       timerState: 'RUNNING',
-      startTime: Date.now(),
+      startTime: userStartTime,
     });
+    localStorage.setItem('startTime', String(userStartTime));
   },
   stop: () => {
     set({
       timerState: 'INITIAL',
     });
+    localStorage.setItem('startTime', '0');
   },
   complete: () => {
     set({
       timerState: 'FINISHED',
     });
   },
-  timerMinute: 25,
+  timerMinute: userTodo === '휴식' ? 5 : 25,
   setTimerMinute: (minute) => set({ timerMinute: minute }),
 }));

@@ -53,7 +53,6 @@ const Time = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  item-align: center;
   text-align: center;
 
   @media (min-width: 768px) {
@@ -126,7 +125,10 @@ const Todos = () => {
       }
     };
 
-    if (animationFrameId === null) {
+    if (
+      animationFrameId === null &&
+      localStorage.getItem('startTime') !== '0'
+    ) {
       setAnimationFrameId(requestAnimationFrame(animate));
     }
 

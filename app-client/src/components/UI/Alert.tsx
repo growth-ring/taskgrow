@@ -20,15 +20,17 @@ const Alert = ({ text, getIsShow }: alert) => {
   };
 
   const handleChange = () => {
+    timer.stop();
     getIsShow();
 
     if (text === '할 일') {
+      localStorage.setItem('todo', '');
       closeReview();
-      timer.showTodo();
+      timer.setOnTimer(false);
+      todos.setSelectedTodo('오늘 할 일 추가해 주세요');
       resetTimer(timer, todos, 'reset', todos.todoList);
     } else if (text === '휴식') {
       closeReview();
-      timer.showBreak();
       resetTimer(timer, todos, '휴식');
       todos.setTodoId(0);
     } else if (text === 'task') {
