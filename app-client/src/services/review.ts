@@ -1,4 +1,5 @@
 import { httpClient } from './api';
+import { useLoading } from '../store/loading';
 
 interface Review {
   contents: string;
@@ -19,17 +20,20 @@ interface ReviewStats {
   endDate: string;
 }
 
+const { loadingStart, loadingStop } = useLoading.getState();
+
 export const addReview = async (reviewData: AddReview) => {
+  loadingStart();
   try {
     const review = await httpClient.post('/review', {
       task_id: reviewData.taskId,
       contents: reviewData.contents,
       feelings_score: reviewData.feelingsScore,
     });
-    if (review.status === 201) {
-      return review.data;
-    }
+    loadingStop();
+    return review.data;
   } catch (error: any) {
+    loadingStop();
     const errorMessage = error.response.data.errors[0].reason;
 
     if (error.response.status === 409) {
@@ -43,15 +47,19 @@ export const addReview = async (reviewData: AddReview) => {
 };
 
 export const getReview = async (taskId: number) => {
+  loadingStart();
   try {
     const review = await httpClient.get(`/review/${taskId}`);
+    loadingStop();
     return review.data;
   } catch (error: any) {
+    loadingStop();
     return null;
   }
 };
 
 export const getReviewStats = async (userReviewStats: ReviewStats) => {
+  loadingStart();
   try {
     const feelings = await httpClient.get(
       `/review/stats/${userReviewStats.userId}`,
@@ -62,29 +70,37 @@ export const getReviewStats = async (userReviewStats: ReviewStats) => {
         },
       },
     );
+    loadingStop();
     return feelings.data.feelings;
   } catch (error: any) {
+    loadingStop();
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
 
 export const deleteReview = async (reviewId: number) => {
+  loadingStart();
   try {
     const isDelete = await httpClient.delete(`/review/${reviewId}`);
-    return isDelete.status === 204;
+    loadingStop();
+    return isDelete;
   } catch (error: any) {
+    loadingStop();
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
 
 export const updateReview = async (reviewData: UpdateReview) => {
+  loadingStart();
   try {
     await httpClient.put(`/review/${reviewData.reviewId}`, {
       contents: reviewData.contents,
       feelings_score: reviewData.feelingsScore,
     });
+    loadingStop();
     return alert('회고 수정 되었습니다.');
   } catch (error: any) {
+    loadingStop();
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };

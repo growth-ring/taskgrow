@@ -1,4 +1,5 @@
 import { httpClient } from './api';
+import { useLoading } from '../store/loading';
 
 interface AddTaskData {
   userId: number;
@@ -11,7 +12,10 @@ interface GetTaskListData {
   endDate: string;
 }
 
+const { loadingStart, loadingStop } = useLoading.getState();
+
 export const addTask = async (taskData: AddTaskData) => {
+  loadingStart();
   try {
     const task = await httpClient.post('/tasks', {
       user_id: taskData.userId,
@@ -24,10 +28,13 @@ export const addTask = async (taskData: AddTaskData) => {
 };
 
 export const getTask = async (taskId: number) => {
+  loadingStart();
   try {
     const taskData = await httpClient.get(`/tasks/${taskId}/todos`);
+    loadingStop();
     return taskData.data;
   } catch (error: any) {
+    loadingStop();
     if (error.response.status === 404) {
       return null;
     }
@@ -35,6 +42,7 @@ export const getTask = async (taskId: number) => {
 };
 
 export const getTaskList = async (taskData: GetTaskListData) => {
+  loadingStart();
   try {
     const taskListData = await httpClient.get('/tasks', {
       params: {
@@ -43,8 +51,10 @@ export const getTaskList = async (taskData: GetTaskListData) => {
         end_date: taskData.endDate,
       },
     });
+    loadingStop();
     return taskListData.data;
   } catch (error: any) {
+    loadingStop();
     if (error.response.status === 404) {
       return null;
     }
@@ -52,9 +62,13 @@ export const getTaskList = async (taskData: GetTaskListData) => {
 };
 
 export const deleteTask = async (taskId: number) => {
+  loadingStart();
   try {
-    return await httpClient.delete(`/tasks/${taskId}`);
+    const data = await httpClient.delete(`/tasks/${taskId}`);
+    loadingStop();
+    return data;
   } catch (error: any) {
+    loadingStop();
     return null;
   }
 };
