@@ -29,6 +29,7 @@ const StateBtn = () => {
 
   const handleShowTodo = () => {
     timer.stop();
+    localStorage.setItem('todo', '');
     if (timer.timerState === 'RUNNING' && timer.selectedBtn === 'BREAK') {
       setIsShow(true);
       setTitle('할 일');

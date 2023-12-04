@@ -20,13 +20,14 @@ export interface TimerStore {
 }
 
 const userStartTime = Number(localStorage.getItem('startTime'));
+const userTodo = localStorage.getItem('todo');
 
 export const useTimerStore = create<TimerStore>((set) => ({
-  selectedBtn: 'TODO',
+  selectedBtn: userTodo === '휴식' ? 'BREAK' : 'TODO',
   showTodo: () => set({ selectedBtn: 'TODO' }),
   showBreak: () => set({ selectedBtn: 'BREAK' }),
   showReview: () => set({ selectedBtn: 'REVIEW' }),
-  onTimer: true,
+  onTimer: userStartTime !== 0 ? true : false,
   setOnTimer: (timer) => set({ onTimer: timer }),
   timerState: 'RUNNING',
   startTime: userStartTime,
@@ -49,6 +50,6 @@ export const useTimerStore = create<TimerStore>((set) => ({
       timerState: 'FINISHED',
     });
   },
-  timerMinute: 25,
+  timerMinute: userTodo === '휴식' ? 5 : 25,
   setTimerMinute: (minute) => set({ timerMinute: minute }),
 }));

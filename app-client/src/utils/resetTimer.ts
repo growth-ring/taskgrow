@@ -25,8 +25,13 @@ function resetTimer(
         todoList?.length ? '오늘 할 일 골라주세요' : '오늘 할 일 추가해 주세요',
       );
     }
-    showTodo();
-    setTimerMinute(25);
+    if (localStorage.getItem('todo') === '휴식') {
+      showBreak();
+      setTimerMinute(5);
+    } else {
+      showTodo();
+      setTimerMinute(25);
+    }
   } else {
     stop();
     setSelectedTodo(todo);
