@@ -169,7 +169,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
         viewTaskDate.forEach((day, i) => {
           const score = monthTaskDate.filter(
             (dates) => dates.taskDate === day,
-          )[0].feelingsScore;
+          )[0]?.feelingsScore;
 
           const taskFinished = monthTaskDate
             .filter((dates) => dates.taskDate === day)
