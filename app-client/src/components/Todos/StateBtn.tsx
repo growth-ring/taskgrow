@@ -28,12 +28,11 @@ const StateBtn = () => {
   };
 
   const handleShowTodo = () => {
-    timer.stop();
-    localStorage.setItem('todo', '');
     if (timer.timerState === 'RUNNING' && timer.selectedBtn === 'BREAK') {
       setIsShow(true);
       setTitle('할 일');
     } else {
+      localStorage.setItem('todo', '');
       closeReview();
       timer.showTodo();
       resetTimer(timer, todos, 'reset', todos.todoList);
@@ -41,7 +40,6 @@ const StateBtn = () => {
   };
 
   const handleShowBreak = () => {
-    timer.stop();
     if (timer.timerState === 'RUNNING' && timer.selectedBtn === 'TODO') {
       setIsShow(true);
       setTitle('휴식');
@@ -54,7 +52,6 @@ const StateBtn = () => {
   };
 
   const handleShowReview = () => {
-    timer.stop();
     if (timer.timerState === 'RUNNING') {
       setIsShow(true);
       setTitle('회고');
