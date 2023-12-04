@@ -1,4 +1,5 @@
 import { httpClient } from './api';
+import { useLoading } from '../store/loading';
 
 interface AddTodoData {
   taskId: number;
@@ -20,7 +21,10 @@ interface TodosStats {
   endDate: string;
 }
 
+const { loadingStart, loadingStop } = useLoading.getState();
+
 export const addTodo = async (todoData: AddTodoData) => {
+  loadingStart();
   try {
     const todo = await httpClient.post('/todos', {
       task_id: todoData.taskId,
@@ -28,21 +32,26 @@ export const addTodo = async (todoData: AddTodoData) => {
       plan_count: todoData.planCount,
       perform_count: todoData.performCount,
     });
+    loadingStop();
     return todo.data;
   } catch (error: any) {
+    loadingStop();
     alert(error.response.data.message);
   }
 };
 
 export const getTodos = async (taskId: number) => {
+  loadingStart();
   try {
     const todoData = await httpClient.get('/todos', {
       params: {
         task_id: taskId,
       },
     });
+    loadingStop();
     return todoData.data.filter((todo: any) => todo.task_id === taskId);
   } catch (error: any) {
+    loadingStop();
     if (error.response.status === 404) {
       return null;
     }
@@ -50,6 +59,7 @@ export const getTodos = async (taskId: number) => {
 };
 
 export const getTodosStats = async (userTodosStats: TodosStats) => {
+  loadingStart();
   try {
     const Todos = await httpClient.get(
       `/todos/stats/${userTodosStats.userId}`,
@@ -60,8 +70,10 @@ export const getTodosStats = async (userTodosStats: TodosStats) => {
         },
       },
     );
+    loadingStop();
     return Todos.data;
   } catch (error: any) {
+    loadingStop();
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
@@ -99,10 +111,13 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
 };
 
 export const deleteTodo = async (todoId: number) => {
+  loadingStart();
   try {
     const answer = await httpClient.delete(`/todos/${todoId}`);
+    loadingStop();
     return answer.status === 204 ? 'OK' : null;
   } catch (error: any) {
+    loadingStop();
     return null;
   }
 };
