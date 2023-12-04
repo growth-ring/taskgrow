@@ -27,7 +27,7 @@ export const useTimerStore = create<TimerStore>((set) => ({
   showTodo: () => set({ selectedBtn: 'TODO' }),
   showBreak: () => set({ selectedBtn: 'BREAK' }),
   showReview: () => set({ selectedBtn: 'REVIEW' }),
-  onTimer: userStartTime !== 0 ? true : false,
+  onTimer: userStartTime === 0 && userTodo !== '휴식' ? false : true,
   setOnTimer: (timer) => set({ onTimer: timer }),
   timerState: 'RUNNING',
   startTime: userStartTime,

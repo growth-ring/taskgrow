@@ -125,7 +125,10 @@ const Todos = () => {
       }
     };
 
-    if (animationFrameId === null) {
+    if (
+      animationFrameId === null &&
+      localStorage.getItem('startTime') !== '0'
+    ) {
       setAnimationFrameId(requestAnimationFrame(animate));
     }
 
