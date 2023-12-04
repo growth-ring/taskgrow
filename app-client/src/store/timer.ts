@@ -29,7 +29,7 @@ export const useTimerStore = create<TimerStore>((set) => ({
   showReview: () => set({ selectedBtn: 'REVIEW' }),
   onTimer: userStartTime === 0 && userTodo !== '휴식' ? false : true,
   setOnTimer: (timer) => set({ onTimer: timer }),
-  timerState: 'INITIAL',
+  timerState: userStartTime ? 'RUNNING' : 'INITIAL',
   startTime: userStartTime,
   start: () => {
     const userStartTime = Date.now();
