@@ -52,6 +52,9 @@ const StateBtn = () => {
   };
 
   const handleShowReview = () => {
+    if (todos.todoList.length === 0)
+      return alert('할 일 추가 후 회고 작성이 가능합니다');
+
     if (timer.timerState === 'RUNNING') {
       setIsShow(true);
       setTitle('회고');
