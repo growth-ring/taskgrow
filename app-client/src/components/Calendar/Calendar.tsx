@@ -151,7 +151,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
   useEffect(() => {
     if (monthTaskDate.length) {
       const filteredTaskDates = monthTaskDate
-        .filter((date) => date.todos.remain >= 0 && date.todoData.length > 0)
+        .filter((date) => date.todos.remain >= 0)
         .map((date) => date.taskDate);
       setViewTaskDate(filteredTaskDates);
     }
@@ -168,6 +168,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
       tileContent={({ date }) => {
         let html: JSX.Element | null = null;
         const currentDate = moment(date).format('YYYY-MM-DD');
+
         viewTaskDate.forEach((day, i) => {
           const score = monthTaskDate.filter(
             (dates) => dates.taskDate === day,
@@ -176,6 +177,11 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
           const taskFinished = monthTaskDate
             .filter((dates) => dates.taskDate === day)
             .map((date) => date.todos.remain === 0 && date.todos.done !== 0);
+
+          const hasTodos =
+            monthTaskDate.filter(
+              (dates) => dates.taskDate === day && dates.todoData.length > 0,
+            ).length > 0;
 
           if (day === currentDate) {
             if (taskFinished[0] && score === -1) {
@@ -210,7 +216,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
                   </PreviewTodoList>
                 );
               }
-            } else {
+            } else if (hasTodos) {
               html = (
                 <Todo key={i}>
                   {monthTaskDate
