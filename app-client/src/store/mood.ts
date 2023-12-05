@@ -105,8 +105,6 @@ export const useMoods = create<MoodStore>((set) => ({
       const newSecondMood =
         newMoods[1].num === 0 ? { name: '', icon: '', num: 0 } : newMoods[1];
 
-      state.getTopMoodsComments();
-
       return {
         topMoods: {
           firstMood: newFirstMood,
