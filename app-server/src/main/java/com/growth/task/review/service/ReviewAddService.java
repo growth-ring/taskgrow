@@ -13,7 +13,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Service
 public class ReviewAddService {
     private final ReviewRepository reviewRepository;
