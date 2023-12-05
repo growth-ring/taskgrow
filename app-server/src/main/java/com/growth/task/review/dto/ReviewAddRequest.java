@@ -16,12 +16,15 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 public class ReviewAddRequest {
-    @NotNull(message = "테스크 id는 필수입니다.")
+    public static final String FEELINGS_SCORE_VALID_MESSAGE = "기분 점수는 1 ~ 10 사이를 입력해주세요.";
+    public static final String REVIEW_ADD_REQUEST_TASK_ID_REQUIRED_MESSAGE = "테스크 id는 필수입니다.";
+    public static final String REVIEW_ADD_REQUEST_CONTENTS_REQUIRED_MESSAGE = "회고 내용은 필수입니다.";
+    @NotNull(message = REVIEW_ADD_REQUEST_TASK_ID_REQUIRED_MESSAGE)
     private Long taskId;
-    @NotBlank(message = "회고 내용은 필수입니다.")
+    @NotBlank(message = REVIEW_ADD_REQUEST_CONTENTS_REQUIRED_MESSAGE)
     private String contents;
-    @Min(value = 1, message = "기분 점수는 1 ~ 10 사이를 입력해주세요.")
-    @Max(value = 10, message = "기분 점수는 1 ~ 10 사이를 입력해주세요.")
+    @Min(value = 1, message = FEELINGS_SCORE_VALID_MESSAGE)
+    @Max(value = 10, message = FEELINGS_SCORE_VALID_MESSAGE)
     private Integer feelingsScore;
 
     public ReviewAddRequest(Long taskId, String contents, Integer feelingsScore) {
