@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface TodosRepository extends JpaRepository<Todos, Long>, TodosRepositoryCustom {
     List<Todos> findByTask_TaskId(Long taskId);
+
+    boolean existsByTask_TaskId(Long taskId);
 }
