@@ -7,7 +7,7 @@ interface DateStore {
   setMonth: (month: number) => void;
 }
 
-const currentDate = new Date();
+export const currentDate = new Date();
 
 export const useDate = create<DateStore>((set) => ({
   year: currentDate.getFullYear(),
