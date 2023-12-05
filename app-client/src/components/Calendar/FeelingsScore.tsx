@@ -48,7 +48,6 @@ const Image = styled.img<ImageProps>`
 `;
 
 const FeelingsScore = ({ score }: { score: number }) => {
-  console.log('score: ', score);
   let feeling = '';
   let bg = '';
 

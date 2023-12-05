@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { BarChart, Bar, Tooltip, XAxis, Cell } from 'recharts';
 import styled from 'styled-components';
 import { useMoods } from '../../../store/mood';
@@ -25,10 +24,6 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 const Chart = () => {
   const { moods, topMoods } = useMoods();
-
-  useEffect(() => {
-    console.log('topMoods: ', topMoods);
-  }, []);
 
   return (
     <Container>
