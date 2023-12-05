@@ -22,18 +22,18 @@ const Image = styled.img<ImageProps>`
   background: ${(props) => props.$bg};
 
   @media (max-width: 767px) {
-    content: url(${(props) =>
+    src: ${(props) =>
       props.$bg === 'red'
-        ? cry
+        ? `url(${cry})`
         : props.$bg === 'orange'
-        ? sad
+        ? `url(${sad})`
         : props.$bg === '#fcee1e'
-        ? soso
+        ? `url(${soso})`
         : props.$bg === '#0ba322'
-        ? good
+        ? `url(${good})`
         : props.$bg === '#338bff'
-        ? nice
-        : happy});
+        ? `url(${nice})`
+        : `url(${happy})`};
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
@@ -48,6 +48,7 @@ const Image = styled.img<ImageProps>`
 `;
 
 const FeelingsScore = ({ score }: { score: number }) => {
+  console.log('score: ', score);
   let feeling = '';
   let bg = '';
 
