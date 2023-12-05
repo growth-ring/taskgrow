@@ -81,7 +81,6 @@ class ReviewAddServiceTest {
         class Context_with_not_existed_todo_in_task_content_feeling_score {
             private final Tasks task = new Tasks(1L, mock(Users.class), TASK_DATE_12_5);
             private final ReviewAddRequest request = new ReviewAddRequest(task.getTaskId(), CONTENT, 4);
-            private final Review givenReview = new Review(task, CONTENT, 4);
 
             @BeforeEach
             void prepare() {
