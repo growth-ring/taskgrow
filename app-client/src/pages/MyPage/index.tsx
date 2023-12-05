@@ -25,16 +25,18 @@ const Wrap = styled.div`
 
 const MyPage = () => {
   const { year, month } = useDate();
-  const { getMoods, findTopMoods, moods } = useMoods();
+  const { getMoods, findTopMoods, moods, getTopMoodsComments } = useMoods();
   const { getTodos } = useTodosStore();
 
   useEffect(() => {
     getMoods();
     getTodos();
+    findTopMoods();
   }, [year, month]);
 
   useEffect(() => {
     findTopMoods();
+    getTopMoodsComments();
   }, [moods]);
 
   return (
