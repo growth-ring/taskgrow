@@ -2,23 +2,130 @@
 
 <img width="970" alt="Intro" src="https://github.com/growth-ring/taskgrow/assets/116357790/41b47753-00f3-4c58-8834-3be036b51624">
 
-[https://taskgrow.codesoom.com](https://taskgrow.codesoom.com)  
-뽀모도로를 이용한 할 일(To-Do) 관리 애플리케이션입니다. 할 일에 대한 뽀모도로 계획을 세우고, 회고를 할 수 있습니다.
+[https://taskgrow.codesoom.com](https://taskgrow.codesoom.com)
+
+💡 Taskgrow는 집중력 향상을 위한 <b>할 일 체크리스트</b>와 함께 동작하는 <b>뽀모도로 타이머</b>를 통한 개인 생산성 관리 서비스입니다.
+
+✨ **서비스** : [http://taskgrow.codesoom.com](http://taskgrow.codesoom.com/)
+
+## 🤔 Taskgrow? 그거 그냥 평범한 체크리스트 아니야? 뭐가 달라?
+
+Taskgrow은 더 나은 일상 관리를 위한 서비스로, 뽀모도로와 할 일 체크리스트를 통한 할 일 관리를 넘어 **사용자의 감정에 중심을 두는 독특한 기능**을 제공합니다. 할 일을 완료하고 회고 작성 시, 사용자의 기분에 따라 달력에 자동으로 감정 기록 스티커가 표시됩니다.
+
+이 감정 기록 스티커를 통해 사용자는 **자신의 감정 패턴을 시각적으로 파악**하고, 특정 기분이 발생한 원인을 알 수 있습니다. 달력에 스티커가 채워짐에 따라 성취감을 느끼고, 아직 완료하지 못한 일에 대해 회고 기능을 활용하여 개선 방안을 고민할 수 있습니다. 이를 통해 사용자는 **지속적인 목표 달성에 동기부여**를 받게 됩니다.
+
+**회고 기능**은 하루 동안의 성과와 개선 가능한 부분을 돌아보고 분석함으로써, 사용자가 더 나은 방향으로 성장할 수 있도록 돕습니다. Taskgrow는 사용자의 일상을 더 풍요롭고 의미있게 만들어주는 동시에, 개인의 감정과 목표 달성을 조화롭게 이끌어내는 서비스입니다.
+
+## 프로젝트 기획 배경
+
+사람들이 효과적으로 일상을 관리하고, 집중력을 높이며, 감정을 기록하고 이해하는 서비스가 필요하다.
+
+- 집중력 향상 : 뽀모도로 기법(25분의 집중 시간과 5분의 휴식 시간)을 활용하여 작업 효율과 집중력을 높이는 요구가 있다.
+- 감정의 이해 : 일상 속에서 자신의 감정 패턴을 파악하고, 특정 감정이 발생한 원인을 이해하고자 하는 욕구가 있다.
+- 성취감 제공 : 자신의 작업을 완료하고 그 결과를 명확히 확인함으로써 성취감을 느끼고 싶다.
+- 자기 개선 : 더 나은 방향으로 성장하고 싶은 욕구가 있다.
 
 ## 기능
 
-### 투두 작성하기
+### 달력
 
-<img width="970" alt="Todo" src="https://github.com/growth-ring/taskgrow/assets/116357790/434bf023-c2b2-4e32-8b19-fc84d857b3e1">
+<img width="970" alt="달력" src="https://github.com/growth-ring/taskgrow/assets/116357790/634bf0b8-598c-4679-8481-16c65c68d27d">
+
+로그인 후 달력 화면이 보입니다.
+
+✅ 작성된 todo 모두 끝냈을 경우 ✅
+
+- 회고 미작성시 달력에 DONE 표시<br/>
+- 회고 작성시 기분에 따라 달력에 감정 기록 스티커 표시<br/>
+  0 ~ 1 : 빨강 CRY 😢<br/>
+  2 ~ 3 : 주황 SAD 😕<br/>
+  4 ~ 5 : 노랑 SOSO 😐<br/>
+  6 ~ 7 : 초록 GOOD 🙂<br/>
+  8 ~ 9 : 파랑 NICE 😀<br/>
+  10 : 무지개 HAPPY! 🥰
+
+❌ 작성된 할 일 끝내지 못했을 경우 ❌
+
+<img width="500" alt="남은할일표시" src="https://github.com/growth-ring/taskgrow/assets/116357790/7390f5fe-d09b-4434-8113-70a7a36c725c">
+
+마우스 커서를 올리면 남은 할 일의 상세 내용이 표시됩니다.
+
+### 할 일 작성하기
+
+<img width="970" alt="할일" src="https://github.com/growth-ring/taskgrow/assets/116357790/434bf023-c2b2-4e32-8b19-fc84d857b3e1">
+
 할 일을 계획 시 할 일과 뽀모도로 계획을 입력합니다.
 
 ### 뽀모도로 이용하기
 
-<img width="970" alt="Todo" src="https://github.com/growth-ring/taskgrow/assets/116357790/9bf10818-c19a-4d1b-8c8e-81077fdc898e">
-<img width="970" alt="Todo" src="https://github.com/growth-ring/taskgrow/assets/116357790/8454987d-d365-4bbd-90b0-88286dbe148f">
+<img width="970" alt="뽀모도로" src="https://github.com/growth-ring/taskgrow/assets/116357790/9bf10818-c19a-4d1b-8c8e-81077fdc898e">
+<img width="970" alt="뽀모도로" src="https://github.com/growth-ring/taskgrow/assets/116357790/8454987d-d365-4bbd-90b0-88286dbe148f">
+
 할 일을 선택 후, 타이머를 시작합니다. 25분이 지나면 선택한 할 일의 완료 카운트가 1개 올라갑니다.
 
 ### 회고 작성하기
 
-<img width="970" alt="Todo" src="https://github.com/growth-ring/taskgrow/assets/116357790/95a48f70-893a-461d-afa6-3d006ee57756">
-기분 점수와 회고를 작성합니다. 모든 투두를 완료한 날에 달력에 기분점수에 맞춰서 스티커가 붙습니다.
+<img width="970" alt="회고" src="https://github.com/growth-ring/taskgrow/assets/116357790/95a48f70-893a-461d-afa6-3d006ee57756">
+
+기분 점수와 회고를 작성합니다. 모든 투두를 완료한 날에 달력에 기분점수에 맞춰서 스티커로 표시됩니다.
+
+### 통계 페이지
+
+<img width="970" alt="통계" src="https://github.com/growth-ring/taskgrow/assets/116357790/5285a5dc-da98-459b-8ecd-1f801a61c704">
+
+통계 페이지에서는 이달의 한 일과 감정 통계를 확인할 수 있습니다.
+
+## 프로젝트 상세 소개
+
+### 💡 핵심 기능
+
+1. 달력에서 날짜를 선택한 후 할 일 페이지에서 할 일과 계획 뽀모도로 개수를 추가합니다.<br/>이때 달력에서 할 일의 개수를 확인할 수 있으며 마우스 커서를 올리면 상세 내용이 보입니다.
+
+2. 할 일을 클릭하면 해당 뽀모도로를 시작할 수 있습니다.
+   시간의 흐름에 따라 뽀모도로 화면의 변화를 볼 수 있습니다.
+
+3. 뽀모도로가 25분이 되면 해당 할 일의 개수가 1씩 증가합니다.
+
+   - 이미 시작한 뽀모도로(완료 뽀모도로가 1개 이상)의 계획 개수 수정이 불가능합니다.
+   - 완료 뽀모도로가 1개 이상일 때만 해당 할 일을 완료할 수 있습니다.
+
+4. 사용자가 해당 할 일을 끝낸 후 완료 체크를 하면 완료 처리가 되며 미완료된 할 일 아래로 순서가 내려갑니다.
+
+5. 사용자는 해당 날짜의 회고를 작성할 수 있습니다.
+   감정 기록을 1~10까지 할 수 있으며 회고 내용을 작성할 수 있습니다.
+
+6. 달력에 해당 날짜의 기분에 따라 감정 기록 스티커가 다르게 표시됩니다.
+
+   - 할 일을 끝냈지만 회고 미작성 상태시 DONE 스티커가 표시됩니다.
+
+7. 통계 페이지에서 이달의 감정, 할일 통계를 확인할 수 있습니다.
+
+### 👤 타켓 유저
+
+- 시간을 효과적으로 관리하고 싶은 누구나
+- 작업의 효율성을 따지는 사람
+- 집중력을 향상시키고자 하는 사람
+
+### 💘 기대 효과
+
+1. 할 일 효과적으로 관리 (유저는 달력 및 투두 화면을 통해 시각적으로 파악하고 관리할 수 있습니다)
+
+2. 뽀모도로 기법을 활용한 집중 향상
+
+3. 일상 회고를 통한 감정 회고 (회고 기능을 통해 오늘의 감정을 기록하고 회고 작성을 통해 성취감을 느낄 수 있습니다)
+
+4. 미완료 작업 강조 및 완료 도장 유도 (미완료된 할 일은 숫자로 남음으로써 유저가 미루지 않고 작업을 완료할 수 있도록 독려하고 완료된 작업에는 감정에 따른 여러 도장을 통해 성취감을 얻을 수 있습니다)
+
+5. 데이터 시각화를 통한 파악 (달력 화면에 해당 달의 감정의 변화와 성과 여부를 알 수 있습니다)
+
+## 개발 환경
+
+### 프론트
+
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1702118848100?alt=media&token=66704c6c-d668-4e12-98a8-ca8ba5746e51)](https://github.com/msdio/stackticon)
+
+<img width="100" alt="zustand" src="https://github.com/growth-ring/taskgrow/assets/116357790/749d37d6-3634-4b0f-8d37-e73f761dfa0e"><br/>Zustand
+
+### 백엔드
+
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1702119774962?alt=media&token=40bd636a-5e60-458c-8b1c-1461c33294ee)](https://github.com/msdio/stackticon)
