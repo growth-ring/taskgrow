@@ -2,8 +2,6 @@
 
 <img width="970" alt="Intro" src="https://github.com/growth-ring/taskgrow/assets/116357790/41b47753-00f3-4c58-8834-3be036b51624">
 
-[https://taskgrow.codesoom.com](https://taskgrow.codesoom.com)
-
 💡 Taskgrow는 집중력 향상을 위한 <b>할 일 체크리스트</b>와 함께 동작하는 <b>뽀모도로 타이머</b>를 통한 개인 생산성 관리 서비스입니다.
 
 ✨ **서비스** : [http://taskgrow.codesoom.com](http://taskgrow.codesoom.com/)
