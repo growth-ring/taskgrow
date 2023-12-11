@@ -38,15 +38,23 @@ public class Review extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", referencedColumnName = "task_id")
     private Tasks tasks;
+    @Column(length = 50, nullable = false)
+    private String subject;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String contents;
     @Column(name = "feelings_score", nullable = false)
     private Integer feelingsScore;
 
     @Builder
-    public Review(Tasks tasks, String contents, Integer feelingsScore) {
+    public Review(
+            Tasks tasks,
+            String subject,
+            String contents,
+            Integer feelingsScore
+    ) {
         validFeelingsScore(feelingsScore);
         this.tasks = tasks;
+        this.subject = subject;
         this.contents = contents;
         this.feelingsScore = feelingsScore;
     }
