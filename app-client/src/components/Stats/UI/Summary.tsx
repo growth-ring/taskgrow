@@ -36,7 +36,7 @@ const SubText = styled.div`
 `;
 
 interface SummaryType {
-  getIsDetail: (action: boolean) => void;
+  getIsDetail: (params: { action: boolean; category?: string }) => void;
   category: string;
   comment: string;
   subComment: string;

@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Summary from './Summary';
 import Detail from './Detail';
+import { IoIosCloseCircle } from 'react-icons/io';
 
-const Content = styled.div`
+const Content = styled.div<{ isDetail: boolean }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => (props.isDetail ? 'row' : 'column')};
   justify-content: center;
   text-align: center;
   margin-top: 10px;
 
   background-color: white;
-  padding: 1rem;
+  padding: ${(props) => (props.isDetail ? '0 1rem' : '1rem')};
   border-radius: 1rem;
   box-shadow:
     3px 3px 10px rgba(50, 50, 50, 0.1),
@@ -27,6 +28,12 @@ const TitleBox = styled.div`
   font-size: 18px;
 `;
 
+const Close = styled.button`
+  color: #949494;
+  font-size: 19px;
+  cursor: pointer;
+`;
+
 interface BoxType {
   title: string[];
   comment: string;
@@ -35,21 +42,40 @@ interface BoxType {
 
 const Box = ({ title, comment, subComment }: BoxType) => {
   const [isDetail, setIsDetail] = useState(false);
-  const category = title[0];
+  const [category, setCategory] = useState(title[0]);
   const count = title[1];
 
-  const getIsDetail = (action: boolean) => {
+  const getIsDetail = ({
+    action,
+    category,
+  }: {
+    action: boolean;
+    category?: string;
+  }) => {
     setIsDetail(action);
+    if (category !== undefined) {
+      setCategory(category);
+    }
+  };
+
+  const handleCloseDetail = () => {
+    getIsDetail({ action: false });
+    setCategory(title[0]);
   };
 
   return (
     <>
       <TitleBox>
         <div>{category}</div>
-        <div>총 {count}개</div>
+        {isDetail && (
+          <Close onClick={handleCloseDetail}>
+            <IoIosCloseCircle />
+          </Close>
+        )}
+        {!isDetail && <div>총 {count}개</div>}
       </TitleBox>
-      <Content>
-        {isDetail && <Detail getIsDetail={getIsDetail} />}
+      <Content isDetail={isDetail}>
+        {isDetail && <Detail />}
         {!isDetail && (
           <Summary
             getIsDetail={getIsDetail}

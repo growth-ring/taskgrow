@@ -77,23 +77,32 @@ const Count = styled.div`
 const Circle = ({ getIsDetail }: CircleType) => {
   const { todosStats } = useTodosStore();
 
-  const handleOnDetail = () => {
-    getIsDetail(true);
+  const handleOnDetail = ({ category }: { category: string }) => {
+    getIsDetail({ action: true, category: category });
   };
 
   return (
     <Container>
-      <Stats bg="var(--main-color)" onClick={handleOnDetail}>
+      <Stats
+        bg="var(--main-color)"
+        onClick={() => handleOnDetail({ category: '한 일(완료) 상세보기' })}
+      >
         <StatsIcon as={FaRegCalendarCheck} />
         <Title>완료</Title>
         <Count>{todosStats.done_count}</Count>
       </Stats>
-      <Stats bg="var(--sub-blue-color)" onClick={handleOnDetail}>
+      <Stats
+        bg="var(--sub-blue-color)"
+        onClick={() => handleOnDetail({ category: '한 일(진행중) 상세보기' })}
+      >
         <StatsIcon as={FaRegCalendarMinus} />
         <Title>진행중</Title>
         <Count>{todosStats.progress_count}</Count>
       </Stats>
-      <Stats bg="var(--line-color)" onClick={handleOnDetail}>
+      <Stats
+        bg="var(--line-color)"
+        onClick={() => handleOnDetail({ category: '한 일(미완료) 상세보기' })}
+      >
         <StatsIcon as={FaRegCalendarXmark} />
         <Title>미완료</Title>
         <Count>{todosStats.undone_count}</Count>
