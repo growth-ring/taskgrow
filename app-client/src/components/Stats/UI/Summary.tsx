@@ -36,15 +36,21 @@ const SubText = styled.div`
 `;
 
 interface SummaryType {
+  getIsDetail: (action: boolean) => void;
   category: string;
   comment: string;
   subComment: string;
 }
 
-const Summary = ({ category, comment, subComment }: SummaryType) => {
+const Summary = ({
+  getIsDetail,
+  category,
+  comment,
+  subComment,
+}: SummaryType) => {
   return (
     <>
-      {category === '한 일' && <Circle />}
+      {category === '한 일' && <Circle getIsDetail={getIsDetail} />}
       {category === '감정' && <Chart />}
       <Text>{comment}</Text>
       <SubText>{subComment}</SubText>

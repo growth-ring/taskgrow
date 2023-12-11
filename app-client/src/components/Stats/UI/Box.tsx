@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Summary from './Summary';
+import Detail from './Detail';
 
 const Content = styled.div`
   display: flex;
@@ -32,8 +34,14 @@ interface BoxType {
 }
 
 const Box = ({ title, comment, subComment }: BoxType) => {
+  const [isDetail, setIsDetail] = useState(false);
   const category = title[0];
   const count = title[1];
+
+  const getIsDetail = (action: boolean) => {
+    setIsDetail(action);
+  };
+
   return (
     <>
       <TitleBox>
@@ -41,11 +49,15 @@ const Box = ({ title, comment, subComment }: BoxType) => {
         <div>총 {count}개</div>
       </TitleBox>
       <Content>
-        <Summary
-          category={category}
-          comment={comment}
-          subComment={subComment}
-        />
+        {isDetail && <Detail getIsDetail={getIsDetail} />}
+        {!isDetail && (
+          <Summary
+            getIsDetail={getIsDetail}
+            category={category}
+            comment={comment}
+            subComment={subComment}
+          />
+        )}
       </Content>
     </>
   );

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { CircleType } from '../UI/Detail';
 import {
   FaRegCalendarCheck,
   FaRegCalendarMinus,
@@ -12,7 +13,7 @@ const Container = styled.div`
   color: white;
 `;
 
-const Stats = styled.div<{ bg: string }>`
+const Stats = styled.button<{ bg: string }>`
   aspect-ratio: 1 / 1;
 
   display: flex;
@@ -73,21 +74,26 @@ const Count = styled.div`
   font-weight: bold;
 `;
 
-const Circle = () => {
+const Circle = ({ getIsDetail }: CircleType) => {
   const { todosStats } = useTodosStore();
+
+  const handleOnDetail = () => {
+    getIsDetail(true);
+  };
+
   return (
     <Container>
-      <Stats bg="var(--main-color)">
+      <Stats bg="var(--main-color)" onClick={handleOnDetail}>
         <StatsIcon as={FaRegCalendarCheck} />
         <Title>완료</Title>
         <Count>{todosStats.done_count}</Count>
       </Stats>
-      <Stats bg="var(--sub-blue-color)">
+      <Stats bg="var(--sub-blue-color)" onClick={handleOnDetail}>
         <StatsIcon as={FaRegCalendarMinus} />
         <Title>진행중</Title>
         <Count>{todosStats.progress_count}</Count>
       </Stats>
-      <Stats bg="var(--line-color)">
+      <Stats bg="var(--line-color)" onClick={handleOnDetail}>
         <StatsIcon as={FaRegCalendarXmark} />
         <Title>미완료</Title>
         <Count>{todosStats.undone_count}</Count>
