@@ -3,9 +3,11 @@ package com.growth.task.todo.application;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.dto.TodoListRequest;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.TodoStatsResponse;
+import com.growth.task.todo.dto.response.TodoDetailResponse;
 import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
@@ -16,6 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -27,17 +34,18 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class TodoListServiceTest {
+    private static final Pageable DEFAULT_PAGEABLE = PageRequest.of(0, 10, Sort.by("id").descending());
 
-    public static final int DONE_COUNT = 5;
-    public static final int PROGRESS_COUNT = 2;
-    public static final int UNDONE_COUNT = 5;
-    public static final long USER_ID = 1L;
-    public static final LocalDate LOCAL_DATE_11_20 = LocalDate.of(2023, 11, 20);
-    public static final LocalDate LOCAL_DATE_11_19 = LocalDate.of(2023, 11, 19);
-    public static final int TOTAL_COUNT = 10;
-    public static final int STATS_DONE = 7;
-    public static final int STATS_PROGRESS = 2;
-    public static final int STATS_UNDONE = 3;
+    private static final int DONE_COUNT = 5;
+    private static final int PROGRESS_COUNT = 2;
+    private static final int UNDONE_COUNT = 5;
+    private static final long USER_ID = 1L;
+    private static final LocalDate LOCAL_DATE_11_20 = LocalDate.of(2023, 11, 20);
+    private static final LocalDate LOCAL_DATE_11_19 = LocalDate.of(2023, 11, 19);
+    private static final int TOTAL_COUNT = 10;
+    private static final int STATS_DONE = 7;
+    private static final int STATS_PROGRESS = 2;
+    private static final int STATS_UNDONE = 3;
     @Mock
     private TodosRepository todosRepository;
     private TodoListService todoListService;
@@ -220,6 +228,39 @@ public class TodoListServiceTest {
                         () -> assertThat(todoStats.getProgressCount()).isEqualTo(STATS_PROGRESS),
                         () -> assertThat(todoStats.getUndoneCount()).isEqualTo(STATS_UNDONE)
 
+                );
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("getTodoByUserAndParams")
+    class Describe_getTodoByUserAndParams {
+        @Nested
+        @DisplayName("사용자 아이디와 status가 주어지면")
+        class Context_with_userId {
+            private TodoListRequest request = new TodoListRequest(Status.READY.name());
+
+            @BeforeEach
+            void prepare() {
+                Page page = new PageImpl(List.of(
+                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01)),
+                        new TodoDetailResponse("소설읽기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01)),
+                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01)),
+                        new TodoDetailResponse("운동하기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01))
+                ));
+                given(todosRepository.findAllByUserAndParams(DEFAULT_PAGEABLE, USER_ID, request))
+                        .willReturn(page);
+            }
+
+            @Test
+            @DisplayName("투두 내용, 상태, 뽀모도로 개수, 테스크 날짜를 리턴한다")
+            void it_return_todo_list() {
+                Page<TodoDetailResponse> todos = todoListService.getTodoByUserAndParams(DEFAULT_PAGEABLE, USER_ID, request);
+
+                assertAll(
+                        () -> assertThat(todos).hasSize(4),
+                        () -> assertThat(todos).extracting(TodoDetailResponse::getStatus).containsAnyOf(Status.READY)
                 );
             }
         }

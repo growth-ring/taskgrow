@@ -1,12 +1,16 @@
 package com.growth.task.todo.application;
 
 import com.growth.task.task.dto.TaskTodoDetailResponse;
+import com.growth.task.todo.dto.TodoListRequest;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.TodoStatsResponse;
+import com.growth.task.todo.dto.response.TodoDetailResponse;
 import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,5 +78,17 @@ public class TodoListService {
         return todos.stream()
                 .filter(todo -> todo.getStatus() == status)
                 .count();
+    }
+
+    /**
+     * userId와 parameter에 해당하는 투두 상세 내역 리스트가 페이징되어 리턴한다
+     * @param pageable 페이징
+     * @param userId 사용자 아이디
+     * @param request 파라미터
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public Page<TodoDetailResponse> getTodoByUserAndParams(Pageable pageable, Long userId, TodoListRequest request) {
+        return todosRepository.findAllByUserAndParams(pageable, userId, request);
     }
 }
