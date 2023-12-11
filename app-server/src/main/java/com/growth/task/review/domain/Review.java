@@ -59,6 +59,13 @@ public class Review extends BaseTimeEntity {
         this.feelingsScore = feelingsScore;
     }
 
+    public void update(ReviewUpdateRequest request) {
+        validFeelingsScore(request.getFeelingsScore());
+        this.subject = request.getSubject();
+        this.feelingsScore = request.getFeelingsScore();
+        this.contents = request.getContents();
+    }
+
     private void validFeelingsScore(Integer feelingsScore) {
         if (!isBetween(feelingsScore, FEELING_SCORE_LOWER_BOUND, FEELING_SCORE_UPPER_BOUND)) {
             throw new OutOfBoundsException(FEELING_SCORE_OUT_OF_BOUNDS_MESSAGE);
@@ -67,11 +74,5 @@ public class Review extends BaseTimeEntity {
 
     private static boolean isBetween(Integer value, int lower, int upper) {
         return value >= lower && value <= upper;
-    }
-
-    public void update(ReviewUpdateRequest request) {
-        validFeelingsScore(request.getFeelingsScore());
-        this.feelingsScore = request.getFeelingsScore();
-        this.contents = request.getContents();
     }
 }

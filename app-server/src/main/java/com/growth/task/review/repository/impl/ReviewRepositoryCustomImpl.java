@@ -26,6 +26,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     public List<ReviewDetailResponse> findByUserIdAndBetweenTimeRange(Long userId, ReviewStatsRequest request) {
         return queryFactory.select(Projections.fields(ReviewDetailResponse.class,
                         review.id.as("reviewId"),
+                        review.subject,
                         review.contents,
                         review.feelingsScore
                 ))
