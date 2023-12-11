@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import Circle from '../Todos/Circle';
-import Chart from '../Mood/Chart';
+import Summary from './Summary';
 
 const Content = styled.div`
   display: flex;
@@ -26,39 +25,6 @@ const TitleBox = styled.div`
   font-size: 18px;
 `;
 
-const Text = styled.div`
-  margin-top: 10px;
-
-  @media (max-width: 767px) {
-    font-size: 18px;
-  }
-
-  @media (min-width: 768px) and (max-width: 1023px) {
-    font-size: 20px;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 22px;
-  }
-`;
-
-const SubText = styled.div`
-  margin-top: 10px;
-  color: #949494;
-
-  @media (max-width: 767px) {
-    font-size: 16px;
-  }
-
-  @media (min-width: 768px) and (max-width: 1023px) {
-    font-size: 14px;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 16px;
-  }
-`;
-
 interface BoxType {
   title: string[];
   comment: string;
@@ -75,10 +41,11 @@ const Box = ({ title, comment, subComment }: BoxType) => {
         <div>총 {count}개</div>
       </TitleBox>
       <Content>
-        {category === '한 일' && <Circle />}
-        {category === '감정' && <Chart />}
-        <Text>{comment}</Text>
-        <SubText>{subComment}</SubText>
+        <Summary
+          category={category}
+          comment={comment}
+          subComment={subComment}
+        />
       </Content>
     </>
   );
