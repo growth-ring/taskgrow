@@ -51,7 +51,7 @@ const Summary = ({
   return (
     <>
       {category === '한 일' && <Circle getIsDetail={getIsDetail} />}
-      {category === '감정' && <Chart />}
+      {category === '감정' && <Chart getIsDetail={getIsDetail} />}
       <Text>{comment}</Text>
       <SubText>{subComment}</SubText>
     </>

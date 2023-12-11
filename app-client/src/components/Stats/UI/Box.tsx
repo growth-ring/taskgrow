@@ -75,7 +75,7 @@ const Box = ({ title, comment, subComment }: BoxType) => {
         {!isDetail && <div>총 {count}개</div>}
       </TitleBox>
       <Content isDetail={isDetail}>
-        {isDetail && <Detail />}
+        {isDetail && <Detail category={category} />}
         {!isDetail && (
           <Summary
             getIsDetail={getIsDetail}

@@ -1,4 +1,5 @@
 import { BarChart, Bar, Tooltip, XAxis, Cell } from 'recharts';
+import { CircleType } from '../UI/Detail';
 import styled from 'styled-components';
 import { useMoods } from '../../../store/mood';
 
@@ -22,8 +23,21 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-const Chart = () => {
+interface CategoryType {
+  entry: {
+    icon: string;
+    name: string;
+    num: number;
+  };
+}
+
+const Chart = ({ getIsDetail }: CircleType) => {
   const { moods, topMoods } = useMoods();
+
+  const handleOnDetail = ({ category }: { category: CategoryType }) => {
+    const CategoryName = `감정(${category.entry.name}) 상세보기`;
+    getIsDetail({ action: true, category: CategoryName });
+  };
 
   return (
     <Container>
@@ -41,6 +55,7 @@ const Chart = () => {
                   ? `var(--sub-blue-color)`
                   : `var(--line-color)`
               }
+              onClick={() => handleOnDetail({ category: { entry } })}
             />
           ))}
         </Bar>

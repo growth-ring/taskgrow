@@ -43,13 +43,15 @@ const Text = styled.div`
   margin-top: 6.5px;
 `;
 
-const Detail = () => {
+const Detail = ({ category }: { category: string }) => {
+  const isMoon = category.includes('감정');
+
   return (
     <>
       <Container>
         <TitleBox>
           <div>제목</div>
-          <div>뽀모도로 개수</div>
+          <div>{isMoon ? '날짜' : '뽀모도로 개수'}</div>
         </TitleBox>
         <Line style={{ height: '2px' }} />
         <Content>
