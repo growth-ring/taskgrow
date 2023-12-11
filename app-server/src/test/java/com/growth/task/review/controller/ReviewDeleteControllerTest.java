@@ -86,6 +86,7 @@ class ReviewDeleteControllerTest {
         return reviewRepository.save(
                 Review.builder()
                         .tasks(tasks)
+                        .subject("오늘의 한 줄")
                         .contents(contents)
                         .feelingsScore(feelingsScore)
                         .build()

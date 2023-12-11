@@ -64,10 +64,11 @@ class ReviewRepositoryTest {
         );
     }
 
-    private Review getReview(Tasks tasks, String contents, int feelingsScore) {
+    private Review getReview(Tasks tasks, String subject, String contents, int feelingsScore) {
         return reviewRepository.save(
                 Review.builder()
                         .tasks(tasks)
+                        .subject(subject)
                         .contents(contents)
                         .feelingsScore(feelingsScore)
                         .build()
@@ -88,11 +89,11 @@ class ReviewRepositoryTest {
             Tasks task4 = getTask(user, DATE_2023_11_04);
             Tasks task5 = getTask(user, DATE_2023_11_05);
 
-            getReview(task1, "review 1", 1);
-            getReview(task2, "review 2", 3);
-            getReview(task3, "review 3", 5);
-            getReview(task4, "review 4", 7);
-            getReview(task5, "review 5", 9);
+            getReview(task1, "subject 1", "review 1", 1);
+            getReview(task2, "subject 1", "review 2", 3);
+            getReview(task3, "subject 1", "review 3", 5);
+            getReview(task4, "subject 1", "review 4", 7);
+            getReview(task5, "subject 1", "review 5", 9);
         }
 
         @Nested

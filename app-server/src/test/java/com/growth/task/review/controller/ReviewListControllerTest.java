@@ -82,7 +82,7 @@ class ReviewListControllerTest {
         );
     }
 
-    private Review getReview(Users user, LocalDate taskDate, String contents, int feelingsScore) {
+    private Review getReview(Users user, LocalDate taskDate, String subject, String contents, int feelingsScore) {
         Tasks tasks = tasksRepository.save(
                 Tasks.builder()
                         .taskDate(taskDate)
@@ -92,6 +92,7 @@ class ReviewListControllerTest {
         return reviewRepository.save(
                 Review.builder()
                         .tasks(tasks)
+                        .subject(subject)
                         .contents(contents)
                         .feelingsScore(feelingsScore)
                         .build()
@@ -118,13 +119,13 @@ class ReviewListControllerTest {
         class Context_with_userId_and_time_range {
             @BeforeEach
             void prepare() {
-                getReview(user, LOCAL_DATE_11_12, "review1", 1);
-                getReview(user, LOCAL_DATE_11_13, "review2", 3);
-                getReview(user, LOCAL_DATE_11_14, "review3", 5);
-                getReview(user, LOCAL_DATE_11_15, "review4", 7);
-                getReview(user, LOCAL_DATE_11_16, "review5", 9);
-                getReview(user, LOCAL_DATE_11_17, "review6", 10);
-                getReview(user, LOCAL_DATE_11_18, "review7", 1);
+                getReview(user, LOCAL_DATE_11_12, "subject1", "review1", 1);
+                getReview(user, LOCAL_DATE_11_13, "subject1", "review2", 3);
+                getReview(user, LOCAL_DATE_11_14, "subject1", "review3", 5);
+                getReview(user, LOCAL_DATE_11_15, "subject1", "review4", 7);
+                getReview(user, LOCAL_DATE_11_16, "subject1", "review5", 9);
+                getReview(user, LOCAL_DATE_11_17, "subject1", "review6", 10);
+                getReview(user, LOCAL_DATE_11_18, "subject1", "review7", 1);
             }
 
             @Nested

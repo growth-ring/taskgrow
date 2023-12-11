@@ -44,16 +44,16 @@ class ReviewListServiceTest {
             @BeforeEach
             void prepare() {
                 List<ReviewDetailResponse> reviews = List.of(
-                        new ReviewDetailResponse(1L, "review1", 1),
-                        new ReviewDetailResponse(2L, "review1", 1),
-                        new ReviewDetailResponse(3L, "review1", 3),
-                        new ReviewDetailResponse(4L, "review1", 3),
-                        new ReviewDetailResponse(5L, "review1", 3),
-                        new ReviewDetailResponse(6L, "review1", 6),
-                        new ReviewDetailResponse(7L, "review1", 7),
-                        new ReviewDetailResponse(8L, "review1", 7),
-                        new ReviewDetailResponse(9L, "review1", 9),
-                        new ReviewDetailResponse(10L, "review1", 10)
+                        new ReviewDetailResponse(1L, "subject1", "review1", 1),
+                        new ReviewDetailResponse(2L, "subject2", "review2", 1),
+                        new ReviewDetailResponse(3L, "subject3", "review3", 3),
+                        new ReviewDetailResponse(4L, "subject4", "review4", 3),
+                        new ReviewDetailResponse(5L, "subject5", "review5", 3),
+                        new ReviewDetailResponse(6L, "subject6", "review6", 6),
+                        new ReviewDetailResponse(7L, "subject7", "review7", 7),
+                        new ReviewDetailResponse(8L, "subject8", "review8", 7),
+                        new ReviewDetailResponse(9L, "subject9", "review9", 9),
+                        new ReviewDetailResponse(10L, "subject10", "review10", 10)
                 );
                 given(reviewRepository.findByUserIdAndBetweenTimeRange(USER_ID, request))
                         .willReturn(reviews);

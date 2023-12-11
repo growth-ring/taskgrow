@@ -29,7 +29,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDate;
 
-import static com.growth.task.review.dto.ReviewAddRequest.FEELINGS_SCORE_VALID_MESSAGE;
 import static com.growth.task.review.exception.InvalidReviewRequestException.DO_NOT_SAVE_REVIEW_WHEN_NOT_EXIST_TODO_EXCEPTION_MESSAGE;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -44,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ReviewAddControllerTest {
     private static final String CONTENT = "회고를 작성하였다";
     private static final LocalDate TASK_DATE_10_26 = LocalDate.of(2023, 10, 26);
+    private static final String SUBJECT = "오늘의 한 줄";
     @Autowired
     private ReviewRepository reviewRepository;
     @Autowired
@@ -125,7 +125,7 @@ class ReviewAddControllerTest {
                 Tasks task = getTask(user, LocalDate.of(2023, 10, 26));
                 getTodo("책 읽기", task);
 
-                request = new ReviewAddRequest(task.getTaskId(), CONTENT, 7);
+                request = new ReviewAddRequest(task.getTaskId(), SUBJECT, CONTENT, 7);
             }
 
             @Test
@@ -149,7 +149,7 @@ class ReviewAddControllerTest {
                 Users user = getUser("grow", "password");
                 Tasks task = getTask(user, TASK_DATE_10_26);
 
-                request = new ReviewAddRequest(task.getTaskId(), CONTENT, 7);
+                request = new ReviewAddRequest(task.getTaskId(), SUBJECT, CONTENT, 7);
             }
 
             @Test
@@ -172,7 +172,7 @@ class ReviewAddControllerTest {
             void prepare() {
                 Users user = getUser("grow", "password");
                 Tasks task = getTask(user, LocalDate.of(2023, 10, 26));
-                request = new ReviewAddRequest(task.getTaskId(), CONTENT, 0);
+                request = new ReviewAddRequest(task.getTaskId(), SUBJECT, CONTENT, 0);
             }
 
             @Test
@@ -181,7 +181,7 @@ class ReviewAddControllerTest {
                 ResultActions resultActions = subject(request);
 
                 resultActions.andExpect(status().isBadRequest())
-                        .andExpect(jsonPath("errors[0].reason").value(FEELINGS_SCORE_VALID_MESSAGE))
+                        .andExpect(jsonPath("errors[0].reason").value("기분 점수는 1 ~ 10 사이를 입력해주세요."))
                 ;
             }
         }
@@ -195,8 +195,8 @@ class ReviewAddControllerTest {
             void prepare() {
                 Users user = getUser("grow", "password");
                 Tasks task = getTask(user, LocalDate.of(2023, 10, 26));
-                reviewRepository.save(new Review(task, CONTENT, 7));
-                request = new ReviewAddRequest(task.getTaskId(), CONTENT, 2);
+                reviewRepository.save(new Review(task, SUBJECT, CONTENT, 7));
+                request = new ReviewAddRequest(task.getTaskId(), SUBJECT, CONTENT, 2);
             }
 
             @Test

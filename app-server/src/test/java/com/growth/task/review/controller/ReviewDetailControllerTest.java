@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ReviewDetailControllerTest {
     public static final String CONTENTS = "테스트를 작성하였다. 기분이 좋다";
+    public static final String SUBJECT = "오늘 한 줄";
     @Autowired
     private ReviewRepository reviewRepository;
     @Autowired
@@ -82,10 +83,11 @@ class ReviewDetailControllerTest {
         );
     }
 
-    private Review getReview(Tasks tasks, String contents, int feelingsScore) {
+    private Review getReview(Tasks tasks, String subject, String contents, int feelingsScore) {
         return reviewRepository.save(
                 Review.builder()
                         .tasks(tasks)
+                        .subject(subject)
                         .contents(contents)
                         .feelingsScore(feelingsScore)
                         .build()
@@ -108,7 +110,7 @@ class ReviewDetailControllerTest {
             void prepare() {
                 Users user = getUser("grow", "password");
                 task = getTask(user, LocalDate.of(2023, 10, 26));
-                Review review = getReview(task, CONTENTS, 7);
+                Review review = getReview(task, SUBJECT, CONTENTS, 7);
             }
 
             @Test
@@ -131,7 +133,7 @@ class ReviewDetailControllerTest {
             void prepare() {
                 Users user = getUser("grow", "password");
                 task = getTask(user, LocalDate.of(2023, 10, 26));
-                Review review = getReview(task, CONTENTS, 7);
+                Review review = getReview(task, SUBJECT, CONTENTS, 7);
                 reviewRepository.deleteById(review.getId());
             }
 

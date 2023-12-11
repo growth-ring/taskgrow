@@ -39,6 +39,7 @@ class ReviewUpdateControllerTest {
     public static final String CONTENTS = "테스트를 작성하였다. 기분이 좋다";
     public static final String NEW_CONTENTS = "회고 내용을 수정했습니다.";
     public static final int NEW_FEELINGS_SCORE = 7;
+    public static final String SUBJECT = "새로운 오늘의 한 줄";
     @Autowired
     private ReviewRepository reviewRepository;
     @Autowired
@@ -90,6 +91,7 @@ class ReviewUpdateControllerTest {
         return reviewRepository.save(
                 Review.builder()
                         .tasks(tasks)
+                        .subject("제목")
                         .contents(contents)
                         .feelingsScore(feelingsScore)
                         .build()
@@ -111,7 +113,7 @@ class ReviewUpdateControllerTest {
         @DisplayName("존재하는 Review id가 주어지면")
         class Context_with_exist_review_id {
             private Review review;
-            private final ReviewUpdateRequest request = new ReviewUpdateRequest(NEW_CONTENTS, NEW_FEELINGS_SCORE);
+            private final ReviewUpdateRequest request = new ReviewUpdateRequest(SUBJECT, NEW_CONTENTS, NEW_FEELINGS_SCORE);
 
             @BeforeEach
             void prepare() {
@@ -135,7 +137,7 @@ class ReviewUpdateControllerTest {
         @DisplayName("존재하지 않는 Review id가 주어지면")
         class Context_with_not_exist_review_id {
             private Review review;
-            private final ReviewUpdateRequest request = new ReviewUpdateRequest(NEW_CONTENTS, NEW_FEELINGS_SCORE);
+            private final ReviewUpdateRequest request = new ReviewUpdateRequest(SUBJECT, NEW_CONTENTS, NEW_FEELINGS_SCORE);
 
             @BeforeEach
             void prepare() {

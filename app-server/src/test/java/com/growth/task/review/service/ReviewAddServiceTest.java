@@ -30,6 +30,7 @@ import static org.mockito.Mockito.mock;
 class ReviewAddServiceTest {
     private static final String CONTENT = "회고 내용";
     private static final LocalDate TASK_DATE_12_5 = LocalDate.of(2023, 12, 5);
+    private static final String SUBJECT = "오늘의 한 줄";
     private ReviewAddService reviewAddService;
     @Mock
     private ReviewRepository reviewRepository;
@@ -54,8 +55,8 @@ class ReviewAddServiceTest {
         @DisplayName("Todo가 존재하는 테스크와 회고 내용과 기분점수가 주어지면")
         class Context_with_existed_todo_in_task_content_feeling_score {
             private final Tasks task = mock(Tasks.class);
-            private final ReviewAddRequest request = new ReviewAddRequest(task.getTaskId(), CONTENT, 4);
-            private final Review givenReview = new Review(task, CONTENT, 4);
+            private final ReviewAddRequest request = new ReviewAddRequest(task.getTaskId(), SUBJECT, CONTENT, 4);
+            private final Review givenReview = new Review(task, SUBJECT, CONTENT, 4);
 
             @BeforeEach
             void prepare() {
@@ -80,7 +81,7 @@ class ReviewAddServiceTest {
         @DisplayName("Todo가 존재하자 않는 테스크와 회고 내용과 기분점수가 주어지면")
         class Context_with_not_existed_todo_in_task_content_feeling_score {
             private final Tasks task = new Tasks(1L, mock(Users.class), TASK_DATE_12_5);
-            private final ReviewAddRequest request = new ReviewAddRequest(task.getTaskId(), CONTENT, 4);
+            private final ReviewAddRequest request = new ReviewAddRequest(task.getTaskId(), SUBJECT, CONTENT, 4);
 
             @BeforeEach
             void prepare() {

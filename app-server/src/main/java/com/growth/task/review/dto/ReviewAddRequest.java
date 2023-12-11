@@ -8,7 +8,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,19 +18,31 @@ import lombok.NoArgsConstructor;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 public class ReviewAddRequest {
-    public static final String FEELINGS_SCORE_VALID_MESSAGE = "기분 점수는 1 ~ 10 사이를 입력해주세요.";
-    public static final String REVIEW_ADD_REQUEST_TASK_ID_REQUIRED_MESSAGE = "테스크 id는 필수입니다.";
-    public static final String REVIEW_ADD_REQUEST_CONTENTS_REQUIRED_MESSAGE = "회고 내용은 필수입니다.";
-    @NotNull(message = REVIEW_ADD_REQUEST_TASK_ID_REQUIRED_MESSAGE)
+    private static final String FEELINGS_SCORE_VALID_MESSAGE = "기분 점수는 1 ~ 10 사이를 입력해주세요.";
+    private static final String TASK_ID_REQUIRED_MESSAGE = "테스크 id는 필수입니다.";
+    private static final String CONTENTS_REQUIRED_MESSAGE = "회고 내용은 필수입니다.";
+    private static final String SUBJECT_REQUIRED_MESSAGE = "오늘의 한 줄은 필수입니다.";
+    public static final String SUBJECT_MAX_LENGTH_MESSAGE = "오늘의 한 줄은 50자 내로 입력해주세요.";
+    @NotNull(message = TASK_ID_REQUIRED_MESSAGE)
     private Long taskId;
-    @NotBlank(message = REVIEW_ADD_REQUEST_CONTENTS_REQUIRED_MESSAGE)
+    @NotBlank(message = SUBJECT_REQUIRED_MESSAGE)
+    @Size(max = 50, message = SUBJECT_MAX_LENGTH_MESSAGE)
+    private String subject;
+    @NotBlank(message = CONTENTS_REQUIRED_MESSAGE)
     private String contents;
     @Min(value = 1, message = FEELINGS_SCORE_VALID_MESSAGE)
     @Max(value = 10, message = FEELINGS_SCORE_VALID_MESSAGE)
     private Integer feelingsScore;
 
-    public ReviewAddRequest(Long taskId, String contents, Integer feelingsScore) {
+    @Builder
+    public ReviewAddRequest(
+            Long taskId,
+            String subject,
+            String contents,
+            Integer feelingsScore
+    ) {
         this.taskId = taskId;
+        this.subject = subject;
         this.contents = contents;
         this.feelingsScore = feelingsScore;
     }
@@ -36,6 +50,7 @@ public class ReviewAddRequest {
     public Review toEntity(Tasks task) {
         return Review.builder()
                 .tasks(task)
+                .subject(subject)
                 .contents(contents)
                 .feelingsScore(feelingsScore)
                 .build();

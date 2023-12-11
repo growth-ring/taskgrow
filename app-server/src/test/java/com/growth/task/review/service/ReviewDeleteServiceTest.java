@@ -25,6 +25,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class ReviewDeleteServiceTest {
     private static final String CONTENT = "테스트를 잘 작성합시다";
+    public static final String SUBJECT = "오늘의 한 줄";
     private ReviewDeleteService reviewDeleteService;
     @Mock
     private ReviewRepository reviewRepository;
@@ -41,7 +42,7 @@ class ReviewDeleteServiceTest {
         @DisplayName("존재하는 회고 아아디가 주어지면")
         class Context_with_exist_review {
             private final Tasks task = mock(Tasks.class);
-            private final Review givenReview = new Review(task, CONTENT, 4);
+            private final Review givenReview = new Review(task, SUBJECT, CONTENT, 4);
 
             @BeforeEach
             void prepare() {
@@ -63,7 +64,7 @@ class ReviewDeleteServiceTest {
         @DisplayName("존재하지 않은 회고 아아디가 주어지면")
         class Context_with_not_exist_review {
             private final Tasks task = mock(Tasks.class);
-            private final Review givenReview = new Review(task, CONTENT, 4);
+            private final Review givenReview = new Review(task, SUBJECT, CONTENT, 4);
             private final Long invalidId = 0L;
 
             @Test

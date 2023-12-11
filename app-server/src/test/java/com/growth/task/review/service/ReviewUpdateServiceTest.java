@@ -21,11 +21,13 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ReviewUpdateService")
 class ReviewUpdateServiceTest {
-    public static final String CONTENTS = "회고를 작성했습니다.";
-    public static final int FEELINGS_SCORE = 5;
-    public static final long REVIEW_ID = 1L;
-    public static final String NEW_CONTENTS = "회고 내용을 수정했습니다.";
-    public static final int NEW_FEELINGS_SCORE = 7;
+    private static final String CONTENTS = "회고를 작성했습니다.";
+    private static final int FEELINGS_SCORE = 5;
+    private static final long REVIEW_ID = 1L;
+    private static final String NEW_CONTENTS = "회고 내용을 수정했습니다.";
+    private static final int NEW_FEELINGS_SCORE = 7;
+    private static final String SUBJECT = "제목";
+    private static final String NEW_SUBJECT = "오늘의 한 줄";
     private ReviewUpdateService reviewUpdateService;
     @Mock
     private ReviewDetailService reviewDetailService;
@@ -42,11 +44,12 @@ class ReviewUpdateServiceTest {
         @DisplayName("존재하는 회고의 아이디와 회고 내용, 기분점수가 주어지면")
         class Context_with_exist_review_and_content_and_feeling_score {
             private final Review review = Review.builder()
+                    .subject(SUBJECT)
                     .contents(CONTENTS)
                     .feelingsScore(FEELINGS_SCORE)
                     .build();
 
-            private final ReviewUpdateRequest request = new ReviewUpdateRequest(NEW_CONTENTS, NEW_FEELINGS_SCORE);
+            private final ReviewUpdateRequest request = new ReviewUpdateRequest(NEW_SUBJECT, NEW_CONTENTS, NEW_FEELINGS_SCORE);
 
             @BeforeEach
             void prepare() {
@@ -71,7 +74,7 @@ class ReviewUpdateServiceTest {
         @DisplayName("존재하지 않는 회고 아이디가 주어지면")
         class Context_with_not_exist_review_id {
             private final Long invalidId = 0L;
-            private final ReviewUpdateRequest request = new ReviewUpdateRequest(NEW_CONTENTS, NEW_FEELINGS_SCORE);
+            private final ReviewUpdateRequest request = new ReviewUpdateRequest(NEW_SUBJECT, NEW_CONTENTS, NEW_FEELINGS_SCORE);
 
             @BeforeEach
             void prepare() {

@@ -94,9 +94,10 @@ class TaskListControllerTest {
         );
     }
 
-    private Review createReview(Tasks tasks, String contents, Integer feelingsScore) {
+    private Review createReview(Tasks tasks, String subject, String contents, Integer feelingsScore) {
         return reviewRepository.save(Review.builder()
                 .tasks(tasks)
+                .subject(subject)
                 .contents(contents)
                 .feelingsScore(feelingsScore)
                 .build());
@@ -144,7 +145,7 @@ class TaskListControllerTest {
             getTodo(task2, "투스쿱 장고 읽기", Status.DONE);
             getTodo(task3, "운동하기", Status.READY);
 
-            createReview(task1, "회고를 작성합니다.", 7);
+            createReview(task1, "오늘의 한 줄", "회고를 작성합니다.", 7);
         }
 
         @Nested
