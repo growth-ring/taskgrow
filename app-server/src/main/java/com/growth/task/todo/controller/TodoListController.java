@@ -1,11 +1,16 @@
 package com.growth.task.todo.controller;
 
 import com.growth.task.todo.application.TodoListService;
+import com.growth.task.todo.dto.TodoListRequest;
 import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.TodoStatsResponse;
+import com.growth.task.todo.dto.response.TodoDetailResponse;
 import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -41,5 +46,15 @@ public class TodoListController {
             @ModelAttribute @Valid TodoStatsRequest request
     ) {
         return todoListService.getTodoStats(userId, request);
+    }
+
+    @GetMapping("/{user_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<TodoDetailResponse> getTodosByUser(
+            @PathVariable("user_id") Long userId,
+            @PageableDefault(size = 10) Pageable pageable,
+            @ModelAttribute TodoListRequest request
+    ) {
+        return todoListService.getTodoByUserAndParams(pageable, userId, request);
     }
 }

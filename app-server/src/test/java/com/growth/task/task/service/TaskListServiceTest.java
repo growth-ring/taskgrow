@@ -130,7 +130,6 @@ class TaskListServiceTest {
             @DisplayName("task id로 status 별 개수를 카운팅한 map을 리턴한다")
             void it_return_map_grouping_by_task() {
                 Map<Long, TaskTodoResponse> result = taskListService.calculateTaskTodoStatusMap(taskList);
-                System.out.println(result);
 
                 assertAll(
                         () -> assertThat(result).hasSize(4),

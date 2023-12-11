@@ -8,6 +8,7 @@ import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.dto.TodoListRequest;
 import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.enums.Status;
@@ -19,6 +20,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -269,6 +272,81 @@ class TodoListControllerTest {
                         .andExpect(jsonPath("$.done_count").value(7))
                         .andExpect(jsonPath("$.progress_count").value(2))
                         .andExpect(jsonPath("$.undone_count").value(3))
+                ;
+            }
+        }
+    }
+
+    @DisplayName("Todo Get 요청은")
+    @Nested
+    class Describe_GET_todo {
+        private ResultActions subject(Long userId, TodoListRequest request) throws Exception {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            if (request.getStatus() != null) {
+                params.add("status", request.getStatus().name());
+            }
+
+            return mockMvc.perform(get("/api/v1/todos/{user_id}", userId)
+                    .params(params)
+            );
+        }
+
+        private Users user;
+
+        @BeforeEach
+        void setUser() {
+            user = usersRepository.save(Users.builder()
+                    .name("user")
+                    .password("password")
+                    .build());
+        }
+
+        @DisplayName("존재하는 user id와 status가 주어지면")
+        @Nested
+        class Context_with_exist_user_id_and_status {
+            private Tasks task1;
+            private Tasks task2;
+            private Tasks task3;
+            private Tasks task4;
+            private Tasks task5;
+            private TodoListRequest request;
+
+            @BeforeEach
+            void setTask() {
+                task1 = createTask(user, LOCAL_DATE_11_19);
+                task2 = createTask(user, LOCAL_DATE_11_20);
+                task3 = createTask(user, LOCAL_DATE_11_21);
+                task4 = createTask(user, LOCAL_DATE_11_22);
+                task5 = createTask(user, LOCAL_DATE_11_23);
+
+                createTodo(task1, "책 읽기", READY, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task1, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task2, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task2, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task2, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task3, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task3, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task4, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task4, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task4, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task5, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task5, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+            }
+
+            @ParameterizedTest
+            @CsvSource({
+                    "READY, 1",
+                    "PROGRESS, 3",
+                    "DONE, 8"
+            })
+            @DisplayName("투두 리스트를 리턴한다")
+            void it_return_todo_list(String status, int resultSize) throws Exception {
+                request = new TodoListRequest(status);
+
+                final ResultActions resultActions = subject(user.getUserId(), request);
+
+                resultActions.andExpect(status().isOk())
+                        .andExpect(jsonPath("content", hasSize(resultSize)))
                 ;
             }
         }

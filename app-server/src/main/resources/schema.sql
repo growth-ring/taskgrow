@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS users (
     user_id bigint NOT NULL AUTO_INCREMENT,
     name varchar(21) NOT NULL,
-    password varchar(32) NOT NULL,
+    password varchar(200) NOT NULL,
     created_at timestamp NOT NULL,
     updated_at timestamp NOT NULL,
     primary key (user_id)
