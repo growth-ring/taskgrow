@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
+import com.growth.task.review.domain.Review;
+import com.growth.task.review.dto.ReviewStatsRequest;
+import com.growth.task.review.repository.ReviewRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
@@ -38,7 +41,6 @@ import static com.growth.task.todo.enums.Status.DONE;
 import static com.growth.task.todo.enums.Status.PROGRESS;
 import static com.growth.task.todo.enums.Status.READY;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -48,17 +50,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class MyPageControllerTest {
+    private static final LocalDate LOCAL_DATE_11_12 = LocalDate.of(2023, 11, 12);
+    private static final LocalDate LOCAL_DATE_11_13 = LocalDate.of(2023, 11, 13);
+    private static final LocalDate LOCAL_DATE_11_14 = LocalDate.of(2023, 11, 14);
+    private static final LocalDate LOCAL_DATE_11_15 = LocalDate.of(2023, 11, 15);
+    private static final LocalDate LOCAL_DATE_11_16 = LocalDate.of(2023, 11, 16);
+    private static final LocalDate LOCAL_DATE_11_17 = LocalDate.of(2023, 11, 17);
+    private static final LocalDate LOCAL_DATE_11_18 = LocalDate.of(2023, 11, 18);
     private static final LocalDate LOCAL_DATE_11_19 = LocalDate.of(2023, 11, 19);
     private static final LocalDate LOCAL_DATE_11_20 = LocalDate.of(2023, 11, 20);
     private static final LocalDate LOCAL_DATE_11_21 = LocalDate.of(2023, 11, 21);
     private static final LocalDate LOCAL_DATE_11_22 = LocalDate.of(2023, 11, 22);
     private static final LocalDate LOCAL_DATE_11_23 = LocalDate.of(2023, 11, 23);
-    private static final String TODO = "디자인패턴의 아름다움 스터디";
     private static final int PERFORM_COUNT = 2;
     private static final int PLAN_COUNT = 5;
-    private static final int FIVE = 5;
     private static final String MYPAGE_TODO_STATS_URL = "/api/v1/mypage/{user_id}/todos/stats";
-    public static final String MYPAGE_TODO_LIST_URL = "/api/v1/mypage/{user_id}/todos";
+    private static final String MYPAGE_TODO_LIST_URL = "/api/v1/mypage/{user_id}/todos";
+    private static final String MYPAGE_REVIEW_STATS_URL = "/api/v1/mypage/{user_id}/review/stats";
     @Autowired
     private TodosRepository todosRepository;
     @Autowired
@@ -67,7 +75,8 @@ class MyPageControllerTest {
     private TasksRepository tasksRepository;
     @Autowired
     private UsersRepository usersRepository;
-
+    @Autowired
+    private ReviewRepository reviewRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
@@ -88,6 +97,7 @@ class MyPageControllerTest {
     void cleanUp() {
         pomodorosRepository.deleteAll();
         todosRepository.deleteAll();
+        reviewRepository.deleteAll();
         tasksRepository.deleteAll();
         usersRepository.deleteAll();
     }
@@ -113,6 +123,32 @@ class MyPageControllerTest {
         return save;
     }
 
+    private Review getReview(Users user, LocalDate taskDate, String subject, String contents, int feelingsScore) {
+        Tasks tasks = tasksRepository.save(
+                Tasks.builder()
+                        .taskDate(taskDate)
+                        .user(user)
+                        .build()
+        );
+        return reviewRepository.save(
+                Review.builder()
+                        .tasks(tasks)
+                        .subject(subject)
+                        .contents(contents)
+                        .feelingsScore(feelingsScore)
+                        .build()
+        );
+    }
+
+    private Users getUser(String name, String password) {
+        return usersRepository.save(
+                Users.builder()
+                        .name(name)
+                        .password(password)
+                        .build()
+        );
+    }
+
     @DisplayName("Todo 통계 Get 요청은")
     @Nested
     class Describe_GET_stats {
@@ -130,10 +166,7 @@ class MyPageControllerTest {
 
         @BeforeEach
         void setUser() {
-            user = usersRepository.save(Users.builder()
-                    .name("user")
-                    .password("password")
-                    .build());
+            user = getUser("user", "password");
         }
 
         @DisplayName("존재하는 task id가 주어지면")
@@ -257,6 +290,63 @@ class MyPageControllerTest {
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("content", hasSize(resultSize)))
                 ;
+            }
+        }
+    }
+
+
+    @DisplayName("Review 통계 조회 GET 요청은")
+    @Nested
+    class Describe_GET {
+        private ResultActions subject(Long userId, ReviewStatsRequest request) throws Exception {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("start_date", String.valueOf(request.getStartDate()));
+            params.add("end_date", String.valueOf(request.getEndDate()));
+
+            return mockMvc.perform(get(MYPAGE_REVIEW_STATS_URL, userId)
+                    .params(params)
+            );
+        }
+
+        private Users user = getUser("user1", "password");
+
+        @DisplayName("사용자 아이디와 시간 범위가 주어지면")
+        @Nested
+        class Context_with_userId_and_time_range {
+            @BeforeEach
+            void prepare() {
+                getReview(user, LOCAL_DATE_11_12, "subject1", "review1", 1);
+                getReview(user, LOCAL_DATE_11_13, "subject1", "review2", 3);
+                getReview(user, LOCAL_DATE_11_14, "subject1", "review3", 5);
+                getReview(user, LOCAL_DATE_11_15, "subject1", "review4", 7);
+                getReview(user, LOCAL_DATE_11_16, "subject1", "review5", 9);
+                getReview(user, LOCAL_DATE_11_17, "subject1", "review6", 10);
+                getReview(user, LOCAL_DATE_11_18, "subject1", "review7", 1);
+            }
+
+            @Nested
+            @DisplayName("user Id와 start_date, end_date가 넘어오면")
+            class Context_with_user_id_and_start_date_and_end_date {
+                private ReviewStatsRequest request = new ReviewStatsRequest(LOCAL_DATE_11_12, LOCAL_DATE_11_18);
+
+                @Test
+                @DisplayName("리뷰 점수별 개수를 응답한다")
+                void it_response_200_and_stats() throws Exception {
+                    final ResultActions resultActions = subject(user.getUserId(), request);
+
+                    resultActions.andExpect(status().isOk())
+                            .andExpect(jsonPath("$.feelings.1").value(2))
+                            .andExpect(jsonPath("$.feelings.2").value(0))
+                            .andExpect(jsonPath("$.feelings.3").value(1))
+                            .andExpect(jsonPath("$.feelings.4").value(0))
+                            .andExpect(jsonPath("$.feelings.5").value(1))
+                            .andExpect(jsonPath("$.feelings.6").value(0))
+                            .andExpect(jsonPath("$.feelings.7").value(1))
+                            .andExpect(jsonPath("$.feelings.8").value(0))
+                            .andExpect(jsonPath("$.feelings.9").value(1))
+                            .andExpect(jsonPath("$.feelings.10").value(1))
+                    ;
+                }
             }
         }
     }
