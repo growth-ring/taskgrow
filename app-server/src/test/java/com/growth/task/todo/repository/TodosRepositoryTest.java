@@ -196,14 +196,12 @@ class TodosRepositoryTest {
         }
 
         @Nested
-        @DisplayName("사용자 아이디와 빈 날짜가 주어지면")
+        @DisplayName("사용자 아이디와 날짜가 주어지면")
         class Context_with_user_id {
-            private final TodoStatsRequest request = new TodoStatsRequest(null, null);
-
             @Test
             @DisplayName("사용자 아이디에 해당하는 todo 리스트를 불러온다")
             void it_return_todo_list_by_user() {
-                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), null, null);
 
                 assertThat(actual).hasSize(10);
             }
@@ -212,12 +210,10 @@ class TodosRepositoryTest {
         @Nested
         @DisplayName("사용자 아이디와 끝 날짜가 주어지면")
         class Context_with_user_id_and_end_date {
-            private final TodoStatsRequest request = new TodoStatsRequest(null, DATE_2023_11_03);
-
             @Test
             @DisplayName("사용자 아이디와 날짜 범위에 해당하는 todo 리스트를 불러온다")
             void it_return_todo_list_by_user() {
-                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), null, DATE_2023_11_03);
 
                 assertThat(actual).hasSize(6);
             }
@@ -226,12 +222,10 @@ class TodosRepositoryTest {
         @Nested
         @DisplayName("사용자 아이디와 시작 날짜가 주어지면")
         class Context_with_user_id_and_start_date {
-            private final TodoStatsRequest request = new TodoStatsRequest(DATE_2023_11_03, null);
-
             @Test
             @DisplayName("사용자 아이디와 날짜 범위에 해당하는 todo 리스트를 불러온다")
             void it_return_todo_list_by_user() {
-                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), DATE_2023_11_03, null);
 
                 assertThat(actual).hasSize(7);
             }
@@ -240,12 +234,10 @@ class TodosRepositoryTest {
         @Nested
         @DisplayName("사용자 아이디와 날짜가 주어지면")
         class Context_with_user_id_and_date {
-            private final TodoStatsRequest request = new TodoStatsRequest(DATE_2023_11_03, DATE_2023_11_04);
-
             @Test
             @DisplayName("사용자 아이디와 날짜 범위에 해당하는 todo 리스트를 불러온다")
             void it_return_todo_list_by_user() {
-                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), request);
+                List<TodoResponse> actual = todosRepository.findByUserIdAndBetweenTimeRange(user.getUserId(), DATE_2023_11_03, DATE_2023_11_04);
 
                 assertThat(actual).hasSize(6);
             }

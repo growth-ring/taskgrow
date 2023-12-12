@@ -42,6 +42,7 @@ public class TodoListServiceTest {
     private static final long USER_ID = 1L;
     private static final LocalDate LOCAL_DATE_11_20 = LocalDate.of(2023, 11, 20);
     private static final LocalDate LOCAL_DATE_11_19 = LocalDate.of(2023, 11, 19);
+    public static final LocalDate LOCAL_DATE_12_01 = LocalDate.of(2023, 12, 01);
     private static final int TOTAL_COUNT = 10;
     private static final int STATS_DONE = 7;
     private static final int STATS_PROGRESS = 2;
@@ -213,7 +214,7 @@ public class TodoListServiceTest {
                         new TodoResponse(1L, 4L, "쓰레기버리기", Status.DONE),
                         new TodoResponse(1L, 4L, "계획짜기", Status.PROGRESS)
                 );
-                given(todosRepository.findByUserIdAndBetweenTimeRange(USER_ID, request))
+                given(todosRepository.findByUserIdAndBetweenTimeRange(USER_ID, LOCAL_DATE_11_19, LOCAL_DATE_11_20))
                         .willReturn(todos);
             }
 
@@ -239,17 +240,17 @@ public class TodoListServiceTest {
         @Nested
         @DisplayName("사용자 아이디와 status가 주어지면")
         class Context_with_userId {
-            private TodoListRequest request = new TodoListRequest(Status.READY);
+            private TodoListRequest request = new TodoListRequest(Status.READY, LOCAL_DATE_11_20, LOCAL_DATE_12_01);
 
             @BeforeEach
             void prepare() {
                 Page page = new PageImpl(List.of(
-                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01)),
-                        new TodoDetailResponse("소설읽기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01)),
-                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01)),
-                        new TodoDetailResponse("운동하기", Status.READY, 0, 3, LocalDate.of(2023, 12, 01))
+                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LOCAL_DATE_11_20),
+                        new TodoDetailResponse("소설읽기", Status.READY, 0, 3, LOCAL_DATE_12_01),
+                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LOCAL_DATE_12_01),
+                        new TodoDetailResponse("운동하기", Status.READY, 0, 3, LOCAL_DATE_12_01)
                 ));
-                given(todosRepository.findAllByUserAndParams(DEFAULT_PAGEABLE, USER_ID, request))
+                given(todosRepository.findAllByUserAndParams(DEFAULT_PAGEABLE, USER_ID, Status.READY, LOCAL_DATE_11_20, LOCAL_DATE_12_01))
                         .willReturn(page);
             }
 
