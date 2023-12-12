@@ -10,6 +10,9 @@ import java.time.LocalDate;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @NoArgsConstructor
 @Getter
-public class ReviewDetailWithTaskDateResponse extends ReviewDetailResponse {
+public class ReviewDetailWithTaskDateResponse {
+    private Long reviewId;
+    private String subject;
+    private Integer feelingsScore;
     private LocalDate taskDate;
 }

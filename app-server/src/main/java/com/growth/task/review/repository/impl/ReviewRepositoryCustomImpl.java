@@ -58,7 +58,6 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .select(Projections.fields(ReviewDetailWithTaskDateResponse.class,
                         review.id.as("reviewId"),
                         review.subject,
-                        review.contents,
                         review.feelingsScore,
                         tasks.taskDate
                 ))
