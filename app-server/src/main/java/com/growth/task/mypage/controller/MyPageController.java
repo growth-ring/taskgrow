@@ -1,5 +1,7 @@
 package com.growth.task.mypage.controller;
 
+import com.growth.task.review.dto.ReviewDetailWithTaskDateResponse;
+import com.growth.task.review.dto.ReviewListRequest;
 import com.growth.task.review.dto.ReviewStatsRequest;
 import com.growth.task.review.dto.ReviewStatsResponse;
 import com.growth.task.review.service.ReviewListService;
@@ -21,6 +23,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/v1/mypage/{user_id}")
@@ -65,5 +71,14 @@ public class MyPageController {
             @ModelAttribute @Valid ReviewStatsRequest request
     ){
         return reviewListService.getReviewStats(userId, request);
+    }
+    @GetMapping("/review")
+    @ResponseStatus(OK)
+    public Page<ReviewDetailWithTaskDateResponse> getReviewByUserId(
+            @PageableDefault(size = 10) Pageable pageable,
+            @PathVariable("user_id") Long userId,
+            @ModelAttribute @Valid ReviewListRequest request
+    ) {
+        return reviewListService.getReviewByUserIdAndParams(pageable, userId, request);
     }
 }
