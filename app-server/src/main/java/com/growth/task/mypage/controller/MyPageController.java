@@ -72,6 +72,7 @@ public class MyPageController {
     ){
         return reviewListService.getReviewStats(userId, request);
     }
+    @Operation(summary = "사용자 회고 통계 세부 리스트")
     @GetMapping("/review")
     @ResponseStatus(OK)
     public Page<ReviewDetailWithTaskDateResponse> getReviewByUserId(
