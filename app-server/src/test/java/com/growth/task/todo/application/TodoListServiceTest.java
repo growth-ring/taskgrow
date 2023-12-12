@@ -239,7 +239,7 @@ public class TodoListServiceTest {
         @Nested
         @DisplayName("사용자 아이디와 status가 주어지면")
         class Context_with_userId {
-            private TodoListRequest request = new TodoListRequest(Status.READY.name());
+            private TodoListRequest request = new TodoListRequest(Status.READY);
 
             @BeforeEach
             void prepare() {

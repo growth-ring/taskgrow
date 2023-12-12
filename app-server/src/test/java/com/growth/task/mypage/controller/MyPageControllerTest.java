@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.review.domain.Review;
+import com.growth.task.review.dto.ReviewListRequest;
 import com.growth.task.review.dto.ReviewStatsRequest;
 import com.growth.task.review.repository.ReviewRepository;
 import com.growth.task.task.domain.Tasks;
@@ -67,6 +68,7 @@ class MyPageControllerTest {
     private static final String MYPAGE_TODO_STATS_URL = "/api/v1/mypage/{user_id}/todos/stats";
     private static final String MYPAGE_TODO_LIST_URL = "/api/v1/mypage/{user_id}/todos";
     private static final String MYPAGE_REVIEW_STATS_URL = "/api/v1/mypage/{user_id}/review/stats";
+    private static final String MYPAGE_REVIEW_LIST_URL = "/api/v1/mypage/{user_id}/review";
     @Autowired
     private TodosRepository todosRepository;
     @Autowired
@@ -282,7 +284,7 @@ class MyPageControllerTest {
                     "DONE, 8"
             })
             @DisplayName("투두 리스트를 리턴한다")
-            void it_return_todo_list(String status, int resultSize) throws Exception {
+            void it_return_todo_list(Status status, int resultSize) throws Exception {
                 request = new TodoListRequest(status);
 
                 final ResultActions resultActions = subject(user.getUserId(), request);
@@ -297,7 +299,7 @@ class MyPageControllerTest {
 
     @DisplayName("Review 통계 조회 GET 요청은")
     @Nested
-    class Describe_GET {
+    class Describe_GET_review_stats {
         private ResultActions subject(Long userId, ReviewStatsRequest request) throws Exception {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("start_date", String.valueOf(request.getStartDate()));
@@ -347,6 +349,56 @@ class MyPageControllerTest {
                             .andExpect(jsonPath("$.feelings.10").value(1))
                     ;
                 }
+            }
+        }
+    }
+
+    @DisplayName("Review 통계 조회 상세 리스트 GET 요청은")
+    @Nested
+    class Describe_GET_Review_list {
+        private ResultActions subject(Long userId, ReviewListRequest request) throws Exception {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("feelings_score", String.valueOf(request.getFeelingsScore()));
+            params.add("start_date", String.valueOf(request.getStartDate()));
+            params.add("end_date", String.valueOf(request.getEndDate()));
+
+            return mockMvc.perform(get(MYPAGE_REVIEW_LIST_URL, userId)
+                    .params(params)
+            );
+        }
+
+        private Users user = getUser("user1", "password");
+
+        @DisplayName("사용자 아이디와 기분점수, 시간 범위가 주어지면")
+        @Nested
+        class Context_with_userId_and_feelings_score_and_time_range {
+            @BeforeEach
+            void prepare() {
+                getReview(user, LOCAL_DATE_11_12, "subject1", "review1", 1);
+                getReview(user, LOCAL_DATE_11_13, "subject1", "review2", 3);
+                getReview(user, LOCAL_DATE_11_14, "subject1", "review3", 3);
+                getReview(user, LOCAL_DATE_11_15, "subject1", "review4", 3);
+                getReview(user, LOCAL_DATE_11_16, "subject1", "review5", 4);
+                getReview(user, LOCAL_DATE_11_17, "subject1", "review6", 5);
+                getReview(user, LOCAL_DATE_11_18, "subject1", "review7", 5);
+            }
+
+
+            @ParameterizedTest
+            @CsvSource({
+                    "1, 1",
+                    "3, 3",
+                    "4, 1",
+                    "5, 2"
+            })
+            @DisplayName("리뷰 리스트를 응답한다")
+            void it_response_200_and_list(int feelingsScore, int resultSize) throws Exception {
+                final ReviewListRequest request = new ReviewListRequest(feelingsScore, LOCAL_DATE_11_12, LOCAL_DATE_11_18);
+                final ResultActions resultActions = subject(user.getUserId(), request);
+
+                resultActions.andExpect(status().isOk())
+                        .andExpect(jsonPath("content", hasSize(resultSize)))
+                ;
             }
         }
     }
