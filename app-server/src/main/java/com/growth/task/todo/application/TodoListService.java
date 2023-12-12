@@ -48,12 +48,25 @@ public class TodoListService {
     }
 
     /**
+     * userId와 parameter에 해당하는 투두 상세 내역 리스트가 페이징되어 리턴한다
+     *
+     * @param pageable 페이징
+     * @param userId   사용자 아이디
+     * @param request  파라미터
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public Page<TodoDetailResponse> getTodoByUserAndParams(Pageable pageable, Long userId, TodoListRequest request) {
+        return todosRepository.findAllByUserAndParams(pageable, userId, request.getStatus(), request.getStartDate(), request.getEndDate());
+    }
+
+    /**
      * 날짜 범위에 해당하는 todo를 조회하여 통계 값을 리턴한다.
      * 총 투두 개수, 완료한 투두 개수, 진행 중인 투두 개수, 미완료인 투두 개수
      */
     @Transactional(readOnly = true)
     public TodoStatsResponse getTodoStats(Long userId, TodoStatsRequest request) {
-        List<TodoResponse> todos = todosRepository.findByUserIdAndBetweenTimeRange(userId, request);
+        List<TodoResponse> todos = todosRepository.findByUserIdAndBetweenTimeRange(userId, request.getStartDate(), request.getEndDate());
 
         return aggregate(todos);
     }
@@ -78,17 +91,5 @@ public class TodoListService {
         return todos.stream()
                 .filter(todo -> todo.getStatus() == status)
                 .count();
-    }
-
-    /**
-     * userId와 parameter에 해당하는 투두 상세 내역 리스트가 페이징되어 리턴한다
-     * @param pageable 페이징
-     * @param userId 사용자 아이디
-     * @param request 파라미터
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public Page<TodoDetailResponse> getTodoByUserAndParams(Pageable pageable, Long userId, TodoListRequest request) {
-        return todosRepository.findAllByUserAndParams(pageable, userId, request);
     }
 }

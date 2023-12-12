@@ -229,6 +229,8 @@ class MyPageControllerTest {
             if (request.getStatus() != null) {
                 params.add("status", request.getStatus().name());
             }
+            params.add("start_date", String.valueOf(request.getStartDate()));
+            params.add("end_date", String.valueOf(request.getEndDate()));
 
             return mockMvc.perform(get(MYPAGE_TODO_LIST_URL, userId)
                     .params(params)
@@ -285,7 +287,7 @@ class MyPageControllerTest {
             })
             @DisplayName("투두 리스트를 리턴한다")
             void it_return_todo_list(Status status, int resultSize) throws Exception {
-                request = new TodoListRequest(status);
+                request = new TodoListRequest(status, LOCAL_DATE_11_19, LOCAL_DATE_11_23);
 
                 final ResultActions resultActions = subject(user.getUserId(), request);
 

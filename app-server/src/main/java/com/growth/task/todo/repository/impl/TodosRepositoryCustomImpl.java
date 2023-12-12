@@ -1,9 +1,7 @@
 package com.growth.task.todo.repository.impl;
 
 import com.growth.task.task.dto.TaskTodoDetailResponse;
-import com.growth.task.todo.dto.TodoListRequest;
 import com.growth.task.todo.dto.TodoResponse;
-import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.response.TodoDetailResponse;
 import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
 import com.growth.task.todo.enums.Status;
@@ -54,7 +52,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
     }
 
     @Override
-    public List<TodoResponse> findByUserIdAndBetweenTimeRange(Long userId, TodoStatsRequest request) {
+    public List<TodoResponse> findByUserIdAndBetweenTimeRange(Long userId, LocalDate startDate, LocalDate endDate) {
         return queryFactory.select(Projections.fields(TodoResponse.class,
                         todos.todoId,
                         todos.task.taskId,
@@ -66,7 +64,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 .on(todos.task.eq(tasks))
                 .where(
                         eqUserId(userId),
-                        betweenTimeRange(request)
+                        betweenTimeRange(startDate, endDate)
                 )
                 .fetch()
                 ;
@@ -90,7 +88,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
     }
 
     @Override
-    public Page<TodoDetailResponse> findAllByUserAndParams(Pageable pageable, Long userId, TodoListRequest request) {
+    public Page<TodoDetailResponse> findAllByUserAndParams(Pageable pageable, Long userId, Status status, LocalDate startDate, LocalDate endDate) {
 
         List<TodoDetailResponse> content = queryFactory
                 .select(Projections.fields(TodoDetailResponse.class,
@@ -107,7 +105,8 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 .on(pomodoros.todo.eq(todos))
                 .where(
                         eqUserId(userId),
-                        eqStatus(request.getStatus())
+                        eqStatus(status),
+                        betweenTimeRange(startDate, endDate)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -123,7 +122,8 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 .on(pomodoros.todo.eq(todos))
                 .where(
                         eqUserId(userId),
-                        eqStatus(request.getStatus())
+                        eqStatus(status),
+                        betweenTimeRange(startDate, endDate)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
@@ -143,9 +143,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
 
     }
 
-    private static BooleanExpression betweenTimeRange(TodoStatsRequest request) {
-        LocalDate startDate = request.getStartDate();
-        LocalDate endDate = request.getEndDate();
+    private static BooleanExpression betweenTimeRange(LocalDate startDate, LocalDate endDate) {
         if (startDate == null && endDate == null) {
             return null;
         }
