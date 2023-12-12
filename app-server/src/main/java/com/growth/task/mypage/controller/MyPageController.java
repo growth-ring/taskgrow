@@ -57,6 +57,7 @@ public class MyPageController {
     ) {
         return todoListService.getTodoByUserAndParams(pageable, userId, request);
     }
+    @Operation(summary = "사용자 회고 통계")
     @GetMapping("/review/stats")
     @ResponseStatus(HttpStatus.OK)
     public ReviewStatsResponse getReviewStats(
