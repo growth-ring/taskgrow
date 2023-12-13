@@ -82,8 +82,6 @@ const Todos = () => {
   const USER_TIME = timerMinute * 60 * 1000;
   const { todoId, selectedTodo, isTodoChange, setIsTodoChange } =
     useTodosStore();
-  const [animationFrameId, setAnimationFrameId] = useState<number | null>(null);
-  const [percentage, setPercentage] = useState<number>(0);
   const [timerTime, setTimerTime] = useState<number>(USER_TIME);
   const isBreak: boolean = selectedTodo === '휴식';
 
@@ -98,46 +96,30 @@ const Todos = () => {
     if (timerState === 'INITIAL') {
       setTimerTime(USER_TIME);
     }
+  }, [timerState]);
 
-    if (timerState !== 'RUNNING') {
-      if (animationFrameId !== null) {
-        cancelAnimationFrame(animationFrameId);
-        setAnimationFrameId(null);
-        setPercentage(0);
-      }
-      return;
-    }
+  useEffect(() => {
+    let intervalId: any;
 
-    const animate = () => {
-      const currentTime = Date.now();
-      const elapsedTime = currentTime - startTime;
+    if (timerState === 'RUNNING') {
+      intervalId = setInterval(() => {
+        const currentTime = Date.now();
+        const elapsedTime = currentTime - startTime;
 
-      if (elapsedTime < USER_TIME) {
+        if (elapsedTime >= USER_TIME) {
+          complete();
+          updatePerformPomodoro(todoId).then(() =>
+            setIsTodoChange(!isTodoChange),
+          );
+        }
         setTimerTime(USER_TIME - elapsedTime);
-        setPercentage((elapsedTime / USER_TIME) * 100);
-        setAnimationFrameId(requestAnimationFrame(animate));
-      } else {
-        complete();
-        updatePerformPomodoro(todoId).then(() =>
-          setIsTodoChange(!isTodoChange),
-        );
-        setPercentage(100);
-      }
-    };
-
-    if (
-      animationFrameId === null &&
-      localStorage.getItem('startTime') !== '0'
-    ) {
-      setAnimationFrameId(requestAnimationFrame(animate));
+      }, 1000);
     }
 
     return () => {
-      if (animationFrameId !== null) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      clearInterval(intervalId);
     };
-  }, [timerState, animationFrameId, timerTime]);
+  }, [timerState]);
 
   return (
     <>
@@ -150,7 +132,11 @@ const Todos = () => {
           {!isReview && (
             <>
               <Todo>{selectedTodo}</Todo>
-              <Pomodoro percentage={percentage} timerState={timerState} />
+              <Pomodoro
+                startTime={startTime}
+                userTime={USER_TIME}
+                timerState={timerState}
+              />
               {onTimer && (
                 <>
                   <Timer
