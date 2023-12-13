@@ -63,6 +63,7 @@ function Pomodoro({ startTime, userTime, timerState }: PomodoroProps) {
     return () => {
       if (animationId) {
         cancelAnimationFrame(animationId);
+        setPercentage(0);
       }
     };
   }, [timerState]);
