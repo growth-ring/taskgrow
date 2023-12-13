@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
 import { TimerState } from '../../store/timer';
 
@@ -33,11 +35,38 @@ const BackContainer = styled.div`
 `;
 
 interface PomodoroProps {
-  percentage: number;
+  startTime: number;
+  userTime: number;
   timerState: TimerState;
 }
 
-function Pomodoro({ timerState, percentage }: PomodoroProps) {
+function Pomodoro({ startTime, userTime, timerState }: PomodoroProps) {
+  const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+    let animationId: any;
+
+    if (timerState !== 'RUNNING') {
+      return;
+    }
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - startTime;
+
+      setPercentage((elapsedTime / userTime) * 100);
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [timerState]);
+
   return (
     <>
       {(timerState === 'INITIAL' || timerState === 'FINISHED') && (
