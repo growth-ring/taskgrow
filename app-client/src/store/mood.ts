@@ -26,7 +26,7 @@ export interface MoodStore {
   topMoods: { firstMood: Mood; secondMood: Mood };
   findTopMoods: () => void;
   moodDetail: MoodDetail[];
-  getMoodDetail: (subject: string) => void;
+  getMoodDetail: ({ subject, page }: { subject: string; page: number }) => void;
 }
 
 export const useMoods = create<MoodStore>((set) => ({
@@ -123,7 +123,7 @@ export const useMoods = create<MoodStore>((set) => ({
     });
   },
   moodDetail: [],
-  getMoodDetail: async (subject) => {
+  getMoodDetail: async ({ subject, page }) => {
     const { year, month } = useDate.getState();
     const { userId } = useUser.getState();
 
@@ -158,6 +158,7 @@ export const useMoods = create<MoodStore>((set) => ({
       feelingsScore: feelingsScore,
       startDate: firstDay,
       endDate: lastDay,
+      page: page,
     };
 
     const detailContent = await getReviewDetail(userReview);

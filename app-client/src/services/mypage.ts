@@ -5,6 +5,7 @@ const { loadingStart, loadingStop } = useLoading.getState();
 
 interface Review extends ReviewStats {
   feelingsScore: number[];
+  page: number;
 }
 
 interface ReviewStats {
@@ -18,7 +19,7 @@ export const getReviewDetail = async (userReview: Review) => {
   try {
     const review = await httpClient.get(`/mypage/${userReview.userId}/review`, {
       params: {
-        page: 0,
+        page: userReview.page - 1,
         size: 10,
         sort: 'string',
         feelings_score: userReview.feelingsScore.join(','),
@@ -30,6 +31,7 @@ export const getReviewDetail = async (userReview: Review) => {
     return review.data.content;
   } catch (error) {
     loadingStop();
+    return false;
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
