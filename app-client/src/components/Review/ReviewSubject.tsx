@@ -20,10 +20,25 @@ const Review = styled.input`
   }
 `;
 
-const ReviewSubject = () => {
+interface SubjectType {
+  subject: string;
+  getInputSubject: (subject: string) => void;
+}
+
+const ReviewSubject = ({ subject, getInputSubject }: SubjectType) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    getInputSubject(event.target.value);
+  };
+
   return (
     <>
-      <Review type="text" maxLength={50} placeholder="오늘의 한 줄 요약" />
+      <Review
+        value={subject}
+        type="text"
+        maxLength={50}
+        placeholder="오늘의 한 줄 요약"
+        onChange={handleInputChange}
+      />
     </>
   );
 };
