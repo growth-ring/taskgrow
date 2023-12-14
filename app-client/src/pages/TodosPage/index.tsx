@@ -67,7 +67,6 @@ const TodosBox = styled.div`
 
   @media (min-width: 768px) {
     width: 50%;
-    height: 100%;
     margin: 2.5rem;
   }
 `;

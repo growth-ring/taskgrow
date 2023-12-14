@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import ReviewSubject from './ReviewSubject';
+import ReviewContent from './ReviewContent';
 import { BsTrash3, BsCheckCircleFill } from 'react-icons/bs';
 import { useTask } from '../../store/task';
 import { useTimerStore } from '../../store/timer';
@@ -14,26 +16,6 @@ import {
 const Button = styled.button`
   &:hover {
     color: var(--main-color);
-  }
-`;
-
-const Review = styled.textarea`
-  margin: 0 auto;
-  background-color: white;
-  padding: 1rem;
-  border-radius: 1rem;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  resize: none;
-  margin-bottom: 1rem;
-
-  @media (max-width: 1023px) {
-    width: 300px;
-    height: 210px;
-  }
-
-  @media (min-width: 1024px) {
-    width: 470px;
-    height: 270px;
   }
 `;
 
@@ -55,6 +37,8 @@ const ButtonBox = styled.div`
 `;
 
 const UserReview = () => {
+  const [inputContent, setInputContent] = useState('');
+  const [inputSubject, setInputSubject] = useState('');
   const timer = useTimerStore();
   const { selectedTaskId } = useTask();
   const {
@@ -64,24 +48,29 @@ const UserReview = () => {
     reviewId,
     closeReview,
   } = useReviewStore();
-  const [inputValue, setInputValue] = useState<string>('');
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(event.target.value);
+  const getInputContent = (content: string) => {
+    setInputContent(content);
+  };
+
+  const getInputSubject = (subject: string) => {
+    setInputSubject(subject);
   };
 
   const handleAddReview = async () => {
     if (reviewId !== 0) {
       const reviewData = {
         reviewId: reviewId,
-        contents: inputValue,
+        subject: inputSubject,
+        contents: inputContent,
         feelingsScore: feelingsScore,
       };
       await updateReview(reviewData);
     } else {
       const reviewData = {
         taskId: selectedTaskId,
-        contents: inputValue,
+        subject: inputSubject,
+        contents: inputContent,
         feelingsScore: feelingsScore,
       };
       const isAddReview = await addReview(reviewData);
@@ -104,7 +93,8 @@ const UserReview = () => {
   const findReview = async () => {
     const review = await getReview(selectedTaskId);
     if (review) {
-      setInputValue(review.contents);
+      setInputContent(review.contents);
+      setInputSubject(review.subject);
       setFeelingsScore(review.feelings_score);
       setReviewId(review.review_id);
     }
@@ -116,7 +106,8 @@ const UserReview = () => {
 
   return (
     <>
-      <Review value={inputValue} onChange={handleInputChange}></Review>
+      <ReviewSubject subject={inputSubject} getInputSubject={getInputSubject} />
+      <ReviewContent content={inputContent} getInputContent={getInputContent} />
       <ButtonBox>
         {reviewId !== 0 && (
           <Button onClick={handleDeleteReview} style={{ margin: '0 1rem' }}>
