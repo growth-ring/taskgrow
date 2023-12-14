@@ -2,6 +2,7 @@ import { httpClient } from './api';
 import { useLoading } from '../store/loading';
 
 interface Review {
+  subject: string;
   contents: string;
   feelingsScore: number;
 }
@@ -27,6 +28,7 @@ export const addReview = async (reviewData: AddReview) => {
   try {
     const review = await httpClient.post('/review', {
       task_id: reviewData.taskId,
+      subject: reviewData.subject,
       contents: reviewData.contents,
       feelings_score: reviewData.feelingsScore,
     });
@@ -94,6 +96,7 @@ export const updateReview = async (reviewData: UpdateReview) => {
   loadingStart();
   try {
     await httpClient.put(`/review/${reviewData.reviewId}`, {
+      subject: reviewData.subject,
       contents: reviewData.contents,
       feelings_score: reviewData.feelingsScore,
     });
