@@ -28,12 +28,12 @@ const Review = styled.textarea`
 
   @media (max-width: 1023px) {
     width: 300px;
-    height: 210px;
+    height: 180px;
   }
 
   @media (min-width: 1024px) {
     width: 470px;
-    height: 270px;
+    height: 240px;
   }
 `;
 
