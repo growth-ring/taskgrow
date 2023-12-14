@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Summary from './Summary';
 import Detail from './Detail';
-import { IoIosCloseCircle } from 'react-icons/io';
+import NavigationButtons from './NavigationButtons';
 
 const Content = styled.div<{ isDetail: boolean }>`
   display: flex;
@@ -26,12 +26,6 @@ const TitleBox = styled.div`
   justify-content: space-between;
   margin: 0 10px;
   font-size: 18px;
-`;
-
-const Close = styled.button`
-  color: #949494;
-  font-size: 19px;
-  cursor: pointer;
 `;
 
 interface BoxType {
@@ -58,19 +52,12 @@ const Box = ({ title, comment, subComment }: BoxType) => {
     }
   };
 
-  const handleCloseDetail = () => {
-    getIsDetail({ action: false });
-    setCategory(title[0]);
-  };
-
   return (
     <>
       <TitleBox>
         <div>{category}</div>
         {isDetail && (
-          <Close onClick={handleCloseDetail}>
-            <IoIosCloseCircle />
-          </Close>
+          <NavigationButtons category={title[0]} getIsDetail={getIsDetail} />
         )}
         {!isDetail && <div>총 {count}개</div>}
       </TitleBox>

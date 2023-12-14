@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Circle from '../Todos/Circle';
 import Chart from '../Mood/Chart';
+import { CircleType } from './Detail';
 
 const Text = styled.div`
   margin-top: 10px;
@@ -35,8 +36,7 @@ const SubText = styled.div`
   }
 `;
 
-interface SummaryType {
-  getIsDetail: (params: { action: boolean; category?: string }) => void;
+interface SummaryType extends CircleType {
   category: string;
   comment: string;
   subComment: string;

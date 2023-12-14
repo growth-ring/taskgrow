@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import moment from 'moment';
-import { getReviewStats } from '../services/review';
+import { getReviewDetail, getReviewStats } from '../services/myPage';
 import { useDate } from './stats';
 import { useUser } from './user';
 import { MoodsComments } from '../constants/StatsComment';
@@ -11,6 +11,13 @@ interface Mood {
   num: number;
 }
 
+interface MoodDetail {
+  review_id: number;
+  subject: string;
+  feelings_score: number;
+  task_date: string;
+}
+
 export interface MoodStore {
   moods: Mood[];
   getMoods: () => void;
@@ -18,6 +25,8 @@ export interface MoodStore {
   getTopMoodsComments: () => void;
   topMoods: { firstMood: Mood; secondMood: Mood };
   findTopMoods: () => void;
+  moodDetail: MoodDetail[];
+  getMoodDetail: ({ subject, page }: { subject: string; page: number }) => void;
 }
 
 export const useMoods = create<MoodStore>((set) => ({
@@ -111,6 +120,50 @@ export const useMoods = create<MoodStore>((set) => ({
           secondMood: newSecondMood,
         },
       };
+    });
+  },
+  moodDetail: [],
+  getMoodDetail: async ({ subject, page }) => {
+    const { year, month } = useDate.getState();
+    const { userId } = useUser.getState();
+
+    const firstDay = moment(new Date(year, month - 1, 1)).format('YYYY-MM-DD');
+    const lastDay = moment(new Date(year, month, 0)).format('YYYY-MM-DD');
+
+    let feelingsScore = [0];
+
+    switch (subject) {
+      case 'HAPPY':
+        feelingsScore = [10];
+        break;
+      case 'NICE':
+        feelingsScore = [9, 8];
+        break;
+      case 'GOOD':
+        feelingsScore = [7, 6];
+        break;
+      case 'SOSO':
+        feelingsScore = [5, 4];
+        break;
+      case 'SAD':
+        feelingsScore = [3, 2];
+        break;
+      case 'CRY':
+        feelingsScore = [1];
+        break;
+    }
+
+    const userReview = {
+      userId: userId.toString(),
+      feelingsScore: feelingsScore,
+      startDate: firstDay,
+      endDate: lastDay,
+      page: page,
+    };
+
+    const detailContent = await getReviewDetail(userReview);
+    set(() => {
+      return { moodDetail: detailContent };
     });
   },
 }));

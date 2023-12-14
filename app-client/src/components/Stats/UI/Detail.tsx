@@ -1,7 +1,12 @@
 import styled from 'styled-components';
+import { useMoods } from '../../../store/mood';
 
 export interface CircleType {
-  getIsDetail: (params: { action: boolean; category?: string }) => void;
+  getIsDetail: (params: {
+    action: boolean;
+    category?: string;
+    subject?: string;
+  }) => void;
 }
 
 const Container = styled.div`
@@ -43,7 +48,27 @@ const Text = styled.div`
   margin-top: 6.5px;
 `;
 
+const TextTitle = styled.div`
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 767px) {
+    width: 210px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    width: 250px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 360px;
+  }
+`;
+
 const Detail = ({ category }: { category: string }) => {
+  const { moodDetail } = useMoods();
   const isMoon = category.includes('감정');
 
   return (
@@ -55,46 +80,12 @@ const Detail = ({ category }: { category: string }) => {
         </TitleBox>
         <Line style={{ height: '2px' }} />
         <Content>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
+          {moodDetail.map((mood) => (
+            <Text key={mood.review_id}>
+              <TextTitle>{mood.subject}</TextTitle>
+              <div>{mood.task_date}</div>
+            </Text>
+          ))}
         </Content>
       </Container>
     </>

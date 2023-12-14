@@ -35,7 +35,7 @@ const MyPage = () => {
 
   useEffect(() => {
     getMoods();
-    getTodos();
+    // getTodos();
     findTopMoods();
   }, [year, month]);
 
@@ -51,7 +51,7 @@ const MyPage = () => {
       <HeaderDate />
       <Container>
         <Wrap>
-          <TodosStats />
+          {/* <TodosStats /> */}
           <MoodStats />
         </Wrap>
       </Container>

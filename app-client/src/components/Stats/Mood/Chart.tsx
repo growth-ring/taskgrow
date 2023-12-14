@@ -2,6 +2,7 @@ import { BarChart, Bar, Tooltip, XAxis, Cell } from 'recharts';
 import { CircleType } from '../UI/Detail';
 import styled from 'styled-components';
 import { useMoods } from '../../../store/mood';
+import { useStats } from '../../../store/stats';
 
 const Container = styled.div`
   display: flex;
@@ -32,11 +33,17 @@ interface CategoryType {
 }
 
 const Chart = ({ getIsDetail }: CircleType) => {
-  const { moods, topMoods } = useMoods();
+  const { moods, topMoods, getMoodDetail } = useMoods();
+  const { setMoodDetail, setMoodTotal } = useStats();
 
   const handleOnDetail = ({ category }: { category: CategoryType }) => {
-    const CategoryName = `감정(${category.entry.name}) 상세보기`;
+    const sub = category.entry.name;
+    const subTotal = moods.filter((mood) => mood.name === sub)[0].num;
+    const CategoryName = `감정(${sub}) 상세보기`;
+    setMoodDetail(sub);
+    setMoodTotal(subTotal);
     getIsDetail({ action: true, category: CategoryName });
+    getMoodDetail({ subject: sub, page: 1 });
   };
 
   return (
