@@ -48,6 +48,25 @@ const Text = styled.div`
   margin-top: 6.5px;
 `;
 
+const TextTitle = styled.div`
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 767px) {
+    width: 210px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    width: 250px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 360px;
+  }
+`;
+
 const Detail = ({ category }: { category: string }) => {
   const { moodDetail } = useMoods();
   const isMoon = category.includes('감정');
@@ -63,7 +82,7 @@ const Detail = ({ category }: { category: string }) => {
         <Content>
           {moodDetail.map((mood) => (
             <Text key={mood.review_id}>
-              <div>{mood.subject}</div>
+              <TextTitle>{mood.subject}</TextTitle>
               <div>{mood.task_date}</div>
             </Text>
           ))}
