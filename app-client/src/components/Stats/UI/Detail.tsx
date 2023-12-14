@@ -1,7 +1,12 @@
 import styled from 'styled-components';
+import { useMoods } from '../../../store/mood';
 
 export interface CircleType {
-  getIsDetail: (params: { action: boolean; category?: string }) => void;
+  getIsDetail: (params: {
+    action: boolean;
+    category?: string;
+    subject?: string;
+  }) => void;
 }
 
 const Container = styled.div`
@@ -44,6 +49,7 @@ const Text = styled.div`
 `;
 
 const Detail = ({ category }: { category: string }) => {
+  const { moodDetail } = useMoods();
   const isMoon = category.includes('감정');
 
   return (
@@ -55,46 +61,12 @@ const Detail = ({ category }: { category: string }) => {
         </TitleBox>
         <Line style={{ height: '2px' }} />
         <Content>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
-          <Text>
-            <div>책읽기</div>
-            <div>0 / 3</div>
-          </Text>
+          {moodDetail.map((mood) => (
+            <Text key={mood.review_id}>
+              <div>{mood.subject}</div>
+              <div>{mood.task_date}</div>
+            </Text>
+          ))}
         </Content>
       </Container>
     </>

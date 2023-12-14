@@ -15,12 +15,6 @@ interface UpdateReview extends Review {
   reviewId: number;
 }
 
-interface ReviewStats {
-  userId: string;
-  startDate: string;
-  endDate: string;
-}
-
 const { loadingStart, loadingStop } = useLoading.getState();
 
 export const addReview = async (reviewData: AddReview) => {
@@ -57,26 +51,6 @@ export const getReview = async (taskId: number) => {
   } catch (error: any) {
     loadingStop();
     return null;
-  }
-};
-
-export const getReviewStats = async (userReviewStats: ReviewStats) => {
-  loadingStart();
-  try {
-    const feelings = await httpClient.get(
-      `/review/stats/${userReviewStats.userId}`,
-      {
-        params: {
-          start_date: userReviewStats.startDate,
-          end_date: userReviewStats.endDate,
-        },
-      },
-    );
-    loadingStop();
-    return feelings.data.feelings;
-  } catch (error: any) {
-    loadingStop();
-    alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
 

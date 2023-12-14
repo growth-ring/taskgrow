@@ -32,11 +32,13 @@ interface CategoryType {
 }
 
 const Chart = ({ getIsDetail }: CircleType) => {
-  const { moods, topMoods } = useMoods();
+  const { moods, topMoods, getMoodDetail } = useMoods();
 
   const handleOnDetail = ({ category }: { category: CategoryType }) => {
-    const CategoryName = `감정(${category.entry.name}) 상세보기`;
+    const sub = category.entry.name;
+    const CategoryName = `감정(${sub}) 상세보기`;
     getIsDetail({ action: true, category: CategoryName });
+    getMoodDetail(sub);
   };
 
   return (
