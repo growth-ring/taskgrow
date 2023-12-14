@@ -50,7 +50,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
     public Page<ReviewDetailWithTaskDateResponse> findByUserAndParams(
             Pageable pageable,
             Long userId,
-            Integer feelingsScore,
+            List<Integer> feelingsScore,
             LocalDate startDate,
             LocalDate endDate
     ) {
@@ -66,7 +66,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .on(review.tasks.eq(tasks))
                 .where(
                         eqUserId(userId),
-                        eqFeelingsScore(feelingsScore),
+                        inFeelingsScore(feelingsScore),
                         betweenTimeRange(startDate, endDate)
                 )
                 .offset(pageable.getOffset())
@@ -81,7 +81,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .on(review.tasks.eq(tasks))
                 .where(
                         eqUserId(userId),
-                        eqFeelingsScore(feelingsScore),
+                        inFeelingsScore(feelingsScore),
                         betweenTimeRange(startDate, endDate)
                 )
                 .offset(pageable.getOffset())
@@ -101,11 +101,10 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         return tasks.taskDate.between(startDate, endDate);
     }
 
-    private BooleanExpression eqFeelingsScore(Integer feelingsScore) {
-        System.out.println("repository feelingsScore: " + feelingsScore);
-        if (feelingsScore == null) {
+    private BooleanExpression inFeelingsScore(List<Integer> feelingsScores) {
+        if (feelingsScores == null || feelingsScores.isEmpty()) {
             return null;
         }
-        return review.feelingsScore.eq(feelingsScore);
+        return review.feelingsScore.in(feelingsScores);
     }
 }
