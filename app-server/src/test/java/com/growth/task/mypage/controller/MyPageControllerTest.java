@@ -31,12 +31,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.growth.task.todo.enums.Status.DONE;
 import static com.growth.task.todo.enums.Status.PROGRESS;
@@ -359,8 +361,12 @@ class MyPageControllerTest {
     @Nested
     class Describe_GET_Review_list {
         private ResultActions subject(Long userId, ReviewListRequest request) throws Exception {
+            List<Integer> feelingsScores = request.getFeelingsScore();
+
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("feelings_score", String.valueOf(request.getFeelingsScore()));
+            if (!CollectionUtils.isEmpty(feelingsScores)) {
+                feelingsScores.forEach(score -> params.add("feelings_score", String.valueOf(score)));
+            }
             params.add("start_date", String.valueOf(request.getStartDate()));
             params.add("end_date", String.valueOf(request.getEndDate()));
 
@@ -385,7 +391,6 @@ class MyPageControllerTest {
                 getReview(user, LOCAL_DATE_11_18, "subject1", "review7", 5);
             }
 
-
             @ParameterizedTest
             @CsvSource({
                     "1, 1",
@@ -394,13 +399,28 @@ class MyPageControllerTest {
                     "5, 2"
             })
             @DisplayName("리뷰 리스트를 응답한다")
-            void it_response_200_and_list(int feelingsScore, int resultSize) throws Exception {
-                final ReviewListRequest request = new ReviewListRequest(feelingsScore, LOCAL_DATE_11_12, LOCAL_DATE_11_18);
+            void it_response_200_and_list(Integer feelingsScore, int resultSize) throws Exception {
+                final ReviewListRequest request = new ReviewListRequest(List.of(feelingsScore), LOCAL_DATE_11_12, LOCAL_DATE_11_18);
                 final ResultActions resultActions = subject(user.getUserId(), request);
 
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("content", hasSize(resultSize)))
                 ;
+            }
+
+            @DisplayName("기분점수 리스트, 시간 범위가 주어지면")
+            @Nested
+            class Context_with_feelings_scores {
+                @Test
+                @DisplayName("리뷰 리스트를 응답한다")
+                void it_response_200_and_list() throws Exception {
+                    final ReviewListRequest request = new ReviewListRequest(List.of(3, 5), LOCAL_DATE_11_12, LOCAL_DATE_11_18);
+                    final ResultActions resultActions = subject(user.getUserId(), request);
+
+                    resultActions.andExpect(status().isOk())
+                            .andExpect(jsonPath("content", hasSize(5)))
+                    ;
+                }
             }
         }
     }

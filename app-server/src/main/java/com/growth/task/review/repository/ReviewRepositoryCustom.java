@@ -12,5 +12,5 @@ import java.util.List;
 public interface ReviewRepositoryCustom {
     List<ReviewDetailResponse> findByUserIdAndBetweenTimeRange(Long userId, ReviewStatsRequest request);
 
-    Page<ReviewDetailWithTaskDateResponse> findByUserAndParams(Pageable pageable, Long userId, Integer feelingsScore, LocalDate startDate, LocalDate endDate);
+    Page<ReviewDetailWithTaskDateResponse> findByUserAndParams(Pageable pageable, Long userId, List<Integer> feelingsScore, LocalDate startDate, LocalDate endDate);
 }

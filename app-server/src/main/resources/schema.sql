@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS pomodoros (
 CREATE TABLE review (
     review_id bigint NOT NULL AUTO_INCREMENT,
     task_id bigint NOT NULL,
+    subject varchar(50) NOT NULL,
     contents TEXT NOT NULL,
     feelings_score int NOT NULL,
     created_at timestamp NOT NULL,

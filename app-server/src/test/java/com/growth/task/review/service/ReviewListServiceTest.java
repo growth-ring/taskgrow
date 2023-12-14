@@ -94,7 +94,7 @@ class ReviewListServiceTest {
         @Nested
         @DisplayName("사용자 아이다와 날짜가 주어지면")
         class Context_with_user_id_and_time_range {
-            private ReviewListRequest request = new ReviewListRequest(3, LOCAL_DATE_11_19, LOCAL_DATE_11_20);
+            private ReviewListRequest request = new ReviewListRequest(List.of(3), LOCAL_DATE_11_19, LOCAL_DATE_11_20);
 
             @BeforeEach
             void prepare() {

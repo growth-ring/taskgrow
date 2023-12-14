@@ -194,7 +194,7 @@ class ReviewRepositoryTest {
             })
             @DisplayName("기분 점수에 따른 리뷰 리스트를 불러온다")
             void it_return_review_list_by_user(int feelingsScore, int size) {
-                Page<ReviewDetailWithTaskDateResponse> actual = reviewRepository.findByUserAndParams(DEFAULT_PAGEABLE, user.getUserId(), feelingsScore, DATE_2023_11_01, DATE_2023_11_05);
+                Page<ReviewDetailWithTaskDateResponse> actual = reviewRepository.findByUserAndParams(DEFAULT_PAGEABLE, user.getUserId(), List.of(feelingsScore), DATE_2023_11_01, DATE_2023_11_05);
 
                 assertThat(actual).hasSize(size);
             }
