@@ -8,6 +8,7 @@ import {
 import { CircleType } from './Detail';
 import { useStats } from '../../../store/stats';
 import { useMoods } from '../../../store/mood';
+import { useTodosStore } from '../../../store/todos';
 
 const Wapper = styled.div`
   display: flex;
@@ -34,8 +35,9 @@ interface NaviationBtnType extends CircleType {
 
 const NavigationButtons = ({ getIsDetail, category }: NaviationBtnType) => {
   const [page, setPage] = useState(1);
-  const { moodDetail, moodTotal } = useStats();
+  const { todosDetail, todosTotal, moodDetail, moodTotal } = useStats();
   const { getMoodDetail } = useMoods();
+  const { getTodoDetail } = useTodosStore();
 
   const handleCloseDetail = () => {
     getIsDetail({ action: false, category: category });
@@ -43,10 +45,19 @@ const NavigationButtons = ({ getIsDetail, category }: NaviationBtnType) => {
 
   const handleShowPage = (action: string) => {
     const newPage = action === 'left' ? page - 1 : page + 1;
-    const isNextPage = moodTotal - (newPage - 1) * 10 >= 0;
-    if (isNextPage && newPage > 0) {
-      setPage(newPage);
-      getMoodDetail({ subject: moodDetail, page: newPage });
+
+    if (category === '감정') {
+      const isNextPage = moodTotal - (newPage - 1) * 10 > 0;
+      if (isNextPage && newPage > 0) {
+        setPage(newPage);
+        getMoodDetail({ subject: moodDetail, page: newPage });
+      }
+    } else {
+      const isNextPage = todosTotal - (newPage - 1) * 10 > 0;
+      if (isNextPage && newPage > 0) {
+        setPage(newPage);
+        getTodoDetail({ status: todosDetail, page: newPage });
+      }
     }
   };
 

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import moment from 'moment';
-import { getReviewDetail, getReviewStats } from '../services/myPage';
+import { getReviewDetail, getReviewStats } from '../services/mypage';
 import { useDate } from './stats';
 import { useUser } from './user';
 import { MoodsComments } from '../constants/StatsComment';

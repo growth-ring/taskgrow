@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { useDate } from './stats';
 import { useUser } from './user';
-import { getTodosStats } from '../services/todo';
+import { getTodosStats, getTodosDetail } from '../services/mypage';
 import moment from 'moment';
 
 export interface Todo {
@@ -18,6 +18,14 @@ interface TodosStats {
   done_count: number;
   progress_count: number;
   undone_count: number;
+}
+
+interface TodoDetail {
+  todo: string;
+  status: string;
+  performCount: number;
+  planCount: number;
+  taskDate: string;
 }
 
 export interface TodosStore {
@@ -37,6 +45,8 @@ export interface TodosStore {
   setSelectedTodo: (todo: string) => void;
   todosStats: TodosStats;
   getTodos: () => void;
+  todoDetail: TodoDetail[];
+  getTodoDetail: ({ status, page }: { status: string; page: number }) => void;
 }
 
 const userTaskDate = localStorage.getItem('taskDate');
@@ -80,5 +90,27 @@ export const useTodosStore = create<TodosStore>((set) => ({
 
     const todos = await getTodosStats(userTodosStats);
     set({ todosStats: todos });
+  },
+  todoDetail: [],
+  getTodoDetail: async ({ status, page }) => {
+    const { year, month } = useDate.getState();
+    const { userId } = useUser.getState();
+
+    const firstDay = moment(new Date(year, month - 1, 1)).format('YYYY-MM-DD');
+    const lastDay = moment(new Date(year, month, 0)).format('YYYY-MM-DD');
+
+    const userTodos = {
+      userId: userId.toString(),
+      status: status,
+      startDate: firstDay,
+      endDate: lastDay,
+      page: page,
+    };
+
+    const detailContent = await getTodosDetail(userTodos);
+
+    set(() => {
+      return { todoDetail: detailContent };
+    });
   },
 }));
