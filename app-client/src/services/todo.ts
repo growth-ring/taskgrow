@@ -15,12 +15,6 @@ interface UpdateTodoData {
   planCount: number;
 }
 
-interface TodosStats {
-  userId: string;
-  startDate: string;
-  endDate: string;
-}
-
 const { loadingStart, loadingStop } = useLoading.getState();
 
 export const addTodo = async (todoData: AddTodoData) => {
@@ -55,26 +49,6 @@ export const getTodos = async (taskId: number) => {
     if (error.response.status === 404) {
       return null;
     }
-  }
-};
-
-export const getTodosStats = async (userTodosStats: TodosStats) => {
-  loadingStart();
-  try {
-    const Todos = await httpClient.get(
-      `/todos/stats/${userTodosStats.userId}`,
-      {
-        params: {
-          start_date: userTodosStats.startDate,
-          end_date: userTodosStats.endDate,
-        },
-      },
-    );
-    loadingStop();
-    return Todos.data;
-  } catch (error: any) {
-    loadingStop();
-    alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }
 };
 

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { useDate } from './stats';
 import { useUser } from './user';
-import { getTodosStats } from '../services/todo';
+import { getTodosStats } from '../services/mypage';
 import moment from 'moment';
 
 export interface Todo {
