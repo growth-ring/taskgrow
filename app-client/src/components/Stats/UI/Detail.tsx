@@ -17,11 +17,7 @@ const Container = styled.div`
     font-size: 16px;
   }
 
-  @media (min-width: 768px) and (max-width: 1023px) {
-    font-size: 14px;
-  }
-
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     font-size: 16px;
   }
 `;
@@ -59,11 +55,7 @@ const TextTitle = styled.div`
     width: 210px;
   }
 
-  @media (min-width: 768px) and (max-width: 1023px) {
-    width: 250px;
-  }
-
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     width: 360px;
   }
 `;
