@@ -34,7 +34,7 @@ interface NaviationBtnType extends CircleType {
 
 const NavigationButtons = ({ getIsDetail, category }: NaviationBtnType) => {
   const [page, setPage] = useState(1);
-  const { moodDetail, moodTotal } = useStats();
+  const { todosDetail, todosTotal, moodDetail, moodTotal } = useStats();
   const { getMoodDetail } = useMoods();
 
   const handleCloseDetail = () => {

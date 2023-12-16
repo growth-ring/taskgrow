@@ -9,9 +9,13 @@ interface DateStore {
 
 interface StatsStore {
   moodDetail: string;
-  setMoodDetail: (moodDetail: string) => void;
+  setMoodDetail: (mood: string) => void;
   moodTotal: number;
-  setMoodTotal: (moodTotal: number) => void;
+  setMoodTotal: (total: number) => void;
+  todosDetail: string;
+  setTodosDetail: (todos: string) => void;
+  todosTotal: number;
+  setTodosTotal: (total: number) => void;
 }
 
 export const currentDate = new Date();
@@ -28,4 +32,8 @@ export const useStats = create<StatsStore>((set) => ({
   setMoodDetail: (mood) => set({ moodDetail: mood }),
   moodTotal: 0,
   setMoodTotal: (total) => set({ moodTotal: total }),
+  todosDetail: '',
+  setTodosDetail: (todos) => set({ todosDetail: todos }),
+  todosTotal: 0,
+  setTodosTotal: (total) => set({ todosTotal: total }),
 }));

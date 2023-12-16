@@ -8,6 +8,11 @@ interface Review extends MypageStats {
   page: number;
 }
 
+interface Todos extends MypageStats {
+  status: string;
+  page: number;
+}
+
 interface MypageStats {
   userId: string;
   startDate: string;
@@ -70,6 +75,27 @@ export const getTodosStats = async (userTodosStats: MypageStats) => {
     loadingStop();
     return Todos.data;
   } catch (error: any) {
+    loadingStop();
+    alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
+  }
+};
+
+export const getTodosDetail = async (userTodos: Todos) => {
+  loadingStart();
+  try {
+    const todos = await httpClient.get(`mypage/${userTodos.userId}/todos`, {
+      params: {
+        page: userTodos.page - 1,
+        size: 10,
+        sort: 'string',
+        status: userTodos.status,
+        start_date: userTodos.startDate,
+        end_date: userTodos.endDate,
+      },
+    });
+    loadingStop();
+    return todos.data.content;
+  } catch {
     loadingStop();
     alert('오류가 발생했습니다. 관리자에게 문의해주세요.');
   }

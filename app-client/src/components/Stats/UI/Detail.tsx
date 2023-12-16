@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useMoods } from '../../../store/mood';
+import { useTodosStore } from '../../../store/todos';
 
 export interface CircleType {
   getIsDetail: (params: {
@@ -69,6 +70,7 @@ const TextTitle = styled.div`
 
 const Detail = ({ category }: { category: string }) => {
   const { moodDetail } = useMoods();
+  const { todoDetail } = useTodosStore();
   const isMoon = category.includes('감정');
 
   return (
@@ -79,14 +81,28 @@ const Detail = ({ category }: { category: string }) => {
           <div>{isMoon ? '날짜' : '뽀모도로 개수'}</div>
         </TitleBox>
         <Line style={{ height: '2px' }} />
-        <Content>
-          {moodDetail.map((mood) => (
-            <Text key={mood.review_id}>
-              <TextTitle>{mood.subject}</TextTitle>
-              <div>{mood.task_date}</div>
-            </Text>
-          ))}
-        </Content>
+        {!isMoon && (
+          <Content>
+            {todoDetail.map((todo, index) => (
+              <Text key={index}>
+                <TextTitle>{todo.todo}</TextTitle>
+                <div>
+                  {todo.performCount} / {todo.planCount}
+                </div>
+              </Text>
+            ))}
+          </Content>
+        )}
+        {isMoon && (
+          <Content>
+            {moodDetail.map((mood) => (
+              <Text key={mood.review_id}>
+                <TextTitle>{mood.subject}</TextTitle>
+                <div>{mood.task_date}</div>
+              </Text>
+            ))}
+          </Content>
+        )}
       </Container>
     </>
   );
