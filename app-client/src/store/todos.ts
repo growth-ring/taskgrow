@@ -51,13 +51,14 @@ export interface TodosStore {
 
 const userTaskDate = localStorage.getItem('taskDate');
 const userSelectedTodo = localStorage.getItem('todo');
+const userTodoId = Number(localStorage.getItem('todoId'));
 
 export const useTodosStore = create<TodosStore>((set) => ({
   taskDate: userTaskDate ? userTaskDate : '',
   setTaskDate: (day) => set({ taskDate: day }),
   todoList: [],
   setTodoList: (newTodo) => set({ todoList: newTodo }),
-  todoId: 0,
+  todoId: userTodoId ? userTodoId : 0,
   setTodoId: (id) => set({ todoId: id }),
   performCount: 0,
   setPerformCount: (count) => set({ performCount: count }),
