@@ -52,11 +52,11 @@ const TextTitle = styled.div`
   text-overflow: ellipsis;
 
   @media (max-width: 767px) {
-    width: 210px;
+    width: 200px;
   }
 
   @media (min-width: 768px) {
-    width: 360px;
+    width: 350px;
   }
 `;
 
@@ -69,6 +69,7 @@ const Detail = ({ category }: { category: string }) => {
     <>
       <Container>
         <TitleBox>
+          {!isMoon ? <div>날짜</div> : ''}
           <div>제목</div>
           <div>{isMoon ? '날짜' : '뽀모도로 개수'}</div>
         </TitleBox>
@@ -77,6 +78,7 @@ const Detail = ({ category }: { category: string }) => {
           <Content>
             {todoDetail.map((todo, index) => (
               <Text key={index}>
+                <div>{todo.taskDate}</div>
                 <TextTitle>{todo.todo}</TextTitle>
                 <div>
                   {todo.performCount} / {todo.planCount}
