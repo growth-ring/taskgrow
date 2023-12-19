@@ -83,6 +83,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 .from(todos)
                 .leftJoin(pomodoros)
                 .on(pomodoros.todo.eq(todos))
+                .where(eqTaskId(taskId))
                 .fetch()
                 ;
     }
