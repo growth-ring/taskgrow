@@ -14,7 +14,7 @@ const Container = styled.div`
   width: 30rem;
 
   @media (max-width: 767px) {
-    font-size: 16px;
+    font-size: 13px;
   }
 
   @media (min-width: 768px) {
