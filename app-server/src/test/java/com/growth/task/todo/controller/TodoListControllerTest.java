@@ -139,10 +139,13 @@ class TodoListControllerTest {
             @BeforeEach
             void setTask() {
                 task = createTask(user, LOCAL_DATE_11_21);
+                Tasks otherTask = createTask(user, LOCAL_DATE_11_22);
 
                 createTodo(task, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
                 createTodo(task, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
                 createTodo(task, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+
+                createTodo(otherTask, "운동 하기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
             }
 
             @Test
