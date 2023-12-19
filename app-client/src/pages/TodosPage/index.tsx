@@ -92,10 +92,8 @@ const Todos = () => {
   }, [selectedTaskId, isTodoChange]);
 
   useEffect(() => {
-    if (timerState === 'INITIAL') {
-      setTimerTime(USER_TIME);
-    }
-  }, [timerState]);
+    setTimerTime(USER_TIME);
+  }, [timerMinute, timerState]);
 
   useEffect(() => {
     let intervalId: any;
@@ -112,7 +110,7 @@ const Todos = () => {
           );
         }
         setTimerTime(USER_TIME - elapsedTime);
-      }, 1000);
+      }, 500);
     }
 
     return () => {
