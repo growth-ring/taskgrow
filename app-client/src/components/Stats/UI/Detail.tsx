@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useMoods } from '../../../store/mood';
 import { useTodosStore } from '../../../store/todos';
 
+import { useNavigate } from 'react-router-dom';
+
 export interface CircleType {
   getIsDetail: (params: {
     action: boolean;
@@ -39,7 +41,8 @@ const Content = styled.div`
   height: 220px;
 `;
 
-const Text = styled.div`
+const Text = styled.button`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-top: 6.5px;
@@ -61,9 +64,14 @@ const TextTitle = styled.div`
 `;
 
 const Detail = ({ category }: { category: string }) => {
+  const navigate = useNavigate();
   const { moodDetail } = useMoods();
   const { todoDetail } = useTodosStore();
   const isMoon = category.includes('감정');
+
+  const handleTodoPage = (userClickDay: string) => {
+    navigate(`/todos/${userClickDay}`);
+  };
 
   return (
     <>
@@ -77,7 +85,7 @@ const Detail = ({ category }: { category: string }) => {
         {!isMoon && (
           <Content>
             {todoDetail.map((todo, index) => (
-              <Text key={index}>
+              <Text key={index} onClick={() => handleTodoPage(todo.taskDate)}>
                 <div>{todo.taskDate}</div>
                 <TextTitle>{todo.todo}</TextTitle>
                 <div>
@@ -90,7 +98,10 @@ const Detail = ({ category }: { category: string }) => {
         {isMoon && (
           <Content>
             {moodDetail.map((mood) => (
-              <Text key={mood.review_id}>
+              <Text
+                key={mood.review_id}
+                onClick={() => handleTodoPage(mood.task_date)}
+              >
                 <TextTitle>{mood.subject}</TextTitle>
                 <div>{mood.task_date}</div>
               </Text>
