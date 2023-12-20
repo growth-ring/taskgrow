@@ -39,7 +39,8 @@ const Content = styled.div`
   height: 220px;
 `;
 
-const Text = styled.div`
+const Text = styled.button`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-top: 6.5px;
