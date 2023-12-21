@@ -23,9 +23,9 @@ interface TodosStats {
 interface TodoDetail {
   todo: string;
   status: string;
-  performCount: number;
-  planCount: number;
-  taskDate: string;
+  perform_count: number;
+  plan_count: number;
+  task_date: string;
 }
 
 export interface TodosStore {

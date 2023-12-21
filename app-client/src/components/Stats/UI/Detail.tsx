@@ -85,11 +85,11 @@ const Detail = ({ category }: { category: string }) => {
         {!isMoon && (
           <Content>
             {todoDetail.map((todo, index) => (
-              <Text key={index} onClick={() => handleTodoPage(todo.taskDate)}>
-                <div>{todo.taskDate}</div>
+              <Text key={index} onClick={() => handleTodoPage(todo.task_date)}>
+                <div>{todo.task_date}</div>
                 <TextTitle>{todo.todo}</TextTitle>
                 <div>
-                  {todo.performCount} / {todo.planCount}
+                  {todo.perform_count} / {todo.plan_count}
                 </div>
               </Text>
             ))}
