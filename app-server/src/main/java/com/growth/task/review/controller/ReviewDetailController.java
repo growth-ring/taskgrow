@@ -23,9 +23,9 @@ public class ReviewDetailController {
         this.reviewDetailService = reviewDetailService;
     }
 
-    @GetMapping("/{task_id}")
+    @GetMapping("/{taskId}")
     @ResponseStatus(OK)
-    public ReviewDetailResponse getReview(@PathVariable("task_id") Long taskId) {
+    public ReviewDetailResponse getReview(@PathVariable("taskId") Long taskId) {
         return reviewDetailService.getReviewByTaskId(taskId);
     }
 }

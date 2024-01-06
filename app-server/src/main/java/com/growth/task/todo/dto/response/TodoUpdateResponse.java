@@ -1,17 +1,14 @@
 package com.growth.task.todo.dto.response;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.enums.Status;
 import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Todo 업데이튼 응답
+ * 투두 업데이트 응답
  */
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TodoUpdateResponse {
     private Long todoId;
     private Long taskId;

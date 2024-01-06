@@ -25,7 +25,7 @@ public class TodoListController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TodoWithPomodoroResponse> getTodos(@RequestParam(name = "task_id", required = true) Long taskId) {
+    public List<TodoWithPomodoroResponse> getTodos(@RequestParam(name = "taskId", required = true) Long taskId) {
         return todoListService.getTodosByTaskId(taskId);
     }
 }

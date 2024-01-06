@@ -140,7 +140,7 @@ class TaskDetailControllerTest {
                 final ResultActions resultActions = subject(task.getTaskId());
 
                 resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("task_id").value(equalTo(task.getTaskId().intValue())))
+                        .andExpect(jsonPath("taskId").value(equalTo(task.getTaskId().intValue())))
                         .andExpect(jsonPath("todos", hasSize(3)))
                 ;
             }
@@ -155,7 +155,7 @@ class TaskDetailControllerTest {
                 final ResultActions resultActions = subject(task.getTaskId());
 
                 resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("task_id").value(equalTo(task.getTaskId().intValue())))
+                        .andExpect(jsonPath("taskId").value(equalTo(task.getTaskId().intValue())))
                         .andExpect(jsonPath("todos", hasSize(0)))
                 ;
             }

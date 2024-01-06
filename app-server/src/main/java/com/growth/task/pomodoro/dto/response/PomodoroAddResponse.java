@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PomodoroAddResponse {
     private int performCount;
     private int planCount;

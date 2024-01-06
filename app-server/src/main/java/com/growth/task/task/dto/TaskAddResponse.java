@@ -1,7 +1,5 @@
 package com.growth.task.task.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.task.domain.Tasks;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +11,6 @@ import java.time.LocalDateTime;
  * Task 생성 응답
  */
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TaskAddResponse {
     private Long taskId;
     private Long userId;

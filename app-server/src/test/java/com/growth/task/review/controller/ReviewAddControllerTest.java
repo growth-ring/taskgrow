@@ -134,7 +134,7 @@ class ReviewAddControllerTest {
                 ResultActions resultActions = subject(request);
 
                 resultActions.andExpect(status().isCreated())
-                        .andExpect(jsonPath("review_id").isNotEmpty())
+                        .andExpect(jsonPath("reviewId").isNotEmpty())
                 ;
             }
         }

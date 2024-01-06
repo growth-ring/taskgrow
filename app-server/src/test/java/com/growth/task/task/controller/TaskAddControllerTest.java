@@ -97,7 +97,7 @@ class TaskAddControllerTest {
                 final ResultActions resultActions = subject(taskAddRequest);
 
                 resultActions.andExpect(status().isCreated())
-                        .andExpect(jsonPath("task_date").value("2023-08-22"))
+                        .andExpect(jsonPath("taskDate").value("2023-08-22"))
                 ;
             }
         }

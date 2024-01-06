@@ -116,9 +116,9 @@ class TaskListControllerTest {
     class Describe_GET {
         private ResultActions subject(TaskListRequest request) throws Exception {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("user_id", String.valueOf(request.getUserId()));
-            params.add("start_date", String.valueOf(request.getStartDate()));
-            params.add("end_date", String.valueOf(request.getEndDate()));
+            params.add("userId", String.valueOf(request.getUserId()));
+            params.add("startDate", String.valueOf(request.getStartDate()));
+            params.add("endDate", String.valueOf(request.getEndDate()));
 
             return mockMvc.perform(get("/api/v1/tasks")
                     .params(params)
@@ -153,9 +153,9 @@ class TaskListControllerTest {
         class Context_with_user_id_and_start_date_and_end_date {
 
             TaskListRequest request = TaskListRequest.builder()
-                    .user_id(user.getUserId())
-                    .start_date(LocalDate.parse("2023-08-27"))
-                    .end_date(LocalDate.parse("2023-08-31"))
+                    .userId(user.getUserId())
+                    .startDate(LocalDate.parse("2023-08-27"))
+                    .endDate(LocalDate.parse("2023-08-31"))
                     .build();
 
             @Test
@@ -165,22 +165,22 @@ class TaskListControllerTest {
 
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("$.*", hasSize(4)))
-                        .andExpect(jsonPath("$[0].task_date").value(equalTo("2023-08-28")))
+                        .andExpect(jsonPath("$[0].taskDate").value(equalTo("2023-08-28")))
                         .andExpect(jsonPath("$[0].todos.remain").value(equalTo(0)))
                         .andExpect(jsonPath("$[0].todos.done").value(equalTo(0)))
-                        .andExpect(jsonPath("$[0].feelings_score").value(equalTo(-1)))
-                        .andExpect(jsonPath("$[1].task_date").value(equalTo("2023-08-29")))
+                        .andExpect(jsonPath("$[0].feelingsScore").value(equalTo(-1)))
+                        .andExpect(jsonPath("$[1].taskDate").value(equalTo("2023-08-29")))
                         .andExpect(jsonPath("$[1].todos.remain").value(equalTo(3)))
                         .andExpect(jsonPath("$[1].todos.done").value(equalTo(2)))
-                        .andExpect(jsonPath("$[1].feelings_score").value(equalTo(7)))
-                        .andExpect(jsonPath("$[2].task_date").value(equalTo("2023-08-30")))
+                        .andExpect(jsonPath("$[1].feelingsScore").value(equalTo(7)))
+                        .andExpect(jsonPath("$[2].taskDate").value(equalTo("2023-08-30")))
                         .andExpect(jsonPath("$[2].todos.remain").value(equalTo(2)))
                         .andExpect(jsonPath("$[2].todos.done").value(equalTo(2)))
-                        .andExpect(jsonPath("$[2].feelings_score").value(equalTo(-1)))
-                        .andExpect(jsonPath("$[3].task_date").value(equalTo("2023-08-31")))
+                        .andExpect(jsonPath("$[2].feelingsScore").value(equalTo(-1)))
+                        .andExpect(jsonPath("$[3].taskDate").value(equalTo("2023-08-31")))
                         .andExpect(jsonPath("$[3].todos.remain").value(equalTo(1)))
                         .andExpect(jsonPath("$[3].todos.done").value(equalTo(0)))
-                        .andExpect(jsonPath("$[3].feelings_score").value(equalTo(-1)))
+                        .andExpect(jsonPath("$[3].feelingsScore").value(equalTo(-1)))
                 ;
             }
         }
@@ -189,9 +189,9 @@ class TaskListControllerTest {
         @DisplayName("날짜 정보가 안넘어오면")
         class Context_without_date_info {
             TaskListRequest request = TaskListRequest.builder()
-                    .user_id(user.getUserId())
-                    .start_date(null)
-                    .end_date(null)
+                    .userId(user.getUserId())
+                    .startDate(null)
+                    .endDate(null)
                     .build();
 
             @Test

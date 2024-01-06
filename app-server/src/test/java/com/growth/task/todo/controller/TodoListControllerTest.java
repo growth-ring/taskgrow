@@ -116,7 +116,7 @@ class TodoListControllerTest {
     class Describe_GET {
         private ResultActions subject(Long taskId) throws Exception {
             return mockMvc.perform(get("/api/v1/todos")
-                    .param("task_id", String.valueOf(taskId))
+                    .param("taskId", String.valueOf(taskId))
             );
         }
 
@@ -155,24 +155,24 @@ class TodoListControllerTest {
 
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("$", hasSize(3)))
-                        .andExpect(jsonPath("$[0].todo_id").exists())
-                        .andExpect(jsonPath("$[0].task_id").exists())
+                        .andExpect(jsonPath("$[0].todoId").exists())
+                        .andExpect(jsonPath("$[0].taskId").exists())
                         .andExpect(jsonPath("$[0].todo").value("책 읽기"))
                         .andExpect(jsonPath("$[0].status").value(PROGRESS.name()))
-                        .andExpect(jsonPath("$[0].perform_count").value(PERFORM_COUNT))
-                        .andExpect(jsonPath("$[0].plan_count").value(PLAN_COUNT))
-                        .andExpect(jsonPath("$[1].todo_id").exists())
-                        .andExpect(jsonPath("$[1].task_id").exists())
+                        .andExpect(jsonPath("$[0].performCount").value(PERFORM_COUNT))
+                        .andExpect(jsonPath("$[0].planCount").value(PLAN_COUNT))
+                        .andExpect(jsonPath("$[1].todoId").exists())
+                        .andExpect(jsonPath("$[1].taskId").exists())
                         .andExpect(jsonPath("$[1].todo").value("테스트 코드 짜기"))
                         .andExpect(jsonPath("$[1].status").value(PROGRESS.name()))
-                        .andExpect(jsonPath("$[1].perform_count").value(PERFORM_COUNT))
-                        .andExpect(jsonPath("$[1].plan_count").value(PLAN_COUNT))
-                        .andExpect(jsonPath("$[2].todo_id").exists())
-                        .andExpect(jsonPath("$[2].task_id").exists())
+                        .andExpect(jsonPath("$[1].performCount").value(PERFORM_COUNT))
+                        .andExpect(jsonPath("$[1].planCount").value(PLAN_COUNT))
+                        .andExpect(jsonPath("$[2].todoId").exists())
+                        .andExpect(jsonPath("$[2].taskId").exists())
                         .andExpect(jsonPath("$[2].todo").value("스터디 참여"))
                         .andExpect(jsonPath("$[2].status").value(DONE.name()))
-                        .andExpect(jsonPath("$[2].perform_count").value(PERFORM_COUNT))
-                        .andExpect(jsonPath("$[2].plan_count").value(PLAN_COUNT))
+                        .andExpect(jsonPath("$[2].performCount").value(PERFORM_COUNT))
+                        .andExpect(jsonPath("$[2].planCount").value(PLAN_COUNT))
                 ;
 
             }

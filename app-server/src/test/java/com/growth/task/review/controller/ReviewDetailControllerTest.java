@@ -119,7 +119,7 @@ class ReviewDetailControllerTest {
                 ResultActions resultActions = subject(task.getTaskId());
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("contents").value(CONTENTS))
-                        .andExpect(jsonPath("feelings_score").value(7))
+                        .andExpect(jsonPath("feelingsScore").value(7))
                 ;
             }
         }
