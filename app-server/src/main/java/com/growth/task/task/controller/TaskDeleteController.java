@@ -22,9 +22,9 @@ public class TaskDeleteController {
         this.taskDeleteService = taskDeleteService;
     }
 
-    @DeleteMapping("/{task_id}")
+    @DeleteMapping("/{taskId}")
     @ResponseStatus(NO_CONTENT)
-    public void delete(@PathVariable("task_id") Long taskId) {
+    public void delete(@PathVariable("taskId") Long taskId) {
         taskDeleteService.deleteByTaskId(taskId);
     }
 }

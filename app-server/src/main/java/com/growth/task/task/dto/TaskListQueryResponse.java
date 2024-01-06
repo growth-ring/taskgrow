@@ -1,7 +1,5 @@
 package com.growth.task.task.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.todo.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +10,6 @@ import java.time.LocalDate;
  * Task 리스트 쿼리 조회 응답 DTO
  */
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 public class TaskListQueryResponse {
     private Long taskId;

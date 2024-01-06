@@ -158,8 +158,8 @@ class MyPageControllerTest {
     class Describe_GET_stats {
         private ResultActions subject(Long userId, TodoStatsRequest request) throws Exception {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("start_date", String.valueOf(request.getStartDate()));
-            params.add("end_date", String.valueOf(request.getEndDate()));
+            params.add("startDate", String.valueOf(request.getStartDate()));
+            params.add("endDate", String.valueOf(request.getEndDate()));
 
             return mockMvc.perform(get(MYPAGE_TODO_STATS_URL, userId)
                     .params(params)
@@ -214,10 +214,10 @@ class MyPageControllerTest {
                 final ResultActions resultActions = subject(user.getUserId(), request);
 
                 resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("$.total_count").value(10))
-                        .andExpect(jsonPath("$.done_count").value(7))
-                        .andExpect(jsonPath("$.progress_count").value(2))
-                        .andExpect(jsonPath("$.undone_count").value(3))
+                        .andExpect(jsonPath("$.totalCount").value(10))
+                        .andExpect(jsonPath("$.doneCount").value(7))
+                        .andExpect(jsonPath("$.progressCount").value(2))
+                        .andExpect(jsonPath("$.undoneCount").value(3))
                 ;
             }
         }
@@ -231,8 +231,8 @@ class MyPageControllerTest {
             if (request.getStatus() != null) {
                 params.add("status", request.getStatus().name());
             }
-            params.add("start_date", String.valueOf(request.getStartDate()));
-            params.add("end_date", String.valueOf(request.getEndDate()));
+            params.add("startDate", String.valueOf(request.getStartDate()));
+            params.add("endDate", String.valueOf(request.getEndDate()));
 
             return mockMvc.perform(get(MYPAGE_TODO_LIST_URL, userId)
                     .params(params)
@@ -306,8 +306,8 @@ class MyPageControllerTest {
     class Describe_GET_review_stats {
         private ResultActions subject(Long userId, ReviewStatsRequest request) throws Exception {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("start_date", String.valueOf(request.getStartDate()));
-            params.add("end_date", String.valueOf(request.getEndDate()));
+            params.add("startDate", String.valueOf(request.getStartDate()));
+            params.add("endDate", String.valueOf(request.getEndDate()));
 
             return mockMvc.perform(get(MYPAGE_REVIEW_STATS_URL, userId)
                     .params(params)
@@ -365,10 +365,10 @@ class MyPageControllerTest {
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             if (!CollectionUtils.isEmpty(feelingsScores)) {
-                feelingsScores.forEach(score -> params.add("feelings_score", String.valueOf(score)));
+                feelingsScores.forEach(score -> params.add("feelingsScore", String.valueOf(score)));
             }
-            params.add("start_date", String.valueOf(request.getStartDate()));
-            params.add("end_date", String.valueOf(request.getEndDate()));
+            params.add("startDate", String.valueOf(request.getStartDate()));
+            params.add("endDate", String.valueOf(request.getEndDate()));
 
             return mockMvc.perform(get(MYPAGE_REVIEW_LIST_URL, userId)
                     .params(params)

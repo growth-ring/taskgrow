@@ -1,7 +1,5 @@
 package com.growth.task.todo.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.todo.enums.Status;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 public class TodoListRequest {
     private Status status;
@@ -21,11 +18,11 @@ public class TodoListRequest {
     @Builder
     public TodoListRequest(
             Status status,
-            LocalDate start_date,
-            LocalDate end_date
+            LocalDate startDate,
+            LocalDate endDate
     ) {
         this.status = status;
-        this.endDate = end_date;
-        this.startDate = start_date;
+        this.endDate = endDate;
+        this.startDate = startDate;
     }
 }

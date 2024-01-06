@@ -1,7 +1,5 @@
 package com.growth.task.task.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.user.domain.Users;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +16,6 @@ import java.time.LocalDate;
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TaskAddRequest {
     @NotNull(message = "user는 필수 입력 값입니다.")
     private Long userId;

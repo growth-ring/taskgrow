@@ -132,12 +132,12 @@ class TodoAddControllerTest {
                 final ResultActions resultActions = subject(request);
 
                 resultActions.andExpect(status().isCreated())
-                        .andExpect(jsonPath("$.todo_id").exists())
-                        .andExpect(jsonPath("$.task_id").exists())
+                        .andExpect(jsonPath("$.todoId").exists())
+                        .andExpect(jsonPath("$.taskId").exists())
                         .andExpect(jsonPath("$.todo").value(TODO))
                         .andExpect(jsonPath("$.status").value(Status.READY.name()))
-                        .andExpect(jsonPath("$.perform_count").value(PERFORM_COUNT))
-                        .andExpect(jsonPath("$.plan_count").value(PLAN_COUNT));
+                        .andExpect(jsonPath("$.performCount").value(PERFORM_COUNT))
+                        .andExpect(jsonPath("$.planCount").value(PLAN_COUNT));
             }
         }
 

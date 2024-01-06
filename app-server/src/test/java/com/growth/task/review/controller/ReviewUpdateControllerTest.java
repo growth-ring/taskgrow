@@ -128,7 +128,7 @@ class ReviewUpdateControllerTest {
                 ResultActions resultActions = subject(review.getId(), request);
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("contents").value(NEW_CONTENTS))
-                        .andExpect(jsonPath("feelings_score").value(NEW_FEELINGS_SCORE))
+                        .andExpect(jsonPath("feelingsScore").value(NEW_FEELINGS_SCORE))
                 ;
             }
         }

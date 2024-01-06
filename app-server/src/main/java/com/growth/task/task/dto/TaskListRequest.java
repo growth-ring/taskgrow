@@ -1,7 +1,5 @@
 package com.growth.task.task.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+
 @Getter
 public class TaskListRequest {
     @NotNull(message = "사용자 id는 필수입니다.")
@@ -22,9 +20,9 @@ public class TaskListRequest {
     private LocalDate endDate;
 
     @Builder
-    public TaskListRequest(Long user_id, LocalDate start_date, LocalDate end_date) {
-        this.userId = user_id;
-        this.startDate = start_date;
-        this.endDate = end_date;
+    public TaskListRequest(Long userId, LocalDate startDate, LocalDate endDate) {
+        this.userId = userId;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

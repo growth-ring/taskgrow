@@ -121,8 +121,8 @@ public class PomodoroUpdateControllerTest {
             @DisplayName("todo 상태가 Progress로 변경되고 perform_count가 1개 올라가고 200을 응답한다")
             void it_response_200() throws Exception {
                 subject(todoId).andExpect(status().isOk())
-                        .andExpect(jsonPath("$.perform_count", equalTo(5)))
-                        .andExpect(jsonPath("$.plan_count", equalTo(3)));
+                        .andExpect(jsonPath("$.performCount", equalTo(5)))
+                        .andExpect(jsonPath("$.planCount", equalTo(3)));
 
                 Todos todos = todosRepository.findById(todoId).orElse(null);
                 assertThat(todos.getStatus()).isEqualTo(Status.PROGRESS);
@@ -205,8 +205,8 @@ public class PomodoroUpdateControllerTest {
             @DisplayName("plan_count가 변경되고 200을 응답한다")
             void it_response_200() throws Exception {
                 subject(todoId, request).andExpect(status().isOk())
-                        .andExpect(jsonPath("$.perform_count", equalTo(4)))
-                        .andExpect(jsonPath("$.plan_count", equalTo(5)));
+                        .andExpect(jsonPath("$.performCount", equalTo(4)))
+                        .andExpect(jsonPath("$.planCount", equalTo(5)));
             }
         }
 

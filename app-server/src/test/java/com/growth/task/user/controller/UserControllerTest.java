@@ -134,7 +134,7 @@ class UserControllerTest {
                 final ResultActions resultActions = subject(user.getName());
 
                 resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("user_id").exists())
+                        .andExpect(jsonPath("userId").exists())
                         .andExpect(jsonPath("name").value(equalTo(user.getName())))
                 ;
             }
