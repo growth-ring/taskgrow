@@ -3,6 +3,7 @@ package com.growth.task.user.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
+import com.growth.task.user.domain.type.Role;
 import com.growth.task.user.dto.LoginRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,11 +72,7 @@ class LoginControllerTest {
 
             @BeforeEach
             void prepare() {
-                usersRepository.save(Users.builder()
-                        .name(USER_NAME)
-                        .password(passwordEncoder.encode(PASSWORD))
-                        .build()
-                );
+                createUser();
                 request = LoginRequest.builder()
                         .name(USER_NAME)
                         .password(PASSWORD)
@@ -89,6 +86,7 @@ class LoginControllerTest {
 
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("name").value("grow"))
+                        .andExpect(jsonPath("role").value("USER"))
                 ;
             }
         }
@@ -101,11 +99,7 @@ class LoginControllerTest {
 
             @BeforeEach
             void prepare() {
-                usersRepository.save(Users.builder()
-                        .name(USER_NAME)
-                        .password(passwordEncoder.encode(PASSWORD))
-                        .build()
-                );
+                createUser();
                 request = LoginRequest.builder()
                         .name(USER_NAME)
                         .password(invalidPassword)
@@ -121,5 +115,14 @@ class LoginControllerTest {
                 ;
             }
         }
+    }
+
+    private void createUser() {
+        usersRepository.save(Users.builder()
+                .name(USER_NAME)
+                .password(passwordEncoder.encode(PASSWORD))
+                .role(Role.USER)
+                .build()
+        );
     }
 }

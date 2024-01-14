@@ -1,6 +1,7 @@
 package com.growth.task.user.domain;
 
 import com.growth.task.config.TestQueryDslConfig;
+import com.growth.task.user.domain.type.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,6 +60,6 @@ class UsersRepositoryTest {
     }
 
     private Users getTestUser(String name) {
-        return usersRepository.save(Users.builder().name(name).password(PASSWORD).build());
+        return usersRepository.save(Users.builder().name(name).password(PASSWORD).role(Role.USER).build());
     }
 }
