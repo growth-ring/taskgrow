@@ -1,4 +1,4 @@
-package com.growth.task.commons.error;
+package com.growth.task.global.error;
 
 import lombok.AccessLevel;
 import lombok.Builder;

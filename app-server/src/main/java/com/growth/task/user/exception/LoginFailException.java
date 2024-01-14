@@ -1,6 +1,6 @@
 package com.growth.task.user.exception;
 
-import com.growth.task.commons.error.exception.AuthenticationFailureException;
+import com.growth.task.global.error.exception.AuthenticationFailureException;
 
 public class LoginFailException extends AuthenticationFailureException {
 

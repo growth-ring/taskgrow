@@ -1,4 +1,4 @@
-package com.growth.task.commons.domain;
+package com.growth.task.global.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

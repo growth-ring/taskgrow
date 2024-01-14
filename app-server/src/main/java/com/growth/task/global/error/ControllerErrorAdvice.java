@@ -1,6 +1,6 @@
-package com.growth.task.commons.error;
+package com.growth.task.global.error;
 
-import com.growth.task.commons.error.exception.BusinessException;
+import com.growth.task.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

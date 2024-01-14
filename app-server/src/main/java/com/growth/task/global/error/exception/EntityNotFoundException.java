@@ -1,7 +1,6 @@
-package com.growth.task.commons.error.exception;
+package com.growth.task.global.error.exception;
 
-import com.growth.task.commons.error.ErrorCode;
-import com.growth.task.commons.error.exception.BusinessException;
+import com.growth.task.global.error.ErrorCode;
 
 public class EntityNotFoundException extends BusinessException {
     public EntityNotFoundException(String message) {

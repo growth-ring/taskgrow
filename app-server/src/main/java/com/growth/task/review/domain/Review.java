@@ -1,6 +1,6 @@
 package com.growth.task.review.domain;
 
-import com.growth.task.commons.domain.BaseTimeEntity;
+import com.growth.task.global.domain.BaseTimeEntity;
 import com.growth.task.review.dto.ReviewUpdateRequest;
 import com.growth.task.review.exception.OutOfBoundsException;
 import com.growth.task.task.domain.Tasks;

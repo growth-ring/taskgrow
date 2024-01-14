@@ -1,6 +1,6 @@
 package com.growth.task.todo.domain;
 
-import com.growth.task.commons.domain.BaseTimeEntity;
+import com.growth.task.global.domain.BaseTimeEntity;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.todo.enums.Status;
 import jakarta.persistence.Column;
