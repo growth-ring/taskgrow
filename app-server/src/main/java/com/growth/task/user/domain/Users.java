@@ -1,13 +1,17 @@
 package com.growth.task.user.domain;
 
 import com.growth.task.global.domain.BaseTimeEntity;
+import com.growth.task.user.domain.type.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -27,11 +31,44 @@ public class Users extends BaseTimeEntity {
     @Column(nullable = false, length = 128)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'USER'")
+    @Column(nullable = false, length = 10)
+    private Role role;
+
     @Builder
-    public Users(Long userId, String name, String password) {
+    public Users(
+            Long userId,
+            String name,
+            String password,
+            Role role
+    ) {
         this.userId = userId;
         this.name = name;
         this.password = password;
+        this.role = role;
+    }
+
+    public static Users ofUser(
+            String name,
+            String password
+    ) {
+        return Users.builder()
+                .name(name)
+                .password(password)
+                .role(Role.USER)
+                .build();
+    }
+
+    public Users ofAdmin(
+            String name,
+            String password
+    ) {
+        return Users.builder()
+                .name(name)
+                .password(password)
+                .role(Role.ADMIN)
+                .build();
     }
 
     protected Users() {
