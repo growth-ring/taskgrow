@@ -9,6 +9,7 @@ import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
+import com.growth.task.user.domain.type.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,6 +71,7 @@ class ReviewDetailControllerTest {
                 Users.builder()
                         .name(name)
                         .password(password)
+                        .role(Role.USER)
                         .build()
         );
     }

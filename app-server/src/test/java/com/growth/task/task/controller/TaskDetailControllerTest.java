@@ -12,6 +12,7 @@ import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
+import com.growth.task.user.domain.type.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -68,6 +69,7 @@ class TaskDetailControllerTest {
                 Users.builder()
                         .name(name)
                         .password(password)
+                        .role(Role.USER)
                         .build()
         );
     }

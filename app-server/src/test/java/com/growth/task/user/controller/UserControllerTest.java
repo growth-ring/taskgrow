@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
+import com.growth.task.user.domain.type.Role;
 import com.growth.task.user.dto.UserSignUpRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,7 +90,7 @@ class UserControllerTest {
         class Context_with_exist_name_and_password {
             @BeforeEach
             void setUp() {
-                usersRepository.save(Users.builder().name("grow").password("password").build());
+                usersRepository.save(Users.builder().name("grow").password("password").role(Role.USER).build());
             }
 
             private final UserSignUpRequest request = UserSignUpRequest.builder()
@@ -125,17 +126,19 @@ class UserControllerTest {
                 user = usersRepository.save(Users.builder()
                         .name("grow")
                         .password("password")
+                        .role(Role.USER)
                         .build());
             }
 
             @Test
-            @DisplayName("200을 응답하고, 사용자의 id와 name을 리턴한다")
+            @DisplayName("200을 응답하고, 사용자의 id와 name과 role을 리턴한다")
             void it_response_200_and_user_id_and_name() throws Exception {
                 final ResultActions resultActions = subject(user.getName());
 
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("userId").exists())
                         .andExpect(jsonPath("name").value(equalTo(user.getName())))
+                        .andExpect(jsonPath("role").value(equalTo(Role.USER.name())))
                 ;
             }
         }
@@ -150,6 +153,7 @@ class UserControllerTest {
                 user = usersRepository.save(Users.builder()
                         .name("grow")
                         .password("password")
+                        .role(Role.USER)
                         .build());
                 usersRepository.delete(user);
             }

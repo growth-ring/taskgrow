@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.growth.task.user.domain.Users.ofUser;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class UserSignUpRequest {
@@ -22,9 +24,6 @@ public class UserSignUpRequest {
     }
 
     public Users toEntity() {
-        return Users.builder()
-                .name(name)
-                .password(password)
-                .build();
+        return ofUser(name, password);
     }
 }

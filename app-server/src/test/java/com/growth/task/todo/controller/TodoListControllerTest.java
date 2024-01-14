@@ -8,28 +8,23 @@ import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
-import com.growth.task.todo.dto.TodoListRequest;
-import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
+import com.growth.task.user.domain.type.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -37,7 +32,6 @@ import java.time.LocalDate;
 
 import static com.growth.task.todo.enums.Status.DONE;
 import static com.growth.task.todo.enums.Status.PROGRESS;
-import static com.growth.task.todo.enums.Status.READY;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -127,6 +121,7 @@ class TodoListControllerTest {
             user = usersRepository.save(Users.builder()
                     .name("user")
                     .password("password")
+                    .role(Role.USER)
                     .build());
         }
 
