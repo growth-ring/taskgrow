@@ -1,6 +1,6 @@
 package com.growth.task.user.domain;
 
-import com.growth.task.commons.domain.BaseTimeEntity;
+import com.growth.task.global.domain.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

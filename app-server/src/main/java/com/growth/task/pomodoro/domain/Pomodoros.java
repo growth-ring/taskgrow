@@ -1,6 +1,6 @@
 package com.growth.task.pomodoro.domain;
 
-import com.growth.task.commons.domain.BaseTimeEntity;
+import com.growth.task.global.domain.BaseTimeEntity;
 import com.growth.task.todo.domain.Todos;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;

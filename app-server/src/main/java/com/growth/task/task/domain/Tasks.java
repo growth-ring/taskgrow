@@ -1,6 +1,6 @@
 package com.growth.task.task.domain;
 
-import com.growth.task.commons.domain.BaseTimeEntity;
+import com.growth.task.global.domain.BaseTimeEntity;
 import com.growth.task.user.domain.Users;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;

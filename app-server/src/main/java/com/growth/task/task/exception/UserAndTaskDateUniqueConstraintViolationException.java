@@ -1,6 +1,6 @@
 package com.growth.task.task.exception;
 
-import com.growth.task.commons.error.exception.BadRequestException;
+import com.growth.task.global.error.exception.BadRequestException;
 
 import java.time.LocalDate;
 

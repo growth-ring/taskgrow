@@ -1,4 +1,4 @@
-package com.growth.task.commons.config;
+package com.growth.task.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

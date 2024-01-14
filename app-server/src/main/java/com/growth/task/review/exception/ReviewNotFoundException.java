@@ -1,6 +1,6 @@
 package com.growth.task.review.exception;
 
-import com.growth.task.commons.error.exception.EntityNotFoundException;
+import com.growth.task.global.error.exception.EntityNotFoundException;
 
 public class ReviewNotFoundException extends EntityNotFoundException {
     public ReviewNotFoundException(Long reviewId) {
