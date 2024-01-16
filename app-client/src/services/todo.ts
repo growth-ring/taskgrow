@@ -20,12 +20,7 @@ const { loadingStart, loadingStop } = useLoading.getState();
 export const addTodo = async (todoData: AddTodoData) => {
   loadingStart();
   try {
-    const todo = await httpClient.post('/todos', {
-      task_id: todoData.taskId,
-      todo: todoData.todo,
-      plan_count: todoData.planCount,
-      perform_count: todoData.performCount,
-    });
+    const todo = await httpClient.post('/todos', todoData);
     loadingStop();
     return todo.data;
   } catch (error: any) {
@@ -38,12 +33,10 @@ export const getTodos = async (taskId: number) => {
   loadingStart();
   try {
     const todoData = await httpClient.get('/todos', {
-      params: {
-        task_id: taskId,
-      },
+      params: { taskId },
     });
     loadingStop();
-    return todoData.data.filter((todo: any) => todo.task_id === taskId);
+    return todoData.data.filter((todo: any) => todo.taskId === taskId);
   } catch (error: any) {
     loadingStop();
     if (error.response.status === 404) {
@@ -63,7 +56,7 @@ export const updatePerformPomodoro = async (todoId: number) => {
 const updatePlanPomodoro = async (todoData: UpdateTodoData) => {
   try {
     await httpClient.patch(`/pomodoros/${todoData.todoId}`, {
-      plan_count: todoData.planCount,
+      planCount: todoData.planCount,
     });
   } catch (error: any) {
     return null;

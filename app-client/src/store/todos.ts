@@ -5,27 +5,27 @@ import { getTodosStats, getTodosDetail } from '../services/mypage';
 import moment from 'moment';
 
 export interface Todo {
-  todo_id: number;
-  task_id: number;
+  todoId: number;
+  taskId: number;
   todo: string;
   status: string;
-  plan_count: number;
-  perform_count: number;
+  planCount: number;
+  performCount: number;
 }
 
 interface TodosStats {
-  total_count: number;
-  done_count: number;
-  progress_count: number;
-  undone_count: number;
+  totalCount: number;
+  doneCount: number;
+  progressCount: number;
+  undoneCount: number;
 }
 
 interface TodoDetail {
   todo: string;
   status: string;
-  perform_count: number;
-  plan_count: number;
-  task_date: string;
+  performCount: number;
+  planCount: number;
+  taskDate: string;
 }
 
 export interface TodosStore {
@@ -71,10 +71,10 @@ export const useTodosStore = create<TodosStore>((set) => ({
     : '오늘 할 일 추가해 주세요',
   setSelectedTodo: (todo) => set({ selectedTodo: todo }),
   todosStats: {
-    total_count: 0,
-    done_count: 0,
-    progress_count: 0,
-    undone_count: 0,
+    totalCount: 0,
+    doneCount: 0,
+    progressCount: 0,
+    undoneCount: 0,
   },
   getTodos: async () => {
     const { year, month } = useDate.getState();

@@ -3,7 +3,7 @@ import { useLoading } from '../store/loading';
 
 interface AddTaskData {
   userId: number;
-  userClickDay: string;
+  taskDate: string;
 }
 
 interface GetTaskListData {
@@ -17,11 +17,8 @@ const { loadingStart, loadingStop } = useLoading.getState();
 export const addTask = async (taskData: AddTaskData) => {
   loadingStart();
   try {
-    const task = await httpClient.post('/tasks', {
-      user_id: taskData.userId,
-      task_date: taskData.userClickDay,
-    });
-    return task.data.task_id;
+    const task = await httpClient.post('/tasks', taskData);
+    return task.data.taskId;
   } catch (error: any) {
     alert(error.response.data.message);
   }
@@ -45,11 +42,7 @@ export const getTaskList = async (taskData: GetTaskListData) => {
   loadingStart();
   try {
     const taskListData = await httpClient.get('/tasks', {
-      params: {
-        user_id: taskData.userId,
-        start_date: taskData.startDate,
-        end_date: taskData.endDate,
-      },
+      params: taskData,
     });
     loadingStop();
     return taskListData.data;

@@ -8,7 +8,7 @@ interface TaskDateTodo {
     done: number;
   };
   feelingsScore: number;
-  todoData: { todo: string; perform_count: number; plan_count: number }[];
+  todoData: { todo: string; performCount: number; planCount: number }[];
 }
 
 interface LoginStore {

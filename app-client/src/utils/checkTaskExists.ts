@@ -11,19 +11,19 @@ export interface TaskDate {
 }
 
 interface TaskData {
-  task_id: number;
-  task_date: string;
+  taskId: number;
+  taskDate: string;
   todos: {
     remain: number;
     done: number;
   };
-  feelings_score: number;
-  user_id: number;
+  feelingsScore: number;
+  userId: number;
 }
 
 interface TaskExistProps {
   monthTaskDate: TaskDate[];
-  userClickDay: string;
+  taskDate: string;
 }
 
 interface ClickTaskProps extends TaskExistProps {
@@ -46,12 +46,12 @@ export const getAllTask = async ({
 
   const updatedData = await Promise.all(
     tasks.map(async (task: TaskData) => {
-      const todo = await getTask(task.task_id);
+      const todo = await getTask(task.taskId);
       return {
-        taskId: task.task_id,
-        taskDate: task.task_date,
+        taskId: task.taskId,
+        taskDate: task.taskDate,
         todos: task.todos,
-        feelingsScore: task.feelings_score,
+        feelingsScore: task.feelingsScore,
         todoData: todo.todos,
       };
     }),
@@ -63,25 +63,23 @@ export const getAllTask = async ({
 export const clickTask = async ({
   userId,
   monthTaskDate,
-  userClickDay,
+  taskDate,
 }: ClickTaskProps): Promise<number> => {
-  const checkForm = { monthTaskDate, userClickDay };
+  const checkForm = { monthTaskDate, taskDate };
   if (isTaskExist(checkForm)) {
     return getTaskId(checkForm);
   } else {
-    return addTask({ userId, userClickDay });
+    return addTask({ userId, taskDate });
   }
 };
 
 const isTaskExist = (checkForm: TaskExistProps) => {
   return checkForm.monthTaskDate.some(
-    (task) => task.taskDate === checkForm.userClickDay,
+    (task) => task.taskDate === checkForm.taskDate,
   );
 };
 
-const getTaskId = ({ monthTaskDate, userClickDay }: TaskExistProps) => {
-  const foundTask = monthTaskDate.find(
-    (task) => task.taskDate === userClickDay,
-  );
+const getTaskId = ({ monthTaskDate, taskDate }: TaskExistProps) => {
+  const foundTask = monthTaskDate.find((task) => task.taskDate === taskDate);
   return Number(foundTask?.taskId);
 };

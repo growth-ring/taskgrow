@@ -102,13 +102,13 @@ const Circle = ({ getIsDetail }: CircleType) => {
           handleOnDetail({
             category: 'DONE',
             categoryText: '한 일(완료) 상세보기',
-            total: todosStats.done_count,
+            total: todosStats.doneCount,
           })
         }
       >
         <StatsIcon as={FaRegCalendarCheck} />
         <Title>완료</Title>
-        <Count>{todosStats.done_count}</Count>
+        <Count>{todosStats.doneCount}</Count>
       </Stats>
       <Stats
         bg="var(--sub-blue-color)"
@@ -116,13 +116,13 @@ const Circle = ({ getIsDetail }: CircleType) => {
           handleOnDetail({
             category: 'PROGRESS',
             categoryText: '한 일(진행중) 상세보기',
-            total: todosStats.progress_count,
+            total: todosStats.progressCount,
           })
         }
       >
         <StatsIcon as={FaRegCalendarMinus} />
         <Title>진행중</Title>
-        <Count>{todosStats.progress_count}</Count>
+        <Count>{todosStats.progressCount}</Count>
       </Stats>
       <Stats
         bg="var(--line-color)"
@@ -130,13 +130,13 @@ const Circle = ({ getIsDetail }: CircleType) => {
           handleOnDetail({
             category: 'READY',
             categoryText: '한 일(미완료) 상세보기',
-            total: todosStats.undone_count - todosStats.progress_count,
+            total: todosStats.undoneCount - todosStats.progressCount,
           })
         }
       >
         <StatsIcon as={FaRegCalendarXmark} />
         <Title>미완료</Title>
-        <Count>{todosStats.undone_count - todosStats.progress_count}</Count>
+        <Count>{todosStats.undoneCount - todosStats.progressCount}</Count>
       </Stats>
     </Container>
   );

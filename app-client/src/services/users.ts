@@ -26,7 +26,7 @@ export const login = async (formData: UserFormData) => {
   try {
     const user = await httpClient.post('/login', formData);
     loadingStop();
-    return user.data.user_id;
+    return user.data.userId;
   } catch (error: any) {
     loadingStop();
     if (error.response.status === 404 || error.response.status === 401) {

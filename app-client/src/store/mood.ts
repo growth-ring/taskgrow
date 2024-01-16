@@ -12,10 +12,10 @@ interface Mood {
 }
 
 interface MoodDetail {
-  review_id: number;
+  reviewId: number;
   subject: string;
-  feelings_score: number;
-  task_date: string;
+  feelingsScore: number;
+  taskDate: string;
 }
 
 export interface MoodStore {
