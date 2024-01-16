@@ -115,14 +115,14 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
 
   const handleTodayClick = async (day: Date) => {
     stop();
-    const userClickDay = moment(day).format('YYYY-MM-DD');
-    const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
+    const taskDate = moment(day).format('YYYY-MM-DD');
+    const taskId = await clickTask({ userId, monthTaskDate, taskDate });
     setSelectedTaskId(taskId);
-    setTaskDate(userClickDay);
-    localStorage.setItem('taskDate', userClickDay);
+    setTaskDate(taskDate);
+    localStorage.setItem('taskDate', taskDate);
     localStorage.setItem('taskId', String(taskId));
     localStorage.setItem('todo', '');
-    navigate(`/todos/${userClickDay}`);
+    navigate(`/todos/${taskDate}`);
   };
 
   const handleDateViewChange = ({ activeStartDate }: any) => {
@@ -201,7 +201,7 @@ const TaskCalendar = ({ thisMonthStart, thisMonthEnd }: ThisMonthProps) => {
                 .filter((dates) => dates.taskDate === day)
                 .map((date) =>
                   date.todoData.map(
-                    (todo) => `${todo.perform_count} / ${todo.plan_count}`,
+                    (todo) => `${todo.performCount} / ${todo.planCount}`,
                   ),
                 );
 

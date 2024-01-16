@@ -75,7 +75,7 @@ const UserReview = () => {
       };
       const isAddReview = await addReview(reviewData);
       if (isAddReview) {
-        setReviewId(isAddReview.review_id);
+        setReviewId(isAddReview.reviewId);
         alert('회고 추가 되었습니다.');
       }
     }
@@ -95,8 +95,8 @@ const UserReview = () => {
     if (review) {
       setInputContent(review.contents);
       setInputSubject(review.subject);
-      setFeelingsScore(review.feelings_score);
-      setReviewId(review.review_id);
+      setFeelingsScore(review.feelingsScore);
+      setReviewId(review.reviewId);
     }
   };
 

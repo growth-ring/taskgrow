@@ -27,9 +27,9 @@ export const getReviewDetail = async (userReview: Review) => {
         page: userReview.page - 1,
         size: 10,
         sort: 'string',
-        feelings_score: userReview.feelingsScore.join(','),
-        start_date: userReview.startDate,
-        end_date: userReview.endDate,
+        feelingsScore: userReview.feelingsScore.join(','),
+        startDate: userReview.startDate,
+        endDate: userReview.endDate,
       },
     });
     loadingStop();
@@ -47,8 +47,8 @@ export const getReviewStats = async (userReviewStats: MypageStats) => {
       `/mypage/${userReviewStats.userId}/review/stats`,
       {
         params: {
-          start_date: userReviewStats.startDate,
-          end_date: userReviewStats.endDate,
+          startDate: userReviewStats.startDate,
+          endDate: userReviewStats.endDate,
         },
       },
     );
@@ -67,8 +67,8 @@ export const getTodosStats = async (userTodosStats: MypageStats) => {
       `/mypage/${userTodosStats.userId}/todos/stats`,
       {
         params: {
-          start_date: userTodosStats.startDate,
-          end_date: userTodosStats.endDate,
+          startDate: userTodosStats.startDate,
+          endDate: userTodosStats.endDate,
         },
       },
     );
@@ -89,8 +89,8 @@ export const getTodosDetail = async (userTodos: Todos) => {
         size: 10,
         sort: 'string',
         status: userTodos.status,
-        start_date: userTodos.startDate,
-        end_date: userTodos.endDate,
+        startDate: userTodos.startDate,
+        endDate: userTodos.endDate,
       },
     });
     loadingStop();

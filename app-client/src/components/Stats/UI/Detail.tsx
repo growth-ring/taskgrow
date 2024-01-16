@@ -69,8 +69,8 @@ const Detail = ({ category }: { category: string }) => {
   const { todoDetail } = useTodosStore();
   const isMoon = category.includes('감정');
 
-  const handleTodoPage = (userClickDay: string) => {
-    navigate(`/todos/${userClickDay}`);
+  const handleTodoPage = (taskDate: string) => {
+    navigate(`/todos/${taskDate}`);
   };
 
   return (
@@ -85,11 +85,11 @@ const Detail = ({ category }: { category: string }) => {
         {!isMoon && (
           <Content>
             {todoDetail.map((todo, index) => (
-              <Text key={index} onClick={() => handleTodoPage(todo.task_date)}>
-                <div>{todo.task_date}</div>
+              <Text key={index} onClick={() => handleTodoPage(todo.taskDate)}>
+                <div>{todo.taskDate}</div>
                 <TextTitle>{todo.todo}</TextTitle>
                 <div>
-                  {todo.perform_count} / {todo.plan_count}
+                  {todo.performCount} / {todo.planCount}
                 </div>
               </Text>
             ))}
@@ -99,11 +99,11 @@ const Detail = ({ category }: { category: string }) => {
           <Content>
             {moodDetail.map((mood) => (
               <Text
-                key={mood.review_id}
-                onClick={() => handleTodoPage(mood.task_date)}
+                key={mood.reviewId}
+                onClick={() => handleTodoPage(mood.taskDate)}
               >
                 <TextTitle>{mood.subject}</TextTitle>
-                <div>{mood.task_date}</div>
+                <div>{mood.taskDate}</div>
               </Text>
             ))}
           </Content>

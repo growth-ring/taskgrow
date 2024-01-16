@@ -9,12 +9,12 @@ interface TaskProps {
 }
 
 interface TodosProps {
-  perform_count: number;
-  plan_count: number;
+  performCount: number;
+  planCount: number;
   status: string;
-  task_id: number;
+  taskId: number;
   todo: string;
-  todo_id: number;
+  todoId: number;
 }
 
 const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
@@ -29,7 +29,7 @@ const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
     if (todoList) {
       await Promise.all(
         todoList.map(async (todo: TodosProps) => {
-          await deleteTodo(todo.todo_id);
+          await deleteTodo(todo.todoId);
         }),
       );
     }

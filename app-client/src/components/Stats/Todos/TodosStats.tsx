@@ -15,17 +15,17 @@ const Container = styled.div`
 
 const TodosStats = () => {
   const { todosStats } = useTodosStore();
-  const { total_count, done_count } = todosStats;
+  const { totalCount, doneCount } = todosStats;
 
-  const Title = ['한 일', total_count.toString()];
+  const Title = ['한 일', totalCount.toString()];
   const percent =
-    total_count === 0 ? 0 : Math.floor((done_count / total_count) * 100);
+    totalCount === 0 ? 0 : Math.floor((doneCount / totalCount) * 100);
   const comment =
-    total_count === 0
+    totalCount === 0
       ? '기록된 한 일이 없어요'
       : `완료 달성률은 ${percent}% 이에요`;
   const subComment =
-    total_count === 0
+    totalCount === 0
       ? '할 일을 정해볼까요?'
       : TodosComment.find((comments) => comments.percent >= percent)?.comment ||
         '';

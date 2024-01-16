@@ -56,14 +56,14 @@ const HeaderDate = () => {
     } else {
       today.add(1, 'day');
     }
-    const userClickDay = today.format('YYYY-MM-DD');
+    const taskDate = today.format('YYYY-MM-DD');
 
     const startDate = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
     const endDate = moment(date).add(1, 'day').format('YYYY-MM-DD');
 
-    navigate(`/todos/${userClickDay}`);
+    navigate(`/todos/${taskDate}`);
     const monthTaskDate = await getAllTask({ userId, startDate, endDate });
-    const taskId = await clickTask({ userId, monthTaskDate, userClickDay });
+    const taskId = await clickTask({ userId, monthTaskDate, taskDate });
     setSelectedTaskId(taskId);
   };
 

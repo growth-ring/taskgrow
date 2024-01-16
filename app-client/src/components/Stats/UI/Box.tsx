@@ -4,15 +4,15 @@ import Summary from './Summary';
 import Detail from './Detail';
 import NavigationButtons from './NavigationButtons';
 
-const Content = styled.div<{ isDetail: boolean }>`
+const Content = styled.div<{ $isDetail: boolean }>`
   display: flex;
-  flex-direction: ${(props) => (props.isDetail ? 'row' : 'column')};
+  flex-direction: ${(props) => (props.$isDetail ? 'row' : 'column')};
   justify-content: center;
   text-align: center;
   margin-top: 10px;
 
   background-color: white;
-  padding: ${(props) => (props.isDetail ? '0 1rem' : '1rem')};
+  padding: ${(props) => (props.$isDetail ? '0 1rem' : '1rem')};
   border-radius: 1rem;
   box-shadow:
     3px 3px 10px rgba(50, 50, 50, 0.1),
@@ -61,7 +61,7 @@ const Box = ({ title, comment, subComment }: BoxType) => {
         )}
         {!isDetail && <div>총 {count}개</div>}
       </TitleBox>
-      <Content isDetail={isDetail}>
+      <Content $isDetail={isDetail}>
         {isDetail && <Detail category={category} />}
         {!isDetail && (
           <Summary

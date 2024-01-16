@@ -14,11 +14,7 @@ import pc_good from '../../assets/pc_good.png';
 import pc_nice from '../../assets/pc_nice.png';
 import pc_happy from '../../assets/pc_happy.png';
 
-interface ImageProps {
-  $bg: string;
-}
-
-const Image = styled.img<ImageProps>`
+const Image = styled.img<{ $bg: string }>`
   background: ${(props) => props.$bg};
 
   @media (max-width: 767px) {

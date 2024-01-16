@@ -20,12 +20,7 @@ const { loadingStart, loadingStop } = useLoading.getState();
 export const addReview = async (reviewData: AddReview) => {
   loadingStart();
   try {
-    const review = await httpClient.post('/review', {
-      task_id: reviewData.taskId,
-      subject: reviewData.subject,
-      contents: reviewData.contents,
-      feelings_score: reviewData.feelingsScore,
-    });
+    const review = await httpClient.post('/review', reviewData);
     loadingStop();
     return review.data;
   } catch (error: any) {
@@ -72,7 +67,7 @@ export const updateReview = async (reviewData: UpdateReview) => {
     await httpClient.put(`/review/${reviewData.reviewId}`, {
       subject: reviewData.subject,
       contents: reviewData.contents,
-      feelings_score: reviewData.feelingsScore,
+      feelingsScore: reviewData.feelingsScore,
     });
     loadingStop();
     return alert('회고 수정 되었습니다.');

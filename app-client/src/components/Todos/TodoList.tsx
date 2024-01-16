@@ -5,11 +5,11 @@ import { useReviewStore } from '../../store/review';
 import resetTimer from '../../utils/resetTimer';
 
 interface Todo {
-  todo_id: number;
+  todoId: number;
   todo: string;
   status: string;
-  plan_count: number;
-  perform_count: number;
+  planCount: number;
+  performCount: number;
 }
 
 const TodoList = () => {
@@ -21,10 +21,10 @@ const TodoList = () => {
 
   const handleTodoClick = (todo: Todo) => {
     if (todo.status !== 'DONE') {
-      setTodoId(todo.todo_id);
-      localStorage.setItem('todoId', String(todo.todo_id));
-      setPlanCount(todo.plan_count);
-      setPerformCount(todo.perform_count);
+      setTodoId(todo.todoId);
+      localStorage.setItem('todoId', String(todo.todoId));
+      setPlanCount(todo.planCount);
+      setPerformCount(todo.performCount);
       resetTimer(timer, todos, todo.todo);
       closeReview();
     }
@@ -48,12 +48,12 @@ const TodoList = () => {
           .sort((a) => (a.status === 'DONE' ? 1 : -1))
           .map((todo) => (
             <Todo
-              key={todo.todo_id}
-              id={todo.todo_id}
+              key={todo.todoId}
+              id={todo.todoId}
               title={todo.todo}
               status={todo.status}
-              planCount={todo.plan_count}
-              performCount={todo.perform_count}
+              planCount={todo.planCount}
+              performCount={todo.performCount}
               onClick={() => handleTodoClick(todo)}
             />
           ))}
