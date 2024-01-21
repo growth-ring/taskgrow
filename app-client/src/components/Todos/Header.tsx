@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { SlPlus, SlCalender } from 'react-icons/sl';
-import AddTodos from './AddTodos';
+import { SlCalender } from 'react-icons/sl';
 import HeaderDate from './HeaderDate';
 import Alert from '../UI/Alert';
 import { useNavigate } from 'react-router-dom';
@@ -39,20 +38,6 @@ const Date = styled.div`
   }
 `;
 
-const AddTodo = styled.button`
-  @media (max-width: 767px) {
-    margin-right: 20px;
-  }
-
-  @media (min-width: 768px) and (max-width: 1023px) {
-    margin-right: 50px;
-  }
-
-  @media (min-width: 1024px) {
-    margin-right: 100px;
-  }
-`;
-
 const GoBack = styled.button`
   @media (max-width: 767px) {
     margin-right: 10px;
@@ -87,16 +72,7 @@ const Wrapper = styled.div`
 const Header = () => {
   const navigate = useNavigate();
   const { timerState } = useTimerStore();
-  const [showAddTodos, setShowAddTodos] = useState(false);
   const [showGoBack, setShowGoBack] = useState(false);
-
-  const handleShowAddTodos = () => {
-    setShowAddTodos(true);
-  };
-
-  const getShowAddTodos = (todos: boolean) => {
-    setShowAddTodos(todos);
-  };
 
   const handleGoBack = () => {
     if (timerState === 'RUNNING') {
@@ -120,12 +96,8 @@ const Header = () => {
           <GoBack onClick={handleGoBack}>
             <SlCalender />
           </GoBack>
-          <AddTodo onClick={handleShowAddTodos}>
-            <SlPlus />
-          </AddTodo>
         </Wrapper>
       </Container>
-      {showAddTodos && <AddTodos getShowAddTodos={getShowAddTodos} />}
       {showGoBack && <Alert text={'task'} getIsShow={getIsShow} />}
     </>
   );
