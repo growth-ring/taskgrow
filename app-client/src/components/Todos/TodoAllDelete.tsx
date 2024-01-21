@@ -15,6 +15,7 @@ const Container = styled.div`
 `;
 
 const DeleteButton = styled.button`
+  margin-top: 10px;
   &:hover {
     color: black;
   }

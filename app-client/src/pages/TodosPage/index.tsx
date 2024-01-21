@@ -4,6 +4,7 @@ import StateBtn from '../../components/Todos/StateBtn';
 import Timer from '../../components/Pomodoro/Timer';
 import Pomodoro from '../../components/Pomodoro/Pomodoro';
 import PomodoroBtn from '../../components/Pomodoro/PomodoroBtn';
+import AddTodo from '../../components/Todos/AddTodo';
 import TodoAllDelete from '../../components/Todos/TodoAllDelete';
 import TodoList from '../../components/Todos/TodoList';
 import Review from '../../components/Review/Review';
@@ -148,6 +149,7 @@ const Todos = () => {
           )}
         </Time>
         <TodosBox>
+          <AddTodo />
           <TodoAllDelete />
           <TodoList />
         </TodosBox>
