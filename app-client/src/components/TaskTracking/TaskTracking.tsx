@@ -29,8 +29,12 @@ const TaskTracking = () => {
 
   todoList.forEach((todo) => {
     if (todo.status !== 'DONE') {
-      plannedTime += todo.planCount * 25;
+      plannedTime +=
+        todo.planCount - todo.performCount > 0
+          ? (todo.planCount - todo.performCount) * 25
+          : 0;
       unFinishedTodo += 1;
+      completedTime += todo.performCount * 25;
     } else {
       completedTime += todo.performCount * 25;
       completedTodo += 1;
@@ -74,7 +78,7 @@ const TaskTracking = () => {
       </TaskBox>
       <TaskBox>
         <TaskContent>
-          <HighLight>{completedTodo} 개</HighLight>
+          <HighLight>{completedTodo} </HighLight>개
         </TaskContent>
         <span>완료한 할 일</span>
       </TaskBox>
