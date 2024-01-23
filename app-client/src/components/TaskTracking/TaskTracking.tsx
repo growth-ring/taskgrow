@@ -74,7 +74,7 @@ const TaskTracking = () => {
       </TaskBox>
       <TaskBox>
         <TaskContent>
-          <HighLight>{completedTodo}</HighLight>
+          <HighLight>{completedTodo} 개</HighLight>
         </TaskContent>
         <span>완료한 할 일</span>
       </TaskBox>
