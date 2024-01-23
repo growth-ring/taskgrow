@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from '../../components/Todos/Header';
+import TaskTracking from '../../components/TaskTracking/TaskTracking';
 import StateBtn from '../../components/Todos/StateBtn';
 import Timer from '../../components/Pomodoro/Timer';
 import Pomodoro from '../../components/Pomodoro/Pomodoro';
@@ -149,6 +150,7 @@ const Todos = () => {
           )}
         </Time>
         <TodosBox>
+          <TaskTracking />
           <AddTodo />
           <TodoAllDelete />
           <TodoList />
