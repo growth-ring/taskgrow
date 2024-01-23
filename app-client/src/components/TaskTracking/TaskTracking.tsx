@@ -30,7 +30,7 @@ const TaskTracking = () => {
   todoList.forEach((todo) => {
     if (todo.status !== 'DONE') {
       plannedTime +=
-        todo.planCount - todo.performCount > 0
+        todo.planCount > todo.performCount
           ? (todo.planCount - todo.performCount) * 25
           : 0;
       unFinishedTodo += 1;
