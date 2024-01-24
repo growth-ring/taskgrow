@@ -91,6 +91,12 @@ const Todos = () => {
       resetTimer(timer, todos, 'reset', todoList);
       closeReview();
     });
+
+    if (timerState === 'FINISHED') {
+      timer.showBreak();
+      resetTimer(timer, todos, '휴식');
+      todos.setTodoId(0);
+    }
   }, [selectedTaskId, isTodoChange]);
 
   useEffect(() => {
@@ -107,6 +113,7 @@ const Todos = () => {
 
         if (elapsedTime >= USER_TIME) {
           complete();
+
           updatePerformPomodoro(todoId).then(() =>
             setIsTodoChange(!isTodoChange),
           );

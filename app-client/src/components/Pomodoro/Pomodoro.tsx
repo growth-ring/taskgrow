@@ -70,7 +70,7 @@ function Pomodoro({ startTime, userTime, timerState }: PomodoroProps) {
 
   return (
     <>
-      {(timerState === 'INITIAL' || timerState === 'FINISHED') && (
+      {timerState === 'INITIAL' && (
         <CenteredBox>
           <DefaultPomodoro />
         </CenteredBox>

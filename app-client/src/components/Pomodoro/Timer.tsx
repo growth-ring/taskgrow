@@ -27,7 +27,6 @@ const Timer = ({ time, timerState, isBreak }: TimerProps) => {
           {minute} : {second}
         </Time>
       )}
-      {timerState === 'FINISHED' && <Time> 종료 </Time>}
     </>
   );
 };
