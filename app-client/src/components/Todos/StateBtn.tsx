@@ -7,6 +7,7 @@ import { useTimerStore } from '../../store/timer';
 import { useTodosStore } from '../../store/todos';
 import { useReviewStore } from '../../store/review';
 import resetTimer from '../../utils/resetTimer';
+import { isGuest } from '../../utils/isGuest';
 
 const Container = styled.div`
   margin-bottom: 30px;
@@ -52,6 +53,9 @@ const StateBtn = () => {
   };
 
   const handleShowReview = () => {
+    if (isGuest()) {
+      return alert('회원만 이용 가능합니다');
+    }
     if (todos.todoList.length === 0)
       return alert('할 일 추가 후 회고 작성이 가능합니다');
 
