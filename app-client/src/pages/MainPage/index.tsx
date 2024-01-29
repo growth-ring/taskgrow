@@ -1,10 +1,22 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLogin } from '../../store/login';
+import { isGuest } from '../../utils/isGuest';
+import moment from 'moment';
 
 import Login from '../../components/User/Login/Login';
 import SignUp from '../../components/User/SignUp/SignUp';
 
 const MainPage = () => {
   const { isShowLogin } = useLogin();
+  const navigate = useNavigate();
+  const today = moment(new Date()).format('YYYY-MM-DD');
+
+  useEffect(() => {
+    if (isGuest()) {
+      navigate(`/todos/${today}`);
+    }
+  }, [navigate, today]);
 
   return (
     <div
