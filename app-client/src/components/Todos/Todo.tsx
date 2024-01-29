@@ -11,6 +11,8 @@ import { updateTodo } from '../../services/todo';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import resetTimer from '../../utils/resetTimer';
+import { isGuest } from '../../utils/isGuest';
+import { useGuestStore } from '../../store/guest';
 
 interface TodoProps {
   id: number;
@@ -32,6 +34,7 @@ const Todo = ({
   const timer = useTimerStore();
   const todos = useTodosStore();
   const { isTodoChange, setIsTodoChange } = useTodosStore();
+  const { updateTodoStatus } = useGuestStore();
 
   const [isDetailShow, setIsDetailShow] = useState(false);
   const [isDeleteShow, setIsDeleteShow] = useState(false);
@@ -56,13 +59,18 @@ const Todo = ({
     if (status === 'READY') {
       alert('진행한 Todo만 완료할 수 있습니다');
     } else {
-      const todoData = {
-        todoId: id,
-        todo: title,
-        status: status === 'PROGRESS' ? 'DONE' : 'PROGRESS',
-        planCount: planCount,
-      };
-      await updateTodo(todoData);
+      if (isGuest()) {
+        const nowStatus = status === 'PROGRESS' ? 'DONE' : 'PROGRESS';
+        updateTodoStatus(id, nowStatus);
+      } else {
+        const todoData = {
+          todoId: id,
+          todo: title,
+          status: status === 'PROGRESS' ? 'DONE' : 'PROGRESS',
+          planCount: planCount,
+        };
+        await updateTodo(todoData);
+      }
       setIsTodoChange(!isTodoChange);
       resetTimer(timer, todos, 'reset');
     }
