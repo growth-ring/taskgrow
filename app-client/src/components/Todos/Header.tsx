@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { SlCalender } from 'react-icons/sl';
+import { IoPersonCircleSharp } from 'react-icons/io5';
 import HeaderDate from './HeaderDate';
 import Alert from '../UI/Alert';
 import { useNavigate } from 'react-router-dom';
 import { useTimerStore } from '../../store/timer';
+import { isGuest } from '../../utils/isGuest';
+import { useModal } from '../../hooks/useModal';
+import LoginModal from '../User/Login/LoginModal';
 
 const Container = styled.div`
   display: flex;
@@ -38,7 +42,9 @@ const Date = styled.div`
   }
 `;
 
-const GoBack = styled.button`
+const Button = styled.button`
+  color: gray;
+
   @media (max-width: 767px) {
     margin-right: 10px;
   }
@@ -72,13 +78,26 @@ const Wrapper = styled.div`
 const Header = () => {
   const navigate = useNavigate();
   const { timerState } = useTimerStore();
+  const { isOpen, openModal, closeModal } = useModal();
   const [showGoBack, setShowGoBack] = useState(false);
 
-  const handleGoBack = () => {
-    if (timerState === 'RUNNING') {
-      setShowGoBack(true);
+  const handleCalendar = () => {
+    if (isGuest()) {
+      alert('회원만 이용할 수 있습니다');
     } else {
-      navigate('/tasks');
+      if (timerState === 'RUNNING') {
+        setShowGoBack(true);
+      } else {
+        navigate('/tasks');
+      }
+    }
+  };
+
+  const handleMypage = () => {
+    if (isGuest()) {
+      openModal();
+    } else {
+      navigate('/mypage');
     }
   };
 
@@ -93,11 +112,15 @@ const Header = () => {
           <HeaderDate />
         </Date>
         <Wrapper>
-          <GoBack onClick={handleGoBack}>
+          <Button onClick={handleMypage}>
+            <IoPersonCircleSharp style={{ fontSize: '30px' }} />
+          </Button>
+          <Button onClick={handleCalendar}>
             <SlCalender />
-          </GoBack>
+          </Button>
         </Wrapper>
       </Container>
+      <LoginModal isOpen={isOpen} closeModal={closeModal} />
       {showGoBack && <Alert text={'task'} getIsShow={getIsShow} />}
     </>
   );

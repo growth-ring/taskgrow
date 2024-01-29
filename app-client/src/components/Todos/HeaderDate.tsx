@@ -6,6 +6,7 @@ import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { useUser } from '../../store/user';
 import { useTask } from '../../store/task';
 import { getAllTask, clickTask } from '../../utils/checkTaskExists';
+import { isGuest } from '../../utils/isGuest';
 
 const Arrow = styled.button`
   @media (max-width: 767px) {
@@ -50,21 +51,25 @@ const HeaderDate = () => {
   const [years, month, day] = date.split('-');
 
   const handleShowDate = async (clickDate: string) => {
-    const today = moment(date);
-    if (clickDate === 'previous') {
-      today.subtract(1, 'day');
+    if (isGuest()) {
+      alert('비회원은 오늘 날짜만 사용 가능합니다');
     } else {
-      today.add(1, 'day');
+      const today = moment(date);
+      if (clickDate === 'previous') {
+        today.subtract(1, 'day');
+      } else {
+        today.add(1, 'day');
+      }
+      const taskDate = today.format('YYYY-MM-DD');
+
+      const startDate = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
+      const endDate = moment(date).add(1, 'day').format('YYYY-MM-DD');
+
+      navigate(`/todos/${taskDate}`);
+      const monthTaskDate = await getAllTask({ userId, startDate, endDate });
+      const taskId = await clickTask({ userId, monthTaskDate, taskDate });
+      setSelectedTaskId(taskId);
     }
-    const taskDate = today.format('YYYY-MM-DD');
-
-    const startDate = moment(date).subtract(1, 'day').format('YYYY-MM-DD');
-    const endDate = moment(date).add(1, 'day').format('YYYY-MM-DD');
-
-    navigate(`/todos/${taskDate}`);
-    const monthTaskDate = await getAllTask({ userId, startDate, endDate });
-    const taskId = await clickTask({ userId, monthTaskDate, taskDate });
-    setSelectedTaskId(taskId);
   };
 
   return (
