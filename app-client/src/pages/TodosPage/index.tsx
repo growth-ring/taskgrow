@@ -17,6 +17,8 @@ import styled from 'styled-components';
 import resetTimer from '../../utils/resetTimer';
 import { updatePerformPomodoro } from '../../services/todo';
 import { getTodos } from '../../services/todo';
+import { isGuest } from '../../utils/isGuest';
+import { useGuestStore } from '../../store/guest';
 
 const Container = styled.div`
   @media (max-width: 767px) {
@@ -77,6 +79,7 @@ const Todos = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
   const { selectedTaskId } = useTask();
+  const { todoList, incrementPerformCount, updateTodoStatus } = useGuestStore();
   const { isReview, closeReview } = useReviewStore();
   const { onTimer, timerState, startTime, timerMinute, complete } =
     useTimerStore();
@@ -87,10 +90,15 @@ const Todos = () => {
   const isBreak: boolean = selectedTodo === '휴식';
 
   useEffect(() => {
-    getTodos(selectedTaskId).then((todoList) => {
+    if (isGuest()) {
       resetTimer(timer, todos, 'reset', todoList);
       closeReview();
-    });
+    } else {
+      getTodos(selectedTaskId).then((todoList) => {
+        resetTimer(timer, todos, 'reset', todoList);
+        closeReview();
+      });
+    }
 
     if (timerState === 'FINISHED') {
       timer.showBreak();
@@ -114,9 +122,15 @@ const Todos = () => {
         if (elapsedTime >= USER_TIME) {
           complete();
 
-          updatePerformPomodoro(todoId).then(() =>
-            setIsTodoChange(!isTodoChange),
-          );
+          if (isGuest()) {
+            updateTodoStatus(todoId, 'PROGRESS');
+            incrementPerformCount(todoId);
+            setIsTodoChange(!isTodoChange);
+          } else {
+            updatePerformPomodoro(todoId).then(() =>
+              setIsTodoChange(!isTodoChange),
+            );
+          }
         }
         setTimerTime(USER_TIME - elapsedTime);
       }, 500);
