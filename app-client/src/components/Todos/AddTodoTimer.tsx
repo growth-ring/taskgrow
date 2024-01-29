@@ -7,14 +7,18 @@ const Button = styled.button<{ $isTimerClick: boolean }>`
 `;
 
 interface AddTodoTimerProps {
-  key: number;
+  customKey: number;
   isTimerClick: boolean;
   onClick: () => void;
 }
 
-const AddTodoTimer = ({ key, isTimerClick, onClick }: AddTodoTimerProps) => {
+const AddTodoTimer = ({
+  customKey,
+  isTimerClick,
+  onClick,
+}: AddTodoTimerProps) => {
   return (
-    <Button key={key} onClick={onClick} $isTimerClick={isTimerClick}>
+    <Button key={customKey} onClick={onClick} $isTimerClick={isTimerClick}>
       <IoTime />
     </Button>
   );

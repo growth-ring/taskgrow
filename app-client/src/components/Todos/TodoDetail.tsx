@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { updateTodo } from '../../services/todo';
 import { useTodosStore } from '../../store/todos';
+import { isGuest } from '../../utils/isGuest';
+import { useGuestStore } from '../../store/guest';
 
 interface TodoProps {
   todoId: number;
@@ -20,6 +22,8 @@ const TodoDetail = ({
   getIsShow,
 }: TodoProps) => {
   const { isTodoChange, setIsTodoChange } = useTodosStore();
+  const { updatePlanCount, updateTodoStatus, updateGuestTodo } =
+    useGuestStore();
   const [todo, setTodo] = useState(todoTitle);
   const [performCount, setPerformCount] = useState(todoPerformCount);
   const [planCount, setPlanCount] = useState(todoPlanCount);
@@ -37,10 +41,18 @@ const TodoDetail = ({
       planCount: planCount,
     };
     if (+planCount > 0 && +planCount <= 20) {
-      updateTodo(todoData).then(() => {
+      if (isGuest()) {
+        updatePlanCount(todoId, planCount);
+        updateTodoStatus(todoId, todoStatus);
+        updateGuestTodo(todoId, todo);
         getIsShow();
         setIsTodoChange(!isTodoChange);
-      });
+      } else {
+        updateTodo(todoData).then(() => {
+          getIsShow();
+          setIsTodoChange(!isTodoChange);
+        });
+      }
     } else if (+planCount <= 0) {
       alert('1 이상의 숫자를 넣어주세요');
     } else {

@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { deleteTask } from '../../services/task';
 import { deleteTodo } from '../../services/todo';
 import { getTodos } from '../../services/todo';
+import { isGuest } from '../../utils/isGuest';
+import { useGuestStore } from '../../store/guest';
 
 interface TaskProps {
   selectedTaskId: number;
@@ -19,24 +21,29 @@ interface TodosProps {
 
 const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
   const navigate = useNavigate();
+  const { resetTodoList } = useGuestStore();
 
   const handleClose = () => {
     getIsShow();
   };
 
   const handleDelete = async () => {
-    const todoList = await getTodos(selectedTaskId);
-    if (todoList) {
-      await Promise.all(
-        todoList.map(async (todo: TodosProps) => {
-          await deleteTodo(todo.todoId);
-        }),
-      );
-    }
+    if (isGuest()) {
+      resetTodoList();
+    } else {
+      const todoList = await getTodos(selectedTaskId);
+      if (todoList) {
+        await Promise.all(
+          todoList.map(async (todo: TodosProps) => {
+            await deleteTodo(todo.todoId);
+          }),
+        );
+      }
 
-    const deleteMessage = await deleteTask(selectedTaskId);
-    if (deleteMessage?.status === 204) {
-      navigate('/tasks');
+      const deleteMessage = await deleteTask(selectedTaskId);
+      if (deleteMessage?.status === 204) {
+        navigate('/tasks');
+      }
     }
   };
 

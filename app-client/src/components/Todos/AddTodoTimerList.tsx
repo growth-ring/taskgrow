@@ -14,7 +14,6 @@ const AddTodoTimerList = ({
   handleTodoTimerChange,
 }: AddTodoTimerProps) => {
   const [fillTimer, setFillTimer] = useState(+planCount);
-  const todoTimers = [];
 
   const handleTimerClick = (clickedKey: number) => {
     setFillTimer(clickedKey);
@@ -25,17 +24,21 @@ const AddTodoTimerList = ({
     setFillTimer(+planCount);
   }, [planCount]);
 
-  for (let i = 1; i <= count; i++) {
-    todoTimers.push(
-      <AddTodoTimer
-        key={i}
-        isTimerClick={fillTimer >= i}
-        onClick={() => handleTimerClick(i)}
-      />,
-    );
-  }
+  const todoTimers = Array.from({ length: count }, (_, index) => (
+    <AddTodoTimer
+      key={index + 1}
+      customKey={index + 1}
+      isTimerClick={fillTimer >= index + 1}
+      onClick={() => handleTimerClick(index + 1)}
+    />
+  ));
+
   todoTimers.push(
-    <AddTodoTimerCount fillTimer={fillTimer} onClick={handleTimerClick} />,
+    <AddTodoTimerCount
+      key="count"
+      fillTimer={fillTimer}
+      onClick={handleTimerClick}
+    />,
   );
   return todoTimers;
 };
