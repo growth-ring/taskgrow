@@ -5,6 +5,8 @@ import { addTodo } from '../../services/todo';
 import { SlPlus } from 'react-icons/sl';
 import { useTodosStore } from '../../store/todos';
 import AddTodoTimerList from './AddTodoTimerList';
+import { isGuest } from '../../utils/isGuest';
+import { useGuestStore } from '../../store/guest';
 
 const Button = styled.button`
   color: gray;
@@ -22,6 +24,7 @@ const Input = styled.input`
 const AddTodo = () => {
   const { isTodoChange, setIsTodoChange } = useTodosStore();
   const { selectedTaskId } = useTask();
+  const { guestAddTodo, todoListId, incrementTodoListId } = useGuestStore();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('1');
 
@@ -29,12 +32,25 @@ const AddTodo = () => {
     e.preventDefault();
 
     if (+planCount > 0 && +planCount <= 20) {
-      await addTodo({
-        taskId: selectedTaskId,
-        todo: todo,
-        performCount: 0,
-        planCount: +planCount,
-      });
+      if (isGuest()) {
+        const newTodo = {
+          todo: todo,
+          status: 'READY',
+          performCount: 0,
+          planCount: +planCount,
+          todoId: todoListId,
+          taskId: selectedTaskId,
+        };
+        incrementTodoListId();
+        guestAddTodo(newTodo);
+      } else {
+        await addTodo({
+          taskId: selectedTaskId,
+          todo: todo,
+          performCount: 0,
+          planCount: +planCount,
+        });
+      }
       setIsTodoChange(!isTodoChange);
       setTodo('');
       setPlanCount('1');
