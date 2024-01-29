@@ -1,5 +1,7 @@
 import { deleteTodo } from '../../services/todo';
 import { useTodosStore } from '../../store/todos';
+import { isGuest } from '../../utils/isGuest';
+import { useGuestStore } from '../../store/guest';
 
 interface TodoProps {
   todoId: number;
@@ -9,15 +11,21 @@ interface TodoProps {
 
 const DeleteTodo = ({ todoId, todoTitle, getIsShow }: TodoProps) => {
   const { isTodoChange, setIsTodoChange } = useTodosStore();
+  const { removeTodo } = useGuestStore();
 
   const handleClose = () => {
     getIsShow();
   };
 
   const handleDelete = async () => {
-    const response = await deleteTodo(todoId);
-    if (response === 'OK') {
+    if (isGuest()) {
+      removeTodo(todoId);
       setIsTodoChange(!isTodoChange);
+    } else {
+      const response = await deleteTodo(todoId);
+      if (response === 'OK') {
+        setIsTodoChange(!isTodoChange);
+      }
     }
   };
 
