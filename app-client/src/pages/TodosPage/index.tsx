@@ -21,6 +21,9 @@ import { isGuest } from '../../utils/isGuest';
 import { useGuestStore } from '../../store/guest';
 import { sound } from '../../utils/sound';
 
+import { toast, ToastContainer, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Container = styled.div`
   @media (max-width: 767px) {
     padding-bottom: 20px;
@@ -89,6 +92,14 @@ const Todos = () => {
     useTodosStore();
   const [timerTime, setTimerTime] = useState<number>(USER_TIME);
   const isBreak: boolean = selectedTodo === '휴식';
+  const message = isBreak ? '휴식' : '할 일';
+
+  const config = {
+    position: 'top-right',
+    limit: 1,
+    autoClose: false,
+    hideProgressBar: true,
+  };
 
   useEffect(() => {
     if (isGuest()) {
@@ -122,6 +133,7 @@ const Todos = () => {
 
         if (elapsedTime >= USER_TIME) {
           sound(isBreak);
+          toast.success(`${message}이 끝났습니다`, config as ToastOptions);
           complete();
 
           if (isGuest()) {
@@ -179,6 +191,7 @@ const Todos = () => {
           <TodoList />
         </TodosBox>
       </Container>
+      <ToastContainer />
     </>
   );
 };
