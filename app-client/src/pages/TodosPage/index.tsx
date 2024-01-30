@@ -19,6 +19,7 @@ import { updatePerformPomodoro } from '../../services/todo';
 import { getTodos } from '../../services/todo';
 import { isGuest } from '../../utils/isGuest';
 import { useGuestStore } from '../../store/guest';
+import { sound } from '../../utils/sound';
 
 const Container = styled.div`
   @media (max-width: 767px) {
@@ -120,6 +121,7 @@ const Todos = () => {
         const elapsedTime = currentTime - startTime;
 
         if (elapsedTime >= USER_TIME) {
+          sound(isBreak);
           complete();
 
           if (isGuest()) {
