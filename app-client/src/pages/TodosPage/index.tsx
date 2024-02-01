@@ -20,6 +20,7 @@ import { getTodos } from '../../services/todo';
 import { isGuest } from '../../utils/isGuest';
 import { useGuestStore } from '../../store/guest';
 import { sound } from '../../utils/sound';
+import Guide from '../../components/Guide/Guide';
 
 import { toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -191,6 +192,7 @@ const Todos = () => {
           <TodoList />
         </TodosBox>
       </Container>
+      <Guide />
       <ToastContainer />
     </>
   );
