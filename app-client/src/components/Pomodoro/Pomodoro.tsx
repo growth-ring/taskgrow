@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 import { TimerState } from '../../store/timer';
+import useFavicon from '../../hooks/useFavicon';
 
 const CenteredBox = styled.div`
   display: flex;
@@ -42,6 +43,7 @@ interface PomodoroProps {
 
 function Pomodoro({ startTime, userTime, timerState }: PomodoroProps) {
   const [percentage, setPercentage] = useState(0);
+  useFavicon(percentage, timerState);
 
   useEffect(() => {
     let animationId: any;
