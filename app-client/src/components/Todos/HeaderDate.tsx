@@ -10,11 +10,11 @@ import { isGuest } from '../../utils/isGuest';
 
 const Arrow = styled.button`
   @media (max-width: 767px) {
-    margin: 0 20px;
+    margin: 0 10px;
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
-    margin: 0 60px;
+    margin: 0 50px;
   }
 
   @media (min-width: 1024px) {
