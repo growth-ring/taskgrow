@@ -18,9 +18,6 @@ const Timer = ({ time, timerState, isBreak }: TimerProps) => {
   const minute = String(Math.floor((time / (1000 * 60)) % 60)).padStart(2, '0');
   const second = String(Math.floor((time / 1000) % 60)).padStart(2, '0');
 
-  document.title =
-    timerState === 'RUNNING' ? `${minute} : ${second}` : 'Taskgrow';
-
   return (
     <>
       {!isBreak && timerState === 'INITIAL' && <Time> 25 : 00 </Time>}
