@@ -109,14 +109,10 @@ const Header = () => {
   const guest = isGuest();
 
   const handleCalendar = () => {
-    if (guest) {
-      alert('회원만 이용할 수 있습니다');
+    if (timerState === 'RUNNING') {
+      setShowGoBack(true);
     } else {
-      if (timerState === 'RUNNING') {
-        setShowGoBack(true);
-      } else {
-        navigate('/tasks');
-      }
+      navigate('/tasks');
     }
   };
 
