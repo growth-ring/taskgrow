@@ -9,6 +9,7 @@ import { useTimerStore } from '../../store/timer';
 import { isGuest } from '../../utils/isGuest';
 import { useModal } from '../../hooks/useModal';
 import LoginModal from '../User/Login/LoginModal';
+import { useLogin } from '../../store/login';
 
 const Container = styled.div`
   display: flex;
@@ -46,6 +47,7 @@ const Button = styled.button`
   color: gray;
 
   @media (max-width: 767px) {
+    font-size: 15px;
     margin-right: 10px;
   }
 
@@ -58,9 +60,32 @@ const Button = styled.button`
   }
 `;
 
+const TextButton = styled.button`
+  color: gray;
+
+  @media (max-width: 767px) {
+    font-size: 10px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    font-size: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 18px;
+  }
+`;
+
+const Bar = styled.span`
+  width: 1px;
+  height: 20px;
+  background-color: gray;
+`;
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 1rem;
 
   @media (max-width: 767px) {
     font-size: 21px;
@@ -78,11 +103,13 @@ const Wrapper = styled.div`
 const Header = () => {
   const navigate = useNavigate();
   const { timerState } = useTimerStore();
+  const { setIsShowLogin } = useLogin();
   const { isOpen, openModal, closeModal } = useModal();
   const [showGoBack, setShowGoBack] = useState(false);
+  const guest = isGuest();
 
   const handleCalendar = () => {
-    if (isGuest()) {
+    if (guest) {
       alert('회원만 이용할 수 있습니다');
     } else {
       if (timerState === 'RUNNING') {
@@ -93,12 +120,18 @@ const Header = () => {
     }
   };
 
+  const handleLogin = () => {
+    setIsShowLogin(true);
+    openModal();
+  };
+
+  const handleSignUp = () => {
+    setIsShowLogin(false);
+    openModal();
+  };
+
   const handleMypage = () => {
-    if (isGuest()) {
-      openModal();
-    } else {
-      navigate('/mypage');
-    }
+    navigate('/mypage');
   };
 
   const getIsShow = () => {
@@ -112,12 +145,23 @@ const Header = () => {
           <HeaderDate />
         </Date>
         <Wrapper>
-          <Button onClick={handleMypage}>
-            <IoPersonCircleSharp style={{ fontSize: '30px' }} />
-          </Button>
-          <Button onClick={handleCalendar}>
-            <SlCalender />
-          </Button>
+          {guest && (
+            <>
+              <TextButton onClick={handleLogin}>로그인</TextButton>
+              <Bar />
+              <TextButton onClick={handleSignUp}>회원가입</TextButton>
+            </>
+          )}
+          {!guest && (
+            <>
+              <Button onClick={handleMypage}>
+                <IoPersonCircleSharp style={{ fontSize: '30px' }} />
+              </Button>
+              <Button onClick={handleCalendar}>
+                <SlCalender />
+              </Button>
+            </>
+          )}
         </Wrapper>
       </Container>
       <LoginModal isOpen={isOpen} closeModal={closeModal} />
