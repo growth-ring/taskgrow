@@ -30,6 +30,7 @@ const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
   const handleDelete = async () => {
     if (isGuest()) {
       resetTodoList();
+      handleClose();
     } else {
       const todoList = await getTodos(selectedTaskId);
       if (todoList) {
