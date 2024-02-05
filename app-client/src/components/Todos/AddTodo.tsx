@@ -19,6 +19,7 @@ const Form = styled.form`
 
 const Input = styled.input`
   width: 100%;
+  padding: 0.2rem;
 `;
 
 const AddTodo = () => {
