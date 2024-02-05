@@ -100,15 +100,15 @@ const Todo = ({
             )}
           </button>
           <div
-            className={`text-slate-500 ${
-              status === 'DONE' ? 'line-through' : ''
-            }`}
+            className={`${status === 'DONE' ? 'line-through' : ''}`}
             style={{
               width: '100%',
               color: todos.todoId === id ? 'var(--main-color)' : '',
             }}
           >
-            <button onClick={onClick}>{title}</button>
+            <button onClick={onClick} style={{ textAlign: 'left' }}>
+              {title}
+            </button>
           </div>
         </div>
         <div style={{ display: 'flex' }}>
