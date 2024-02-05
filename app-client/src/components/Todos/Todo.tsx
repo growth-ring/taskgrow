@@ -86,7 +86,14 @@ const Todo = ({
             ? 'color-main-colorbg-gradient-to-r from-transparent to-transparent hover:from-slate-100'
             : 'bg-gradient-to-r from-indigo-100 to-transparent hover:from-indigo-200'
         } transition ease-linear duration-150 cursor-pointer`}
-        style={{ display: 'flex', width: '100%' }}
+        style={{
+          display: 'flex',
+          width: '100%',
+          border: todos.todoId === id ? '2.5px solid var(--main-color)' : '',
+          borderRadius: '0.5rem',
+          padding:
+            todos.todoId === id ? '0.8rem 0 0.8rem 0.8rem' : '1rem 0 1rem 1rem',
+        }}
       >
         <div
           className="inline-flex items-center space-x-2"
@@ -106,22 +113,29 @@ const Todo = ({
               color: todos.todoId === id ? 'var(--main-color)' : '',
             }}
           >
-            <button onClick={onClick} style={{ textAlign: 'left' }}>
+            <button
+              onClick={onClick}
+              style={{
+                textAlign: 'left',
+              }}
+            >
               {title}
             </button>
           </div>
         </div>
         <div style={{ display: 'flex' }}>
-          <div className={`text-slate-500 px-5`}>
+          <div className={`text-slate-500 px-5`} style={{ paddingLeft: '0' }}>
             {performCount} / {planCount}
           </div>
           <button onClick={handleTodoDelete}>
             <BsTrash3 />
           </button>
           <button
-            className={`text-slate-500 px-2`}
             onClick={handleTodoDetail}
             disabled={status === 'DONE'}
+            style={{
+              padding: todos.todoId === id ? '0 0.3rem 0 0.5rem' : '0 0.5rem',
+            }}
           >
             <BsPencil />
           </button>
