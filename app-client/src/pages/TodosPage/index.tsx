@@ -111,11 +111,11 @@ const Todos = () => {
 
   useEffect(() => {
     if (isGuest()) {
-      resetTimer(timer, todos, 'reset', todoList);
+      resetTimer(timer, todos, 'todoChange', todoList);
       closeReview();
     } else {
       getTodos(selectedTaskId).then((todoList) => {
-        resetTimer(timer, todos, 'reset', todoList);
+        resetTimer(timer, todos, 'todoChange', todoList);
         closeReview();
       });
     }
@@ -125,7 +125,19 @@ const Todos = () => {
       resetTimer(timer, todos, '휴식');
       todos.setTodoId(0);
     }
-  }, [selectedTaskId, isTodoChange]);
+  }, [isTodoChange]);
+
+  useEffect(() => {
+    if (isGuest()) {
+      resetTimer(timer, todos, 'reset', todoList);
+      closeReview();
+    } else {
+      getTodos(selectedTaskId).then((todoList) => {
+        resetTimer(timer, todos, 'reset', todoList);
+        closeReview();
+      });
+    }
+  }, [selectedTaskId]);
 
   useEffect(() => {
     setTimerTime(USER_TIME);

@@ -10,19 +10,18 @@ function resetTimer(
 ): void {
   const { timerState, showTodo, showBreak, setOnTimer, stop, setTimerMinute } =
     timer;
-  const { setSelectedTodo, setTodoList, setTodoId } = todos;
+  const { setSelectedTodo, setTodoList, setTodoId, selectedTodo } = todos;
 
   if (todoList) {
     setTodoList(todoList);
   }
 
-  if (todo === 'reset') {
+  if (todo === 'todoChange') {
     if (timerState === 'INITIAL') {
       setTodoId(0);
       stop();
-      setOnTimer(false);
       setSelectedTodo(
-        todoList?.length ? '오늘 할 일 골라주세요' : '오늘 할 일 추가해 주세요',
+        todoList?.length ? selectedTodo : '오늘 할 일 추가해 주세요',
       );
     }
     if (localStorage.getItem('todo') === '휴식') {
@@ -32,6 +31,13 @@ function resetTimer(
       showTodo();
       setTimerMinute(25);
     }
+  } else if (todo === 'reset') {
+    setTodoId(0);
+    stop();
+    setOnTimer(false);
+    setSelectedTodo(
+      todoList?.length ? '오늘 할 일 골라주세요' : '오늘 할 일 추가해 주세요',
+    );
   } else {
     stop();
     setSelectedTodo(todo);
