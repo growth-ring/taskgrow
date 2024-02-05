@@ -20,6 +20,10 @@ const TodoList = () => {
     useTodosStore();
 
   const handleTodoClick = (todo: Todo) => {
+    if (timer.timerState === 'RUNNING') {
+      return alert('현재 타이머가 진행 중입니다. 정지 후 선택해주세요.');
+    }
+
     if (todo.status !== 'DONE') {
       setTodoId(todo.todoId);
       localStorage.setItem('todoId', String(todo.todoId));
