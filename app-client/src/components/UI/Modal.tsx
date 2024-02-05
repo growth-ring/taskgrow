@@ -88,7 +88,7 @@ const Content = styled.dialog`
 
 const CloseButton = styled.button`
   position: absolute;
-  inset: 2.5rem 2.5rem auto auto;
+  inset: 3rem 3rem auto auto;
   border: none;
   background: none;
 
