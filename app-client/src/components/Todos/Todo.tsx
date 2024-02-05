@@ -83,9 +83,9 @@ const Todo = ({
           status === 'DONE' ? 'border-l-transparent' : 'border-l-indigo-300'
         } ${
           status === 'DONE'
-            ? 'color-main-colorbg-gradient-to-r from-transparent to-transparent hover:from-slate-100'
-            : 'bg-gradient-to-r from-indigo-100 to-transparent hover:from-indigo-200'
-        } transition ease-linear duration-150 cursor-pointer`}
+            ? 'color-main-colorbg-gradient-to-r from-transparent to-transparent'
+            : 'bg-gradient-to-r from-indigo-100 to-transparent'
+        } transition ease-linear duration-150`}
         style={{
           display: 'flex',
           width: '100%',
