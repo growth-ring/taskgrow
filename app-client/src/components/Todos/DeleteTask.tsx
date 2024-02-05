@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteTask } from '../../services/task';
 import { deleteTodo } from '../../services/todo';
 import { getTodos } from '../../services/todo';
+import { useTodosStore } from '../../store/todos';
 import { isGuest } from '../../utils/isGuest';
 import { useGuestStore } from '../../store/guest';
 
@@ -20,6 +21,7 @@ interface TodosProps {
 }
 
 const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
+  const { isTodoChange, setIsTodoChange } = useTodosStore();
   const navigate = useNavigate();
   const { resetTodoList } = useGuestStore();
 
@@ -30,6 +32,8 @@ const DeleteTask = ({ selectedTaskId, getIsShow }: TaskProps) => {
   const handleDelete = async () => {
     if (isGuest()) {
       resetTodoList();
+      handleClose();
+      setIsTodoChange(!isTodoChange);
     } else {
       const todoList = await getTodos(selectedTaskId);
       if (todoList) {
