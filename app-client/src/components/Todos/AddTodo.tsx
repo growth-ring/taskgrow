@@ -79,7 +79,7 @@ const AddTodo = () => {
           type="text"
           value={todo}
           onChange={handleTodoChange}
-          maxLength={18}
+          maxLength={50}
           placeholder="할 일을 추가하고 엔터키를 누르세요"
           required
         />

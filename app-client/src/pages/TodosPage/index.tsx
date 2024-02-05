@@ -40,7 +40,10 @@ const Container = styled.div`
 `;
 
 const Todo = styled.div`
-  margin: 0 10%;
+  width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   @media (max-width: 767px) {
     font-size: 20px;
@@ -51,6 +54,7 @@ const Todo = styled.div`
   }
 
   @media (min-width: 1024px) {
+    width: 450px;
     font-size: 30px;
   }
 `;
@@ -63,6 +67,7 @@ const Time = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
 
   @media (min-width: 768px) {
