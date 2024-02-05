@@ -31,6 +31,10 @@ const AddTodo = () => {
   const handleAddTodo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
+    if (todo.trim() === '') {
+      return alert('할 일을 입력해주세요');
+    }
+
     if (+planCount > 0 && +planCount <= 20) {
       if (isGuest()) {
         const newTodo = {
