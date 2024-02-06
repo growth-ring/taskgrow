@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useTask } from '../../store/task';
-import DeleteTask from './DeleteTask';
+import DeleteAllTodos from './DeleteAllTodos';
+import { useTodosStore } from '../../store/todos';
 
 const Container = styled.div`
   display: flex;
@@ -24,6 +25,8 @@ const DeleteButton = styled.button`
 const TodoAllDelete = () => {
   const { selectedTaskId } = useTask();
   const [isShow, setIsShow] = useState(false);
+  const { todoList } = useTodosStore();
+  const isTodo = todoList.length > 0;
 
   const getIsShow = () => {
     setIsShow(false);
@@ -35,11 +38,13 @@ const TodoAllDelete = () => {
 
   return (
     <>
-      <Container>
-        <DeleteButton onClick={handleDeleteClick}>전체 삭제하기</DeleteButton>
-      </Container>
+      {isTodo && (
+        <Container>
+          <DeleteButton onClick={handleDeleteClick}>전체 삭제하기</DeleteButton>
+        </Container>
+      )}
       {isShow && (
-        <DeleteTask selectedTaskId={selectedTaskId} getIsShow={getIsShow} />
+        <DeleteAllTodos selectedTaskId={selectedTaskId} getIsShow={getIsShow} />
       )}
     </>
   );
