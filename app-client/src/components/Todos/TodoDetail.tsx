@@ -68,10 +68,6 @@ const TodoDetail = ({
     setPlanCount(+e.target.value);
   };
 
-  const handlePerformCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPerformCount(+e.target.value);
-  };
-
   return (
     <div>
       <div
@@ -136,7 +132,7 @@ const TodoDetail = ({
               <div className="mt-4">
                 <label
                   htmlFor="teammateEmail"
-                  className="block text-sm text-gray-700 capitalize dark:text-gray-200"
+                  className="block text-sm text-gray-700 capitalize dark:text-gray-200 "
                 >
                   완료 뽀모도로 개수
                 </label>
@@ -148,7 +144,6 @@ const TodoDetail = ({
                   required
                   placeholder="25분 기본"
                   value={performCount}
-                  onChange={handlePerformCountChange}
                   className="block w-full px-3 py-2 mt-2 text-gray placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
                 />
               </div>
