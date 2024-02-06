@@ -25,7 +25,6 @@ const TodoDetail = ({
   const { updatePlanCount, updateTodoStatus, updateGuestTodo } =
     useGuestStore();
   const [todo, setTodo] = useState(todoTitle);
-  const [performCount, setPerformCount] = useState(todoPerformCount);
   const [planCount, setPlanCount] = useState(todoPlanCount);
 
   const handleClose = () => {
@@ -131,32 +130,27 @@ const TodoDetail = ({
               </div>
               <div className="mt-4">
                 <label
-                  htmlFor="teammateEmail"
+                  htmlFor="performCount"
                   className="block text-sm text-gray-700 capitalize dark:text-gray-200 "
                 >
                   완료 뽀모도로 개수
                 </label>
                 <input
-                  id="teammateEmail"
-                  name="teammateEmail"
+                  id="performCount"
+                  name="performCount"
                   type="number"
                   disabled
-                  required
-                  placeholder="25분 기본"
-                  value={performCount}
-                  className="block w-full px-3 py-2 mt-2 text-gray placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
+                  value={todoPerformCount}
+                  className="block w-full px-3 py-2 mt-2 text-gray bg-lightGray border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
                 />
               </div>
               <div className="mt-4">
-                <label
-                  htmlFor="teammateEmail"
-                  className="block text-sm capitalize"
-                >
+                <label htmlFor="planCount" className="block text-sm capitalize">
                   계획 뽀모도로 개수
                 </label>
                 <input
-                  id="teammateEmail"
-                  name="teammateEmail"
+                  id="planCount"
+                  name="planCount"
                   type="number"
                   disabled={todoStatus !== 'READY'}
                   required
