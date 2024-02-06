@@ -153,11 +153,11 @@ const TodoDetail = ({
                   name="planCount"
                   type="number"
                   disabled={todoStatus !== 'READY'}
-                  required
-                  placeholder="25분 기본"
                   value={planCount}
                   onChange={handlePlanCountChange}
-                  className="block w-full px-3 py-2 mt-2 text-gray placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
+                  className={`block w-full px-3 py-2 mt-2 text-gray border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40 ${
+                    todoStatus !== 'READY' ? 'bg-lightGray' : 'bg-white'
+                  }`}
                 />
               </div>
               <div className="py-2 text-gray font-thin text-sm">
