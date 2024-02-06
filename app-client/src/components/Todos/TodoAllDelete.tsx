@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useTask } from '../../store/task';
-import DeleteTask from './DeleteTask';
+import DeleteAllTodos from './DeleteAllTodos';
 import { useTodosStore } from '../../store/todos';
 
 const Container = styled.div`
@@ -44,7 +44,7 @@ const TodoAllDelete = () => {
         </Container>
       )}
       {isShow && (
-        <DeleteTask selectedTaskId={selectedTaskId} getIsShow={getIsShow} />
+        <DeleteAllTodos selectedTaskId={selectedTaskId} getIsShow={getIsShow} />
       )}
     </>
   );
