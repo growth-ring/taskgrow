@@ -80,12 +80,9 @@ const Todo = ({
     <>
       <div
         className={`flex justify-between items-center border-b border-slate-200 py-3 border-l-4 ${
-          status === 'DONE' ? 'border-l-transparent' : 'border-l-indigo-300'
-        } ${
-          status === 'DONE'
-            ? 'color-main-colorbg-gradient-to-r from-transparent to-transparent'
-            : 'bg-gradient-to-r from-indigo-100 to-transparent'
-        } transition ease-linear duration-150`}
+          status === 'DONE' ? 'text-darkGray' : ''
+        }
+        transition ease-linear duration-150`}
         style={{
           display: 'flex',
           width: '100%',
@@ -107,7 +104,6 @@ const Todo = ({
             )}
           </button>
           <div
-            className={`${status === 'DONE' ? 'line-through' : ''}`}
             style={{
               width: '100%',
               color: todos.todoId === id ? 'var(--main-color)' : '',
@@ -117,6 +113,7 @@ const Todo = ({
               onClick={onClick}
               style={{
                 textAlign: 'left',
+                textDecoration: status === 'DONE' ? 'line-through' : '',
               }}
             >
               {title}
