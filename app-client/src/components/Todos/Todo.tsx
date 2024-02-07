@@ -79,23 +79,17 @@ const Todo = ({
   return (
     <>
       <div
-        className={`flex justify-between items-center border-b border-slate-200 py-3 border-l-4 ${
+        className={`flex justify-between ${
           status === 'DONE' ? 'text-darkGray' : ''
-        }
-        transition ease-linear duration-150`}
+        }`}
         style={{
-          display: 'flex',
-          width: '100%',
           border: todos.todoId === id ? '2.5px solid var(--main-color)' : '',
           borderRadius: '0.5rem',
           padding:
             todos.todoId === id ? '0.8rem 0 0.8rem 0.8rem' : '1rem 0 1rem 1rem',
         }}
       >
-        <div
-          className="inline-flex items-center space-x-2"
-          style={{ width: '60%' }}
-        >
+        <div className="inline-flex w-3/5">
           <button onClick={handleTodoComplete} style={{ width: '10%' }}>
             {status === 'DONE' ? (
               <BsCheckSquareFill style={{ color: 'var(--main-color)' }} />
@@ -121,7 +115,7 @@ const Todo = ({
           </div>
         </div>
         <div style={{ display: 'flex' }}>
-          <div className={`text-slate-500 px-5`} style={{ paddingLeft: '0' }}>
+          <div className={`px-5 pl-0`}>
             {performCount} / {planCount}
           </div>
           <button onClick={handleTodoDelete}>
