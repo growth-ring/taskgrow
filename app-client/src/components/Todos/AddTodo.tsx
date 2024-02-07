@@ -62,7 +62,7 @@ const AddTodo = () => {
     } else if (+planCount <= 0) {
       alert('1 이상의 숫자를 넣어주세요');
     } else {
-      alert('뽀모도로는 최대 20개까지 가능합니다');
+      alert('계획 뽀모도로는 최대 20개까지 가능합니다');
     }
   };
 
