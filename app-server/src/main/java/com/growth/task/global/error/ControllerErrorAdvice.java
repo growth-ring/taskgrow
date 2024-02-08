@@ -2,6 +2,7 @@ package com.growth.task.global.error;
 
 import com.growth.task.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,6 +31,14 @@ public class ControllerErrorAdvice {
         log.error("MethodArgumentNotValidException", exception);
 
         final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_VALID_ERROR, exception.getBindingResult());
+        return new ResponseEntity<>(response, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    protected ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(final DataIntegrityViolationException exception) {
+        log.error("DataIntegrityViolationException", exception);
+
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.BAD_REQUEST_ERROR, exception.getMessage());
         return new ResponseEntity<>(response, BAD_REQUEST);
     }
 
