@@ -25,10 +25,11 @@ public class TodoUpdateResponse {
         this.orderNo = orderNo;
     }
 
-    public TodoUpdateResponse(Long todoId, Todos todos) {
-        this.todoId = todoId;
+    public TodoUpdateResponse(Todos todos) {
+        this.todoId = todos.getTodoId();
         this.taskId = todos.getTask().getTaskId();
         this.todo = todos.getTodo();
         this.status = todos.getStatus();
+        this.orderNo = todos.getOrderNo();
     }
 }
