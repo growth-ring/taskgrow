@@ -2,7 +2,9 @@ package com.growth.task.todo.application;
 
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.todo.domain.Todos;
+import com.growth.task.todo.dto.TodoUpdateOrder;
 import com.growth.task.todo.dto.request.TodoUpdateRequest;
+import com.growth.task.todo.dto.response.TodoUpdateResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.todo.exception.TodoNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -28,10 +32,12 @@ class TodoUpdateServiceTest {
     private TodoUpdateService todoUpdateService;
     @Mock
     private TodoDetailService todoDetailService;
+    @Mock
+    private TodoListService todoListService;
 
     @BeforeEach
     void setUp() {
-        todoUpdateService = new TodoUpdateService(todoDetailService);
+        todoUpdateService = new TodoUpdateService(todoDetailService, todoListService);
     }
 
     @Nested
@@ -124,6 +130,56 @@ class TodoUpdateServiceTest {
                 Executable when = () -> todoUpdateService.update(TODO_ID1, todoUpdateRequest);
 
                 assertThrows(TodoNotFoundException.class, when);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("updateOrder")
+    class Describe_updateOrder {
+        @Nested
+        @DisplayName("order 수정 요청 리스트가 주어지면")
+        class Context_with_request_list {
+            private final Tasks task = Tasks.builder()
+                    .taskId(TASK_ID1)
+                    .build();
+            private final Todos todo1 = Todos.builder()
+                    .todoId(1L)
+                    .todo("공부하기")
+                    .status(Status.READY)
+                    .orderNo(1)
+                    .task(task)
+                    .build();
+            private final Todos todo2 = Todos.builder()
+                    .todoId(2L)
+                    .todo("공부하기")
+                    .status(Status.READY)
+                    .orderNo(2)
+                    .task(task)
+                    .build();
+            private List<TodoUpdateOrder> todoUpdateOrders = List.of(
+                    new TodoUpdateOrder(todo1.getTodoId(), 2),
+                    new TodoUpdateOrder(todo2.getTodoId(), 1)
+            );
+
+            @BeforeEach
+            void prepare() {
+                given(todoListService.getTodosByIdIn(List.of(todo1.getTodoId(), todo2.getTodoId())))
+                        .willReturn(List.of(todo1, todo2));
+            }
+
+            @Test
+            @DisplayName("순서가 변경된다.")
+            void it_return_change_order() {
+                List<TodoUpdateResponse> result = todoUpdateService.updateOrder(todoUpdateOrders);
+
+                assertAll(
+                        () -> assertThat(result).hasSize(2),
+                        () -> assertThat(result.get(0).getTodoId()).isEqualTo(todo1.getTodoId()),
+                        () -> assertThat(result.get(0).getOrderNo()).isEqualTo(2),
+                        () -> assertThat(result.get(1).getTodoId()).isEqualTo(todo2.getTodoId()),
+                        () -> assertThat(result.get(1).getOrderNo()).isEqualTo(1)
+                );
             }
         }
     }

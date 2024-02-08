@@ -1,6 +1,7 @@
 package com.growth.task.todo.application;
 
 import com.growth.task.task.dto.TaskTodoDetailResponse;
+import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.TodoListRequest;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.TodoStatsRequest;
@@ -69,6 +70,11 @@ public class TodoListService {
         List<TodoResponse> todos = todosRepository.findByUserIdAndBetweenTimeRange(userId, request.getStartDate(), request.getEndDate());
 
         return aggregate(todos);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Todos> getTodosByIdIn(List<Long> todoIds) {
+        return todosRepository.findAllById(todoIds);
     }
 
     /**
