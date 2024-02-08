@@ -8,7 +8,6 @@ import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.task.repository.TasksRepository;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.TodoResponse;
-import com.growth.task.todo.dto.TodoStatsRequest;
 import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
 import com.growth.task.todo.enums.Status;
 import com.growth.task.user.domain.Users;
@@ -73,12 +72,13 @@ class TodosRepositoryTest {
         );
     }
 
-    private void getTodoWithPomo(Tasks task, String todo, Status status, int performCount, int planCount) {
+    private void getTodoWithPomo(Tasks task, String todo, Status status, int performCount, int planCount, int orderNo) {
         Todos givenTodo = todosRepository.save(
                 Todos.builder()
                         .task(task)
                         .todo(todo)
                         .status(status)
+                        .orderNo(orderNo)
                         .build()
         );
         pomodorosRepository.save(Pomodoros.builder().todo(givenTodo)
@@ -121,12 +121,12 @@ class TodosRepositoryTest {
         class Context_with_task_id_and_limit {
             @BeforeEach
             void setUp() {
-                getTodoWithPomo(task, "디자인 패턴의 아름다움 읽기", READY, 0, 3);
-                getTodoWithPomo(task, "얼고리즘 읽기", READY, 0, 4);
-                getTodoWithPomo(task, "스프링 인 액션 읽기", Status.DONE, 3, 4);
-                getTodoWithPomo(task, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
-                getTodoWithPomo(task, "구엔이일 읽기", Status.PROGRESS, 2, 5);
-                getTodoWithPomo(task, "코틀린 함수형 프로그래밍 읽기", Status.PROGRESS, 2, 4);
+                getTodoWithPomo(task, "디자인 패턴의 아름다움 읽기", READY, 0, 3, 1);
+                getTodoWithPomo(task, "얼고리즘 읽기", READY, 0, 4, 2);
+                getTodoWithPomo(task, "스프링 인 액션 읽기", Status.DONE, 3, 4, 3);
+                getTodoWithPomo(task, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3, 4);
+                getTodoWithPomo(task, "구엔이일 읽기", Status.PROGRESS, 2, 5, 5);
+                getTodoWithPomo(task, "코틀린 함수형 프로그래밍 읽기", Status.PROGRESS, 2, 4, 6);
             }
 
             @Test
@@ -145,9 +145,9 @@ class TodosRepositoryTest {
         class Context_todo_3 {
             @BeforeEach
             void setUp() {
-                getTodoWithPomo(task, "디자인 패턴의 아름다움 읽기", READY, 0, 3);
-                getTodoWithPomo(task, "얼고리즘 읽기", READY, 0, 2);
-                getTodoWithPomo(task, "스프링 인 액션 읽기", Status.DONE, 2, 2);
+                getTodoWithPomo(task, "디자인 패턴의 아름다움 읽기", READY, 0, 3, 1);
+                getTodoWithPomo(task, "얼고리즘 읽기", READY, 0, 2, 2);
+                getTodoWithPomo(task, "스프링 인 액션 읽기", Status.DONE, 2, 2, 3);
             }
 
             @Test
@@ -185,16 +185,16 @@ class TodosRepositoryTest {
             Tasks task5 = getTask(user, DATE_2023_11_05);
 
 
-            getTodoWithPomo(task1, "디자인 패턴의 아름다움 읽기", READY, 0, 3);
-            getTodoWithPomo(task1, "얼고리즘 읽기", READY, 0, 4);
-            getTodoWithPomo(task2, "스프링 인 액션 읽기", Status.DONE, 3, 4);
-            getTodoWithPomo(task3, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
-            getTodoWithPomo(task3, "구엔이일 읽기", Status.PROGRESS, 2, 5);
-            getTodoWithPomo(task3, "코틀린 함수형 프로그래밍 읽기", Status.PROGRESS, 2, 4);
-            getTodoWithPomo(task4, "디자인 패턴의 아름다움 읽기", READY, 0, 3);
-            getTodoWithPomo(task4, "얼고리즘 읽기", READY, 0, 4);
-            getTodoWithPomo(task4, "스프링 인 액션 읽기", Status.DONE, 3, 4);
-            getTodoWithPomo(task5, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
+            getTodoWithPomo(task1, "디자인 패턴의 아름다움 읽기", READY, 0, 3, 1);
+            getTodoWithPomo(task1, "얼고리즘 읽기", READY, 0, 4, 2);
+            getTodoWithPomo(task2, "스프링 인 액션 읽기", Status.DONE, 3, 4, 1);
+            getTodoWithPomo(task3, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3, 1);
+            getTodoWithPomo(task3, "구엔이일 읽기", Status.PROGRESS, 2, 5, 2);
+            getTodoWithPomo(task3, "코틀린 함수형 프로그래밍 읽기", Status.PROGRESS, 2, 4, 3);
+            getTodoWithPomo(task4, "디자인 패턴의 아름다움 읽기", READY, 0, 3, 1);
+            getTodoWithPomo(task4, "얼고리즘 읽기", READY, 0, 4, 2);
+            getTodoWithPomo(task4, "스프링 인 액션 읽기", Status.DONE, 3, 4, 3);
+            getTodoWithPomo(task5, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3, 1);
         }
 
         @Nested
@@ -262,9 +262,9 @@ class TodosRepositoryTest {
         class Context_with_task_id_and_limit {
             @BeforeEach
             void setUp() {
-                getTodoWithPomo(task, 디자인_패턴의_아름다움_읽기, READY, 0, 3);
-                getTodoWithPomo(task, 알고리즘_읽기, READY, 0, 4);
-                getTodoWithPomo(task, 스프링_인_액션_읽기, Status.DONE, 3, 4);
+                getTodoWithPomo(task, 디자인_패턴의_아름다움_읽기, READY, 0, 3, 1);
+                getTodoWithPomo(task, 알고리즘_읽기, READY, 0, 4, 2);
+                getTodoWithPomo(task, 스프링_인_액션_읽기, Status.DONE, 3, 4, 3);
             }
 
             @Test

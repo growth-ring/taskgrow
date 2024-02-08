@@ -86,12 +86,13 @@ class TaskListControllerTest {
         );
     }
 
-    private void getTodo(Tasks task, String todo, Status status) {
+    private void getTodo(Tasks task, String todo, Status status, int orderNo) {
         todosRepository.save(
                 Todos.builder()
                         .task(task)
                         .todo(todo)
                         .status(status)
+                        .orderNo(orderNo)
                         .build()
         );
     }
@@ -136,16 +137,16 @@ class TaskListControllerTest {
         void prepare() {
             getTask(user, LocalDate.parse("2023-08-28"));
 
-            getTodo(task1, "디자인 패턴의 아름다움 읽기", Status.READY);
-            getTodo(task1, "얼고리즘 읽기", Status.READY);
-            getTodo(task1, "스프링 인 액션 읽기", Status.DONE);
-            getTodo(task1, "파이브 라인스 오브 코드 읽기", Status.DONE);
-            getTodo(task1, "구엔이일 읽기", Status.PROGRESS);
-            getTodo(task2, "견고한 데이터 엔지니어링 읽기", Status.READY);
-            getTodo(task2, "레거시 코드 활용 전략 읽기", Status.READY);
-            getTodo(task2, "파이썬 코딩의 기술 읽기", Status.DONE);
-            getTodo(task2, "투스쿱 장고 읽기", Status.DONE);
-            getTodo(task3, "운동하기", Status.READY);
+            getTodo(task1, "디자인 패턴의 아름다움 읽기", Status.READY, 1);
+            getTodo(task1, "얼고리즘 읽기", Status.READY, 2);
+            getTodo(task1, "스프링 인 액션 읽기", Status.DONE, 3);
+            getTodo(task1, "파이브 라인스 오브 코드 읽기", Status.DONE, 4);
+            getTodo(task1, "구엔이일 읽기", Status.PROGRESS, 5);
+            getTodo(task2, "견고한 데이터 엔지니어링 읽기", Status.READY, 1);
+            getTodo(task2, "레거시 코드 활용 전략 읽기", Status.READY, 2);
+            getTodo(task2, "파이썬 코딩의 기술 읽기", Status.DONE, 3);
+            getTodo(task2, "투스쿱 장고 읽기", Status.DONE, 4);
+            getTodo(task3, "운동하기", Status.READY, 5);
 
             createReview(task1, "오늘의 한 줄", "회고를 작성합니다.", 7);
         }

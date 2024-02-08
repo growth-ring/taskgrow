@@ -73,8 +73,8 @@ public class PomodoroUpdateControllerTest {
         return tasksRepository.save(Tasks.builder().user(user).taskDate(taskDate).build());
     }
 
-    private Todos getTodo(Tasks task, String todo, Status status) {
-        return todosRepository.save(Todos.builder().task(task).todo(todo).status(status).build());
+    private Todos getTodo(Tasks task, String todo, Status status, int orderNo) {
+        return todosRepository.save(Todos.builder().task(task).todo(todo).status(status).orderNo(orderNo).build());
     }
 
     private Pomodoros getPomodoros(Todos todo, int performCount, int planCount) {
@@ -106,7 +106,7 @@ public class PomodoroUpdateControllerTest {
         void setUp() {
             Users user = getUser("user", "password");
             task = getTask(user, LocalDate.parse("2023-10-03"));
-            todo = getTodo(task, "스터디", Status.READY);
+            todo = getTodo(task, "스터디", Status.READY, 1);
         }
 
         @Nested
@@ -135,7 +135,7 @@ public class PomodoroUpdateControllerTest {
         class Context_with_already_done_todoId_when_pomodoro_complete {
             @BeforeEach
             void setUp() {
-                Todos doneTodo = getTodo(task, "책 읽기", Status.DONE);
+                Todos doneTodo = getTodo(task, "책 읽기", Status.DONE, 2);
                 getPomodoros(doneTodo, 4, 3);
                 todoId = doneTodo.getTodoId();
             }
@@ -194,7 +194,7 @@ public class PomodoroUpdateControllerTest {
 
             @BeforeEach
             void setUp() {
-                Todos todo = getTodo(task, "스터디", Status.READY);
+                Todos todo = getTodo(task, "스터디", Status.READY, 1);
                 Pomodoros pomodoros = getPomodoros(todo, 4, 3);
                 todoId = pomodoros.getTodo().getTodoId();
                 request = PomodoroUpdateRequest.builder()
@@ -219,7 +219,7 @@ public class PomodoroUpdateControllerTest {
             @ValueSource(strings = {"PROGRESS", "DONE"})
             @DisplayName("400을 응답한다")
             void it_response_400(String status) throws Exception {
-                Todos todo = getTodo(task, "스터디", Status.valueOf(status));
+                Todos todo = getTodo(task, "스터디", Status.valueOf(status), 1);
                 Pomodoros pomodoros = getPomodoros(todo, 4, 3);
                 todoId = pomodoros.getTodo().getTodoId();
                 PomodoroUpdateRequest request = PomodoroUpdateRequest.builder()

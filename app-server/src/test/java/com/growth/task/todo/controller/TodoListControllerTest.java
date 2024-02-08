@@ -91,11 +91,12 @@ class TodoListControllerTest {
                 .build());
     }
 
-    private Todos createTodo(Tasks task, String todo, Status status, int perform, int plan) {
+    private Todos createTodo(Tasks task, String todo, Status status, int perform, int plan, int orderNo) {
         Todos save = todosRepository.save(Todos.builder()
                 .task(task)
                 .todo(todo)
                 .status(status)
+                .orderNo(orderNo)
                 .build());
         pomodorosRepository.save(Pomodoros.builder()
                 .performCount(perform)
@@ -136,11 +137,11 @@ class TodoListControllerTest {
                 task = createTask(user, LOCAL_DATE_11_21);
                 Tasks otherTask = createTask(user, LOCAL_DATE_11_22);
 
-                createTodo(task, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 3);
 
-                createTodo(otherTask, "운동 하기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(otherTask, "운동 하기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 1);
             }
 
             @Test
@@ -183,9 +184,9 @@ class TodoListControllerTest {
             void setTask() {
                 task = createTask(user, LOCAL_DATE_11_21);
 
-                createTodo(task, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 3);
 
                 tasksRepository.delete(task);
             }
