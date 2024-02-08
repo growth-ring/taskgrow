@@ -115,6 +115,7 @@ class TodoAddControllerTest {
                 TodoAddRequest todoAddRequest = TodoAddRequest.builder()
                         .taskId(task.getTaskId())
                         .todo(TODO)
+                        .orderNo(1)
                         .build();
 
                 PomodoroAddRequest pomodoroAddRequest = PomodoroAddRequest.builder()
@@ -139,7 +140,9 @@ class TodoAddControllerTest {
                         .andExpect(jsonPath("$.todo").value(TODO))
                         .andExpect(jsonPath("$.status").value(Status.READY.name()))
                         .andExpect(jsonPath("$.performCount").value(PERFORM_COUNT))
-                        .andExpect(jsonPath("$.planCount").value(PLAN_COUNT));
+                        .andExpect(jsonPath("$.planCount").value(PLAN_COUNT))
+                        .andExpect(jsonPath("$.orderNo").value(1))
+                ;
             }
         }
 
@@ -159,6 +162,7 @@ class TodoAddControllerTest {
                 TodoAddRequest todoAddRequest = TodoAddRequest.builder()
                         .taskId(task.getTaskId())
                         .todo(TODO)
+                        .orderNo(1)
                         .build();
 
                 PomodoroAddRequest pomodoroAddRequest = PomodoroAddRequest.builder()
