@@ -27,12 +27,6 @@ import static com.growth.task.todo.enums.Status.isReady;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
-@Table(uniqueConstraints = {
-        @UniqueConstraint(
-                name = "todos_unique_task_id_order_no",
-                columnNames = {"orderNo", "task_id"}
-        )
-} )
 @Entity
 public class Todos extends BaseTimeEntity {
     @Id
@@ -96,5 +90,12 @@ public class Todos extends BaseTimeEntity {
         if (!isReady(status)) {
             throw new IllegalArgumentException(String.format("변경할 수 없는 상태입니다. status= ", status));
         }
+    }
+
+    public void updateOrder(int orderNo) {
+        if (orderNo < 1) {
+            throw new IllegalArgumentException("1보다 큰 수를 입력하세요.");
+        }
+        this.orderNo = orderNo;
     }
 }
