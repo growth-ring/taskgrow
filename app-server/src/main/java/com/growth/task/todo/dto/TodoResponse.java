@@ -11,11 +11,13 @@ public class TodoResponse {
     private Long taskId;
     private String todo;
     private Status status;
+    private int orderNo;
 
-    public TodoResponse(Long todoId, Long taskId, String todo, Status status) {
+    public TodoResponse(Long todoId, Long taskId, String todo, Status status, int orderNo) {
         this.todoId = todoId;
         this.taskId = taskId;
         this.todo = todo;
         this.status = status;
+        this.orderNo = orderNo;
     }
 }

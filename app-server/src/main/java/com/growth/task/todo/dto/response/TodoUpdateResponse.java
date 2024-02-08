@@ -14,13 +14,15 @@ public class TodoUpdateResponse {
     private Long taskId;
     private String todo;
     private Status status;
+    private int orderNo;
 
     @Builder
-    public TodoUpdateResponse(Long todoId, Long taskId, String todo, Status status) {
+    public TodoUpdateResponse(Long todoId, Long taskId, String todo, Status status, int orderNo) {
         this.todoId = todoId;
         this.taskId = taskId;
         this.todo = todo;
         this.status = status;
+        this.orderNo = orderNo;
     }
 
     public TodoUpdateResponse(Long todoId, Todos todos) {

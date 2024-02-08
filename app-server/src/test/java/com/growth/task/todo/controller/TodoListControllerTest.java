@@ -157,18 +157,22 @@ class TodoListControllerTest {
                         .andExpect(jsonPath("$[0].status").value(PROGRESS.name()))
                         .andExpect(jsonPath("$[0].performCount").value(PERFORM_COUNT))
                         .andExpect(jsonPath("$[0].planCount").value(PLAN_COUNT))
+                        .andExpect(jsonPath("$[0].orderNo").value(1))
                         .andExpect(jsonPath("$[1].todoId").exists())
                         .andExpect(jsonPath("$[1].taskId").exists())
                         .andExpect(jsonPath("$[1].todo").value("테스트 코드 짜기"))
                         .andExpect(jsonPath("$[1].status").value(PROGRESS.name()))
                         .andExpect(jsonPath("$[1].performCount").value(PERFORM_COUNT))
                         .andExpect(jsonPath("$[1].planCount").value(PLAN_COUNT))
+                        .andExpect(jsonPath("$[1].orderNo").value(2))
                         .andExpect(jsonPath("$[2].todoId").exists())
                         .andExpect(jsonPath("$[2].taskId").exists())
                         .andExpect(jsonPath("$[2].todo").value("스터디 참여"))
                         .andExpect(jsonPath("$[2].status").value(DONE.name()))
                         .andExpect(jsonPath("$[2].performCount").value(PERFORM_COUNT))
                         .andExpect(jsonPath("$[2].planCount").value(PLAN_COUNT))
+                        .andExpect(jsonPath("$[2].orderNo").value(3))
+
                 ;
 
             }
