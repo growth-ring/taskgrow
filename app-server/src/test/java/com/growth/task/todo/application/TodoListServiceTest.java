@@ -165,16 +165,16 @@ public class TodoListServiceTest {
         @Nested
         class Context_with_todo_list {
             private static List<TodoResponse> todos = List.of(
-                    new TodoResponse(1L, 1L, "책읽기", Status.READY),
-                    new TodoResponse(1L, 1L, "소설읽기", Status.DONE),
-                    new TodoResponse(1L, 2L, "책읽기", Status.DONE),
-                    new TodoResponse(1L, 2L, "운동하기", Status.DONE),
-                    new TodoResponse(1L, 2L, "스터디하기", Status.DONE),
-                    new TodoResponse(1L, 3L, "밥먹기", Status.PROGRESS),
-                    new TodoResponse(1L, 3L, "책읽기", Status.DONE),
-                    new TodoResponse(1L, 4L, "책읽기", Status.READY),
-                    new TodoResponse(1L, 4L, "쓰레기버리기", Status.READY),
-                    new TodoResponse(1L, 4L, "계획짜기", Status.PROGRESS)
+                    new TodoResponse(1L, 1L, "책읽기", Status.READY, 1),
+                    new TodoResponse(1L, 1L, "소설읽기", Status.DONE, 2),
+                    new TodoResponse(1L, 2L, "책읽기", Status.DONE, 1),
+                    new TodoResponse(1L, 2L, "운동하기", Status.DONE, 2),
+                    new TodoResponse(1L, 2L, "스터디하기", Status.DONE, 3),
+                    new TodoResponse(1L, 3L, "밥먹기", Status.PROGRESS, 1),
+                    new TodoResponse(1L, 3L, "책읽기", Status.DONE, 2),
+                    new TodoResponse(1L, 4L, "책읽기", Status.READY, 1),
+                    new TodoResponse(1L, 4L, "쓰레기버리기", Status.READY, 2),
+                    new TodoResponse(1L, 4L, "계획짜기", Status.PROGRESS, 3)
             );
 
             @DisplayName("총 투두 개수, 완료한 투두 개수, 진행중인 투두 개수, 미완료 투두 개수를 계산한다")
@@ -203,16 +203,16 @@ public class TodoListServiceTest {
             @BeforeEach
             void prepare() {
                 List<TodoResponse> todos = List.of(
-                        new TodoResponse(1L, 1L, "책읽기", Status.READY),
-                        new TodoResponse(1L, 1L, "소설읽기", Status.DONE),
-                        new TodoResponse(1L, 2L, "책읽기", Status.DONE),
-                        new TodoResponse(1L, 2L, "운동하기", Status.DONE),
-                        new TodoResponse(1L, 2L, "스터디하기", Status.DONE),
-                        new TodoResponse(1L, 3L, "밥먹기", Status.PROGRESS),
-                        new TodoResponse(1L, 3L, "책읽기", Status.DONE),
-                        new TodoResponse(1L, 4L, "책읽기", Status.DONE),
-                        new TodoResponse(1L, 4L, "쓰레기버리기", Status.DONE),
-                        new TodoResponse(1L, 4L, "계획짜기", Status.PROGRESS)
+                        new TodoResponse(1L, 1L, "책읽기", Status.READY, 1),
+                        new TodoResponse(1L, 1L, "소설읽기", Status.DONE, 2),
+                        new TodoResponse(1L, 2L, "책읽기", Status.DONE, 1),
+                        new TodoResponse(1L, 2L, "운동하기", Status.DONE, 2),
+                        new TodoResponse(1L, 2L, "스터디하기", Status.DONE, 3),
+                        new TodoResponse(1L, 3L, "밥먹기", Status.PROGRESS, 1),
+                        new TodoResponse(1L, 3L, "책읽기", Status.DONE, 2),
+                        new TodoResponse(1L, 4L, "책읽기", Status.DONE, 1),
+                        new TodoResponse(1L, 4L, "쓰레기버리기", Status.DONE, 2),
+                        new TodoResponse(1L, 4L, "계획짜기", Status.PROGRESS, 3)
                 );
                 given(todosRepository.findByUserIdAndBetweenTimeRange(USER_ID, LOCAL_DATE_11_19, LOCAL_DATE_11_20))
                         .willReturn(todos);
@@ -245,10 +245,10 @@ public class TodoListServiceTest {
             @BeforeEach
             void prepare() {
                 Page page = new PageImpl(List.of(
-                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LOCAL_DATE_11_20),
-                        new TodoDetailResponse("소설읽기", Status.READY, 0, 3, LOCAL_DATE_12_01),
-                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LOCAL_DATE_12_01),
-                        new TodoDetailResponse("운동하기", Status.READY, 0, 3, LOCAL_DATE_12_01)
+                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LOCAL_DATE_11_20, 1),
+                        new TodoDetailResponse("소설읽기", Status.READY, 0, 3, LOCAL_DATE_12_01, 1),
+                        new TodoDetailResponse("책읽기", Status.READY, 0, 3, LOCAL_DATE_12_01, 2),
+                        new TodoDetailResponse("운동하기", Status.READY, 0, 3, LOCAL_DATE_12_01, 3)
                 ));
                 given(todosRepository.findAllByUserAndParams(DEFAULT_PAGEABLE, USER_ID, Status.READY, LOCAL_DATE_11_20, LOCAL_DATE_12_01))
                         .willReturn(page);

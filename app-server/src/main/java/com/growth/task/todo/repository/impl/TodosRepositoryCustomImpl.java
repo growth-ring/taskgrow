@@ -57,7 +57,8 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                         todos.todoId,
                         todos.task.taskId,
                         todos.todo,
-                        todos.status
+                        todos.status,
+                        todos.orderNo
                 ))
                 .from(todos)
                 .leftJoin(tasks)
@@ -77,6 +78,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                         todos.task.taskId,
                         todos.todo,
                         todos.status,
+                        todos.orderNo,
                         pomodoros.performCount,
                         pomodoros.planCount
                 ))
@@ -95,6 +97,7 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                 .select(Projections.fields(TodoDetailResponse.class,
                         todos.todo,
                         todos.status,
+                        todos.orderNo,
                         pomodoros.performCount,
                         pomodoros.planCount,
                         tasks.taskDate

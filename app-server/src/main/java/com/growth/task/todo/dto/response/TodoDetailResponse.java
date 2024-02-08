@@ -15,6 +15,7 @@ public class TodoDetailResponse {
     private int performCount;
     private int planCount;
     private LocalDate taskDate;
+    private int orderNo;
 
     @Builder
     public TodoDetailResponse(
@@ -22,12 +23,14 @@ public class TodoDetailResponse {
             Status status,
             int performCount,
             int planCount,
-            LocalDate taskDate
+            LocalDate taskDate,
+            int orderNo
     ) {
         this.todo = todo;
         this.status = status;
         this.performCount = performCount;
         this.planCount = planCount;
         this.taskDate = taskDate;
+        this.orderNo = orderNo;
     }
 }
