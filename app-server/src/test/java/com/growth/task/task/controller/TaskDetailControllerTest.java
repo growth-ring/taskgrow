@@ -83,12 +83,13 @@ class TaskDetailControllerTest {
         );
     }
 
-    private void getTodo(Tasks task, String todo, Status status, int performCount, int planCount) {
+    private void getTodo(Tasks task, String todo, Status status, int performCount, int planCount, int orderNo) {
         Todos givenTodo = todosRepository.save(
                 Todos.builder()
                         .task(task)
                         .todo(todo)
                         .status(status)
+                        .orderNo(orderNo)
                         .build()
         );
         pomodorosRepository.save(Pomodoros.builder().todo(givenTodo)
@@ -127,13 +128,13 @@ class TaskDetailControllerTest {
         class Context_when_taskId_with_todo {
             @BeforeEach
             void setUp() {
-                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3);
-                getTodo(task, "얼고리즘 읽기", Status.READY, 0, 2);
-                getTodo(task, "스프링 인 액션 읽기", Status.DONE, 2, 2);
-                getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3);
-                getTodo(task, "구엔이일 읽기", Status.PROGRESS, 1, 3);
-                getTodo(task, "코틀린 인 액션 읽기", Status.PROGRESS, 1, 3);
-                getTodo(task, "코드 구현하기", Status.DONE, 3, 3);
+                getTodo(task, "디자인 패턴의 아름다움 읽기", Status.READY, 0, 3, 1);
+                getTodo(task, "얼고리즘 읽기", Status.READY, 0, 2, 2);
+                getTodo(task, "스프링 인 액션 읽기", Status.DONE, 2, 2, 3);
+                getTodo(task, "파이브 라인스 오브 코드 읽기", Status.DONE, 3, 3, 4);
+                getTodo(task, "구엔이일 읽기", Status.PROGRESS, 1, 3, 5);
+                getTodo(task, "코틀린 인 액션 읽기", Status.PROGRESS, 1, 3, 6);
+                getTodo(task, "코드 구현하기", Status.DONE, 3, 3, 7);
             }
 
             @Test

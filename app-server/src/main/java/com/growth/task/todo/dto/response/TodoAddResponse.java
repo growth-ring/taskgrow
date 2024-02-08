@@ -14,9 +14,10 @@ public class TodoAddResponse {
     private Long taskId;
     private String todo;
     private Status status;
+    private int orderNo;
 
     @Builder
-    public TodoAddResponse(Long todoId, Long taskId, String todo, Status status) {
+    public TodoAddResponse(Long todoId, Long taskId, String todo, Status status, int orderNo) {
         this.todoId = todoId;
         this.taskId = taskId;
         this.todo = todo;
@@ -28,5 +29,6 @@ public class TodoAddResponse {
         this.taskId = todos.getTask().getTaskId();
         this.todo = todos.getTodo();
         this.status = todos.getStatus();
+        this.orderNo = todos.getOrderNo();
     }
 }

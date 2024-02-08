@@ -13,15 +13,17 @@ public class TodoAndPomodoroAddResponse {
     private String status;
     private int performCount;
     private int planCount;
+    private int orderNo;
 
     @Builder
-    public TodoAndPomodoroAddResponse(Long todoId, Long taskId, String todo, String status, int performCount, int planCount) {
+    public TodoAndPomodoroAddResponse(Long todoId, Long taskId, String todo, String status, int performCount, int planCount, int orderNo) {
         this.todoId = todoId;
         this.taskId = taskId;
         this.todo = todo;
         this.status = status;
         this.performCount = performCount;
         this.planCount = planCount;
+        this.orderNo = orderNo;
     }
 
     public TodoAndPomodoroAddResponse(TodoAddResponse todoAddResponse, PomodoroAddResponse pomodoroAddResponse) {
@@ -31,5 +33,6 @@ public class TodoAndPomodoroAddResponse {
         this.status = todoAddResponse.getStatus().toString(); // Enum을 문자열로 변환
         this.performCount = pomodoroAddResponse.getPerformCount();
         this.planCount = pomodoroAddResponse.getPlanCount();
+        this.orderNo = todoAddResponse.getOrderNo();
     }
 }

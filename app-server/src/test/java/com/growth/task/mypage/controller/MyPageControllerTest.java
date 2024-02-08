@@ -114,11 +114,12 @@ class MyPageControllerTest {
                 .build());
     }
 
-    private Todos createTodo(Tasks task, String todo, Status status, int perform, int plan) {
+    private Todos createTodo(Tasks task, String todo, Status status, int perform, int plan, int orderNo) {
         Todos save = todosRepository.save(Todos.builder()
                 .task(task)
                 .todo(todo)
                 .status(status)
+                .orderNo(orderNo)
                 .build());
         pomodorosRepository.save(Pomodoros.builder()
                 .performCount(perform)
@@ -193,19 +194,19 @@ class MyPageControllerTest {
                 task4 = createTask(user, LOCAL_DATE_11_22);
                 task5 = createTask(user, LOCAL_DATE_11_23);
 
-                createTodo(task1, "책 읽기", READY, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task1, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task2, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task2, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task2, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task3, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task3, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task4, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task4, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task4, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task1, "책 읽기", READY, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task1, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task2, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task2, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task2, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT, 3);
+                createTodo(task3, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task3, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task4, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task4, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task4, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 3);
 
-                createTodo(task5, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task5, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task5, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task5, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 2);
 
                 request = new TodoStatsRequest(LOCAL_DATE_11_19, LOCAL_DATE_11_22);
             }
@@ -270,18 +271,18 @@ class MyPageControllerTest {
                 task4 = createTask(user, LOCAL_DATE_11_22);
                 task5 = createTask(user, LOCAL_DATE_11_23);
 
-                createTodo(task1, "책 읽기", READY, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task1, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task2, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task2, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task2, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task3, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task3, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task4, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task4, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task4, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task5, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT);
-                createTodo(task5, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT);
+                createTodo(task1, "책 읽기", READY, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task1, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task2, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task2, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task2, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT, 3);
+                createTodo(task3, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task3, "책 읽기", DONE, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task4, "테스트 코드 짜기", DONE, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task4, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 2);
+                createTodo(task4, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 3);
+                createTodo(task5, "테스트 코드 짜기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 1);
+                createTodo(task5, "스터디 참여", Status.DONE, PERFORM_COUNT, PLAN_COUNT, 2);
             }
 
             @ParameterizedTest

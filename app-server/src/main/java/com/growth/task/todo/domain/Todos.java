@@ -14,6 +14,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.OnDelete;
@@ -25,6 +27,12 @@ import static com.growth.task.todo.enums.Status.isReady;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
+@Table(uniqueConstraints = {
+        @UniqueConstraint(
+                name = "todos_unique_task_id_order_no",
+                columnNames = {"orderNo", "task_id"}
+        )
+} )
 @Entity
 public class Todos extends BaseTimeEntity {
     @Id
@@ -46,13 +54,16 @@ public class Todos extends BaseTimeEntity {
     @Column(name = "status", columnDefinition = "varchar(20) default 'READY'", nullable = false)
     @Enumerated(EnumType.STRING) // 이 부분을 추가
     private Status status;
+    @Column(nullable = false)
+    private int orderNo;
 
     @Builder
-    public Todos(Long todoId, Tasks task, String todo, Status status) {
+    public Todos(Long todoId, Tasks task, String todo, Status status, int orderNo) {
         this.todoId = todoId;
         this.task = task;
         this.todo = todo;
         this.status = status != null ? status : Status.READY;
+        this.orderNo = orderNo;
     }
 
     protected Todos() {

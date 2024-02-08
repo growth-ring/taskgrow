@@ -26,10 +26,11 @@ public class TodoAndPomodoroAddRequest {
     public TodoAndPomodoroAddRequest(
             @JsonProperty("taskId") Long taskId,
             @JsonProperty("todo") String todo,
+            @JsonProperty("orderNo") int orderNo,
             @JsonProperty("performCount") int performCount,
             @JsonProperty("planCount") int planCount
     ) {
-        this.todoAddRequest = new TodoAddRequest(taskId, todo);
+        this.todoAddRequest = new TodoAddRequest(taskId, todo, orderNo);
         this.pomodoroAddRequest = new PomodoroAddRequest(performCount, planCount);
     }
 
@@ -38,12 +39,17 @@ public class TodoAndPomodoroAddRequest {
         this.todoAddRequest = todoAddRequest;
         this.pomodoroAddRequest = pomodoroAddRequest;
     }
+
     public Long getTaskId() {
         return todoAddRequest.getTaskId();
     }
 
     public String getTodo() {
         return todoAddRequest.getTodo();
+    }
+
+    public int getOrderNo() {
+        return todoAddRequest.getOrderNo();
     }
 
     public int getPerformCount() {
