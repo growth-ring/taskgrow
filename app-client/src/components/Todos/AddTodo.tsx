@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useTask } from '../../store/task';
-import { addTodo } from '../../services/todo';
+import { addTodo, getTodos } from '../../services/todo';
 import { SlPlus } from 'react-icons/sl';
 import { useTodosStore } from '../../store/todos';
 import AddTodoTimerList from './AddTodoTimerList';
@@ -31,6 +31,7 @@ const AddTodo = () => {
 
   const handleAddTodo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    const todos = await getTodos(selectedTaskId);
 
     if (todo.trim() === '') {
       return alert('할 일을 입력해주세요');
@@ -52,6 +53,7 @@ const AddTodo = () => {
         await addTodo({
           taskId: selectedTaskId,
           todo: todo,
+          orderNo: todos.length + 1,
           performCount: 0,
           planCount: +planCount,
         });
