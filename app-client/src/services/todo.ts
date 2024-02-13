@@ -89,3 +89,16 @@ export const deleteTodo = async (todoId: number) => {
     return null;
   }
 };
+
+export const updateTodoOrder = async (todoId: number, orderNo: number) => {
+  try {
+    await httpClient.patch('/todos/order', [
+      {
+        todoId: todoId,
+        orderNo: orderNo,
+      },
+    ]);
+  } catch (error: any) {
+    return console.log(error);
+  }
+};
