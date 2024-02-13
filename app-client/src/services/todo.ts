@@ -4,6 +4,7 @@ import { useLoading } from '../store/loading';
 interface AddTodoData {
   taskId: number;
   todo: string;
+  orderNo: number;
   performCount: number;
   planCount: number;
 }
