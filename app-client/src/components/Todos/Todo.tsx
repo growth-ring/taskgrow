@@ -79,7 +79,7 @@ const Todo = ({
   return (
     <>
       <div
-        className={`flex justify-between ${
+        className={`flex justify-between items-center ${
           status === 'DONE' ? 'text-darkGray' : ''
         }`}
         style={{
