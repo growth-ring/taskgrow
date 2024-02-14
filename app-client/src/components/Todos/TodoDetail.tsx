@@ -122,7 +122,7 @@ const TodoDetail = ({
                   type="text"
                   required
                   placeholder=""
-                  maxLength={18}
+                  maxLength={50}
                   value={todo}
                   onChange={handleTodoChange}
                   className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
