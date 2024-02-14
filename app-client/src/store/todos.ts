@@ -11,6 +11,7 @@ export interface Todo {
   status: string;
   planCount: number;
   performCount: number;
+  orderNo: number;
 }
 
 interface TodosStats {

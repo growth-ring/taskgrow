@@ -4,6 +4,7 @@ import { useLoading } from '../store/loading';
 interface AddTodoData {
   taskId: number;
   todo: string;
+  orderNo: number;
   performCount: number;
   planCount: number;
 }
@@ -86,5 +87,18 @@ export const deleteTodo = async (todoId: number) => {
   } catch (error: any) {
     loadingStop();
     return null;
+  }
+};
+
+export const updateTodoOrder = async (todoId: number, orderNo: number) => {
+  try {
+    await httpClient.patch('/todos/order', [
+      {
+        todoId: todoId,
+        orderNo: orderNo,
+      },
+    ]);
+  } catch (error: any) {
+    return console.log(error);
   }
 };

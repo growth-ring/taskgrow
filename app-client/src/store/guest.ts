@@ -7,16 +7,18 @@ interface Todo {
   planCount: number;
   todoId: number;
   taskId: number;
+  orderNo: number;
 }
 
 interface GuestStore {
   todoListId: number;
   incrementTodoListId: () => void;
-  todoList: Todo[];
+  guestTodoList: Todo[];
   guestAddTodo: (newTodo: Todo) => void;
   incrementPerformCount: (todoId: number) => void;
   updatePlanCount: (todoId: number, newPlanCount: number) => void;
   updateTodoStatus: (todoId: number, newStatus: string) => void;
+  updateTodoOrderNo: (todoId: number, orderNo: number) => void;
   updateGuestTodo: (todoId: number, newTodo: string) => void;
   resetTodoList: () => void;
   removeTodo: (todoId: number) => void;
@@ -26,12 +28,12 @@ export const useGuestStore = create<GuestStore>((set) => ({
   todoListId: 1,
   incrementTodoListId: () =>
     set((state) => ({ todoListId: state.todoListId + 1 })),
-  todoList: [],
+  guestTodoList: [],
   guestAddTodo: (newTodo: Todo) =>
-    set((state) => ({ todoList: [...state.todoList, newTodo] })),
+    set((state) => ({ guestTodoList: [...state.guestTodoList, newTodo] })),
   incrementPerformCount: (todoId: number) =>
     set((state) => ({
-      todoList: state.todoList.map((item) =>
+      guestTodoList: state.guestTodoList.map((item) =>
         item.todoId === todoId
           ? { ...item, performCount: item.performCount + 1 }
           : item,
@@ -39,25 +41,33 @@ export const useGuestStore = create<GuestStore>((set) => ({
     })),
   updatePlanCount: (todoId: number, newPlanCount: number) =>
     set((state) => ({
-      todoList: state.todoList.map((item) =>
+      guestTodoList: state.guestTodoList.map((item) =>
         item.todoId === todoId ? { ...item, planCount: newPlanCount } : item,
       ),
     })),
   updateTodoStatus: (todoId: number, newStatus: string) =>
     set((state) => ({
-      todoList: state.todoList.map((item) =>
+      guestTodoList: state.guestTodoList.map((item) =>
         item.todoId === todoId ? { ...item, status: newStatus } : item,
+      ),
+    })),
+  updateTodoOrderNo: (todoId: number, orderNo: number) =>
+    set((state) => ({
+      guestTodoList: state.guestTodoList.map((item) =>
+        item.todoId === todoId ? { ...item, orderNo: orderNo } : item,
       ),
     })),
   updateGuestTodo: (todoId: number, newTodo: string) =>
     set((state) => ({
-      todoList: state.todoList.map((item) =>
+      guestTodoList: state.guestTodoList.map((item) =>
         item.todoId === todoId ? { ...item, todo: newTodo } : item,
       ),
     })),
-  resetTodoList: () => set({ todoList: [] }),
+  resetTodoList: () => set({ guestTodoList: [] }),
   removeTodo: (todoId: number) =>
     set((state) => ({
-      todoList: state.todoList.filter((todo) => todo.todoId !== todoId),
+      guestTodoList: state.guestTodoList.filter(
+        (todo) => todo.todoId !== todoId,
+      ),
     })),
 }));
