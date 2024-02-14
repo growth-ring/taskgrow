@@ -5,8 +5,13 @@ import { useTimerStore } from '../../store/timer';
 import { useReviewStore } from '../../store/review';
 import resetTimer from '../../utils/resetTimer';
 import { updateTodoOrder } from '../../services/todo';
-import { todosDragUpdateOrderNo } from '../../utils/todosUpdateOrderNo';
+import {
+  guestTodosDragUpdateOrderNo,
+  todosDragUpdateOrderNo,
+} from '../../utils/todosUpdateOrderNo';
 import { useTask } from '../../store/task';
+import { isGuest } from '../../utils/isGuest';
+import { useGuestStore } from '../../store/guest';
 
 interface Todo {
   todoId: number;
@@ -29,6 +34,7 @@ const TodoList = () => {
     isTodoChange,
   } = useTodosStore();
   const { selectedTaskId } = useTask();
+  const { guestTodoList, updateTodoOrderNo } = useGuestStore();
 
   const handleTodoClick = (todo: Todo) => {
     if (timer.timerState === 'RUNNING') {
@@ -73,15 +79,28 @@ const TodoList = () => {
     const right = rect.right;
 
     if (x >= left && x <= right && y >= top && y <= bottom) {
-      await todosDragUpdateOrderNo(
-        selectedTaskId,
-        dragItemOrderNo.current,
-        dragOverItemOrderNo.current,
-      );
-      await updateTodoOrder(
-        dragItemTodoId.current,
-        dragOverItemOrderNo.current,
-      );
+      if (isGuest()) {
+        await guestTodosDragUpdateOrderNo(
+          guestTodoList,
+          dragItemOrderNo.current,
+          dragOverItemOrderNo.current,
+          updateTodoOrderNo,
+        );
+        await updateTodoOrderNo(
+          dragItemTodoId.current,
+          dragOverItemOrderNo.current,
+        );
+      } else {
+        await todosDragUpdateOrderNo(
+          selectedTaskId,
+          dragItemOrderNo.current,
+          dragOverItemOrderNo.current,
+        );
+        await updateTodoOrder(
+          dragItemTodoId.current,
+          dragOverItemOrderNo.current,
+        );
+      }
       setIsTodoChange(!isTodoChange);
     }
   };
