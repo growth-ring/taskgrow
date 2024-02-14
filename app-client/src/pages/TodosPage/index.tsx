@@ -90,7 +90,8 @@ const Todos = () => {
   const timer = useTimerStore();
   const todos = useTodosStore();
   const { selectedTaskId } = useTask();
-  const { todoList, incrementPerformCount, updateTodoStatus } = useGuestStore();
+  const { guestTodoList, incrementPerformCount, updateTodoStatus } =
+    useGuestStore();
   const { isReview, closeReview } = useReviewStore();
   const { onTimer, timerState, startTime, timerMinute, complete } =
     useTimerStore();
@@ -111,7 +112,7 @@ const Todos = () => {
 
   useEffect(() => {
     if (isGuest()) {
-      resetTimer(timer, todos, 'todoChange', todoList);
+      resetTimer(timer, todos, 'todoChange', guestTodoList);
       closeReview();
     } else {
       getTodos(selectedTaskId).then((todoList) => {
@@ -129,7 +130,7 @@ const Todos = () => {
 
   useEffect(() => {
     if (isGuest()) {
-      resetTimer(timer, todos, 'reset', todoList);
+      resetTimer(timer, todos, 'reset', guestTodoList);
       closeReview();
     } else {
       getTodos(selectedTaskId).then((todoList) => {

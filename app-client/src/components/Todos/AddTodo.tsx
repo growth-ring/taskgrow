@@ -25,7 +25,8 @@ const Input = styled.input`
 const AddTodo = () => {
   const { isTodoChange, setIsTodoChange } = useTodosStore();
   const { selectedTaskId } = useTask();
-  const { guestAddTodo, todoListId, incrementTodoListId } = useGuestStore();
+  const { guestAddTodo, todoListId, incrementTodoListId, guestTodoList } =
+    useGuestStore();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('1');
 
@@ -46,6 +47,7 @@ const AddTodo = () => {
           planCount: +planCount,
           todoId: todoListId,
           taskId: selectedTaskId,
+          orderNo: guestTodoList.length + 1,
         };
         incrementTodoListId();
         guestAddTodo(newTodo);
