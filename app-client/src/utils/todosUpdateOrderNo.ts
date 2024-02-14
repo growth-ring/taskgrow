@@ -2,6 +2,25 @@ import { getTodos } from '../services/todo';
 import { updateTodoOrder } from '../services/todo';
 
 import type { Todo } from '../store/todos';
+
+export const guestTodosUpdateOrderNo = async (
+  todos: Todo[],
+  todoId: number,
+  updateTodoOrderNo: (todoId: number, orderNo: number) => void,
+) => {
+  const deleteTodo = todos.filter((todo) => {
+    return todo.todoId === todoId;
+  });
+
+  const deleteTodoOrderNo = deleteTodo[0].orderNo;
+
+  todos.forEach((todo) => {
+    if (todo.orderNo > deleteTodoOrderNo) {
+      updateTodoOrderNo(todo.todoId, todo.orderNo - 1);
+    }
+  });
+};
+
 export const todosUpdateOrderNo = async (
   selectedTaskId: number,
   todoId: number,
@@ -22,6 +41,33 @@ export const todosUpdateOrderNo = async (
       updateTodoOrder(todo.todoId, todo.orderNo - 1);
     }
   });
+};
+
+export const guestTodosDragUpdateOrderNo = async (
+  todos: Todo[],
+  dragTodoOrderNo: number,
+  dragOverTodoOrderNo: number,
+  updateTodoOrderNo: (todoId: number, orderNo: number) => void,
+) => {
+  if (dragTodoOrderNo < dragOverTodoOrderNo) {
+    todos.forEach((todo) => {
+      if (
+        todo.orderNo > dragTodoOrderNo &&
+        todo.orderNo <= dragOverTodoOrderNo
+      ) {
+        updateTodoOrderNo(todo.todoId, todo.orderNo - 1);
+      }
+    });
+  } else {
+    todos.forEach((todo) => {
+      if (
+        todo.orderNo < dragTodoOrderNo &&
+        todo.orderNo >= dragOverTodoOrderNo
+      ) {
+        updateTodoOrderNo(todo.todoId, todo.orderNo + 1);
+      }
+    });
+  }
 };
 
 //옮긴 투두의 order 뒤 부터 옮겨진 투두 order까지
