@@ -32,7 +32,7 @@ const Backdrop = styled.div<{ $showGuide: boolean }>`
   inset: 0;
 `;
 
-const Image = styled.image`
+const Image = styled.img`
   content: url(${pc});
   @media (max-width: 767px) {
     content: url(${mobile});
