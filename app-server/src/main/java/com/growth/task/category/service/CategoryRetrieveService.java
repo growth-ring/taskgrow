@@ -1,23 +1,26 @@
 package com.growth.task.category.service;
 
 import com.growth.task.category.domain.Category;
-import com.growth.task.category.dto.CategoryRequest;
 import com.growth.task.category.dto.CategoryResponse;
 import com.growth.task.category.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
-public class CategoryAddService {
+public class CategoryRetrieveService {
     private final CategoryRepository categoryRepository;
 
-    public CategoryAddService(CategoryRepository categoryRepository) {
+    public CategoryRetrieveService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    @Transactional
-    public CategoryResponse save(CategoryRequest request) {
-        Category category = categoryRepository.save(request.toEntity());
-        return CategoryResponse.of(category);
+    @Transactional(readOnly = true)
+    public List<CategoryResponse> getCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(CategoryResponse::of)
+                .toList();
     }
 }

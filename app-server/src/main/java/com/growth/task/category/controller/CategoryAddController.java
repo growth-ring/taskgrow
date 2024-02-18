@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/categories")
-@Tag(name = "Task", description = "Category API Document")
+@Tag(name = "Category", description = "Category API Document")
 public class CategoryAddController {
     private final CategoryAddService categoryAddService;
 
