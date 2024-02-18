@@ -49,4 +49,12 @@ public class ControllerErrorAdvice {
         final ErrorResponse response = ErrorResponse.of(errorCode, exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    protected ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+        log.error("DataIntegrityViolationException", exception);
+
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.BAD_REQUEST_ERROR, exception.getRootCause().toString());
+        return new ResponseEntity<>(response, BAD_REQUEST);
+    }
 }
