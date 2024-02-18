@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.growth.task.category.dto.CategoryRequest;
 import com.growth.task.category.repository.CategoryRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -46,6 +47,11 @@ class CategoryAddControllerTest {
                 .build();
         objectMapper.registerModule(new JavaTimeModule())
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        categoryRepository.deleteAll();
     }
 
     @Nested
@@ -109,5 +115,28 @@ class CategoryAddControllerTest {
                 ;
             }
         }
+
+        @Nested
+        @DisplayName("이미 존재하는 카테고리명이 주어지면")
+        class Context_with_existing_category_name {
+            private final CategoryRequest request = CategoryRequest.builder()
+                    .name(CATEGORY_NAME_STUDY)
+                    .build();
+
+            @BeforeEach
+            void prepare() {
+                categoryRepository.save(request.toEntity());
+            }
+
+            @Test
+            @DisplayName("400을 응답한다")
+            void it_response_bad_request() throws Exception {
+                final ResultActions resultActions = subject(request);
+
+                resultActions.andExpect(status().isBadRequest())
+                ;
+            }
+        }
+
     }
 }
