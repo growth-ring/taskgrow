@@ -1,6 +1,7 @@
 package com.growth.task.todo.domain;
 
 import com.growth.task.category.domain.Category;
+import com.growth.task.global.domain.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @Entity
-public class TodoCategory {
+public class TodoCategory extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
