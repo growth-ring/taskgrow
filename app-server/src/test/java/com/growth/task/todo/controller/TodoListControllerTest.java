@@ -130,7 +130,6 @@ class TodoListControllerTest {
         @Nested
         class Context_with_exist_task_id {
             private Tasks task;
-            private TodoAndPomodoroAddRequest request;
 
             @BeforeEach
             void setTask() {
