@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Todo 생성 요청
+ * 투두 생성 요청
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -24,11 +24,19 @@ public class TodoAddRequest {
     @Min(value = 1, message = "1 이상이어야 합니다.")
     private int orderNo;
 
+    private Long categoryId;
+
     @Builder
-    public TodoAddRequest(Long taskId, String todo, int orderNo) {
+    public TodoAddRequest(
+            Long taskId,
+            String todo,
+            int orderNo,
+            Long categoryId
+    ) {
         this.taskId = taskId;
         this.todo = todo;
         this.orderNo = orderNo;
+        this.categoryId = categoryId;
     }
 
     public Todos toEntity(Tasks tasks) {

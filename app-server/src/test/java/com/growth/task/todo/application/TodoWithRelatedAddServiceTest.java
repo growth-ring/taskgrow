@@ -1,9 +1,11 @@
 package com.growth.task.todo.application;
 
+import com.growth.task.category.domain.Category;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.dto.request.PomodoroAddRequest;
 import com.growth.task.pomodoro.service.PomodoroAddService;
 import com.growth.task.task.domain.Tasks;
+import com.growth.task.todo.domain.TodoCategory;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddRequest;
 import com.growth.task.todo.dto.composite.TodoAndPomodoroAddResponse;
@@ -16,12 +18,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -32,6 +34,8 @@ class TodoWithRelatedAddServiceTest {
     private TodoAddService todoAddService;
     @Mock
     private PomodoroAddService pomodoroAddService;
+    @Mock
+    private TodoCategoryAddService todoCategoryAddService;
 
     private TodoWithRelatedAddService todoWithRelatedAddService;
 
@@ -43,9 +47,11 @@ class TodoWithRelatedAddServiceTest {
 
     @BeforeEach
     void setUp() {
-        todoAddService = mock(TodoAddService.class);
-        pomodoroAddService = mock(PomodoroAddService.class);
-        todoWithRelatedAddService = new TodoWithRelatedAddService(todoAddService, pomodoroAddService);
+        todoWithRelatedAddService = new TodoWithRelatedAddService(
+                todoAddService,
+                pomodoroAddService,
+                todoCategoryAddService
+        );
     }
 
     @Nested
@@ -72,6 +78,7 @@ class TodoWithRelatedAddServiceTest {
             private final TodoAddRequest todoAddRequest = TodoAddRequest.builder()
                     .taskId(tasks.getTaskId())
                     .todo(WHAT_TO_DO1)
+                    .categoryId(1L)
                     .build();
             private final PomodoroAddRequest pomodoroAddRequest = PomodoroAddRequest.builder()
                     .performCount(POMODORO_PERFORM_COUNT1)
@@ -82,14 +89,21 @@ class TodoWithRelatedAddServiceTest {
                     .pomodoroAddRequest(pomodoroAddRequest)
                     .build();
 
+            private final Category category = Category.builder()
+                    .name("스터디")
+                    .build();
+
             @BeforeEach
             void setUp() {
+                ReflectionTestUtils.setField(category, "id", 1L);
+
                 lenient().when(todoAddService.save(any(TodoAddRequest.class))).thenReturn(todos);
                 lenient().when(pomodoroAddService.save(any(PomodoroAddRequest.class), any(Todos.class))).thenReturn(pomodoro);
+                lenient().when(todoCategoryAddService.save(any(Todos.class), any(Long.class))).thenReturn(new TodoCategory(todos, category));
             }
 
             @Test
-            @DisplayName("정상적으로 저장하고 CompositeAddResponse 를 반환한다.")
+            @DisplayName("정상적으로 저장하고 반환한다.")
             void It_shouldSaveAndReturnCompositeResponse() {
                 TodoAndPomodoroAddResponse response = todoWithRelatedAddService.saveWithRelated(todoAndPomodoroAddRequest);
 
@@ -99,11 +113,12 @@ class TodoWithRelatedAddServiceTest {
                         () -> assertThat(response.getTodo()).isEqualTo(WHAT_TO_DO1),
                         () -> assertThat(response.getStatus()).isEqualTo(Status.READY.toString()),
                         () -> assertThat(response.getPerformCount()).isEqualTo(POMODORO_PERFORM_COUNT1),
-                        () -> assertThat(response.getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT1)
+                        () -> assertThat(response.getPlanCount()).isEqualTo(POMODORO_PLAN_COUNT1),
+                        () -> assertThat(response.getCategory()).isEqualTo(category.getName()),
+                        () -> verify(todoAddService, times(1)).save(any(TodoAddRequest.class)),
+                        () -> verify(pomodoroAddService, times(1)).save(any(PomodoroAddRequest.class), any(Todos.class)),
+                        () -> verify(todoCategoryAddService, times(1)).save(any(Todos.class), any(Long.class))
                 );
-
-                verify(todoAddService, times(1)).save(any(TodoAddRequest.class));
-                verify(pomodoroAddService, times(1)).save(any(PomodoroAddRequest.class), any(Todos.class));
             }
         }
     }
