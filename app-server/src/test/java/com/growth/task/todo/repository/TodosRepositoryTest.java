@@ -1,11 +1,14 @@
 package com.growth.task.todo.repository;
 
+import com.growth.task.category.domain.Category;
+import com.growth.task.category.repository.CategoryRepository;
 import com.growth.task.config.TestQueryDslConfig;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.dto.TaskTodoDetailResponse;
 import com.growth.task.task.repository.TasksRepository;
+import com.growth.task.todo.domain.TodoCategory;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.TodoResponse;
 import com.growth.task.todo.dto.response.TodoWithPomodoroResponse;
@@ -35,15 +38,16 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @Import(TestQueryDslConfig.class)
 @DataJpaTest
 class TodosRepositoryTest {
-    public static final int LIMIT = 3;
-    public static final LocalDate DATE_2023_11_01 = LocalDate.of(2023, 11, 1);
-    public static final LocalDate DATE_2023_11_02 = LocalDate.of(2023, 11, 2);
-    public static final LocalDate DATE_2023_11_03 = LocalDate.of(2023, 11, 3);
-    public static final LocalDate DATE_2023_11_04 = LocalDate.of(2023, 11, 4);
-    public static final LocalDate DATE_2023_11_05 = LocalDate.of(2023, 11, 5);
-    public static final String 디자인_패턴의_아름다움_읽기 = "디자인 패턴의 아름다움 읽기";
-    public static final String 알고리즘_읽기 = "얼고리즘 읽기";
-    public static final String 스프링_인_액션_읽기 = "스프링 인 액션 읽기";
+    private static final int LIMIT = 3;
+    private static final LocalDate DATE_2023_11_01 = LocalDate.of(2023, 11, 1);
+    private static final LocalDate DATE_2023_11_02 = LocalDate.of(2023, 11, 2);
+    private static final LocalDate DATE_2023_11_03 = LocalDate.of(2023, 11, 3);
+    private static final LocalDate DATE_2023_11_04 = LocalDate.of(2023, 11, 4);
+    private static final LocalDate DATE_2023_11_05 = LocalDate.of(2023, 11, 5);
+    private static final String 디자인_패턴의_아름다움_읽기 = "디자인 패턴의 아름다움 읽기";
+    private static final String 알고리즘_읽기 = "얼고리즘 읽기";
+    private static final String 스프링_인_액션_읽기 = "스프링 인 액션 읽기";
+    private static final String CATEGORY_READ = "독서";
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
@@ -52,6 +56,10 @@ class TodosRepositoryTest {
     private TodosRepository todosRepository;
     @Autowired
     private PomodorosRepository pomodorosRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private TodoCategoryRepository todoCategoryRepository;
 
     private Users getUser(String name, String password) {
         return usersRepository.save(
@@ -72,7 +80,7 @@ class TodosRepositoryTest {
         );
     }
 
-    private void getTodoWithPomo(Tasks task, String todo, Status status, int performCount, int planCount, int orderNo) {
+    private Todos getTodoWithPomo(Tasks task, String todo, Status status, int performCount, int planCount, int orderNo) {
         Todos givenTodo = todosRepository.save(
                 Todos.builder()
                         .task(task)
@@ -85,6 +93,7 @@ class TodosRepositoryTest {
                 .performCount(performCount)
                 .planCount(planCount)
                 .build());
+        return givenTodo;
     }
 
     private Todos getTodo(Tasks task, String todo, Status status) {
@@ -97,8 +106,24 @@ class TodosRepositoryTest {
         );
     }
 
+    private Category getCategory(String name) {
+        return categoryRepository.save(
+                Category.builder()
+                        .name(name)
+                        .build()
+        );
+    }
+
+    private TodoCategory registTodoCategory(Todos todo, Category category) {
+        return todoCategoryRepository.save(
+                new TodoCategory(todo, category)
+        );
+    }
+
     @AfterEach
     void cleanUp() {
+        todoCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
         pomodorosRepository.deleteAll();
         todosRepository.deleteAll();
         tasksRepository.deleteAll();
@@ -113,6 +138,7 @@ class TodosRepositoryTest {
         @BeforeEach
         void set() {
             Users user = getUser("grow", "password");
+            getCategory(CATEGORY_READ);
             task = getTask(user, LocalDate.parse("2023-08-29"));
         }
 
@@ -250,10 +276,12 @@ class TodosRepositoryTest {
     @DisplayName("findTodoWithPomodoroByTaskId")
     class Describe_findTodoWithPomodoroByTaskId {
         private Tasks task;
+        private Category category;
 
         @BeforeEach
         void set() {
             Users user = getUser("grow", "password");
+            category = getCategory(CATEGORY_READ);
             task = getTask(user, LocalDate.parse("2023-08-29"));
         }
 
@@ -262,9 +290,12 @@ class TodosRepositoryTest {
         class Context_with_task_id_and_limit {
             @BeforeEach
             void setUp() {
-                getTodoWithPomo(task, 디자인_패턴의_아름다움_읽기, READY, 0, 3, 1);
-                getTodoWithPomo(task, 알고리즘_읽기, READY, 0, 4, 2);
-                getTodoWithPomo(task, 스프링_인_액션_읽기, Status.DONE, 3, 4, 3);
+                Todos todo1 = getTodoWithPomo(task, 디자인_패턴의_아름다움_읽기, READY, 0, 3, 1);
+                Todos todo2 = getTodoWithPomo(task, 알고리즘_읽기, READY, 0, 4, 2);
+                Todos todo3 = getTodoWithPomo(task, 스프링_인_액션_읽기, DONE, 3, 4, 3);
+                registTodoCategory(todo1, category);
+                registTodoCategory(todo2, category);
+                registTodoCategory(todo3, category);
             }
 
             @Test
@@ -281,7 +312,44 @@ class TodosRepositoryTest {
                         () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getPerformCount)
                                 .contains(0, 0, 3),
                         () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getPlanCount)
-                                .contains(3, 4, 4)
+                                .contains(3, 4, 4),
+                        () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getCategory)
+                                .contains(CATEGORY_READ, CATEGORY_READ, CATEGORY_READ)
+                );
+            }
+        }
+
+        @Nested
+        @DisplayName("taskId가 주어지고, 카테고리에 속한 투두와 속하지 않은 투두가 있는 경우")
+        class Context_with_task_id_and_limit_when_category {
+            @BeforeEach
+            void setUp() {
+                Todos todo1 = getTodoWithPomo(task, 디자인_패턴의_아름다움_읽기, READY, 0, 3, 1);
+                Todos todo2 = getTodoWithPomo(task, 알고리즘_읽기, READY, 0, 4, 2);
+                Todos todo3 = getTodoWithPomo(task, 스프링_인_액션_읽기, DONE, 3, 4, 3);
+                registTodoCategory(todo1, category);
+            }
+
+            @Test
+            @DisplayName("task id에 해당하는 todo 와 뽀모도로 리스트를 가져온다")
+            void it_return_limit_when_status_not_done() {
+                List<TodoWithPomodoroResponse> actual = todosRepository.findTodoWithPomodoroByTaskId(task.getTaskId());
+
+                assertAll(
+                        () -> assertThat(actual).hasSize(3),
+                        () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getTodo)
+                                .contains(디자인_패턴의_아름다움_읽기, 알고리즘_읽기, 스프링_인_액션_읽기),
+                        () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getStatus)
+                                .contains(READY, READY, DONE),
+                        () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getPerformCount)
+                                .contains(0, 0, 3),
+                        () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getPlanCount)
+                                .contains(3, 4, 4),
+                        () -> assertThat(actual).extracting(TodoWithPomodoroResponse::getCategory)
+                                .contains(CATEGORY_READ, null, null),
+                        () -> assertThat(actual.get(0).getCategory()).isEqualTo(CATEGORY_READ),
+                        () -> assertThat(actual.get(1).getCategory()).isNull(),
+                        () -> assertThat(actual.get(2).getCategory()).isNull()
                 );
             }
         }

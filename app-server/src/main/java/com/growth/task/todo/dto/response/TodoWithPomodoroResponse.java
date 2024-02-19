@@ -17,7 +17,18 @@ public class TodoWithPomodoroResponse {
     private Integer planCount;
     private int orderNo;
 
-    public TodoWithPomodoroResponse(Long todoId, Long taskId, String todo, Status status, Integer performCount, Integer planCount, int orderNo) {
+    private String category;
+
+    public TodoWithPomodoroResponse(
+            Long todoId,
+            Long taskId,
+            String todo,
+            Status status,
+            Integer performCount,
+            Integer planCount,
+            int orderNo,
+            String category
+    ) {
         this.todoId = todoId;
         this.taskId = taskId;
         this.todo = todo;
@@ -25,6 +36,7 @@ public class TodoWithPomodoroResponse {
         this.performCount = performCount;
         this.planCount = planCount;
         this.orderNo = orderNo;
+        this.category = category;
     }
 
     public TodoWithPomodoroResponse(Todos todos, Pomodoros pomodoros) {

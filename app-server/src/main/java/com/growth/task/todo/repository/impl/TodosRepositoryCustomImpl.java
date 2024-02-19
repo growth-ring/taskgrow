@@ -19,8 +19,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.growth.task.category.domain.QCategory.category;
 import static com.growth.task.pomodoro.domain.QPomodoros.pomodoros;
 import static com.growth.task.task.domain.QTasks.tasks;
+import static com.growth.task.todo.domain.QTodoCategory.todoCategory;
 import static com.growth.task.todo.domain.QTodos.todos;
 
 @Repository
@@ -80,11 +82,16 @@ public class TodosRepositoryCustomImpl implements TodosRepositoryCustom {
                         todos.status,
                         todos.orderNo,
                         pomodoros.performCount,
-                        pomodoros.planCount
+                        pomodoros.planCount,
+                        category.name.as("category")
                 ))
                 .from(todos)
                 .leftJoin(pomodoros)
                 .on(pomodoros.todo.eq(todos))
+                .leftJoin(todoCategory)
+                .on(todoCategory.todos.eq(todos))
+                .leftJoin(category)
+                .on(todoCategory.category.eq(category))
                 .where(eqTaskId(taskId))
                 .fetch()
                 ;
