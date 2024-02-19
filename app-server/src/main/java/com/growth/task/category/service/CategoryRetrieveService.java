@@ -2,6 +2,7 @@ package com.growth.task.category.service;
 
 import com.growth.task.category.domain.Category;
 import com.growth.task.category.dto.CategoryResponse;
+import com.growth.task.category.exception.CategoryNotFoundException;
 import com.growth.task.category.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,5 +23,11 @@ public class CategoryRetrieveService {
         return categories.stream()
                 .map(CategoryResponse::of)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Category getCategory(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException());
     }
 }
