@@ -22,16 +22,20 @@ public class TodoCategory extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "todo_id", referencedColumnName = "todo_id")
     private Todos todos;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
     public TodoCategory(Todos todos, Category category) {
         this.todos = todos;
+        this.category = category;
+    }
+
+    public void updateCategory(Category category) {
         this.category = category;
     }
 }
