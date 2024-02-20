@@ -23,7 +23,7 @@ public class CategoryRequest {
 
     public Category toEntity() {
         return Category.builder()
-                .name(name)
+                .name(removeSpace(name))
                 .build();
     }
 
