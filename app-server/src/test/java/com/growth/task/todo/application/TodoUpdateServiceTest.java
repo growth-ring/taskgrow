@@ -21,11 +21,15 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("TodoUpdateService")
 class TodoUpdateServiceTest {
+    public static final String CATEGORY_STURY = "공부";
     private final Long TASK_ID1 = 1L;
     private final String WHAT_TO_DO = "디자인패턴의 아름다움 스터디";
     private final String NEW_WHAT_TO_DO = "쿠버네티스 입문";
@@ -35,9 +39,12 @@ class TodoUpdateServiceTest {
     @Mock
     private TodoListService todoListService;
 
+    @Mock
+    private TodoCategoryUpdateService todoCategoryUpdateService;
+
     @BeforeEach
     void setUp() {
-        todoUpdateService = new TodoUpdateService(todoDetailService, todoListService);
+        todoUpdateService = new TodoUpdateService(todoDetailService, todoListService, todoCategoryUpdateService);
     }
 
     @Nested
@@ -61,6 +68,9 @@ class TodoUpdateServiceTest {
                     .status(Status.DONE)
                     .build();
 
+            private final TodoUpdateRequest todoUpdateRequestCategory = TodoUpdateRequest.builder()
+                    .categoryId(1L)
+                    .build();
             private final Tasks tasks = Tasks.builder()
                     .taskId(TASK_ID1)
                     .build();
@@ -107,6 +117,18 @@ class TodoUpdateServiceTest {
                 assertAll(
                         () -> assertThat(todos.getTodo()).isEqualTo(NEW_WHAT_TO_DO),
                         () -> assertThat(todos.getStatus()).isEqualTo(Status.DONE)
+                );
+            }
+
+            @Test
+            @DisplayName("category가 수정된다")
+            void it_update_category() {
+                Todos todos = todoUpdateService.update(TODO_ID1, todoUpdateRequestCategory);
+
+                assertAll(
+                        () -> assertThat(todos.getTodo()).isEqualTo(WHAT_TO_DO),
+                        () -> assertThat(todos.getStatus()).isEqualTo(Status.PROGRESS),
+                        () -> verify(todoCategoryUpdateService, times(1)).update(any(), any())
                 );
             }
         }

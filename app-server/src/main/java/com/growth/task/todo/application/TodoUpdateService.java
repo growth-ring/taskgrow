@@ -16,12 +16,15 @@ public class TodoUpdateService {
     private final TodoDetailService todoDetailService;
     private final TodoListService todoListService;
 
+    private final TodoCategoryUpdateService todoCategoryUpdateService;
+
     public TodoUpdateService(
             TodoDetailService todoDetailService,
-            TodoListService todoListService
-    ) {
+            TodoListService todoListService,
+            TodoCategoryUpdateService todoCategoryUpdateService) {
         this.todoDetailService = todoDetailService;
         this.todoListService = todoListService;
+        this.todoCategoryUpdateService = todoCategoryUpdateService;
     }
 
     @Transactional
@@ -34,7 +37,9 @@ public class TodoUpdateService {
         if (todoUpdateRequest.hasStatus()) {
             todos.updateStatus(todoUpdateRequest.getStatus());
         }
-
+        if (todoUpdateRequest.hasCategory()) {
+            todoCategoryUpdateService.update(todos, todoUpdateRequest.getCategoryId());
+        }
         return todos;
     }
 

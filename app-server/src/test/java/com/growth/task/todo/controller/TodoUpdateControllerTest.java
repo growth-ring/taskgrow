@@ -3,13 +3,18 @@ package com.growth.task.todo.controller;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.growth.task.category.domain.Category;
+import com.growth.task.category.repository.CategoryRepository;
 import com.growth.task.pomodoro.domain.Pomodoros;
 import com.growth.task.pomodoro.repository.PomodorosRepository;
 import com.growth.task.task.domain.Tasks;
 import com.growth.task.task.repository.TasksRepository;
+import com.growth.task.todo.domain.TodoCategory;
 import com.growth.task.todo.domain.Todos;
 import com.growth.task.todo.dto.TodoUpdateOrder;
+import com.growth.task.todo.dto.request.TodoUpdateRequest;
 import com.growth.task.todo.enums.Status;
+import com.growth.task.todo.repository.TodoCategoryRepository;
 import com.growth.task.todo.repository.TodosRepository;
 import com.growth.task.user.domain.Users;
 import com.growth.task.user.domain.UsersRepository;
@@ -34,7 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.growth.task.todo.enums.Status.PROGRESS;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -48,6 +55,7 @@ class TodoUpdateControllerTest {
     private static final int PERFORM_COUNT = 2;
     private static final int PLAN_COUNT = 5;
     private static final String API_TODOS_ORDER = "/api/v1/todos/order";
+    private static final String API_TODOS_ID = "/api/v1/todos/{id}";
     @Autowired
     private TodosRepository todosRepository;
     @Autowired
@@ -56,6 +64,11 @@ class TodoUpdateControllerTest {
     private TasksRepository tasksRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TodoCategoryRepository todoCategoryRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
@@ -75,6 +88,8 @@ class TodoUpdateControllerTest {
 
     @AfterEach
     void cleanUp() {
+        todoCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
         pomodorosRepository.deleteAll();
         todosRepository.deleteAll();
         tasksRepository.deleteAll();
@@ -102,6 +117,70 @@ class TodoUpdateControllerTest {
                 .todo(save)
                 .build());
         return save;
+    }
+
+    private Category createCategory(String name) {
+        return categoryRepository.save(Category.builder().name(name).build());
+    }
+
+    private TodoCategory addTodoCategory(Todos todo, Category category) {
+        return todoCategoryRepository.save(new TodoCategory(todo, category));
+    }
+
+    @DisplayName("Todo 수정 요청")
+    @Nested
+    class Describe_PATCH {
+        private ResultActions subject(Long todoId, TodoUpdateRequest request) throws Exception {
+            return mockMvc.perform(patch(API_TODOS_ID, todoId)
+                    .content(objectMapper.writeValueAsString(request))
+                    .contentType(MediaType.APPLICATION_JSON)
+            );
+        }
+
+        private Users user;
+
+        @BeforeEach
+        void setUser() {
+            user = usersRepository.save(Users.builder()
+                    .name("user")
+                    .password("password")
+                    .role(Role.USER)
+                    .build());
+        }
+
+        @DisplayName("Todo 수정 객체가 넘어오면")
+        @Nested
+        class Context_with_todoUpdate {
+            private TodoUpdateRequest request;
+            private Tasks task = createTask(user, LOCAL_DATE_2_9);
+            private Todos todo = createTodo(task, "책 읽기", PROGRESS, PERFORM_COUNT, PLAN_COUNT, 1);
+
+            @BeforeEach
+            void prepare() {
+                Category category = createCategory("독서");
+
+                request = TodoUpdateRequest.builder()
+                        .categoryId(category.getId())
+                        .build();
+            }
+
+            @Test
+            @DisplayName("순서를 수정후 응답한다")
+            void it_response_200() throws Exception {
+                final ResultActions resultActions = subject(todo.getTodoId(), request);
+
+                resultActions.andExpect(status().isOk())
+                ;
+
+                TodoCategory todoCategory = todoCategoryRepository.findByTodos(todo).orElse(null);
+
+                assertAll(
+                        () -> assertThat(todoCategory).isNotNull(),
+                        () -> assertThat(todoCategory.getCategory().getName()).isEqualTo("독서"),
+                        () -> assertThat(todoCategory.getTodos().getTodo()).isEqualTo(todo.getTodo())
+                );
+            }
+        }
     }
 
     @DisplayName("Todo 순서 수정 요청")
