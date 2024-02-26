@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { addCategory, getCategory } from '../../services/category';
 
 interface AddCategroyProps {
+  close: () => void;
   handleTodoCategoryChange: (categoryId: number) => void;
+  handleChoiceCategoryChange: (category: string) => void;
 }
 
 interface CategoriesType {
@@ -11,7 +13,11 @@ interface CategoriesType {
   name: string;
 }
 
-const Category = ({ handleTodoCategoryChange }: AddCategroyProps) => {
+const Category = ({
+  close,
+  handleTodoCategoryChange,
+  handleChoiceCategoryChange,
+}: AddCategroyProps) => {
   const [categories, setCategories] = useState<CategoriesType[]>();
   const [category, setCategory] = useState('');
   const [isAddOption, setIsAddOption] = useState(false);
@@ -29,8 +35,10 @@ const Category = ({ handleTodoCategoryChange }: AddCategroyProps) => {
     setCategory('');
   };
 
-  const handleClickOption = (categoryId: number) => {
-    handleTodoCategoryChange(categoryId);
+  const handleClickOption = (category: CategoriesType) => {
+    handleTodoCategoryChange(category.id);
+    handleChoiceCategoryChange(category.name);
+    close();
   };
 
   useEffect(() => {
@@ -58,7 +66,7 @@ const Category = ({ handleTodoCategoryChange }: AddCategroyProps) => {
       {categories && (
         <Ul>
           {categories.map((category, index) => (
-            <Li key={index} onClick={() => handleClickOption(category.id)}>
+            <Li key={index} onClick={() => handleClickOption(category)}>
               {category.name}
             </Li>
           ))}

@@ -45,7 +45,7 @@ const AddTodo = () => {
     if (todo.trim() === '') {
       return alert('할 일을 입력해주세요');
     }
-
+    console.log(category);
     if (+planCount > 0 && +planCount <= 20) {
       if (isGuest()) {
         const newTodo = {
@@ -56,6 +56,7 @@ const AddTodo = () => {
           todoId: todoListId,
           taskId: selectedTaskId,
           orderNo: guestTodoList.length + 1,
+          categoryId: category,
         };
         incrementTodoListId();
         guestAddTodo(newTodo);
@@ -66,6 +67,7 @@ const AddTodo = () => {
           orderNo: todos.length + 1,
           performCount: 0,
           planCount: +planCount,
+          categoryId: category,
         });
       }
       setIsTodoChange(!isTodoChange);
@@ -86,7 +88,7 @@ const AddTodo = () => {
     setPlanCount(count);
   };
 
-  const handleTodoCategoryChange = (categoryId: number) => {
+  const handleTodoCategoryChange = (categoryId: number | null) => {
     setCategory(categoryId);
   };
 
