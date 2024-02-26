@@ -2,7 +2,11 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Category from './Category';
 
-const AddCategroy = () => {
+interface AddCategroyProps {
+  handleTodoCategoryChange: (categoryId: number) => void;
+}
+
+const AddCategroy = ({ handleTodoCategoryChange }: AddCategroyProps) => {
   const [view, setView] = useState(false);
 
   return (
@@ -11,7 +15,7 @@ const AddCategroy = () => {
         카테고리
         {view ? ' ▲' : ' ▼'}
       </CategoryButton>
-      {view && <Category />}
+      {view && <Category handleTodoCategoryChange={handleTodoCategoryChange} />}
     </Container>
   );
 };

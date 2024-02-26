@@ -1,19 +1,69 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { addCategory, getCategory } from '../../services/category';
 
-const Category = () => {
-  const [isAddOption, SetIsAddOption] = useState(false);
+interface AddCategroyProps {
+  handleTodoCategoryChange: (categoryId: number) => void;
+}
+
+interface CategoriesType {
+  id: number;
+  name: string;
+}
+
+const Category = ({ handleTodoCategoryChange }: AddCategroyProps) => {
+  const [categories, setCategories] = useState<CategoriesType[]>();
+  const [category, setCategory] = useState('');
+  const [isAddOption, setIsAddOption] = useState(false);
+
+  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategory(e.target.value);
+  };
+
+  const handleAddOption = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const newCategory = { name: category };
+    await addCategory(newCategory);
+    const newCategories = await getCategory();
+    setCategories(newCategories);
+    setCategory('');
+  };
+
+  const handleClickOption = (categoryId: number) => {
+    handleTodoCategoryChange(categoryId);
+  };
+
+  useEffect(() => {
+    const getCategories = async () => {
+      setCategories(await getCategory());
+    };
+    getCategories();
+  }, []);
 
   return (
     <List>
       <Option>
         <span>카테고리</span>
-        <button onClick={() => SetIsAddOption(!isAddOption)}>+</button>
+        <button onClick={() => setIsAddOption(!isAddOption)}>+</button>
       </Option>
-      {isAddOption && <AddOption placeholder="새 카테고리 입력하세요" />}
-      <Ul>
-        <Li>카테고리 예시</Li>
-      </Ul>
+      {isAddOption && (
+        <AddOption onSubmit={(e) => handleAddOption(e)}>
+          <Input
+            value={category}
+            onChange={handleOptionChange}
+            placeholder="새 카테고리 입력하세요"
+          />
+        </AddOption>
+      )}
+      {categories && (
+        <Ul>
+          {categories.map((category, index) => (
+            <Li key={index} onClick={() => handleClickOption(category.id)}>
+              {category.name}
+            </Li>
+          ))}
+        </Ul>
+      )}
     </List>
   );
 };
@@ -60,7 +110,9 @@ const List = styled.div`
   border-radius: 3px;
 `;
 
-const AddOption = styled.input`
+const AddOption = styled.form``;
+
+const Input = styled.input`
   width: 100%;
   margin-top: 5px;
   border: 1px solid gray;

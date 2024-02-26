@@ -36,6 +36,7 @@ const AddTodo = () => {
     useGuestStore();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('1');
+  const [category, setCategory] = useState<number | null>(null);
 
   const handleAddTodo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -85,6 +86,10 @@ const AddTodo = () => {
     setPlanCount(count);
   };
 
+  const handleTodoCategoryChange = (categoryId: number) => {
+    setCategory(categoryId);
+  };
+
   return (
     <Container className="max-w-lg mx-auto bg-white p-4 rounded-lg shadow shadow-slate-300 flex">
       <Button onClick={handleAddTodo}>
@@ -105,7 +110,7 @@ const AddTodo = () => {
         planCount={planCount}
         handleTodoTimerChange={handleTodoTimerChange}
       />
-      <AddCategroy />
+      <AddCategroy handleTodoCategoryChange={handleTodoCategoryChange} />
     </Container>
   );
 };
