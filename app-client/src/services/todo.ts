@@ -7,6 +7,7 @@ interface AddTodoData {
   orderNo: number;
   performCount: number;
   planCount: number;
+  categoryId: number | null;
 }
 
 interface UpdateTodoData {
@@ -81,11 +82,20 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
 export const deleteTodo = async (todoId: number) => {
   loadingStart();
   try {
+    await deleteTodoCategory(todoId);
     const answer = await httpClient.delete(`/todos/${todoId}`);
     loadingStop();
     return answer.status === 204 ? 'OK' : null;
   } catch (error: any) {
     loadingStop();
+    return null;
+  }
+};
+
+export const deleteTodoCategory = async (todoId: number) => {
+  try {
+    await httpClient.delete(`/todos/${todoId}/category`);
+  } catch (error: any) {
     return null;
   }
 };
