@@ -5,8 +5,15 @@ import { addTodo, getTodos } from '../../services/todo';
 import { SlPlus } from 'react-icons/sl';
 import { useTodosStore } from '../../store/todos';
 import AddTodoTimerList from './AddTodoTimerList';
+import AddCategroy from './AddCategory';
 import { isGuest } from '../../utils/isGuest';
 import { useGuestStore } from '../../store/guest';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Button = styled.button`
   color: gray;
@@ -79,7 +86,7 @@ const AddTodo = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-4 rounded-lg shadow shadow-slate-300 flex">
+    <Container className="max-w-lg mx-auto bg-white p-4 rounded-lg shadow shadow-slate-300 flex">
       <Button onClick={handleAddTodo}>
         <SlPlus />
       </Button>
@@ -98,7 +105,8 @@ const AddTodo = () => {
         planCount={planCount}
         handleTodoTimerChange={handleTodoTimerChange}
       />
-    </div>
+      <AddCategroy />
+    </Container>
   );
 };
 
