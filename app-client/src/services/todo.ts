@@ -7,7 +7,7 @@ interface AddTodoData {
   orderNo: number;
   performCount: number;
   planCount: number;
-  categoryId: number | null;
+  categoryId: number | null | string;
 }
 
 interface UpdateTodoData {

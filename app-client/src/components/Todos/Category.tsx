@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { addCategory, getCategory } from '../../services/category';
+import { isGuest } from '../../utils/isGuest';
 
 interface AddCategroyProps {
   close: () => void;
-  handleTodoCategoryChange: (categoryId: number) => void;
+  handleTodoCategoryChange: (category: number | string) => void;
   handleChoiceCategoryChange: (category: string) => void;
 }
 
@@ -36,7 +37,11 @@ const Category = ({
   };
 
   const handleClickOption = (category: CategoriesType) => {
-    handleTodoCategoryChange(category.id);
+    if (isGuest()) {
+      handleTodoCategoryChange(category.name);
+    } else {
+      handleTodoCategoryChange(category.id);
+    }
     handleChoiceCategoryChange(category.name);
     close();
   };
@@ -60,6 +65,7 @@ const Category = ({
             value={category}
             onChange={handleOptionChange}
             placeholder="새 카테고리 입력하세요"
+            maxLength={24}
           />
         </AddOption>
       )}
@@ -102,7 +108,7 @@ const Li = styled.li`
 const Option = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 5px 10px 0 10px;
+  padding: 5px 10px 10px 10px;
   color: gray;
   font-size: 15px;
 `;
@@ -122,7 +128,6 @@ const AddOption = styled.form``;
 
 const Input = styled.input`
   width: 100%;
-  margin-top: 5px;
   border: 1px solid gray;
   border-radius: 5px;
   padding: 3px;

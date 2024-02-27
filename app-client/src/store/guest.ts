@@ -8,6 +8,7 @@ interface Todo {
   todoId: number;
   taskId: number;
   orderNo: number;
+  category: string | number | null;
 }
 
 interface GuestStore {

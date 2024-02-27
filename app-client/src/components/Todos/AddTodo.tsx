@@ -36,7 +36,7 @@ const AddTodo = () => {
     useGuestStore();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('1');
-  const [category, setCategory] = useState<number | null>(null);
+  const [category, setCategory] = useState<number | null | string>(null);
 
   const handleAddTodo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -45,7 +45,6 @@ const AddTodo = () => {
     if (todo.trim() === '') {
       return alert('할 일을 입력해주세요');
     }
-    console.log(category);
     if (+planCount > 0 && +planCount <= 20) {
       if (isGuest()) {
         const newTodo = {
@@ -56,7 +55,7 @@ const AddTodo = () => {
           todoId: todoListId,
           taskId: selectedTaskId,
           orderNo: guestTodoList.length + 1,
-          categoryId: category,
+          category: category,
         };
         incrementTodoListId();
         guestAddTodo(newTodo);
@@ -88,8 +87,8 @@ const AddTodo = () => {
     setPlanCount(count);
   };
 
-  const handleTodoCategoryChange = (categoryId: number | null) => {
-    setCategory(categoryId);
+  const handleTodoCategoryChange = (category: number | null | string) => {
+    setCategory(category);
   };
 
   return (
