@@ -1,5 +1,6 @@
 import Todo from './Todo';
-import { useRef } from 'react';
+import styled from 'styled-components';
+import { useRef, useEffect, useState } from 'react';
 import { useTodosStore } from '../../store/todos';
 import { useTimerStore } from '../../store/timer';
 import { useReviewStore } from '../../store/review';
@@ -19,6 +20,7 @@ interface Todo {
   status: string;
   planCount: number;
   performCount: number;
+  category: string | number | null;
 }
 
 const TodoList = () => {
@@ -35,6 +37,7 @@ const TodoList = () => {
   } = useTodosStore();
   const { selectedTaskId } = useTask();
   const { guestTodoList, updateTodoOrderNo } = useGuestStore();
+  const [categories, setCategories] = useState<any[]>([]);
 
   const handleTodoClick = (todo: Todo) => {
     if (timer.timerState === 'RUNNING') {
@@ -66,11 +69,15 @@ const TodoList = () => {
     dragOverItemTodoId.current = todoId;
   };
 
-  const drop = async (e: React.DragEvent<HTMLLIElement>) => {
+  const drop = async (
+    e: React.DragEvent<HTMLLIElement>,
+    category?: string | number | null,
+  ) => {
     const x = e.clientX;
     const y = e.clientY;
+    const id = category ? category?.toString() : 'task';
 
-    const tasksElement = document.getElementById('task');
+    const tasksElement = document.getElementById(id);
     const rect = tasksElement!.getBoundingClientRect();
 
     const top = rect.top;
@@ -105,52 +112,130 @@ const TodoList = () => {
     }
   };
 
+  useEffect(() => {
+    const category = Array.from(new Set(todoList.map((todo) => todo.category)));
+    if (!category.includes(null)) {
+      category.push(null);
+    }
+    setCategories(category);
+  }, [todos.isCategory]);
+
+  useEffect(() => {
+    todos.offCategory();
+  }, [isTodoChange]);
+
   return (
     <div
       className="max-w-lg mx-auto bg-white rounded-xl shadow shadow-slate-300"
       style={{ width: '100%' }}
     >
-      <ul
-        id="task"
-        style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'auto',
-        }}
-      >
-        {todoList
-          .slice()
-          .sort((a, b) => {
-            if (a.status !== 'DONE' && b.status !== 'DONE') {
-              return b.orderNo! - a.orderNo!;
-            } else if (a.status === 'DONE') {
-              return 1;
-            } else {
-              return -1;
-            }
-          })
-          .map((todo) => (
-            <li
-              key={todo.todoId}
-              onDragStart={() => handleDragStart(todo.orderNo, todo.todoId)}
-              onDragEnter={() => handleDragEnter(todo.orderNo, todo.todoId)}
-              onDragEnd={(e) => drop(e)}
-              draggable
+      {todos.isCategory && (
+        <>
+          {categories.map((category) => (
+            <ul
+              id={category}
+              style={{
+                width: '100%',
+                height: '100%',
+                overflow: 'auto',
+              }}
             >
-              <Todo
-                key={todo.todoId}
-                id={todo.todoId}
-                title={todo.todo}
-                status={todo.status}
-                planCount={todo.planCount}
-                performCount={todo.performCount}
-                onClick={() => handleTodoClick(todo)}
-              />
-            </li>
+              <Category>
+                {category === null ? '카테고리 없음' : category}
+              </Category>
+              {todoList
+                .slice()
+                .sort((a, b) => {
+                  if (a.status !== 'DONE' && b.status !== 'DONE') {
+                    return b.orderNo! - a.orderNo!;
+                  } else if (a.status === 'DONE') {
+                    return 1;
+                  } else {
+                    return -1;
+                  }
+                })
+                .map((todo) => (
+                  <>
+                    {todo.category === category && (
+                      <li
+                        key={todo.todoId}
+                        onDragStart={() =>
+                          handleDragStart(todo.orderNo, todo.todoId)
+                        }
+                        onDragEnter={() =>
+                          handleDragEnter(todo.orderNo, todo.todoId)
+                        }
+                        onDragEnd={(e) => drop(e, category)}
+                        draggable
+                      >
+                        <Todo
+                          key={todo.todoId}
+                          id={todo.todoId}
+                          title={todo.todo}
+                          status={todo.status}
+                          planCount={todo.planCount}
+                          performCount={todo.performCount}
+                          onClick={() => handleTodoClick(todo)}
+                        />
+                      </li>
+                    )}
+                  </>
+                ))}
+            </ul>
           ))}
-      </ul>
+        </>
+      )}
+
+      {!todos.isCategory && (
+        <ul
+          id="task"
+          style={{
+            width: '100%',
+            height: '100%',
+            overflow: 'auto',
+          }}
+        >
+          {todoList
+            .slice()
+            .sort((a, b) => {
+              if (a.status !== 'DONE' && b.status !== 'DONE') {
+                return b.orderNo! - a.orderNo!;
+              } else if (a.status === 'DONE') {
+                return 1;
+              } else {
+                return -1;
+              }
+            })
+            .map((todo) => (
+              <>
+                <li
+                  key={todo.todoId}
+                  onDragStart={() => handleDragStart(todo.orderNo, todo.todoId)}
+                  onDragEnter={() => handleDragEnter(todo.orderNo, todo.todoId)}
+                  onDragEnd={(e) => drop(e)}
+                  draggable
+                >
+                  <Todo
+                    key={todo.todoId}
+                    id={todo.todoId}
+                    title={todo.todo}
+                    status={todo.status}
+                    planCount={todo.planCount}
+                    performCount={todo.performCount}
+                    onClick={() => handleTodoClick(todo)}
+                  />
+                </li>
+              </>
+            ))}
+        </ul>
+      )}
     </div>
   );
 };
 
 export default TodoList;
+
+const Category = styled.div`
+  padding: 10px;
+  background-color: var(--sub-yellow-color);
+`;
