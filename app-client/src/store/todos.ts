@@ -12,6 +12,7 @@ export interface Todo {
   planCount: number;
   performCount: number;
   orderNo: number;
+  category: string | null | number;
 }
 
 interface TodosStats {
@@ -48,6 +49,9 @@ export interface TodosStore {
   getTodos: () => void;
   todoDetail: TodoDetail[];
   getTodoDetail: ({ status, page }: { status: string; page: number }) => void;
+  isCategory: boolean;
+  onCategory: () => void;
+  offCategory: () => void;
 }
 
 const userTaskDate = localStorage.getItem('taskDate');
@@ -115,4 +119,7 @@ export const useTodosStore = create<TodosStore>((set) => ({
       return { todoDetail: detailContent };
     });
   },
+  isCategory: false,
+  onCategory: () => set({ isCategory: true }),
+  offCategory: () => set({ isCategory: false }),
 }));

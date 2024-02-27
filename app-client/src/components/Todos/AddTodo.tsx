@@ -5,8 +5,15 @@ import { addTodo, getTodos } from '../../services/todo';
 import { SlPlus } from 'react-icons/sl';
 import { useTodosStore } from '../../store/todos';
 import AddTodoTimerList from './AddTodoTimerList';
+import AddCategroy from './AddCategory';
 import { isGuest } from '../../utils/isGuest';
 import { useGuestStore } from '../../store/guest';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Button = styled.button`
   color: gray;
@@ -29,6 +36,7 @@ const AddTodo = () => {
     useGuestStore();
   const [todo, setTodo] = useState('');
   const [planCount, setPlanCount] = useState('1');
+  const [category, setCategory] = useState<number | null | string>(null);
 
   const handleAddTodo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -37,7 +45,6 @@ const AddTodo = () => {
     if (todo.trim() === '') {
       return alert('할 일을 입력해주세요');
     }
-
     if (+planCount > 0 && +planCount <= 20) {
       if (isGuest()) {
         const newTodo = {
@@ -48,6 +55,7 @@ const AddTodo = () => {
           todoId: todoListId,
           taskId: selectedTaskId,
           orderNo: guestTodoList.length + 1,
+          category: category,
         };
         incrementTodoListId();
         guestAddTodo(newTodo);
@@ -58,6 +66,7 @@ const AddTodo = () => {
           orderNo: todos.length + 1,
           performCount: 0,
           planCount: +planCount,
+          categoryId: category,
         });
       }
       setIsTodoChange(!isTodoChange);
@@ -78,8 +87,12 @@ const AddTodo = () => {
     setPlanCount(count);
   };
 
+  const handleTodoCategoryChange = (category: number | null | string) => {
+    setCategory(category);
+  };
+
   return (
-    <div className="max-w-lg mx-auto bg-white p-4 rounded-lg shadow shadow-slate-300 flex">
+    <Container className="max-w-lg mx-auto bg-white p-4 rounded-lg shadow shadow-slate-300 flex">
       <Button onClick={handleAddTodo}>
         <SlPlus />
       </Button>
@@ -98,7 +111,8 @@ const AddTodo = () => {
         planCount={planCount}
         handleTodoTimerChange={handleTodoTimerChange}
       />
-    </div>
+      <AddCategroy handleTodoCategoryChange={handleTodoCategoryChange} />
+    </Container>
   );
 };
 

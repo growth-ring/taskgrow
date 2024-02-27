@@ -10,6 +10,7 @@ import { isGuest } from '../../utils/isGuest';
 import { useModal } from '../../hooks/useModal';
 import LoginModal from '../User/Login/LoginModal';
 import { useLogin } from '../../store/login';
+import { useTodosStore } from '../../store/todos';
 
 const Container = styled.div`
   display: flex;
@@ -107,11 +108,13 @@ const Header = () => {
   const { isOpen, openModal, closeModal } = useModal();
   const [showGoBack, setShowGoBack] = useState(false);
   const guest = isGuest();
+  const { offCategory } = useTodosStore();
 
   const handleCalendar = () => {
     if (timerState === 'RUNNING') {
       setShowGoBack(true);
     } else {
+      offCategory();
       navigate('/tasks');
     }
   };
@@ -127,6 +130,7 @@ const Header = () => {
   };
 
   const handleMypage = () => {
+    offCategory();
     navigate('/mypage');
   };
 

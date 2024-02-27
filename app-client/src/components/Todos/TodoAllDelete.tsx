@@ -6,8 +6,7 @@ import { useTodosStore } from '../../store/todos';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  justify-content: flex-end;
   margin-left: auto;
   margin-right: auto;
   max-width: 32rem;
@@ -15,8 +14,8 @@ const Container = styled.div`
   margin-bottom: 0.5rem;
 `;
 
-const DeleteButton = styled.button`
-  margin-top: 10px;
+const Button = styled.button`
+  margin: 10px 0 0 10px;
   &:hover {
     color: black;
   }
@@ -25,7 +24,7 @@ const DeleteButton = styled.button`
 const TodoAllDelete = () => {
   const { selectedTaskId } = useTask();
   const [isShow, setIsShow] = useState(false);
-  const { todoList } = useTodosStore();
+  const { todoList, isCategory, onCategory, offCategory } = useTodosStore();
   const isTodo = todoList.length > 0;
 
   const getIsShow = () => {
@@ -40,7 +39,9 @@ const TodoAllDelete = () => {
     <>
       {isTodo && (
         <Container>
-          <DeleteButton onClick={handleDeleteClick}>전체 삭제하기</DeleteButton>
+          {!isCategory && <Button onClick={onCategory}>카테고리별 보기</Button>}
+          {isCategory && <Button onClick={offCategory}>전체 보기</Button>}
+          <Button onClick={handleDeleteClick}>전체 삭제하기</Button>
         </Container>
       )}
       {isShow && (
