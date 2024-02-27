@@ -4,7 +4,7 @@ import Category from './Category';
 import { useTodosStore } from '../../store/todos';
 
 interface AddCategroyProps {
-  handleTodoCategoryChange: (categoryId: number | null) => void;
+  handleTodoCategoryChange: (category: number | null | string) => void;
 }
 
 const AddCategroy = ({ handleTodoCategoryChange }: AddCategroyProps) => {
@@ -24,7 +24,7 @@ const AddCategroy = ({ handleTodoCategoryChange }: AddCategroyProps) => {
   return (
     <Container>
       <CategoryButton onClick={() => setView(!view)}>
-        {choiceCategory}
+        <Text>{choiceCategory}</Text>
         {view ? ' ▲' : ' ▼'}
       </CategoryButton>
       {view && (
@@ -45,5 +45,15 @@ const Container = styled.div`
 `;
 
 const CategoryButton = styled.button`
-  width: 90px;
+  display: flex;
+  align-items: center;
+  width: 80px;
+`;
+
+const Text = styled.span`
+  display: inline-block;
+  width: 70px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: auto;
 `;
