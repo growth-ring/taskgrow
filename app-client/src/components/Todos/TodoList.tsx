@@ -118,11 +118,7 @@ const TodoList = () => {
       category.push(null);
     }
     setCategories(category);
-  }, [todos.isCategory]);
-
-  useEffect(() => {
-    todos.offCategory();
-  }, [isTodoChange]);
+  }, [todos.isCategory, isTodoChange, todoList]);
 
   return (
     <div
