@@ -36,6 +36,7 @@ const TodoDetail = ({
   const [planCount, setPlanCount] = useState(todoPlanCount);
   const [category, setCategory] = useState(todoCategory);
   const [categories, setCategories] = useState<CategoriesType[]>();
+  const [categoryId, setCategoryId] = useState(0);
 
   const handleClose = () => {
     getIsShow();
@@ -48,6 +49,7 @@ const TodoDetail = ({
       todo: todo,
       status: todoStatus,
       planCount: planCount,
+      categoryId: categoryId,
     };
     if (+planCount > 0 && +planCount <= 20) {
       if (isGuest()) {
@@ -78,7 +80,10 @@ const TodoDetail = ({
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCategory(e.target.value);
+    const text = categories?.find((category) => category.id === +e.target.value)
+      ?.name;
+    setCategory(text!);
+    setCategoryId(+e.target.value);
   };
 
   useEffect(() => {
@@ -164,11 +169,15 @@ const TodoDetail = ({
                   className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
                 >
                   <option value="">{category}</option>
-                  {categories?.map((category) => (
-                    <option key={category.id} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
+                  {categories?.map((newCategory) => {
+                    if (newCategory.name !== category) {
+                      return (
+                        <option key={newCategory.id} value={newCategory.id}>
+                          {newCategory.name}
+                        </option>
+                      );
+                    }
+                  })}
                 </select>
               </div>
 
