@@ -20,6 +20,7 @@ interface TodoProps {
   status: string;
   planCount: number;
   performCount: number;
+  category: string | number | null;
   onClick: () => void;
 }
 
@@ -29,6 +30,7 @@ const Todo = ({
   status,
   planCount,
   performCount,
+  category,
   onClick,
 }: TodoProps) => {
   const timer = useTimerStore();
@@ -139,6 +141,7 @@ const Todo = ({
           todoStatus={status}
           todoPlanCount={planCount}
           todoPerformCount={performCount}
+          todoCategory={category}
           getIsShow={getIsDetailShow}
         />
       )}
