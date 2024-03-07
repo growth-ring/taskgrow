@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { updateTodo } from '../../services/todo';
 import { useTodosStore } from '../../store/todos';
 import { isGuest } from '../../utils/isGuest';
 import { useGuestStore } from '../../store/guest';
+import { getCategory } from '../../services/category';
 
 interface TodoProps {
   todoId: number;
@@ -10,7 +11,13 @@ interface TodoProps {
   todoStatus: string;
   todoPlanCount: number;
   todoPerformCount: number;
+  todoCategory: string | number | null;
   getIsShow: () => void;
+}
+
+interface CategoriesType {
+  id: number;
+  name: string;
 }
 
 const TodoDetail = ({
@@ -19,6 +26,7 @@ const TodoDetail = ({
   todoStatus,
   todoPlanCount,
   todoPerformCount,
+  todoCategory,
   getIsShow,
 }: TodoProps) => {
   const { isTodoChange, setIsTodoChange } = useTodosStore();
@@ -26,6 +34,9 @@ const TodoDetail = ({
     useGuestStore();
   const [todo, setTodo] = useState(todoTitle);
   const [planCount, setPlanCount] = useState(todoPlanCount);
+  const [category, setCategory] = useState(todoCategory);
+  const [categories, setCategories] = useState<CategoriesType[]>();
+  const [categoryId, setCategoryId] = useState(0);
 
   const handleClose = () => {
     getIsShow();
@@ -38,6 +49,7 @@ const TodoDetail = ({
       todo: todo,
       status: todoStatus,
       planCount: planCount,
+      categoryId: categoryId,
     };
     if (+planCount > 0 && +planCount <= 20) {
       if (isGuest()) {
@@ -66,6 +78,22 @@ const TodoDetail = ({
   const handlePlanCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlanCount(+e.target.value);
   };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const text = categories?.find((category) => category.id === +e.target.value)
+      ?.name;
+    setCategory(text!);
+    setCategoryId(+e.target.value);
+  };
+
+  useEffect(() => {
+    const category = async () => {
+      const categoryList = await getCategory();
+      setCategories(categoryList);
+    };
+
+    category();
+  }, []);
 
   return (
     <div>
@@ -128,6 +156,31 @@ const TodoDetail = ({
                   className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
                 />
               </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="category"
+                  className="block text-sm capitalize dark:text-gray-200"
+                >
+                  카테고리
+                </label>
+                <select
+                  onChange={handleSelectChange}
+                  className="block w-full px-3 py-2 mt-2 text-gray-600 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-indigo-400 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-40"
+                >
+                  <option value="">{category}</option>
+                  {categories?.map((newCategory) => {
+                    if (newCategory.name !== category) {
+                      return (
+                        <option key={newCategory.id} value={newCategory.id}>
+                          {newCategory.name}
+                        </option>
+                      );
+                    }
+                  })}
+                </select>
+              </div>
+
               <div className="mt-4">
                 <label
                   htmlFor="performCount"

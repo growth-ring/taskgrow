@@ -15,6 +15,7 @@ interface UpdateTodoData {
   todo: string;
   status: string;
   planCount: number;
+  categoryId?: number;
 }
 
 const { loadingStart, loadingStop } = useLoading.getState();
@@ -70,6 +71,7 @@ export const updateTodo = async (todoData: UpdateTodoData) => {
     await httpClient.patch(`/todos/${todoData.todoId}`, {
       todo: todoData.todo,
       status: todoData.status,
+      categoryId: todoData.categoryId,
     });
     if (todoData.status === 'READY') {
       await updatePlanPomodoro(todoData);

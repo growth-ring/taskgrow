@@ -171,6 +171,7 @@ const TodoList = () => {
                           status={todo.status}
                           planCount={todo.planCount}
                           performCount={todo.performCount}
+                          category={todo.category}
                           onClick={() => handleTodoClick(todo)}
                         />
                       </li>
@@ -218,6 +219,7 @@ const TodoList = () => {
                     status={todo.status}
                     planCount={todo.planCount}
                     performCount={todo.performCount}
+                    category={todo.category}
                     onClick={() => handleTodoClick(todo)}
                   />
                 </li>
