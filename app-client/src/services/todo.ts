@@ -67,6 +67,11 @@ const updatePlanPomodoro = async (todoData: UpdateTodoData) => {
 };
 
 export const updateTodo = async (todoData: UpdateTodoData) => {
+  if (todoData.categoryId === 0) {
+    deleteTodoCategory(todoData.todoId);
+    return;
+  }
+
   try {
     await httpClient.patch(`/todos/${todoData.todoId}`, {
       todo: todoData.todo,
